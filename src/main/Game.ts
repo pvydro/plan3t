@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 import * as Viewport from 'pixi-viewport'
+import { LoggingService } from '../service/LoggingService'
+import { Spritesheets } from '../asset/Spritesheets'
 import { WindowSize, WorldSize } from '../utils/Constants'
 import { Room, Client } from 'colyseus.js'
 import { GameState } from '../network/rooms/GameState'
@@ -39,11 +41,15 @@ export class Game implements IGame {
     }
 
     async bootstrap() {
+        LoggingService.log('Game', 'bootstrap')
+
+        Spritesheets.loadSpritesheets()
+
         await this.clientManager.initialize()
         await this.roomManager.initializeRoom()
         
         this.initializeBackground()
-        this.initializeMouseMovement()
+        // this.initializeMouseMovement()
         this.initializeGameLoop()
         this.initializeCamera()
     }

@@ -6,6 +6,8 @@ export class AssetUrls {
 }
 
 export class Assets {
+    private constructor() {}
+
     public static get(res: string): HTMLImageElement {
         return require("../../" + res + '.png')
     }

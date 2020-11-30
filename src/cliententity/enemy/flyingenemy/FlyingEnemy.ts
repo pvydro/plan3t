@@ -2,7 +2,8 @@ import * as PIXI from 'pixi.js'
 import { IEnemy, Enemy } from '../Enemy'
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { Entity } from '../../../network/rooms/Entity'
-import { Sprite } from '../../../utils/Sprite'
+import { Sprite } from '../../../display/Sprite'
+import { Dimension } from '../../../math/Dimension'
 
 export interface IFlyingEnemy extends IEnemy {
 
@@ -14,5 +15,7 @@ export class FlyingEnemy extends Enemy implements IFlyingEnemy {
         super({
             sprite: new Sprite({ texture })
         })
+
+        this.dimension = new Dimension(48, 48)
     }
 }

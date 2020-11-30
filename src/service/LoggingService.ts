@@ -1,4 +1,4 @@
-export default class LoggingService {
+export class LoggingService {
     public static isLoggingEnabled: boolean = true
   
     static init() {

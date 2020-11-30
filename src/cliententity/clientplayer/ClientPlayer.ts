@@ -6,6 +6,12 @@ export interface IClientPlayer extends IClientEntity {
     
 }
 
+export enum PlayerBodyState {
+    Idle,
+    Walking,
+    Jumping
+}
+
 export class ClientPlayer extends ClientEntity {
     head: IPlayerHead
 

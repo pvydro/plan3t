@@ -45,15 +45,6 @@ export class EntityManager implements IEntityManager {
     }
     
     createClientPlayer(entity: Entity, sessionID: string) {
-        // const graphics = new PIXI.Graphics()
-        // graphics.beginFill(0x00ff00); graphics.drawCircle(0, 0, entity.radius); graphics.endFill()
-        // graphics.x = entity.x; graphics.y = entity.y
-
-        // this._currentPlayerEntity = graphics
-        // this._clientEntities[sessionID] = this.currentPlayerEntity
-
-        // this.viewport.addChild(this.currentPlayerEntity)
-        // this.viewport.follow(this.currentPlayerEntity)
         const player = new ClientPlayer(entity)
         const playerDisplayObject = (player as PIXI.DisplayObject)
 

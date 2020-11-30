@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
-import { Container } from '../../utils/Container'
-import { Sprite } from '../../utils/Sprite'
+import { Container } from '../../display/Container'
+import { Sprite } from '../../display/Sprite'
+import { Dimension } from '../../math/Dimension'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { IClientPlayer, ClientPlayer } from './ClientPlayer'
 
@@ -20,6 +21,8 @@ export class PlayerHead extends Container {
 
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_ASTRO))
         this.headSprite = new Sprite({ texture })
+
+        this.headSprite.dimension = new Dimension(64, 64)
 
         this.addChild(this.headSprite)
     }
