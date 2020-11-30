@@ -1,8 +1,8 @@
-import { generateId } from "colyseus";
-import { Schema, type, MapSchema, filterChildren } from "@colyseus/schema";
+import { generateId } from "colyseus"
+import { Schema, type, MapSchema, filterChildren } from "@colyseus/schema"
 
-import { Entity } from "./Entity";
-import { Player } from "./Player";
+import { Entity } from "./Entity"
+import { Player } from "./Player"
 
 const WORLD_SIZE = 2000;
 export const DEFAULT_PLAYER_RADIUS = 10;
@@ -29,9 +29,9 @@ export class GameState extends Schema {
 
   initialize () {
     // create some food entities
-    // for (let i = 0; i < 20; i++) {
-    //   this.createFood();
-    // }
+    for (let i = 0; i < 20; i++) {
+      this.createFood();
+    }
   }
 
   createFood () {

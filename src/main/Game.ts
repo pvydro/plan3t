@@ -49,10 +49,13 @@ export class Game implements IGame {
     }
 
     instantiateApplication() {
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
+
         this._application = new PIXI.Application({
             width: WindowSize.width,
             height: window.innerHeight,
-            backgroundColor: 0x0c0c0c
+            backgroundColor: 0x0c0c0c,
+            antialias: false,
         })
     }
     

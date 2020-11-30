@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Entity } from '../network/rooms/Entity'
 import { Enemy } from '../cliententity/enemy/Enemy'
 import { FlyingEnemy } from '../cliententity/enemy/flyingenemy/FlyingEnemy'
+import { IClientPlayer, ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from '../manager/ClientManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
 import { ICamera } from '../camera/Camera'
@@ -10,7 +11,7 @@ import { IClientEntity, ClientEntity } from '../cliententity/ClientEntity'
 export interface IEntityManager {
     entities: { [id: string]: Entity }
     clientEntities: { [id: string]: ClientEntity }
-    currentPlayerEntity: PIXI.Graphics
+    currentPlayerEntity: ClientPlayer
     createClientPlayer(entity: Entity, sessionID: string): void
     createEntity(entity: Entity, sessionID: string): void
     updateEntity(entity: Entity, sessionID: string, changes?: any): void
@@ -24,7 +25,7 @@ export interface EntityManagerOptions {
 export class EntityManager implements IEntityManager {
     _entities: { [id: string]: any } = {}
     _clientEntities: { [id: string]: any } = {}//ClientEntity } = {}
-    _currentPlayerEntity: PIXI.Graphics
+    _currentPlayerEntity: any//PIXI.Graphics
 
     camera: ICamera
     clientManager: IClientManager
@@ -44,15 +45,23 @@ export class EntityManager implements IEntityManager {
     }
     
     createClientPlayer(entity: Entity, sessionID: string) {
-        const graphics = new PIXI.Graphics()
-        graphics.beginFill(0x00ff00); graphics.drawCircle(0, 0, entity.radius); graphics.endFill()
-        graphics.x = entity.x; graphics.y = entity.y
+        // const graphics = new PIXI.Graphics()
+        // graphics.beginFill(0x00ff00); graphics.drawCircle(0, 0, entity.radius); graphics.endFill()
+        // graphics.x = entity.x; graphics.y = entity.y
 
-        this._currentPlayerEntity = graphics
+        // this._currentPlayerEntity = graphics
+        // this._clientEntities[sessionID] = this.currentPlayerEntity
+
+        // this.viewport.addChild(this.currentPlayerEntity)
+        // this.viewport.follow(this.currentPlayerEntity)
+        const player = new ClientPlayer(entity)
+        const playerDisplayObject = (player as PIXI.DisplayObject)
+
+        this._currentPlayerEntity = player
         this._clientEntities[sessionID] = this.currentPlayerEntity
 
         this.viewport.addChild(this.currentPlayerEntity)
-        this.viewport.follow(this.currentPlayerEntity)
+        this.viewport.follow(playerDisplayObject)
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {

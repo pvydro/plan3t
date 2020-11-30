@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Room } from 'colyseus.js'
 import { GameState } from '../network/rooms/GameState'
 import { Entity } from '../network/rooms/Entity'
+import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from './ClientManager'
 import { IEntityManager } from './EntityManager'
 import { ICamera, Camera } from '../camera/Camera'
@@ -10,7 +11,7 @@ import { BasicLerp } from '../utils/Constants'
 export interface IRoomManager {
     initializeRoom(): Promise<void>
     currentRoom: Room
-    currentPlayerEntity: PIXI.Graphics
+    currentPlayerEntity: IClientPlayer
 }
 
 export interface RoomManagerOptions {

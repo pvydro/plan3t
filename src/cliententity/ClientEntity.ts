@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { Assets, AssetUrls } from '../asset/Assets'
 import { Entity } from '../network/rooms/Entity'
+import { Sprite } from '../utils/Sprite'
 import { IContainer, Container } from '../utils/Container'
 import { IDimension, Dimension } from '../math/Dimension'
 
@@ -19,11 +20,11 @@ export enum EntityType {
 
 export interface ClientEntityOptions {
     entity?: Entity
-    sprite?: PIXI.Sprite
+    sprite?: Sprite
 }
 
 export class ClientEntity extends Container implements IClientEntity {
-    sprite: PIXI.Sprite
+    sprite: Sprite
     entity?: Entity
     x: number
     y: number
@@ -32,14 +33,18 @@ export class ClientEntity extends Container implements IClientEntity {
     constructor(options?: ClientEntityOptions) {
         super()
 
-        this.entity = options.entity
-        this.sprite = options.sprite ? options.sprite : new PIXI.Sprite(PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_ASTRO)))
+        if (options) {
+            this.entity = options.entity
+            this.sprite = options.sprite
+        }
 
         if (this.entity !== undefined) {
             this.position.set(this.entity.x, this.entity.y)
         }
 
-        this.addChild(this.sprite)
+        if (this.sprite !== undefined) {
+            this.addChild(this.sprite)
+        }
     }
 
     set dimension(value: IDimension) {
