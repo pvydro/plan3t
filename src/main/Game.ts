@@ -74,7 +74,7 @@ export class Game implements IGame {
 
     initializeGameLoop() {
         this.gameLoop = new GameLoop({
-            entityManager: this.clientManager.entityManager,
+            clientManager: this.clientManager,
             roomManager: this.roomManager
         })
 
@@ -105,6 +105,10 @@ export class Game implements IGame {
 
     get view() {
         return this._application.view
+    }
+
+    get camera() {
+        return this.clientManager.clientCamera
     }
 
     get cameraViewport() {

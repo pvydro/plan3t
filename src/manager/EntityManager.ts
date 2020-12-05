@@ -55,8 +55,8 @@ export class EntityManager implements IEntityManager {
         this._currentPlayerEntity = player
         this._clientEntities[sessionID] = this.currentPlayerEntity
 
-        this.viewport.addChild(this.currentPlayerEntity)
-        this.viewport.follow(playerDisplayObject)
+        this.camera.addChild(this.currentPlayerEntity)
+        this.camera.follow(playerDisplayObject)
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {

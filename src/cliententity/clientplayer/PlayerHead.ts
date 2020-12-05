@@ -34,18 +34,16 @@ export class PlayerHead extends Container {
 
         this.addChild(this.headSprite)
 
-        this.player.emitter.on(Events.PlayerWalkEnd, () => {
-            console.log('walkend')
+        // Bob head when walking
+        this.player.emitter.on(Events.PlayerWalkBounce, () => {
             this.swapHeadBobState()
         })
     }
 
     update() {
-        const state = this.player.bodyState
-
         this.bobHead()
         
-        const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 20 : 50//25 : 50
+        const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 20 : 50
         this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
 
         this.position.y = -10 + this.headBobOffset
@@ -54,7 +52,7 @@ export class PlayerHead extends Container {
     bobHead() {
         const graceSpace = 0.25
 
-        if (this.player.bodyState !== PlayerBodyState.Walking) {
+        if (this.player.bodyState == PlayerBodyState.Idle) {
             if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - graceSpace)) {
                 this.swapHeadBobState()
             }
