@@ -43,13 +43,16 @@ export class Game implements IGame {
     async bootstrap() {
         LoggingService.log('Game', 'bootstrap')
 
-        Spritesheets.loadSpritesheets()
+        await Spritesheets.loadSpritesheets()
+
+        // TODO: Main loader load, then other inits
+        // Internal state manager for loading screen, Scene
 
         await this.clientManager.initialize()
         await this.roomManager.initializeRoom()
         
         this.initializeBackground()
-        // this.initializeMouseMovement()
+        this.initializeMouseMovement()
         this.initializeGameLoop()
         this.initializeCamera()
     }

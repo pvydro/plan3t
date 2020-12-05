@@ -9,6 +9,7 @@ export const WorldSize = {
 }
 
 export const BasicLerp = (a: number, b: number, t: number) => (b - a) * t + a
+export const GlobalScale = 5
 
 export class Constants {
     private constructor() {

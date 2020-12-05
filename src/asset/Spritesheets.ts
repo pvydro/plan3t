@@ -13,19 +13,27 @@ export class Spritesheets {
 
     private constructor() {}
 
-    public static loadSpritesheets() {
-        LoggingService.log('Spritesheets', 'loadSpritesheets')
-
-        if (Spritesheets._spritesheetsStartedLoading) {
-            return
-        }
-        Spritesheets._spritesheetsStartedLoading = true
-
-        // Load
-        PIXI.Loader.shared.add(SpritesheetUrls.PLAYER_BODY_WALKING).load(() => {
-            LoggingService.log('Spritesheets', 'Finished loading spritesheets')
-            
-            this._spritesheetsFinishedLoading = true
+    public static async loadSpritesheets() {
+        return new Promise((resolve, reject) => {
+            LoggingService.log('Spritesheets', 'loadSpritesheets')
+    
+            if (Spritesheets._spritesheetsStartedLoading) {
+                return
+            }
+            Spritesheets._spritesheetsStartedLoading = true
+    
+            // Load
+            try {
+                PIXI.Loader.shared.add(SpritesheetUrls.PLAYER_BODY_WALKING).load(() => {
+                    LoggingService.log('Spritesheets', 'Finished loading spritesheets')
+                    
+                    this._spritesheetsFinishedLoading = true
+    
+                    resolve(true)
+                })
+            } catch (error) {
+                LoggingService.error('Failed to load Spritesheets', 'Error', error)
+            }
         })
     }
 
