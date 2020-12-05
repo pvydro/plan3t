@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
-import { AnimatedSprite } from '../../display/AnimatedSprite'
+import { SpritesheetUrls } from '../../asset/Spritesheets'
 import { IContainer, Container } from '../../display/Container'
 import { IClientPlayer } from './ClientPlayer'
 
@@ -13,14 +12,11 @@ export interface PlayerBodyOptions {
 }
 
 export class PlayerBody extends Container {
-    bodySprite: AnimatedSprite
+    bodySprite: PIXI.AnimatedSprite
 
     constructor(options: PlayerBodyOptions) {
         super()
-
-        // this.bodySprite = new AnimatedSprite({
-        //     spritesheet: Spritesheets.get(SpritesheetUrls.PLAYER_BODY_WALKING)
-        // })
+        
         const res = SpritesheetUrls.PLAYER_BODY_WALKING
         console.log('res: ' + res)
 

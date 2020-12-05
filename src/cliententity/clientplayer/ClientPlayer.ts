@@ -1,13 +1,14 @@
 import * as PIXI from 'pixi.js'
 import { Entity } from '../../network/rooms/Entity'
+import { Direction } from '../../math/Direction'
 import { IClientEntity, ClientEntity } from '../ClientEntity'
-import { IPlayerHead, PlayerHead } from './PlayerHead'
-import { IPlayerBody, PlayerBody } from './PlayerBody'
-import { Dimension } from '../../math/Dimension'
+import { PlayerHead } from './PlayerHead'
+import { PlayerBody } from './PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
+import { IPlayerController, PlayerController } from './PlayerController'
 
 export interface IClientPlayer extends IClientEntity {
-    
+    bodyState: PlayerBodyState
 }
 
 export enum PlayerBodyState {
@@ -19,15 +20,20 @@ export enum PlayerBodyState {
 export class ClientPlayer extends ClientEntity {
     head: PlayerHead
     body: PlayerBody
+    controller: IPlayerController
+    _direction: Direction = Direction.Right
+    _bodyState: PlayerBodyState = PlayerBodyState.Idle
 
     constructor(entity: Entity) {
         super()
+        const player = this
 
-        const head = new PlayerHead({ player: this })
-        const body = new PlayerBody({ player: this })
-
+        const head = new PlayerHead({ player })
+        const body = new PlayerBody({ player })
+        
         this.head = head
         this.body = body
+        this.controller = new PlayerController({ player })
 
         this.addChild(body)
         this.addChild(head)
@@ -41,10 +47,24 @@ export class ClientPlayer extends ClientEntity {
         
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
     }
+    
+    update() {
+        this.controller.update()
+    }
 
-    scaleMeUp() {
-        this.children.forEach((child: any) => {
-            (child as ClientEntity).dimension = new Dimension(child.width * 3, child.height * 3)
-        })
+    set bodyState(value: PlayerBodyState) {
+        this._bodyState = value
+    }
+
+    set direction(value: Direction) {
+        this._direction = value
+    }
+
+    get bodyState() {
+        return this._bodyState
+    }
+
+    get direction() {
+        return this._direction
     }
 }

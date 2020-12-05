@@ -29,9 +29,9 @@ export class GameState extends Schema {
 
   initialize () {
     // create some food entities
-    for (let i = 0; i < 20; i++) {
-      this.createFood();
-    }
+    // for (let i = 0; i < 20; i++) {
+    //   this.createFood();
+    // }
   }
 
   createFood () {
@@ -77,7 +77,7 @@ export class GameState extends Schema {
 
             // create a replacement food
             if (collideTestEntity.radius < DEFAULT_PLAYER_RADIUS) {
-              this.createFood();
+              // this.createFood();
 
             } else {
               console.log(loserEntityId, "has been eaten!");

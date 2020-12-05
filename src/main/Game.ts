@@ -52,7 +52,7 @@ export class Game implements IGame {
         await this.roomManager.initializeRoom()
         
         this.initializeBackground()
-        this.initializeMouseMovement()
+        // this.initializeMouseMovement()
         this.initializeGameLoop()
         this.initializeCamera()
     }

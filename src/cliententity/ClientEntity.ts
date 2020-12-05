@@ -8,7 +8,11 @@ import { IDimension, Dimension } from '../math/Dimension'
 export interface IClientEntity extends IContainer {
     x: number
     y: number
+    xVel: number
+    yVel: number
     type: string
+
+    update(): void
 }
 
 export enum EntityType {
@@ -28,6 +32,8 @@ export class ClientEntity extends Container implements IClientEntity {
     entity?: Entity
     x: number
     y: number
+    xVel: number = 0
+    yVel: number = 0
     type: EntityType
 
     constructor(options?: ClientEntityOptions) {
@@ -45,6 +51,10 @@ export class ClientEntity extends Container implements IClientEntity {
         if (this.sprite !== undefined) {
             this.addChild(this.sprite)
         }
+    }
+
+    update() {
+
     }
 
     set dimension(value: IDimension) {

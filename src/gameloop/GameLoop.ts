@@ -1,3 +1,4 @@
+import { ClientEntity } from '../cliententity/ClientEntity'
 import { IEntityManager } from '../manager/EntityManager'
 import { IRoomManager } from '../manager/RoomManager'
 import { BasicLerp } from '../utils/Constants'
@@ -31,14 +32,22 @@ export class GameLoop implements IGameLoop {
     }
 
     gameLoop() {
-        const entities = this.entityManager.entities
-        const currentRoom = this.roomManager.currentRoom
-
-        for (let id in entities) {
-            entities[id].x = BasicLerp(entities[id].x, currentRoom.state.entities[id].x, 0.2)
-            entities[id].y = BasicLerp(entities[id].y, currentRoom.state.entities[id].y, 0.2)
-            
+        const entitiesMap = this.entityManager.clientEntities
+        let entities: ClientEntity[] = []
+        for (let id in entitiesMap) {
+            entities.push(entitiesMap[id])
         }
+
+        entities.forEach((entity: ClientEntity) => {
+            entity.update()
+            entity.x += entity.xVel
+            entity.y += entity.yVel
+        })
+
+        // for (let id in entities) {
+        //     entities[id].x = BasicLerp(entities[id].x, currentRoom.state.entities[id].x, 0.2)
+        //     entities[id].y = BasicLerp(entities[id].y, currentRoom.state.entities[id].y, 0.2)
+        // }
 
         if (this._shouldLoop) {
             requestAnimationFrame(this.gameLoop.bind(this))
