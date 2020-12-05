@@ -5,6 +5,7 @@ import { Assets, AssetUrls } from '../../asset/Assets'
 import { IClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../math/Direction'
+import { Events } from '../../utils/Constants'
 
 export interface IPlayerHead extends IUpdatable {
 
@@ -32,28 +33,39 @@ export class PlayerHead extends Container {
         this.headSprite.anchor.set(0.475, 0.5)
 
         this.addChild(this.headSprite)
+
+        this.player.emitter.on(Events.PlayerWalkEnd, () => {
+            console.log('walkend')
+            this.swapHeadBobState()
+        })
     }
 
     update() {
         const state = this.player.bodyState
 
-        if (state === PlayerBodyState.Idle) {
-            this.bobHead()
-        } else {
-            this.targetHeadBobOffset = 0
-        }
-
-        this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / 50
+        this.bobHead()
+        
+        const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 20 : 50//25 : 50
+        this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
 
         this.position.y = -10 + this.headBobOffset
     }
 
     bobHead() {
-        if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - 0.25)) {
-            this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
-        }
+        const graceSpace = 0.25
 
-        this.targetHeadBobOffset = this.headBobState === 'up' ? -1 : 1
+        if (this.player.bodyState !== PlayerBodyState.Walking) {
+            if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - graceSpace)) {
+                this.swapHeadBobState()
+            }
+        }
+    }
+
+    swapHeadBobState() {
+        const targetBobAmt = this.player.bodyState === PlayerBodyState.Walking ? 1.25 : 1
+
+        this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
+        this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt
     }
 
     set direction(value: Direction) {

@@ -11,9 +11,9 @@
       "strict": true,
       "sourceMap": false,
       "paths": {
-        "@/*": [
-          "src/*"
-        ]
+        // "@/*": [
+        //   "src/*"
+        // ]
       },
   },
   "include": [

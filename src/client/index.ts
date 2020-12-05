@@ -1,9 +1,11 @@
-import { Room } from 'colyseus.js'
+import * as PIXI from 'pixi.js'
 import { IGame, Game } from '../main/Game'
 import { ClientManager } from '../manager/ClientManager'
 import { RoomManager } from '../manager/RoomManager'
 import { EntityManager } from '../manager/EntityManager'
 import { Camera } from '../camera/Camera'
+
+window.PIXI = PIXI
 
 const camera = new Camera()
 const entityManager = new EntityManager({ camera })

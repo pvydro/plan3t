@@ -6,10 +6,11 @@ import { PlayerHead } from './PlayerHead'
 import { PlayerBody } from './PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
-import { LoggingService } from '../../service/LoggingService'
+import { Emitter } from '../../utils/Emitter'
 
 export interface IClientPlayer extends IClientEntity {
     bodyState: PlayerBodyState
+    emitter: Emitter
 }
 
 export enum PlayerBodyState {
@@ -30,6 +31,7 @@ export class ClientPlayer extends ClientEntity {
     clientControl: boolean = false
     _direction: Direction = Direction.Right
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
+    emitter: Emitter = new Emitter()
 
     constructor(options: ClientPlayerOptions) {
         super()
@@ -46,8 +48,6 @@ export class ClientPlayer extends ClientEntity {
 
         this.addChild(body)
         this.addChild(head)
-
-        this.head.y -= 10
 
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
     }

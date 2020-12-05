@@ -16,3 +16,7 @@ export class Constants {
         
     }
 }
+
+export enum Events {
+    PlayerWalkEnd = 'PlayerWalkEnd'
+}
