@@ -14,7 +14,7 @@ export interface IEntityManager {
     clientEntities: { [id: string]: ClientEntity }
     currentPlayerEntity: ClientPlayer
     createClientPlayer(entity: Entity, sessionID: string): void
-    createEntity(entity: Entity, sessionID: string): void
+    createEnemyPlayer(entity: Entity, sessionID: string): void
     updateEntity(entity: Entity, sessionID: string, changes?: any): void
     removeEntity(sessionID: string, entity?: Entity): void
 }
@@ -35,10 +35,8 @@ export class EntityManager implements IEntityManager {
         this.camera = options.camera
     }
 
-    createEntity(entity: Entity, sessionID: string) {
+    createEnemyPlayer(entity: Entity, sessionID: string) {
         LoggingService.log('EntityManager', 'createEntity', 'sessionID', sessionID)
-        // const clientEntity = new ClientEntity({ entity })
-        // const clientEntity = new FlyingEnemy(entity)
         const enemyPlayer = new ClientPlayer({ entity })
         
         this._entities[sessionID] = entity

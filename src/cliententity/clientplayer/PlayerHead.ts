@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Container } from '../../display/Container'
 import { Sprite } from '../../display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { IClientPlayer } from './ClientPlayer'
+import { IClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../math/Direction'
 
@@ -15,11 +15,17 @@ export interface PlayerHeadOptions {
 }
 
 export class PlayerHead extends Container {
+    player: IClientPlayer
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
 
+    headBobOffset = 0
+    targetHeadBobOffset = 0
+    headBobState = 'up'
+
     constructor(options: PlayerHeadOptions) {
         super()
+        this.player = options.player
 
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_ASTRO))
         this.headSprite = new Sprite({ texture })
@@ -29,7 +35,25 @@ export class PlayerHead extends Container {
     }
 
     update() {
-        
+        const state = this.player.bodyState
+
+        if (state === PlayerBodyState.Idle) {
+            this.bobHead()
+        } else {
+            this.targetHeadBobOffset = 0
+        }
+
+        this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / 50
+
+        this.position.y = -10 + this.headBobOffset
+    }
+
+    bobHead() {
+        if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - 0.25)) {
+            this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
+        }
+
+        this.targetHeadBobOffset = this.headBobState === 'up' ? -1 : 1
     }
 
     set direction(value: Direction) {

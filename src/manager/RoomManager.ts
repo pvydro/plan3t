@@ -50,7 +50,7 @@ export class RoomManager implements IRoomManager {
         if (RoomManager.isSessionALocalPlayer(sessionID)) {
             this.entityManager.createClientPlayer(entity, sessionID)
         } else {
-            this.entityManager.createEntity(entity, sessionID)
+            this.entityManager.createEnemyPlayer(entity, sessionID)
         }
     
         entity.onChange = (changes) => {
