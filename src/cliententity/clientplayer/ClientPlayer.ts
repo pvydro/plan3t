@@ -40,7 +40,8 @@ export class ClientPlayer extends ClientEntity {
         this.addChild(head)
 
         this.head.y -= 10
-        this.head.x += 0.5
+        // this.head.x += 0.5
+        this.head.headSprite.anchor.set(0.475, 0.5)
 
         // const head = 
         // this.head = new PlayerHead({ player, this })
@@ -62,6 +63,8 @@ export class ClientPlayer extends ClientEntity {
 
     set direction(value: Direction) {
         this._direction = value
+        this.body.direction = value
+        this.head.direction = value
     }
 
     get bodyState() {

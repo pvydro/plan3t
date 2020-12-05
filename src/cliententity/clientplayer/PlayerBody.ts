@@ -6,6 +6,7 @@ import { IClientPlayer } from './ClientPlayer'
 import { IPlayerBodyAnimator, PlayerBodyAnimator } from './PlayerBodyAnimator'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../display/Sprite'
+import { Direction } from '../../math/Direction'
 
 export interface IPlayerBody extends IContainer, IUpdatable {
     sprite: PIXI.Sprite
@@ -21,7 +22,8 @@ export class PlayerBody extends Container implements IPlayerBody {
     animator: IPlayerBodyAnimator
     _sprite: PIXI.Sprite
     _runningSprite: PIXI.AnimatedSprite
-
+    currentShown?: any
+    currentDirection: Direction = Direction.Right
 
     constructor(options: PlayerBodyOptions) {
         super()
@@ -46,14 +48,21 @@ export class PlayerBody extends Container implements IPlayerBody {
     }
 
     showRunningSprite() {
-        console.log('showrunning!')
+        if (this.currentShown !== this._runningSprite) {
+            this._runningSprite.gotoAndStop(0)
+            this.currentShown = this._runningSprite
+        }
+
         this._sprite.alpha = 0
         this._runningSprite.alpha = 1
-        // this._runningSprite.gotoAndPlay(0)
         this._runningSprite.play()
     }
 
     showIdleSprite() {
+        if (this.currentShown !== this._sprite) {
+            this.currentShown = this._sprite
+        }
+
         this._sprite.alpha = 1
         this._runningSprite.alpha = 0
         this._runningSprite.stop()
@@ -65,5 +74,17 @@ export class PlayerBody extends Container implements IPlayerBody {
 
     set sprite(value: any) {
         this._sprite = value
+    }
+
+    set direction(value: Direction) {
+        if (this.currentDirection !== value) {
+            this.flipAllSprites()
+        }
+        this.currentDirection = value
+    }
+
+    flipAllSprites() {
+        this._sprite.scale.x *= -1
+        this._runningSprite.scale.x *= -1
     }
 }

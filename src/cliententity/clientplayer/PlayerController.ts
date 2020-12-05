@@ -1,6 +1,7 @@
 import { LoggingService } from '../../service/LoggingService'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
+import { Direction } from '../../math/Direction'
 
 export interface IPlayerController {
     update(): void
@@ -44,11 +45,13 @@ export class PlayerController implements IPlayerController {
     moveLeft() {
         this.player.bodyState = PlayerBodyState.Walking
         this.player.xVel = -this.playerWalkingSpeed
+        this.player.direction = Direction.Left
     }
 
     moveRight() {
         this.player.bodyState = PlayerBodyState.Walking
         this.player.xVel = this.playerWalkingSpeed
+        this.player.direction = Direction.Right
     }
 
     addKeyListeners() {

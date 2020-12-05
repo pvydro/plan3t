@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js'
 import { Container } from '../../display/Container'
 import { Sprite } from '../../display/Sprite'
-import { Dimension } from '../../math/Dimension'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { IClientPlayer } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
+import { Direction } from '../../math/Direction'
 
 export interface IPlayerHead extends IUpdatable {
 
@@ -16,6 +16,7 @@ export interface PlayerHeadOptions {
 
 export class PlayerHead extends Container {
     headSprite: Sprite
+    currentDirection: Direction = Direction.Right
 
     constructor(options: PlayerHeadOptions) {
         super()
@@ -31,5 +32,16 @@ export class PlayerHead extends Container {
 
     update() {
         
+    }
+
+    set direction(value: Direction) {
+        if (this.currentDirection !== value) {
+            this.flipAllSprites()
+        }
+        this.currentDirection = value
+    }
+
+    flipAllSprites() {
+        this.headSprite.scale.x *= -1
     }
 }
