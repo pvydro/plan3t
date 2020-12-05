@@ -18,15 +18,23 @@ export enum PlayerBodyState {
     Jumping = 'JUMPING'
 }
 
+export interface ClientPlayerOptions {
+    entity: Entity
+    clientControl?: boolean
+}
+
 export class ClientPlayer extends ClientEntity {
     head: PlayerHead
     body: PlayerBody
     controller: IPlayerController
+    clientControl: boolean = false
     _direction: Direction = Direction.Right
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
 
-    constructor(entity: Entity) {
+    constructor(options: ClientPlayerOptions) {
         super()
+        this.clientControl = options.clientControl
+        
         const player = this
 
         const head = new PlayerHead({ player })
@@ -34,30 +42,23 @@ export class ClientPlayer extends ClientEntity {
         
         this.head = head
         this.body = body
-        this.controller = new PlayerController({ player })
+        if (this.clientControl) this.controller = new PlayerController({ player })
 
         this.addChild(body)
         this.addChild(head)
 
         this.head.y -= 10
-        // this.head.x += 0.5
-        this.head.headSprite.anchor.set(0.475, 0.5)
 
-        // const head = 
-        // this.head = new PlayerHead({ player, this })
-        // this.scaleMeUp()
-        
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
     }
     
     update() {
-        this.controller.update()
+        if (this.clientControl) this.controller.update()
         this.head.update()
         this.body.update()
     }
 
     set bodyState(value: PlayerBodyState) {
-        LoggingService.log('ClientPlayer', 'bodyState set', value)
         this._bodyState = value
     }
 

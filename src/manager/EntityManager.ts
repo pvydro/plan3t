@@ -7,6 +7,7 @@ import { IClientManager } from '../manager/ClientManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
 import { ICamera } from '../camera/Camera'
 import { IClientEntity, ClientEntity } from '../cliententity/ClientEntity'
+import { LoggingService } from '../service/LoggingService'
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -35,17 +36,22 @@ export class EntityManager implements IEntityManager {
     }
 
     createEntity(entity: Entity, sessionID: string) {
+        LoggingService.log('EntityManager', 'createEntity', 'sessionID', sessionID)
         // const clientEntity = new ClientEntity({ entity })
-        const clientEntity = new FlyingEnemy(entity)
+        // const clientEntity = new FlyingEnemy(entity)
+        const enemyPlayer = new ClientPlayer({ entity })
         
         this._entities[sessionID] = entity
-        this._clientEntities[sessionID] = clientEntity
+        this._clientEntities[sessionID] = enemyPlayer
         
-        this.viewport.addChild(clientEntity)
+        this.viewport.addChild(enemyPlayer)
     }
     
     createClientPlayer(entity: Entity, sessionID: string) {
-        const player = new ClientPlayer(entity)
+        const player = new ClientPlayer({
+            entity,
+            clientControl: true
+        })
         const playerDisplayObject = (player as PIXI.DisplayObject)
 
         this._currentPlayerEntity = player
@@ -56,7 +62,7 @@ export class EntityManager implements IEntityManager {
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {
-        const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionID)
+        // const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionID)
 
         this.clientEntities[sessionID].x = entity.x
         this.clientEntities[sessionID].y = entity.y
