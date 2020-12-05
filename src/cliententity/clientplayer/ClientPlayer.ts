@@ -6,15 +6,16 @@ import { PlayerHead } from './PlayerHead'
 import { PlayerBody } from './PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
+import { LoggingService } from '../../service/LoggingService'
 
 export interface IClientPlayer extends IClientEntity {
     bodyState: PlayerBodyState
 }
 
 export enum PlayerBodyState {
-    Idle,
-    Walking,
-    Jumping
+    Idle = 'IDLE',
+    Walking = 'WALKING',
+    Jumping = 'JUMPING'
 }
 
 export class ClientPlayer extends ClientEntity {
@@ -50,9 +51,12 @@ export class ClientPlayer extends ClientEntity {
     
     update() {
         this.controller.update()
+        this.head.update()
+        this.body.update()
     }
 
     set bodyState(value: PlayerBodyState) {
+        LoggingService.log('ClientPlayer', 'bodyState set', value)
         this._bodyState = value
     }
 

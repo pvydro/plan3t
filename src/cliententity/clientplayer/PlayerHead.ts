@@ -4,8 +4,9 @@ import { Sprite } from '../../display/Sprite'
 import { Dimension } from '../../math/Dimension'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { IClientPlayer } from './ClientPlayer'
+import { IUpdatable } from '../../interface/IUpdatable'
 
-export interface IPlayerHead {
+export interface IPlayerHead extends IUpdatable {
 
 }
 
@@ -26,5 +27,9 @@ export class PlayerHead extends Container {
         // this.headSprite.dimension = new Dimension(64, 64)
 
         this.addChild(this.headSprite)
+    }
+
+    update() {
+        
     }
 }

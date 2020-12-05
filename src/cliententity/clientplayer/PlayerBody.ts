@@ -1,32 +1,69 @@
 import * as PIXI from 'pixi.js'
-import { SpritesheetUrls } from '../../asset/Spritesheets'
+import { IUpdatable } from '../../interface/IUpdatable'
+import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
 import { IContainer, Container } from '../../display/Container'
 import { IClientPlayer } from './ClientPlayer'
+import { IPlayerBodyAnimator, PlayerBodyAnimator } from './PlayerBodyAnimator'
+import { Assets, AssetUrls } from '../../asset/Assets'
+import { Sprite } from '../../display/Sprite'
 
-export interface IPlayerBody extends IContainer {
-
+export interface IPlayerBody extends IContainer, IUpdatable {
+    sprite: PIXI.Sprite
+    showRunningSprite(): void
+    showIdleSprite(): void
 }
 
 export interface PlayerBodyOptions {
     player: IClientPlayer
 }
 
-export class PlayerBody extends Container {
-    bodySprite: PIXI.AnimatedSprite
+export class PlayerBody extends Container implements IPlayerBody {
+    animator: IPlayerBodyAnimator
+    _sprite: PIXI.Sprite
+    _runningSprite: PIXI.AnimatedSprite
+
 
     constructor(options: PlayerBodyOptions) {
         super()
+
+        this.animator = new PlayerBodyAnimator({
+            player: options.player,
+            playerBody: this
+        })
+
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_IDLE))
+        this._sprite = new Sprite({ texture })
+        this._sprite.anchor.set(0.5, 0.5)
+
+        this._runningSprite = this.animator.runningSprite
         
-        const res = SpritesheetUrls.PLAYER_BODY_WALKING
-        console.log('res: ' + res)
+        this.addChild(this.sprite)
+        this.addChild(this._runningSprite)
+    }
 
-        const sheet = PIXI.Loader.shared.resources['assets/image/player/body/body_walking.json'].spritesheet
-        this.bodySprite = new PIXI.AnimatedSprite(sheet.animations['tile'])
-        this.bodySprite.animationSpeed = 0.25
-        this.bodySprite.anchor.set(0.5, 0.5)
+    update() {
+        this.animator.update()
+    }
 
-        this.bodySprite.play()
+    showRunningSprite() {
+        console.log('showrunning!')
+        this._sprite.alpha = 0
+        this._runningSprite.alpha = 1
+        // this._runningSprite.gotoAndPlay(0)
+        this._runningSprite.play()
+    }
 
-        this.addChild(this.bodySprite)
+    showIdleSprite() {
+        this._sprite.alpha = 1
+        this._runningSprite.alpha = 0
+        this._runningSprite.stop()
+    }
+
+    get sprite() {
+        return this._sprite
+    }
+
+    set sprite(value: any) {
+        this._sprite = value
     }
 }

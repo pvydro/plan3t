@@ -38,7 +38,7 @@ export class Spritesheets {
     }
 
     public static get(res: string) {
-        return PIXI.Loader.shared.resources[res] ? PIXI.Loader.shared.resources[res].spritesheet : undefined
+        return PIXI.Loader.shared.resources[res].spritesheet
     }
 
     public static isSpritesheetsFinishedLoading() {

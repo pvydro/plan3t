@@ -24,8 +24,6 @@ export class PlayerController implements IPlayerController {
     }
 
     update() {
-        // this.player.y += this.player.yVel
-        // this.player.
         if (this.leftKeyDown && this.rightKeyDown
         || !this.leftKeyDown && !this.rightKeyDown) {
             this.comeToStop()
@@ -41,6 +39,16 @@ export class PlayerController implements IPlayerController {
 
         const xVel = this.player.xVel + (0 - this.player.xVel) / 20
         this.player.xVel = xVel
+    }
+
+    moveLeft() {
+        this.player.bodyState = PlayerBodyState.Walking
+        this.player.xVel = -this.playerWalkingSpeed
+    }
+
+    moveRight() {
+        this.player.bodyState = PlayerBodyState.Walking
+        this.player.xVel = this.playerWalkingSpeed
     }
 
     addKeyListeners() {
@@ -71,15 +79,5 @@ export class PlayerController implements IPlayerController {
                     break
             }
         })
-    }
-
-    moveLeft() {
-        this.player.bodyState = PlayerBodyState.Walking
-        this.player.xVel = -5
-    }
-
-    moveRight() {
-        this.player.bodyState = PlayerBodyState.Walking
-        this.player.xVel = 5
     }
 }
