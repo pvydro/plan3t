@@ -13,6 +13,9 @@ export interface WeaponStats {
     weightPounds?: number
     bulletsPerClip?: number
     handleOffsetX?: number
+    handleOffsetY?: number
+    handDropAmount?: number
+    handPushAmount?: number
 }
 
 export class Weapon extends Container implements IWeapon {
@@ -22,7 +25,8 @@ export class Weapon extends Container implements IWeapon {
     weightPounds?: number
     bulletsPerClip?: number
     numberOfClips?: number
-    handleOffsetX?: number
+    handDropAmount?: number
+    handPushAmount?: number
 
     sprite: Sprite
 
@@ -38,9 +42,17 @@ export class Weapon extends Container implements IWeapon {
     }
 
     configureStats(stats: WeaponStats) {
+        this.damage = stats.damage
+        this.fireRate = stats.fireRate
+        this.weightPounds = stats.weightPounds
+        this.bulletsPerClip = stats.bulletsPerClip
+        this.numberOfClips = 3
+        this.handDropAmount = stats.handDropAmount ? stats.handDropAmount : 0
+        this.handPushAmount = stats.handPushAmount ? stats.handPushAmount : 0
     }
 
     configureByName(name: WeaponName) {
+        this.name = name
         this.clearChildren()
 
         const baseYOffset = -8
@@ -49,7 +61,7 @@ export class Weapon extends Container implements IWeapon {
 
         this.sprite = new Sprite({ texture })
         this.sprite.x += stats.handleOffsetX
-        this.sprite.y += baseYOffset 
+        this.sprite.y += baseYOffset + stats.handleOffsetY
 
         this.addChild(this.sprite)
 

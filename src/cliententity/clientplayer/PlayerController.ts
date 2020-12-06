@@ -1,8 +1,9 @@
 import { LoggingService } from '../../service/LoggingService'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
-import { Direction } from '../../math/Direction'
 import { InputProcessor } from '../../input/InputProcessor'
+import { Camera } from '../../camera/Camera'
+import { Direction } from '../../math/Direction'
 
 export interface IPlayerController {
     update(): void
@@ -16,6 +17,7 @@ export class PlayerController implements IPlayerController {
     player: ClientPlayer
     leftKeyDown: boolean = false
     rightKeyDown: boolean = false
+    mousePos: PIXI.IPoint = new PIXI.Point(0, 0)
 
     playerWalkingSpeed: number = 5
     floorFriction = 5
@@ -23,7 +25,7 @@ export class PlayerController implements IPlayerController {
     constructor(options: PlayerControllerOptions) {
         this.player = options.player
 
-        this.addKeyListeners()
+        this.addListeners()
     }
 
     update() {
@@ -35,6 +37,8 @@ export class PlayerController implements IPlayerController {
         } else if (this.rightKeyDown) {
             this.moveRight()
         }
+
+        this.changeDirectionBasedOnMouse()
     }
 
     comeToStop() {
@@ -47,16 +51,24 @@ export class PlayerController implements IPlayerController {
     moveLeft() {
         this.player.bodyState = PlayerBodyState.Walking
         this.player.xVel = -this.playerWalkingSpeed
-        this.player.direction = Direction.Left
     }
 
     moveRight() {
         this.player.bodyState = PlayerBodyState.Walking
         this.player.xVel = this.playerWalkingSpeed
-        this.player.direction = Direction.Right
     }
 
-    addKeyListeners() {
+    changeDirectionBasedOnMouse() {
+        const projectedPlayerPos = Camera.getInstance().viewport.toScreen(this.player.position)
+
+        if (this.mousePos.x < projectedPlayerPos.x) {
+            this.player.direction = Direction.Left
+        } else if (this.mousePos.x > projectedPlayerPos.x) {
+            this.player.direction = Direction.Right
+        }
+    }
+
+    addListeners() {
         LoggingService.log('PlayerController', 'addKeyListeners')
 
         // KeyDown
@@ -83,6 +95,12 @@ export class PlayerController implements IPlayerController {
                     this.rightKeyDown = false
                     break
             }
+        })
+
+        // Mouse
+        InputProcessor.on('mousemove', (e: MouseEvent) => {
+            this.mousePos.x = e.clientX
+            this.mousePos.y = e.clientY
         })
     }
 }

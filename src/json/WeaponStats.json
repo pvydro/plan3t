@@ -5,7 +5,9 @@
         "fireRate": 1.5,
         "weightPounds": 1.15,
         "bulletsPerClip": 25,
-        "handleOffsetX": -3
+        "handleOffsetX": -4,
+        "handleOffsetY": 0.5,
+        "handDropAmount": 2
     },
     "bully": {
         "dir": "assault-rifles",
@@ -13,6 +15,19 @@
         "fireRate": 1,
         "weightPounds": 1.6,
         "bulletsPerClip": 30,
-        "handleOffsetX": -18
+        "handleOffsetX": -16,
+        "handleOffsetY": -3,
+        "handDropAmount": 4,
+        "handPushAmount": 4
+    },
+    "p3": {
+        "dir": "smgs",
+        "damage": 19,
+        "fireRate": 1.8,
+        "bulletsPerClip": 50,
+        "handleOffsetX": -15,
+        "handleOffsetY": -3,
+        "handDropAmount": 4,
+        "handPushAmount": 1
     }
 }

@@ -10,11 +10,14 @@ import { Emitter } from '../../utils/Emitter'
 import { PlayerHand } from './PlayerHand'
 import { Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
+import { InputProcessor } from '../../input/InputProcessor'
+import { Key } from 'ts-keycode-enum'
 
 export interface IClientPlayer extends IClientEntity {
     direction: Direction
     bodyState: PlayerBodyState
     emitter: Emitter
+    isClientControl: boolean
     equipWeapon(name: WeaponName): void
 }
 
@@ -34,14 +37,14 @@ export class ClientPlayer extends ClientEntity {
     body: PlayerBody
     hand: PlayerHand
     controller: IPlayerController
-    clientControl: boolean = false
+    _clientControl: boolean = false
     _direction: Direction = Direction.Right
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
     emitter: Emitter = new Emitter()
 
     constructor(options: ClientPlayerOptions) {
         super()
-        this.clientControl = options.clientControl
+        this._clientControl = options.clientControl
         
         const player = this
 
@@ -53,15 +56,26 @@ export class ClientPlayer extends ClientEntity {
         this.addChild(this.head)
         this.addChild(this.hand)
         
-        if (this.clientControl) this.controller = new PlayerController({ player })
+        if (this.isClientControl) this.controller = new PlayerController({ player })
 
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
 
-        this.equipWeapon(WeaponName.Komp9)
+        this.equipWeapon(WeaponName.P3)
+
+        // Temp
+        InputProcessor.on('keydown', (ev: KeyboardEvent) => {
+            if (ev.which === Key.One) {
+                this.equipWeapon(WeaponName.P3)
+            } else if (ev.which === Key.Two) {
+                this.equipWeapon(WeaponName.Komp9)
+            } else if (ev.which === Key.Three) {
+                this.equipWeapon(WeaponName.Bully)
+            }
+        })
     }
     
     update() {
-        if (this.clientControl) this.controller.update()
+        if (this.isClientControl) this.controller.update()
         this.head.update()
         this.body.update()
         this.hand.update()
@@ -88,5 +102,9 @@ export class ClientPlayer extends ClientEntity {
 
     get direction() {
         return this._direction
+    }
+
+    get isClientControl() {
+        return this._clientControl
     }
 }
