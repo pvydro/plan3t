@@ -7,8 +7,10 @@ import { PlayerBody } from './PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
+import { PlayerHand } from './PlayerHand'
 
 export interface IClientPlayer extends IClientEntity {
+    direction: Direction
     bodyState: PlayerBodyState
     emitter: Emitter
 }
@@ -27,6 +29,7 @@ export interface ClientPlayerOptions {
 export class ClientPlayer extends ClientEntity {
     head: PlayerHead
     body: PlayerBody
+    hand: PlayerHand
     controller: IPlayerController
     clientControl: boolean = false
     _direction: Direction = Direction.Right
@@ -39,15 +42,15 @@ export class ClientPlayer extends ClientEntity {
         
         const player = this
 
-        const head = new PlayerHead({ player })
-        const body = new PlayerBody({ player })
+        this.hand = new PlayerHand({ player })
+        this.head = new PlayerHead({ player })
+        this.body = new PlayerBody({ player })
         
-        this.head = head
-        this.body = body
+        this.addChild(this.body)
+        this.addChild(this.head)
+        this.addChild(this.hand)
+        
         if (this.clientControl) this.controller = new PlayerController({ player })
-
-        this.addChild(body)
-        this.addChild(head)
 
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
     }
@@ -56,6 +59,7 @@ export class ClientPlayer extends ClientEntity {
         if (this.clientControl) this.controller.update()
         this.head.update()
         this.body.update()
+        this.hand.update()
     }
 
     set bodyState(value: PlayerBodyState) {
