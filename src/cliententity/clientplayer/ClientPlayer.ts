@@ -60,18 +60,20 @@ export class ClientPlayer extends ClientEntity {
 
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
 
-        this.equipWeapon(WeaponName.P3)
-
         // Temp
-        InputProcessor.on('keydown', (ev: KeyboardEvent) => {
-            if (ev.which === Key.One) {
-                this.equipWeapon(WeaponName.P3)
-            } else if (ev.which === Key.Two) {
-                this.equipWeapon(WeaponName.Komp9)
-            } else if (ev.which === Key.Three) {
-                this.equipWeapon(WeaponName.Bully)
-            }
-        })
+        if (options.clientControl) {
+            InputProcessor.on('keydown', (ev: KeyboardEvent) => {
+                if (ev.which === Key.One) {
+                    this.equipWeapon(WeaponName.P3)
+                } else if (ev.which === Key.Two) {
+                    this.equipWeapon(WeaponName.Komp9)
+                } else if (ev.which === Key.Three) {
+                    this.equipWeapon(WeaponName.Bully)
+                } else if (ev.which === Key.Zero) {
+                    this.equipWeapon(null)
+                }
+            })
+        }
     }
     
     update() {
@@ -81,8 +83,12 @@ export class ClientPlayer extends ClientEntity {
         this.hand.update()
     }
 
-    equipWeapon(name: WeaponName) {
-        this.hand.setWeapon(name)
+    equipWeapon(name: WeaponName | null) {
+        if (name === null) {
+            this.hand.empty()
+        } else {
+            this.hand.setWeapon(name)
+        }
     }
 
     set bodyState(value: PlayerBodyState) {

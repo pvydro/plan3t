@@ -5,6 +5,7 @@ import { WeaponName } from './WeaponName'
 
 export interface IWeapon extends WeaponStats {
     configureByName(name: WeaponName): void
+    reset(): void
 }
 
 export interface WeaponStats {
@@ -25,8 +26,8 @@ export class Weapon extends Container implements IWeapon {
     weightPounds?: number
     bulletsPerClip?: number
     numberOfClips?: number
-    handDropAmount?: number
-    handPushAmount?: number
+    handDropAmount?: number = 0
+    handPushAmount?: number = 0
 
     sprite: Sprite
 
@@ -66,5 +67,14 @@ export class Weapon extends Container implements IWeapon {
         this.addChild(this.sprite)
 
         this.configureStats(stats)
+    }
+
+    reset() {
+        this.clearChildren()
+        this.configureStats({
+            damage: 0,
+            handDropAmount: 0,
+            handPushAmount: 0
+        })
     }
 }

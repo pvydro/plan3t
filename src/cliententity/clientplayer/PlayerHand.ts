@@ -10,7 +10,8 @@ import { ClientPlayer } from './ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
 
 export interface IPlayerHand extends IUpdatable {
-
+    setWeapon(name: WeaponName): void
+    empty(): void
 }
 
 export interface PlayerHandOptions {
@@ -47,12 +48,15 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
 
     update() {
+        const handPushAmount = this.primaryWeapon && this.primaryWeapon.handPushAmount ? this.primaryWeapon.handPushAmount : 0
+        const handDropAmount = this.primaryWeapon && this.primaryWeapon.handDropAmount ? this.primaryWeapon.handDropAmount : 0
+
         const direction = this._player.direction
-        const bobOffsetY = this._player.head.headBobOffset
+        const bobOffsetY = this._player.head.headBobOffset / 1.5
         let newOffsetX = direction === Direction.Right
-            ? -this.baseOffsetX + this.primaryWeapon.handPushAmount
-            : this.baseOffsetX - this.primaryWeapon.handPushAmount
-        let newOffsetY = this.baseOffsetY + this.primaryWeapon.handDropAmount + bobOffsetY
+            ? -this.baseOffsetX + handPushAmount
+            : this.baseOffsetX - handPushAmount
+        let newOffsetY = this.baseOffsetY + handDropAmount + bobOffsetY
         
         this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
         this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
@@ -65,6 +69,11 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     setWeapon(name: WeaponName) {
         this.primaryWeapon.configureByName(name)
+    }
+    
+    empty() {
+        this.primaryWeapon.clearChildren()
+        this.primaryWeapon.reset()
     }
 
     set direction(value: Direction) {

@@ -60,10 +60,15 @@ export class EntityManager implements IEntityManager {
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {
-        // const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionID)
+        const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionID)
 
-        this.clientEntities[sessionID].x = entity.x
-        this.clientEntities[sessionID].y = entity.y
+        if (!isLocalPlayer) {
+            const clientEntity = this.clientEntities[sessionID]
+
+            
+            // this.clientEntities[sessionID].x = entity.x
+            // this.clientEntities[sessionID].y = entity.y
+        }
     }
 
     removeEntity(sessionID: string, entity?: Entity) {

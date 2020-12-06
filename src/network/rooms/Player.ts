@@ -1,9 +1,7 @@
-import { Entity } from "./Entity";
-import { DEFAULT_PLAYER_RADIUS } from "./GameState";
+import { Entity } from './Entity'
 
 export class Player extends Entity {
     constructor() {
-        super();
-        this.radius = DEFAULT_PLAYER_RADIUS;
+        super()
     }
 }
