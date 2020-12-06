@@ -38,14 +38,17 @@ export class PlayerHeadController implements IPlayerHeadController {
     }
 
     rotateHeadWithMouseMove() {
-        const baseRotation = -0.15
+        const direction = this.player.direction
+        const baseRotation = direction === Direction.Right
+            ? -0.15 : 0.15
+
         const lookAtMouseDamping = 35
         const originY = this.player.y
-        const direction = this.player.direction
-        let distanceFromMouseY = this.mousePos.y - originY
-        const rotDistanceY = (distanceFromMouseY / lookAtMouseDamping) - 0.15
+        let distanceFromMouseY = direction === Direction.Right
+            ? this.mousePos.y - originY : originY - this.mousePos.y
+        const rotDistanceY = (distanceFromMouseY / lookAtMouseDamping)
 
-        let rotationY = direction === Direction.Right ? rotDistanceY : -rotDistanceY
+        let rotationY = rotDistanceY//direction === Direction.Right ? rotDistanceY : -rotDistanceY
 
         rotationY *= 0.01
 

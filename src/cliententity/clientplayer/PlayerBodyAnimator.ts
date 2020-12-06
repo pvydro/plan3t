@@ -50,8 +50,8 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
         this.runningSprite.loop = true
 
         this.runningSprite.onFrameChange = () => {
-            if (this.runningSprite.currentFrame == Math.floor(this.runningSprite.totalFrames / 4)
-            || this.runningSprite.currentFrame == Math.floor(this.runningSprite.totalFrames * 0.75)) {
+            if (this.runningSprite.currentFrame == Math.floor(this.runningSprite.totalFrames / 2) - 1
+            || this.runningSprite.currentFrame == this.runningSprite.totalFrames - 1) {
                 this.player.emitter.emit(Events.PlayerWalkBounce)
             }
         }

@@ -34,9 +34,9 @@ export class PlayerHead extends Container {
             player: this.player
         })
 
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_ASTRO))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_HUMAN_DEFAULT))
         this.headSprite = new Sprite({ texture })
-        this.headSprite.anchor.set(0.475, 0.5)
+        this.headSprite.anchor.set(0.475, 0.9)
 
         this.addChild(this.headSprite)
 
@@ -49,10 +49,10 @@ export class PlayerHead extends Container {
     update() {
         this.bobHead()
         
-        const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 20 : 50
+        const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 8 : 50
         this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
 
-        this.position.y = -10 + this.headBobOffset
+        this.position.y = -3 + this.headBobOffset
 
         this.controller.update()
     }

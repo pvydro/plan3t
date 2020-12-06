@@ -18,6 +18,7 @@ export class PlayerController implements IPlayerController {
     rightKeyDown: boolean = false
 
     playerWalkingSpeed: number = 5
+    floorFriction = 5
 
     constructor(options: PlayerControllerOptions) {
         this.player = options.player
@@ -39,7 +40,7 @@ export class PlayerController implements IPlayerController {
     comeToStop() {
         this.player.bodyState = PlayerBodyState.Idle
 
-        const xVel = this.player.xVel + (0 - this.player.xVel) / 20
+        const xVel = this.player.xVel + (0 - this.player.xVel) / this.floorFriction
         this.player.xVel = xVel
     }
 
