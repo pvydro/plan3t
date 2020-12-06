@@ -1,6 +1,7 @@
 import { WindowSize, WorldSize } from '../utils/Constants'
 import * as Viewport from 'pixi-viewport'
 import { IUpdatable } from '../interface/IUpdatable'
+import { InputProcessor } from '../input/InputProcessor'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -28,7 +29,7 @@ export class Camera implements ICamera {
             (0 - (this.viewport.screenWidth / 2)) * -1
         )
 
-        window.addEventListener('mousemove', (event: MouseEvent) => {
+        InputProcessor.on('mousemove', (event: MouseEvent) => {
             const mouseX = event.clientX
             const mouseY = event.clientY
             this.updateMousePosition(mouseX, mouseY)

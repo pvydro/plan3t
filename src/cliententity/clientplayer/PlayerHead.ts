@@ -6,6 +6,7 @@ import { IClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../math/Direction'
 import { Events } from '../../utils/Constants'
+import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
 
 export interface IPlayerHead extends IUpdatable {
 
@@ -17,6 +18,7 @@ export interface PlayerHeadOptions {
 
 export class PlayerHead extends Container {
     player: IClientPlayer
+    controller: IPlayerHeadController
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
 
@@ -27,6 +29,7 @@ export class PlayerHead extends Container {
     constructor(options: PlayerHeadOptions) {
         super()
         this.player = options.player
+        this.controller = new PlayerHeadController({ playerHead: this })
 
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_ASTRO))
         this.headSprite = new Sprite({ texture })
@@ -47,6 +50,8 @@ export class PlayerHead extends Container {
         this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
 
         this.position.y = -10 + this.headBobOffset
+
+        this.controller.update()
     }
 
     bobHead() {

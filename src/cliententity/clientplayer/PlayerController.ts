@@ -2,6 +2,7 @@ import { LoggingService } from '../../service/LoggingService'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { Direction } from '../../math/Direction'
+import { InputProcessor } from '../../input/InputProcessor'
 
 export interface IPlayerController {
     update(): void
@@ -58,7 +59,7 @@ export class PlayerController implements IPlayerController {
         LoggingService.log('PlayerController', 'addKeyListeners')
 
         // KeyDown
-        window.addEventListener('keydown', (e: KeyboardEvent) => {
+        InputProcessor.on('keydown', (e: KeyboardEvent) => {
             switch (e.which) {
                 case Key.A:
                     // this.moveLeft()
@@ -72,7 +73,7 @@ export class PlayerController implements IPlayerController {
         })
 
         // KeyUp
-        window.addEventListener('keyup', (e: KeyboardEvent) => {
+        InputProcessor.on('keyup', (e: KeyboardEvent) => {
             switch(e.which) {
                 case Key.A:
                     this.leftKeyDown = false
