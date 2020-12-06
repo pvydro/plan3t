@@ -8,11 +8,14 @@ import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
 import { PlayerHand } from './PlayerHand'
+import { Weapon } from '../../weapon/Weapon'
+import { WeaponName } from '../../weapon/WeaponName'
 
 export interface IClientPlayer extends IClientEntity {
     direction: Direction
     bodyState: PlayerBodyState
     emitter: Emitter
+    equipWeapon(name: WeaponName): void
 }
 
 export enum PlayerBodyState {
@@ -53,6 +56,8 @@ export class ClientPlayer extends ClientEntity {
         if (this.clientControl) this.controller = new PlayerController({ player })
 
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
+
+        this.equipWeapon(WeaponName.Komp9)
     }
     
     update() {
@@ -60,6 +65,10 @@ export class ClientPlayer extends ClientEntity {
         this.head.update()
         this.body.update()
         this.hand.update()
+    }
+
+    equipWeapon(name: WeaponName) {
+        this.hand.setWeapon(name)
     }
 
     set bodyState(value: PlayerBodyState) {
@@ -70,6 +79,7 @@ export class ClientPlayer extends ClientEntity {
         this._direction = value
         this.body.direction = value
         this.head.direction = value
+        this.hand.direction = value
     }
 
     get bodyState() {
