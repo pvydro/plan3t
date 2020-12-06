@@ -1,0 +1,22 @@
+{
+    "weapons": [
+        {
+            "name": "komp9",
+            "dir": "smgs",
+            "damage": 22,
+            "fireRate": 1.5,
+            "weightPounds": 1.15,
+            "bulletsPerClip": 25,
+            "handleOffsetX": 3
+        },
+        {
+            "name": "bully",
+            "dir": "assault-rifles",
+            "damage": 34,
+            "fireRate": 1,
+            "weightPounds": 1.6,
+            "bulletsPerClip": 30,
+            "handleOffsetX": 18
+        }
+    ]
+}

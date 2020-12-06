@@ -2,7 +2,7 @@ import { Camera } from '../../camera/Camera'
 import { InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../math/Direction'
-import { ClientPlayer } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { PlayerHead } from './PlayerHead'
 
 export interface IPlayerHeadController extends IUpdatable {
@@ -31,7 +31,13 @@ export class PlayerHeadController implements IPlayerHeadController {
     }
 
     update() {
-        if (this._shouldRotateHeadWithMouseMove) this.rotateHeadWithMouseMove()
+        const direction = this.player.direction
+
+        if (this.player.bodyState === PlayerBodyState.Walking) {
+            this.targetRotation = direction === Direction.Right ? 0.1 : -0.1
+        } else {
+            if (this._shouldRotateHeadWithMouseMove) this.rotateHeadWithMouseMove()
+        }
 
         // this.playerHead.rotation = this.targetRotation
         this.playerHead.rotation += (this.targetRotation - this.playerHead.rotation) / this.playerHeadRotationDamping
