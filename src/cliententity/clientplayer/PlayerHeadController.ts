@@ -38,6 +38,14 @@ export class PlayerHeadController implements IPlayerHeadController {
         } else {
             if (this._shouldRotateHeadWithMouseMove) this.rotateHeadWithMouseMove()
         }
+        
+        let headBobRotation = this.playerHead.headBobOffset / 30
+
+        if (this.player.direction === Direction.Left) {
+            headBobRotation *= -1
+        }
+
+        this.targetRotation += headBobRotation
 
         // this.playerHead.rotation = this.targetRotation
         this.playerHead.rotation += (this.targetRotation - this.playerHead.rotation) / this.playerHeadRotationDamping

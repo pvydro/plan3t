@@ -60,7 +60,7 @@ export class ClientPlayer extends ClientEntity {
 
         this.scale = new PIXI.Point(GlobalScale, GlobalScale)
 
-        this.equipWeapon(WeaponName.P3)
+        // this.equipWeapon(WeaponName.P3)
 
         // Temp
         InputProcessor.on('keydown', (ev: KeyboardEvent) => {

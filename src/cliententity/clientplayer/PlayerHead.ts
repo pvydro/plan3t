@@ -9,7 +9,7 @@ import { Events } from '../../utils/Constants'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
 
 export interface IPlayerHead extends IUpdatable {
-
+    headBobOffset: number
 }
 
 export interface PlayerHeadOptions {
@@ -22,7 +22,7 @@ export class PlayerHead extends Container {
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
 
-    headBobOffset = 0
+    _headBobOffset = 0
     targetHeadBobOffset = 0
     headBobState = 'up'
 
@@ -50,7 +50,7 @@ export class PlayerHead extends Container {
         this.bobHead()
         
         const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 8 : 50
-        this.headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
+        this._headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
 
         this.position.y = -3 + this.headBobOffset
 
@@ -83,5 +83,9 @@ export class PlayerHead extends Container {
 
     flipAllSprites() {
         this.headSprite.scale.x *= -1
+    }
+
+    get headBobOffset() {
+        return this._headBobOffset
     }
 }
