@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Container } from '../../display/Container'
 import { Sprite } from '../../display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { IClientPlayer, PlayerBodyState } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../math/Direction'
 import { Events } from '../../utils/Constants'
@@ -13,11 +13,11 @@ export interface IPlayerHead extends IUpdatable {
 }
 
 export interface PlayerHeadOptions {
-    player: IClientPlayer
+    player: ClientPlayer
 }
 
 export class PlayerHead extends Container {
-    player: IClientPlayer
+    player: ClientPlayer
     controller: IPlayerHeadController
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
@@ -29,7 +29,10 @@ export class PlayerHead extends Container {
     constructor(options: PlayerHeadOptions) {
         super()
         this.player = options.player
-        this.controller = new PlayerHeadController({ playerHead: this })
+        this.controller = new PlayerHeadController({
+            playerHead: this,
+            player: this.player
+        })
 
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_ASTRO))
         this.headSprite = new Sprite({ texture })

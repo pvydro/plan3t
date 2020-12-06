@@ -14,6 +14,7 @@ export interface CameraFollowOptions {
 }
 
 export class Camera implements ICamera {
+    private static INSTANCE: Camera
     _viewport: Viewport
     _offsetEaseDamping = 5
     target: any
@@ -21,22 +22,31 @@ export class Camera implements ICamera {
     offset: PIXI.IPoint = new PIXI.Point(0, 0)
     followDamping: number = 5
 
+    public static getInstance() {
+        if (this.INSTANCE === undefined) {
+            this.INSTANCE = new Camera()
+        }
 
-    constructor() {
+        return this.INSTANCE
+    }
+
+    private constructor() {
         this._viewport = this.viewport
-        this._viewport.position.set(
-            (0 - (this.viewport.screenWidth / 2)) * -1,
-            (0 - (this.viewport.screenWidth / 2)) * -1
-        )
 
+        this.trackMousePosition()
+    }
+
+    trackMousePosition() {
         InputProcessor.on('mousemove', (event: MouseEvent) => {
             const mouseX = event.clientX
             const mouseY = event.clientY
+
             this.updateMousePosition(mouseX, mouseY)
         })
     }
 
     update() {
+        // Calculate target offset with easings
         this.offset.x += (this.targetOffset.x - this.offset.x) / this._offsetEaseDamping
         this.offset.y += (this.targetOffset.y - this.offset.y) / this._offsetEaseDamping
 
@@ -75,12 +85,21 @@ export class Camera implements ICamera {
     }
 
     get viewport() {
-        return this._viewport = this._viewport ? this._viewport : new Viewport({
-            screenWidth: WindowSize.width,
-            screenHeight: WindowSize.height,
-            worldWidth: WorldSize.width,
-            worldHeight: WorldSize.height
-        })
+        if (this._viewport === undefined) {
+            this._viewport = new Viewport({
+                screenWidth: WindowSize.width,
+                screenHeight: WindowSize.height,
+                worldWidth: WorldSize.width,
+                worldHeight: WorldSize.height
+            })
+
+            this._viewport.position.set(
+                (0 - (this.viewport.screenWidth / 2)) * -1,
+                (0 - (this.viewport.screenWidth / 2)) * -1
+            )
+        }
+
+        return this._viewport
     }
 
     get defaultFollowOptions() {

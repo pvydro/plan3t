@@ -7,7 +7,7 @@ import { Camera } from '../camera/Camera'
 
 window.PIXI = PIXI
 
-const camera = new Camera()
+const camera = Camera.getInstance()
 const entityManager = new EntityManager({ camera })
 const clientManager = new ClientManager({ entityManager, camera })
 const roomManager = new RoomManager({ clientManager })

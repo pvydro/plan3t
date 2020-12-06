@@ -3,14 +3,10 @@ import * as Viewport from 'pixi-viewport'
 import { LoggingService } from '../service/LoggingService'
 import { Spritesheets } from '../asset/Spritesheets'
 import { WindowSize, WorldSize } from '../utils/Constants'
-import { Room, Client } from 'colyseus.js'
-import { GameState } from '../network/rooms/GameState'
-import { ENDPOINT } from '../network/Network'
 import { IRoomManager } from '../manager/RoomManager'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
-import { Camera } from '../camera/Camera'
 
 export interface IGame {
     bootstrap(): Promise<void>
