@@ -19,7 +19,7 @@ export interface PlayerHandOptions {
 
 export class PlayerHand extends Container implements IPlayerHand {
     _player: ClientPlayer
-    handOffsetDamping = 10
+    handOffsetDamping = 5
     controller: IPlayerHandController
     currentDirection: Direction = Direction.Right
     baseOffsetX: number = 2
@@ -48,10 +48,11 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     update() {
         const direction = this._player.direction
+        const bobOffsetY = this._player.head.headBobOffset
         let newOffsetX = direction === Direction.Right
             ? -this.baseOffsetX + this.primaryWeapon.handPushAmount
             : this.baseOffsetX - this.primaryWeapon.handPushAmount
-        let newOffsetY = this.baseOffsetY + this.primaryWeapon.handDropAmount
+        let newOffsetY = this.baseOffsetY + this.primaryWeapon.handDropAmount + bobOffsetY
         
         this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
         this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
