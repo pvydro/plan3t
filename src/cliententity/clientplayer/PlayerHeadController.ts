@@ -27,6 +27,7 @@ export class PlayerHeadController implements IPlayerHeadController {
         this.playerHead = options.playerHead
         this.player = options.player
 
+        this._shouldRotateHeadWithMouseMove = this.player.isClientControl
         this.trackMousePosition()
     }
 
@@ -36,7 +37,9 @@ export class PlayerHeadController implements IPlayerHeadController {
         if (this.player.bodyState === PlayerBodyState.Walking) {
             this.targetRotation = direction === Direction.Right ? 0.1 : -0.1
         } else {
-            if (this._shouldRotateHeadWithMouseMove) this.rotateHeadWithMouseMove()
+            // if (this._shouldRotateHeadWithMouseMove) {
+                this.rotateHeadWithMouseMove()
+            // }
         }
         
         let headBobRotation = this.playerHead.headBobOffset / 20//30
@@ -52,21 +55,28 @@ export class PlayerHeadController implements IPlayerHeadController {
     }
 
     rotateHeadWithMouseMove() {
-        const direction = this.player.direction
-        const baseRotation = direction === Direction.Right
-            ? -0.15 : 0.15
+        if (this._shouldRotateHeadWithMouseMove) {
 
-        const lookAtMouseDamping = 35
-        const originY = this.player.y
-        let distanceFromMouseY = direction === Direction.Right
-            ? this.mousePos.y - originY : originY - this.mousePos.y
-        const rotDistanceY = (distanceFromMouseY / lookAtMouseDamping)
+            const direction = this.player.direction
+            const baseRotation = direction === Direction.Right
+                ? -0.15 : 0.15
+    
+            const lookAtMouseDamping = 35
+            const originY = this.player.y
+            let distanceFromMouseY = direction === Direction.Right
+                ? this.mousePos.y - originY : originY - this.mousePos.y
+            const rotDistanceY = (distanceFromMouseY / lookAtMouseDamping)
+    
+            let rotationY = rotDistanceY//direction === Direction.Right ? rotDistanceY : -rotDistanceY
+    
+            rotationY *= 0.01
+    
+            this.targetRotation = (rotationY + baseRotation)
+        } else {
 
-        let rotationY = rotDistanceY//direction === Direction.Right ? rotDistanceY : -rotDistanceY
-
-        rotationY *= 0.01
-
-        this.targetRotation = (rotationY + baseRotation)
+            this.targetRotation = 0
+            
+        }
     }
 
     trackMousePosition() {

@@ -9,6 +9,27 @@
         "handleOffsetY": 0.5,
         "handDropAmount": 2
     },
+    "p3": {
+        "dir": "smgs",
+        "damage": 19,
+        "fireRate": 1.8,
+        "bulletsPerClip": 50,
+        "handleOffsetX": -15,
+        "handleOffsetY": -3,
+        "handDropAmount": 4,
+        "handPushAmount": 1
+    },
+    "tachyon": {
+        "dir": "smgs",
+        "damage": 23,
+        "fireRate": 1.8,
+        "bulletsPerClip": 43,
+        "handleOffsetX": -12.5,
+        "handleOffsetY": -3,
+        "handDropAmount": 3,
+        "handPushAmount": 5
+    },
+
     "bully": {
         "dir": "assault-rifles",
         "damage": 34,
@@ -20,14 +41,38 @@
         "handDropAmount": 4,
         "handPushAmount": 4
     },
-    "p3": {
-        "dir": "smgs",
-        "damage": 19,
-        "fireRate": 1.8,
-        "bulletsPerClip": 50,
-        "handleOffsetX": -15,
+    "komplimenter": {
+        "dir": "assault-rifles",
+        "damage": 34,
+        "fireRate": 1,
+        "weightPounds": 1.6,
+        "bulletsPerClip": 30,
+        "handleOffsetX": -12,
+        "handleOffsetY": -2.5,
+        "handDropAmount": 4,
+        "handPushAmount": 2
+    },
+    "kortni": {
+        "dir": "assault-rifles",
+        "damage": 45,
+        "fireRate": 0.95,
+        "weightPounds": 2,
+        "bulletsPerClip": 40,
+        "handleOffsetX": -7.5,
+        "handleOffsetY": -1.5,
+        "handDropAmount": 3,
+        "handPushAmount": -1
+    },
+
+    "raze": {
+        "dir": "snipers",
+        "damage": 99,
+        "fireRate": 0.475,
+        "weightPounds": 3.2,
+        "bulletsPerClip": 3,
+        "handleOffsetX": -20,
         "handleOffsetY": -3,
         "handDropAmount": 4,
-        "handPushAmount": 1
+        "handPushAmount": 4
     }
 }

@@ -69,6 +69,14 @@ export class ClientPlayer extends ClientEntity {
                     this.equipWeapon(WeaponName.Komp9)
                 } else if (ev.which === Key.Three) {
                     this.equipWeapon(WeaponName.Bully)
+                } else if (ev.which === Key.Four) {
+                    this.equipWeapon(WeaponName.Raze)
+                } else if (ev.which === Key.Five) {
+                    this.equipWeapon(WeaponName.Tachyon)
+                } else if (ev.which === Key.Six) {
+                    this.equipWeapon(WeaponName.Komplimenter)
+                } else if (ev.which === Key.Seven) {
+                    this.equipWeapon(WeaponName.Kortni)
                 } else if (ev.which === Key.Zero) {
                     this.equipWeapon(null)
                 }
