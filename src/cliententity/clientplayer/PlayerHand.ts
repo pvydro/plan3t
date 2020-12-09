@@ -55,6 +55,7 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
 
     update() {
+        const halfACircleInRadians = 3.14159
         const handPushAmount = this.primaryWeapon && this.primaryWeapon.handPushAmount ? this.primaryWeapon.handPushAmount : 0
         const handDropAmount = this.primaryWeapon && this.primaryWeapon.handDropAmount ? this.primaryWeapon.handDropAmount : 0
 
@@ -72,6 +73,8 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.y = this.currentOffsetY
 
         this.controller.update(this.player.isClientControl)
+
+        this.secondHandSprite.rotation = direction === Direction.Right ? -this.rotation : this.rotation - halfACircleInRadians
     }
 
     setWeapon(name: WeaponName) {
