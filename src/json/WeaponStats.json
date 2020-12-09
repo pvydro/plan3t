@@ -17,7 +17,9 @@
         "handleOffsetX": -15,
         "handleOffsetY": -3,
         "handDropAmount": 4,
-        "handPushAmount": 1
+        "handPushAmount": 1,
+        "secondHandX": 8,
+        "secondHandY": -1.5
     },
     "tachyon": {
         "dir": "smgs",
@@ -41,7 +43,9 @@
         "handleOffsetX": -16,
         "handleOffsetY": -3,
         "handDropAmount": 4,
-        "handPushAmount": 4
+        "handPushAmount": 2.5,
+        "secondHandX": 8,
+        "secondHandY": -2
     },
     "komplimenter": {
         "dir": "assault-rifles",

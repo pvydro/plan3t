@@ -95,7 +95,7 @@ export class PlayerHand extends Container implements IPlayerHand {
         }
 
         if (handX) {
-            this.secondHandSprite.x = handX ? handX : 0
+            this.secondHandSprite.x = handX ? handX : 2
             this.secondHandSprite.y = handY ? handY : 0
         }
     }
