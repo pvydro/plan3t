@@ -4,7 +4,9 @@ import { Container } from '../../display/Container'
 import { Sprite } from '../../display/Sprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../math/Direction'
+import { LoggingService } from '../../service/LoggingService'
 import { Weapon } from '../../weapon/Weapon'
+import { WeaponHelper } from '../../weapon/WeaponHelper'
 import { WeaponName } from '../../weapon/WeaponName'
 import { ClientPlayer } from './ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
@@ -29,6 +31,7 @@ export class PlayerHand extends Container implements IPlayerHand {
     currentOffsetY: number = this.baseOffsetY
 
     handSprite: Sprite
+    secondHandSprite: Sprite
 
     primaryWeapon: Weapon
     
@@ -39,10 +42,14 @@ export class PlayerHand extends Container implements IPlayerHand {
         
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HAND_HUMAN_DEFAULT))
         this.handSprite = new Sprite({ texture })
+        this.secondHandSprite = new Sprite({ texture })
         this.handSprite.anchor.set(0.5, 0.5)
+        this.secondHandSprite.anchor.set(0.5, 0.5)
+        this.secondHandSprite.alpha = 0
         
         this.primaryWeapon = new Weapon()
         
+        this.addChild(this.secondHandSprite)
         this.addChild(this.primaryWeapon)
         this.addChild(this.handSprite)
     }
@@ -69,6 +76,28 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     setWeapon(name: WeaponName) {
         this.primaryWeapon.configureByName(name)
+
+        const stats = WeaponHelper.getWeaponStatsByName(name)
+
+        if (stats.secondHandX !== undefined || stats.secondHandY !== undefined) {
+            this.showSecondHand(true, stats.secondHandX, stats.secondHandY)
+        } else {
+            this.showSecondHand(false)
+        }
+    }
+
+    showSecondHand(shouldShow: boolean, handX?: number, handY?: number) {
+        LoggingService.log('PlayerHand', 'showSecondHand', 'shouldShow', shouldShow, 'handX', handX, 'handY', handY)
+        if (shouldShow === true) {
+            this.secondHandSprite.alpha = 1
+        } else {
+            this.secondHandSprite.alpha = 0
+        }
+
+        if (handX) {
+            this.secondHandSprite.x = handX ? handX : 0
+            this.secondHandSprite.y = handY ? handY : 0
+        }
     }
     
     empty() {

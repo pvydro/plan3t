@@ -27,7 +27,9 @@
         "handleOffsetX": -12.5,
         "handleOffsetY": -3,
         "handDropAmount": 3,
-        "handPushAmount": 5
+        "handPushAmount": 5,
+        "secondHandX": 5.5,
+        "secondHandY": -2
     },
 
     "bully": {

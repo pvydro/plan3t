@@ -17,6 +17,8 @@ export interface WeaponStats {
     handleOffsetY?: number
     handDropAmount?: number
     handPushAmount?: number
+    secondHandX?: number
+    secondHandY?: number
 }
 
 export class Weapon extends Container implements IWeapon {
