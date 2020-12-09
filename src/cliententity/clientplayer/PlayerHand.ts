@@ -35,6 +35,8 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     primaryWeapon: Weapon
     
+    rotationContainer: Container
+
     constructor(options: PlayerHandOptions) {
         super()
         this._player = options.player
@@ -49,9 +51,20 @@ export class PlayerHand extends Container implements IPlayerHand {
         
         this.primaryWeapon = new Weapon()
         
-        this.addChild(this.secondHandSprite)
-        this.addChild(this.primaryWeapon)
-        this.addChild(this.handSprite)
+        this.rotationContainer = new Container()
+
+        this.rotationContainer.addChild(this.secondHandSprite)
+        this.rotationContainer.addChild(this.primaryWeapon)
+        this.rotationContainer.addChild(this.handSprite)
+
+        this.addChild(this.rotationContainer)
+        this.rotationContainer.x = 4
+
+        // this.position.x -= 20
+
+        // this.addChild(this.secondHandSprite)
+        // this.addChild(this.primaryWeapon)
+        // this.addChild(this.handSprite)
     }
 
     update() {

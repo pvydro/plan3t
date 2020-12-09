@@ -17,7 +17,7 @@
         "handleOffsetX": -15,
         "handleOffsetY": -3,
         "handDropAmount": 4,
-        "handPushAmount": 1,
+        "handPushAmount": -1,
         "secondHandX": 8,
         "secondHandY": -1.5
     },
@@ -29,7 +29,7 @@
         "handleOffsetX": -12.5,
         "handleOffsetY": -3,
         "handDropAmount": 3,
-        "handPushAmount": 5,
+        "handPushAmount": 3,
         "secondHandX": 5.5,
         "secondHandY": -2
     },
@@ -42,8 +42,8 @@
         "bulletsPerClip": 30,
         "handleOffsetX": -16,
         "handleOffsetY": -3,
-        "handDropAmount": 4,
-        "handPushAmount": 2.5,
+        "handDropAmount": 2,
+        "handPushAmount": -2,
         "secondHandX": 8,
         "secondHandY": -2
     },
@@ -55,8 +55,10 @@
         "bulletsPerClip": 30,
         "handleOffsetX": -12,
         "handleOffsetY": -2.5,
-        "handDropAmount": 4,
-        "handPushAmount": 2
+        "handDropAmount": 2,
+        "handPushAmount": -3,
+        "secondHandX": 8,
+        "secondHandY": -7.5
     },
     "kortni": {
         "dir": "assault-rifles",
@@ -79,6 +81,8 @@
         "handleOffsetX": -20,
         "handleOffsetY": -3,
         "handDropAmount": 4,
-        "handPushAmount": 4
+        "handPushAmount": 2,
+        "secondHandX": -7,
+        "secondHandY": -1.5
     }
 }
