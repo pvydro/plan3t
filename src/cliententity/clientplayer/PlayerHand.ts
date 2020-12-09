@@ -74,7 +74,10 @@ export class PlayerHand extends Container implements IPlayerHand {
 
         this.controller.update(this.player.isClientControl)
 
-        this.secondHandSprite.rotation = direction === Direction.Right ? -this.rotation : this.rotation - halfACircleInRadians
+        this.secondHandSprite.rotation = direction === Direction.Right
+            ? -this.rotation + (this.rotation / 2)
+            : this.rotation - halfACircleInRadians - (this.rotation / 2)
+            
     }
 
     setWeapon(name: WeaponName) {

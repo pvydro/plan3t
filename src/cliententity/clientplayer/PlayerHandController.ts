@@ -36,7 +36,7 @@ export class PlayerHandController implements IPlayerHandController {
         const playerX = projectedPlayerPos.x
         const playerY = projectedPlayerPos.y
 
-        const angle = Math.atan2(this.mousePos.y - playerY, this.mousePos.x - playerX)// * 180 / Math.PI
+        const angle = Math.atan2(this.mousePos.y - playerY, this.mousePos.x - playerX)
         const halfACircleInRadians = 3.14159
 
         this.targetRotation = direction === Direction.Right ? angle : angle - halfACircleInRadians
