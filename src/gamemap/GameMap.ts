@@ -2,10 +2,11 @@ import { Container } from 'pixi.js'
 import { GameMapHelper } from './GameMapHelper'
 import { IDemolishable } from '../interface/IDemolishable'
 import { LoggingService } from '../service/LoggingService'
+import { Game } from '../main/Game'
 
 export interface IGameMap extends IDemolishable {
     temporaryGroundLevel: number
-    initializeSpherical(): void
+    initializeSpherical(): Promise<void>
     demolish(): void
 }
 
@@ -23,9 +24,13 @@ export class GameMap extends Container implements IGameMap {
         // GameMapHelper.parseSphericalToContainer(options?)
     }
 
-    initializeSpherical() {
+    // TODO: Seed
+    async initializeSpherical(seed?: string) {
         LoggingService.log('GameMap', 'initializeSpherical')
-        // GameMapHelper.
+
+        GameMapHelper.getRandomSpherical().then((spherical) => {
+            console.log('Spherical', spherical)
+        })
     }
 
     demolish(): void {

@@ -1,5 +1,5 @@
 import { Assets, AssetUrls } from '../asset/Assets'
-import { IGameMap } from './GameMap'
+import { LoggingService } from '../service/LoggingService'
 
 export interface ColorData {
     red: number
@@ -17,12 +17,33 @@ export class GameMapHelper implements IGameMapHelper {
     private constructor() {
 
     }
+
+    static async getRandomSpherical(): Promise<any> {
+        LoggingService.log('GameMapHelper', 'getRandomSpherical')
+
+        return new Promise((resolve, reject) => {
+            const sphericalImage = new Image()
+            sphericalImage.src = AssetUrls.SPHERICAL_TEST + '.png'
     
-    // static parseSphericalToArray(image: HTMLImageElement) {
+            sphericalImage.onload = () => {
+                LoggingService.log('GameMapHelper', 'getRandomSpherical', 'image loaded')
+
+                const sphericalCanvas = GameMapHelper.convertImageToCanvas(sphericalImage)
+                const canvasData = GameMapHelper.getCanvasImageData(sphericalCanvas)
         
-    // }
+                return resolve(canvasData)
+            }
+
+            sphericalImage.onerror = (error) => {
+                LoggingService.error('GameMapHelper', 'getRandomSpherical', 'image failed to load', error)
+
+                reject(error)
+            }
+        })
+    }
     
     private static convertImageToCanvas(image: HTMLImageElement): HTMLCanvasElement {
+        
         const canvas = document.createElement('canvas')
         
         canvas.width = image.width

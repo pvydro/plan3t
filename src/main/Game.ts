@@ -53,7 +53,7 @@ export class Game implements IGame {
         await this.roomManager.initializeRoom()
         
         this.initializeBackground()
-        this.initializeGameMap()
+        await this.initializeGameMap()
         // this.initializeMouseMovement()
         this.initializeGameLoop()
         this.initializeCamera()
@@ -97,8 +97,8 @@ export class Game implements IGame {
         this.cameraViewport.addChild(boundaries)
     }
 
-    initializeGameMap() {
-        this.gameMapManager.initialize()
+    async initializeGameMap() {
+        await this.gameMapManager.initialize()
     }
 
     get room() {

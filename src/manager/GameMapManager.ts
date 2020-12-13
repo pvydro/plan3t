@@ -26,7 +26,8 @@ export class GameMapManager implements IGameMapManager {
         }
 
         this.gameMap = new GameMap()
-        this.gameMap.initializeSpherical()
+        
+        await this.gameMap.initializeSpherical()
 
         this.viewport.addChild(this.gameMap)
     }
