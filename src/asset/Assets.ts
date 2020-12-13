@@ -11,7 +11,8 @@ export class AssetUrls {
     // Enemy
     public static ENEMY_FLYINGEYE_IDLE = 'assets/image/enemy/flyingeye/flyingeye'
 
-    // Weapon
+    // Spherical/GameMao
+    public static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
 }
 
 export class Assets {

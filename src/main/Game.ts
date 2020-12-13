@@ -7,6 +7,7 @@ import { IRoomManager } from '../manager/RoomManager'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
+import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -26,12 +27,17 @@ export class Game implements IGame {
 
     roomManager: IRoomManager
     clientManager: IClientManager
+    gameMapManager: IGameMapManager
 
     gameLoop: IGameLoop
 
     constructor(options: GameOptions) {
         this.roomManager = options.roomManager
         this.clientManager = options.clientManager
+
+        this.gameMapManager = new GameMapManager({
+            clientManager: this.clientManager
+        })
 
         this.instantiateApplication()
     }
@@ -43,11 +49,11 @@ export class Game implements IGame {
 
         // TODO: Main loader load, then other inits
         // Internal state manager for loading screen, Scene
-
         await this.clientManager.initialize()
         await this.roomManager.initializeRoom()
         
         this.initializeBackground()
+        this.initializeGameMap()
         // this.initializeMouseMovement()
         this.initializeGameLoop()
         this.initializeCamera()
@@ -91,8 +97,16 @@ export class Game implements IGame {
         this.cameraViewport.addChild(boundaries)
     }
 
+    initializeGameMap() {
+        this.gameMapManager.initialize()
+    }
+
     get room() {
         return this.roomManager.currentRoom
+    }
+
+    get gameMap() {
+        return this.clientManager.gameMap
     }
 
     get application(): PIXI.Application {

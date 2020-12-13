@@ -5,6 +5,8 @@ import { RoomManager } from '../manager/RoomManager'
 import { EntityManager } from '../manager/EntityManager'
 import { Camera } from '../camera/Camera'
 
+// var pixiTiled = require('pixi-tiled')
+
 window.PIXI = PIXI
 
 const camera = Camera.getInstance()
