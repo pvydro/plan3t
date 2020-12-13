@@ -2,6 +2,7 @@ import { WindowSize, WorldSize } from '../utils/Constants'
 import * as Viewport from 'pixi-viewport'
 import { IUpdatable } from '../interface/IUpdatable'
 import { InputProcessor } from '../input/InputProcessor'
+import { IVector2, Vector2 } from '../engine/math/Vector2'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -18,8 +19,8 @@ export class Camera implements ICamera {
     _viewport: Viewport
     _offsetEaseDamping = 5
     target: any
-    targetOffset: PIXI.IPoint = new PIXI.Point(0, 0)
-    offset: PIXI.IPoint = new PIXI.Point(0, 0)
+    targetOffset: IVector2 = Vector2.Zero
+    offset: IVector2 = Vector2.Zero
     followDamping: number = 5
 
     public static getInstance() {
@@ -51,7 +52,7 @@ export class Camera implements ICamera {
         this.offset.y += (this.targetOffset.y - this.offset.y) / this._offsetEaseDamping
 
         const projectedTargetPos = this.target ? { x: this.target.x, y: this.target.y } : { x: 0, y: 0 }
-        const targetPosWithMouseOffset = new PIXI.Point(projectedTargetPos.x + this.offset.x, projectedTargetPos.y + this.offset.y)
+        const targetPosWithMouseOffset = new Vector2(projectedTargetPos.x + this.offset.x, projectedTargetPos.y + this.offset.y)
 
         const targetX = (targetPosWithMouseOffset.x - (this.viewport.screenWidth / 2)) * -1
         const targetY = (targetPosWithMouseOffset.y - (this.viewport.screenHeight / 2)) * -1

@@ -8,7 +8,9 @@ export const WorldSize = {
     height: 2000
 }
 
-export const BasicLerp = (a: number, b: number, t: number) => (b - a) * t + a
+export const BasicLerp = (pointA: number, pointB: number, time: number) => {
+    return (pointB - pointA) * time + pointA
+}
 export const GlobalScale = 5
 
 export class Constants {

@@ -1,8 +1,8 @@
 import { Camera } from '../../camera/Camera'
 import { InputProcessor } from '../../input/InputProcessor'
-import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { PlayerHand } from './PlayerHand'
+import { IVector2, Vector2 } from '../../engine/math/Vector2'
 
 export interface IPlayerHandController {
     update(clientControl: boolean)
@@ -14,7 +14,7 @@ export interface PlayerHandControllerOptions {
 
 export class PlayerHandController implements IPlayerHandController {
     playerHand: PlayerHand
-    mousePos: PIXI.IPoint = new PIXI.Point(0, 0)
+    mousePos: IVector2 = Vector2.Zero
     targetRotation: number = 0
     mouseFollowDamping: number = 5
 

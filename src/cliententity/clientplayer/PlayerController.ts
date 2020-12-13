@@ -4,6 +4,7 @@ import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Camera } from '../../camera/Camera'
 import { Direction } from '../../engine/math/Direction'
+import { IVector2, Vector2 } from '../../engine/math/Vector2'
 
 export interface IPlayerController {
     update(): void
@@ -17,7 +18,7 @@ export class PlayerController implements IPlayerController {
     player: ClientPlayer
     leftKeyDown: boolean = false
     rightKeyDown: boolean = false
-    mousePos: PIXI.IPoint = new PIXI.Point(0, 0)
+    mousePos: IVector2 = Vector2.Zero
 
     playerWalkingSpeed: number = 5
     floorFriction = 5

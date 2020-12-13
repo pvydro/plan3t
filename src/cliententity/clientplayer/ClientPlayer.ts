@@ -12,6 +12,7 @@ import { Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
+import { Vector2 } from '../../engine/math/Vector2'
 
 export interface IClientPlayer extends IClientEntity {
     direction: Direction
@@ -58,7 +59,7 @@ export class ClientPlayer extends ClientEntity {
         
         if (this.isClientControl) this.controller = new PlayerController({ player })
 
-        this.scale = new PIXI.Point(GlobalScale, GlobalScale)
+        this.scale.set(GlobalScale, GlobalScale)
 
         // Temp
         if (options.clientControl) {

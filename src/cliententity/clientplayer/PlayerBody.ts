@@ -20,7 +20,7 @@ export interface PlayerBodyOptions {
 
 export class PlayerBody extends Container implements IPlayerBody {
     animator: IPlayerBodyAnimator
-    _sprite: PIXI.Sprite
+    _sprite: Sprite
     _runningSprite: PIXI.AnimatedSprite
     currentShown?: any
     currentDirection: Direction = Direction.Right

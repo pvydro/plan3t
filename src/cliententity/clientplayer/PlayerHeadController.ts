@@ -4,6 +4,7 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { PlayerHead } from './PlayerHead'
+import { Vector2 } from '../../engine/math/Vector2'
 
 export interface IPlayerHeadController extends IUpdatable {
 
@@ -19,7 +20,7 @@ export class PlayerHeadController implements IPlayerHeadController {
     playerHead: PlayerHead
     playerHeadRotationDamping: number = 20
     player: ClientPlayer
-    mousePos: PIXI.IPoint = new PIXI.Point(0, 0)
+    mousePos: Vector2 = Vector2.Zero
 
     targetRotation: number
 
@@ -37,9 +38,9 @@ export class PlayerHeadController implements IPlayerHeadController {
         if (this.player.bodyState === PlayerBodyState.Walking) {
             this.targetRotation = direction === Direction.Right ? 0.1 : -0.1
         } else {
-            // if (this._shouldRotateHeadWithMouseMove) {
+            if (this._shouldRotateHeadWithMouseMove) {
                 this.rotateHeadWithMouseMove()
-            // }
+            }
         }
         
         let headBobRotation = this.playerHead.headBobOffset / 20//30
