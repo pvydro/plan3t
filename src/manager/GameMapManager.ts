@@ -1,8 +1,9 @@
-import { GameMap } from "../gamemap/GameMap";
-import { LoggingService } from "../service/LoggingService";
-import { IClientManager } from "./ClientManager";
+import { GameMap } from '../gamemap/GameMap'
+import { LoggingService } from '../service/LoggingService'
+import { IClientManager } from './ClientManager'
 
 export interface IGameMapManager {
+    gameMap: GameMap
     initialize()
 }
 
@@ -12,7 +13,7 @@ export interface GameMapManagerOptions {
 
 export class GameMapManager implements IGameMapManager {
     clientManager: IClientManager
-    gameMap?: GameMap
+    _gameMap?: GameMap
 
     constructor(options: GameMapManagerOptions) {
         this.clientManager = options.clientManager
@@ -25,11 +26,11 @@ export class GameMapManager implements IGameMapManager {
             this.gameMap.demolish()
         }
 
-        this.gameMap = new GameMap()
+        this._gameMap = GameMap.getInstance()
         
-        await this.gameMap.initializeSpherical()
+        await this._gameMap.initializeSpherical()
 
-        this.viewport.addChild(this.gameMap)
+        this.viewport.addChild(this._gameMap)
     }
 
     get viewport() {
@@ -38,5 +39,9 @@ export class GameMapManager implements IGameMapManager {
 
     get camera() {
         return this.clientManager.clientCamera
+    }
+
+    get gameMap() {
+        return this._gameMap
     }
 }

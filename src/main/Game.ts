@@ -9,6 +9,7 @@ import { IEntityManager } from '../manager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { Assets } from '../asset/Assets'
+import { GravityManager, IGravityManager } from '../manager/GravityManager'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -29,6 +30,7 @@ export class Game implements IGame {
     roomManager: IRoomManager
     clientManager: IClientManager
     gameMapManager: IGameMapManager
+    gravityManager: IGravityManager
 
     gameLoop: IGameLoop
 
@@ -39,6 +41,8 @@ export class Game implements IGame {
         this.gameMapManager = new GameMapManager({
             clientManager: this.clientManager
         })
+        
+        this.gravityManager = GravityManager.getInstance()
 
         this.instantiateApplication()
     }
@@ -56,7 +60,6 @@ export class Game implements IGame {
         
         this.initializeBackground()
         await this.initializeGameMap()
-        // this.initializeMouseMovement()
         this.initializeGameLoop()
         this.initializeCamera()
     }

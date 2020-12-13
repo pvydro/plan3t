@@ -28,7 +28,7 @@ export class GravityEntity extends ClientEntity {
 
     update() {
         if (this.isOnGround === false) {
-            this.yVel += (this.weight / 3)
+            this.yVel += (this.weight / 3) // * GravityManager.gravity
         } else {
             this.yVel = 0
         }

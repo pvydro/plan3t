@@ -4,19 +4,27 @@ import { LoggingService } from '../service/LoggingService'
 import { Spherical } from './spherical/Spherical'
 import { Container } from '../engine/display/Container'
 import { GlobalScale } from '../utils/Constants'
+import { Rect } from '../engine/math/Rect'
 
 export interface IGameMap extends IDemolishable {
     initializeSpherical(): Promise<void>
     demolish(): void
-}
-
-export interface GameMapOptions {
-
+    collidableRects: Rect[]
 }
 
 export class GameMap extends Container implements IGameMap {
+    private static INSTANCE?: GameMap
+    currentSpherical?: Spherical
     
-    constructor(options?: GameMapOptions) {
+    static getInstance() {
+        if (GameMap.INSTANCE === undefined) {
+            GameMap.INSTANCE = new GameMap()
+        }
+
+        return GameMap.INSTANCE
+    }
+
+    private constructor() {
         super()
 
         this.scale.set(GlobalScale, GlobalScale)
@@ -29,11 +37,17 @@ export class GameMap extends Container implements IGameMap {
         GameMapHelper.getRandomSphericalData().then((sphericalData) => {
             const spherical = new Spherical(sphericalData)
 
-            this.addChild(spherical)
+            this.currentSpherical = spherical
+
+            this.addChild(this.currentSpherical)
         })
     }
 
     demolish() {
         LoggingService.log('GameMap', 'demolish')
+    }
+
+    get collidableRects() {
+        return (this.currentSpherical && this.currentSpherical.collisionRects) ? this.currentSpherical.collisionRects : []
     }
 }

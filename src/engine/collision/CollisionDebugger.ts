@@ -10,13 +10,13 @@ export interface ICollisionDebugger extends IContainer, IDemolishable {
 }
 
 export interface CollisionDebuggerOptions {
-    collisionRectangles?: Rect[]
+    collisionRects?: Rect[]
     color?: number
     lineWidth?: number
 }
 
 export class CollisionDebugger extends Container implements ICollisionDebugger {
-    collisionRectangles?: Rect[]
+    collisionRects?: Rect[]
     color: number = 0x60b5b2
     lineWidth: number = 1
     
@@ -26,18 +26,18 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
         if (options) {
             this.color = options.color ?? this.color
             this.lineWidth = options.lineWidth ?? this.lineWidth
-            this.collisionRectangles = options.collisionRectangles ?? undefined
+            this.collisionRects = options.collisionRects ?? undefined
         }
     }
 
     initializeAndShowGraphics() {
-        const graphics = this.createDebugGraphics(this.collisionRectangles)
+        const graphics = this.createDebugGraphics(this.collisionRects)
 
         this.addChild(graphics)
     }
 
     createDebugGraphics(rectangles?: Rect[]): Graphix {
-        rectangles = rectangles ? rectangles : this.collisionRectangles
+        rectangles = rectangles ? rectangles : this.collisionRects
 
         LoggingService.log('CollisionDebugger', 'createDebugGraphics', 'rectangles', rectangles)
 
@@ -51,7 +51,7 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
             })
         }
 
-        return rectangleGraphics        
+        return rectangleGraphics  
     }
 
     demolish() {

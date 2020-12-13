@@ -10,6 +10,7 @@ import { WeaponName } from '../../weapon/WeaponName'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
 import { GravityEntity, IGravityEntity } from '../GravityEntity'
+import { PlayerCollision } from './PlayerCollision'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -34,6 +35,7 @@ export class ClientPlayer extends GravityEntity {
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
+    collision: PlayerCollision
     controller: IPlayerController
     _clientControl: boolean = false
     _direction: Direction = Direction.Right
@@ -53,10 +55,12 @@ export class ClientPlayer extends GravityEntity {
         this.hand = new PlayerHand({ player })
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
+        this.collision = new PlayerCollision({ player })
         
         this.addChild(this.body)
         this.addChild(this.head)
         this.addChild(this.hand)
+        this.addChild(this.collision)
         
         if (this.isClientControl) this.controller = new PlayerController({ player })
 
@@ -94,6 +98,8 @@ export class ClientPlayer extends GravityEntity {
         this.head.update()
         this.body.update()
         this.hand.update()
+
+        this.collision.update()
     }
 
     equipWeapon(name: WeaponName | null) {

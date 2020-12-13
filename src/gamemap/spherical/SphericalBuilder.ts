@@ -39,8 +39,6 @@ export class SphericalBuilder implements ISphericalBuilder {
         // Construct collision layer
         const collisionRects = this.buildCollisionRectanglesFromData(data)
 
-        console.log('rect', collisionRects)
-
         return {
             tileLayer,
             collisionRects
@@ -61,7 +59,6 @@ export class SphericalBuilder implements ISphericalBuilder {
                 const currentPoint = data.getPointAt(x, y)
 
                 if (currentPoint.tileDepth > 0) {
-                    console.log('WOAHAHAH')
                     // Start Rect
                     if (isOnACollidableTile == false) {
                         isOnACollidableTile = true

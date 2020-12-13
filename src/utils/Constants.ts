@@ -21,5 +21,5 @@ export class Constants {
 }
 
 export enum Events {
-    PlayerWalkBounce = 'PlayerWalkEnd'
+    PlayerWalkBounce = 'PlayerWalkBounce'
 }

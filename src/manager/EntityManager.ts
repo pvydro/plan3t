@@ -1,13 +1,11 @@
 import * as PIXI from 'pixi.js'
 import { Entity } from '../network/rooms/Entity'
-import { Enemy } from '../cliententity/enemy/Enemy'
-import { FlyingEnemy } from '../cliententity/enemy/flyingenemy/FlyingEnemy'
-import { IClientPlayer, ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
-import { IClientManager } from '../manager/ClientManager'
-import { IRoomManager, RoomManager } from '../manager/RoomManager'
+import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
+import { RoomManager } from '../manager/RoomManager'
 import { ICamera } from '../camera/Camera'
-import { IClientEntity, ClientEntity } from '../cliententity/ClientEntity'
+import { ClientEntity } from '../cliententity/ClientEntity'
 import { LoggingService } from '../service/LoggingService'
+import { GravityManager, IGravityManager } from './GravityManager'
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -29,10 +27,12 @@ export class EntityManager implements IEntityManager {
     _currentPlayerEntity: any//PIXI.Graphics
 
     camera: ICamera
-    clientManager: IClientManager
+    gravityManager: IGravityManager
 
     constructor(options: EntityManagerOptions) {
         this.camera = options.camera
+
+        this.gravityManager = GravityManager.getInstance()
     }
 
     createEnemyPlayer(entity: Entity, sessionID: string) {
@@ -57,6 +57,7 @@ export class EntityManager implements IEntityManager {
 
         this.camera.addChild(this.currentPlayerEntity)
         this.camera.follow(playerDisplayObject)
+        this.gravityManager.registerEntityForCollision(player)
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {

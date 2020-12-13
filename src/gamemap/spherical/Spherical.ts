@@ -5,13 +5,15 @@ import { ISphericalBuilder, SphericalBuilder } from './SphericalBuilder'
 import { SphericalBiome, SphericalData } from './SphericalData'
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
 import { ShowCollisionDebug } from '../../utils/Constants'
+import { Rect } from '../../engine/math/Rect'
 
 export interface ISpherical extends IDemolishable {
-    
+    collisionRects: Rect[]
 }
 
 export class Spherical extends Container implements ISpherical {
     builder: ISphericalBuilder
+    collisionRects: Rect[] 
     collisionDebugger: CollisionDebugger
 
     biome: SphericalBiome
@@ -27,12 +29,14 @@ export class Spherical extends Container implements ISpherical {
         const sphericalRespone = this.builder.buildSphericalFromData(data)
         const sphericalContainer = sphericalRespone.tileLayer
 
+        this.collisionRects = sphericalRespone.collisionRects
+
         this.addChild(sphericalContainer)
         
         if (ShowCollisionDebug) {
             this.collisionDebugger = new CollisionDebugger({
                 lineWidth: 0.5,
-                collisionRectangles: sphericalRespone.collisionRects
+                collisionRects: sphericalRespone.collisionRects
             })
             this.collisionDebugger.initializeAndShowGraphics()
             this.addChild(this.collisionDebugger)
