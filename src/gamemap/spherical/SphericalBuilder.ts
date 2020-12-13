@@ -1,11 +1,19 @@
-import { SphericalData, SphericalPoint } from './Spherical'
+import { ISphericalData, SphericalData, SphericalPoint } from './SphericalData'
 import { Assets } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
 import { Dimension } from '../../engine/math/Dimension'
 import { Container } from '../../engine/display/Container'
+import { LoggingService } from '../../service/LoggingService'
+import { IRect, Rect } from '../../engine/math/Rect'
+import { SphericalHelper } from './SphericalHelper'
 
 export interface ISphericalBuilder {
-    buildSphericalFromData(data: SphericalData)
+    buildSphericalFromData(data: ISphericalData): SphericalResponse
+}
+
+export interface SphericalResponse {
+    tileLayer: Container
+    collisionRects: IRect[]
 }
 
 export class SphericalBuilder implements ISphericalBuilder {
@@ -13,23 +21,67 @@ export class SphericalBuilder implements ISphericalBuilder {
     constructor() {}
 
     buildSphericalFromData(data: SphericalData) {
-        const sphericalContainer = new Container()
-        const points = data.points
-        const tileResource = Assets.TILE_DIR + data.biome + '/tile_0'
-        const tileTexture = PIXI.Texture.from(Assets.get(tileResource))
+        LoggingService.log('SphericalBuilder', 'buildSphericalFromData')
 
-        points.forEach((point: SphericalPoint) => {
-            if (point.tileDepth > 0) {
-                const tileSprite = new Sprite({ texture: tileTexture })
-                const tileDimension = new Dimension(tileTexture.width, tileTexture.height)
-                const tileX = point.x * tileDimension.width
-                const tileY = point.y * tileDimension.height
-    
-                sphericalContainer.addChild(tileSprite)
-                tileSprite.position.set(tileX, tileY)
+        const tileLayer = new Container()
+
+        // Construct tileLayer
+        data.points.forEach((point: SphericalPoint) => {
+            if (SphericalHelper.isPointSolid(point)) {
+                const newTileTexture = SphericalHelper.getTextureForPoint(point, data.biome)
+                const newTileSprite = new Sprite({ texture: newTileTexture })
+                
+                newTileSprite.x = point.x * newTileTexture.width
+                newTileSprite.y = point.y * newTileTexture.height
+
+                tileLayer.addChild(newTileSprite)
             }
         })
 
-        return sphericalContainer
+        // Construct collision layer
+        const collisionRects = this.buildCollisionRectanglesFromData(data)
+
+        return {
+            tileLayer,
+            collisionRects
+        }
+    }
+
+    private buildCollisionRectanglesFromData(data: SphericalData): IRect[] {
+        LoggingService.log('SphericalBuilder', 'buildCollisionLayerFromData')
+
+        const collisionRects: IRect[] = []
+        const tileSize = SphericalHelper.getTileSizeForBiome(data.biome)
+        
+        for (var y = 0; y < data.dimension.height; y++) {
+            let isOnACollidableTile = false
+            let currentCollisionRect: IRect = undefined
+
+            for (var x = 0; x < data.dimension.width; x++) {
+                const currentPoint = data.getPointAt(x, y)
+
+                if (currentPoint.tileDepth > 0) {
+                    // Start Rect
+                    if (isOnACollidableTile == false) {
+                        isOnACollidableTile = true
+                        currentCollisionRect = Rect.Zero
+                        currentCollisionRect.x = x * tileSize
+                    }
+
+                    currentCollisionRect.width += tileSize
+                } else {
+                    // Finish Rect
+                    if (isOnACollidableTile) {
+                        isOnACollidableTile = false
+                        
+                        collisionRects.push(currentCollisionRect)
+
+                        currentCollisionRect = undefined
+                    }
+                }
+            }
+        }
+
+        return collisionRects
     }
 }

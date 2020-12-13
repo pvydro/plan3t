@@ -2,26 +2,9 @@ import { Container } from '../../engine/display/Container'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Dimension } from '../../engine/math/Dimension'
 import { ISphericalBuilder, SphericalBuilder } from './SphericalBuilder'
-
-export enum SphericalBiome {
-    CloningFacility = 'cloningfacility'
-}
-
+import { SphericalBiome, SphericalData } from './SphericalData'
 export interface ISpherical extends IDemolishable {
     
-}
-
-export interface SphericalData {
-    points: SphericalPoint[]
-    biome: SphericalBiome
-    dimension: Dimension
-}
-
-export interface SphericalPoint {
-    x: number
-    y: number
-    tileValue: number
-    tileDepth: number
 }
 
 export class Spherical extends Container implements ISpherical {
@@ -37,7 +20,9 @@ export class Spherical extends Container implements ISpherical {
         this.biome = data.biome
         this.dimension = data.dimension
 
-        const sphericalContainer = this.builder.buildSphericalFromData(data)
+        const sphericalRespone = this.builder.buildSphericalFromData(data)
+        const sphericalContainer = sphericalRespone.tileLayer
+        const collisionRects = sphericalRespone.collisionRects
 
         this.addChild(sphericalContainer)
     }

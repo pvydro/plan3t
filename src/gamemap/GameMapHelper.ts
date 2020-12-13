@@ -1,8 +1,7 @@
 import { Assets, AssetUrls } from '../asset/Assets'
 import { Dimension } from '../engine/math/Dimension'
 import { LoggingService } from '../service/LoggingService'
-import { GameMap } from './GameMap'
-import { SphericalBiome, SphericalData, SphericalPoint } from './spherical/Spherical'
+import { SphericalData, SphericalPoint, SphericalBiome, ISphericalData } from './spherical/SphericalData'
 
 export interface PixelData {
     red: number
@@ -21,7 +20,7 @@ export class GameMapHelper implements IGameMapHelper {
 
     private constructor() {}
 
-    static async getRandomSphericalData(): Promise<any> {
+    static async getRandomSphericalData(): Promise<SphericalData> {
         LoggingService.log('GameMapHelper', 'getRandomSpherical')
 
         return new Promise((resolve, reject) => {
@@ -60,11 +59,11 @@ export class GameMapHelper implements IGameMapHelper {
             })
         })
 
-        const sphericalData: SphericalData = {
+        const sphericalData = new SphericalData({
             points,
             biome: SphericalBiome.CloningFacility,
             dimension: new Dimension(canvas.width, canvas.height)
-        }
+        })
 
         return sphericalData
     }
