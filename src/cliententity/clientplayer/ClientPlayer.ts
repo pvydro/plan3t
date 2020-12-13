@@ -56,6 +56,7 @@ export class ClientPlayer extends GravityEntity {
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
         this.collision = new PlayerCollision({ player })
+        this.boundingBox = this.collision.boundingBox
         
         this.addChild(this.body)
         this.addChild(this.head)

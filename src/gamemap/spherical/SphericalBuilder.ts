@@ -4,6 +4,7 @@ import { Container } from '../../engine/display/Container'
 import { LoggingService } from '../../service/LoggingService'
 import { Rect } from '../../engine/math/Rect'
 import { SphericalHelper } from './SphericalHelper'
+import { GlobalScale } from '../../utils/Constants'
 
 export interface ISphericalBuilder {
     buildSphericalFromData(data: ISphericalData): SphericalResponse
@@ -84,6 +85,14 @@ export class SphericalBuilder implements ISphericalBuilder {
                 }
             }
         }
+
+        // Scale all collision rects up by GlobalScale
+        collisionRects.forEach((rect: Rect) => {
+            rect.x *= GlobalScale
+            rect.y *= GlobalScale
+            rect.width *= GlobalScale
+            rect.height *= GlobalScale
+        })
 
         return collisionRects
     }

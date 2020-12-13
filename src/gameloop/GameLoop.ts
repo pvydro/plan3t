@@ -1,8 +1,8 @@
 import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
+import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { IRoomManager } from '../manager/RoomManager'
-import { BasicLerp } from '../utils/Constants'
 
 export interface IGameLoop {
     startGameLoop(): void
@@ -18,12 +18,14 @@ export class GameLoop implements IGameLoop {
     _shouldLoop: boolean = true
     clientManager: IClientManager
     entityManager: IEntityManager
+    gravityManager: IGravityManager
     roomManager: IRoomManager
 
     constructor(options: GameLoopOptions) {
         this.clientManager = options.clientManager
         this.entityManager = options.clientManager.entityManager
         this.roomManager = options.roomManager
+        this.gravityManager = GravityManager.getInstance()
     }
 
     startGameLoop() {
@@ -46,9 +48,10 @@ export class GameLoop implements IGameLoop {
             entity.update()
             
             // check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+            this.gravityManager.applyVelocityToEntity(entity)
 
-            entity.x += entity.xVel
-            entity.y += entity.yVel
+            // entity.x += entity.xVel
+            // entity.y += entity.yVel
         })
 
         // Update camera
