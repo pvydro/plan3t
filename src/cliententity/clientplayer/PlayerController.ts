@@ -3,7 +3,7 @@ import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Camera } from '../../camera/Camera'
-import { Direction } from '../../math/Direction'
+import { Direction } from '../../engine/math/Direction'
 
 export interface IPlayerController {
     update(): void

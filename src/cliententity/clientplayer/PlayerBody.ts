@@ -6,7 +6,7 @@ import { IClientPlayer } from './ClientPlayer'
 import { IPlayerBodyAnimator, PlayerBodyAnimator } from './PlayerBodyAnimator'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
-import { Direction } from '../../math/Direction'
+import { Direction } from '../../engine/math/Direction'
 
 export interface IPlayerBody extends IContainer, IUpdatable {
     sprite: PIXI.Sprite

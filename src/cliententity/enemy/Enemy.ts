@@ -1,7 +1,7 @@
 import { EntityType, IClientEntity, ClientEntity, ClientEntityOptions } from '../ClientEntity'
 import { Entity } from '../../network/rooms/Entity'
 import { EnemyHelper } from './helper/EnemyHelper'
-import { IDimension } from '../../math/Dimension'
+import { IDimension } from '../../engine/math/Dimension'
 
 export interface IEnemy extends IClientEntity {
 

@@ -3,7 +3,7 @@ import { IEnemy, Enemy } from '../Enemy'
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { Entity } from '../../../network/rooms/Entity'
 import { Sprite } from '../../../engine/display/Sprite'
-import { Dimension } from '../../../math/Dimension'
+import { Dimension } from '../../../engine/math/Dimension'
 
 export interface IFlyingEnemy extends IEnemy {
 

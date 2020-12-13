@@ -1,6 +1,6 @@
 import { Container } from '../../engine/display/Container'
 import { IDemolishable } from '../../interface/IDemolishable'
-import { Dimension } from '../../math/Dimension'
+import { Dimension } from '../../engine/math/Dimension'
 import { ISphericalBuilder, SphericalBuilder } from './SphericalBuilder'
 
 export enum SphericalBiome {

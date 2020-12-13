@@ -1,5 +1,5 @@
 import { Assets, AssetUrls } from '../asset/Assets'
-import { Dimension } from '../math/Dimension'
+import { Dimension } from '../engine/math/Dimension'
 import { LoggingService } from '../service/LoggingService'
 import { GameMap } from './GameMap'
 import { SphericalBiome, SphericalData, SphericalPoint } from './spherical/Spherical'

@@ -3,7 +3,7 @@ import { Assets, AssetUrls } from '../asset/Assets'
 import { Entity } from '../network/rooms/Entity'
 import { Sprite } from '../engine/display/Sprite'
 import { IContainer, Container } from '../engine/display/Container'
-import { IDimension, Dimension } from '../math/Dimension'
+import { IDimension, Dimension } from '../engine/math/Dimension'
 
 export interface IClientEntity extends IContainer {
     x: number

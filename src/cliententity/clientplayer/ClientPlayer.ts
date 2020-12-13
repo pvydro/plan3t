@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Entity } from '../../network/rooms/Entity'
-import { Direction } from '../../math/Direction'
+import { Direction } from '../../engine/math/Direction'
 import { IClientEntity, ClientEntity } from '../ClientEntity'
 import { PlayerHead } from './PlayerHead'
 import { PlayerBody } from './PlayerBody'

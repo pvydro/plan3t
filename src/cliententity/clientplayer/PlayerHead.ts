@@ -4,7 +4,7 @@ import { Sprite } from '../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { Direction } from '../../math/Direction'
+import { Direction } from '../../engine/math/Direction'
 import { Events } from '../../utils/Constants'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
 

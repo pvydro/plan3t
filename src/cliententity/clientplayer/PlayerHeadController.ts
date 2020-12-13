@@ -1,7 +1,7 @@
 import { Camera } from '../../camera/Camera'
 import { InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { Direction } from '../../math/Direction'
+import { Direction } from '../../engine/math/Direction'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { PlayerHead } from './PlayerHead'
 
