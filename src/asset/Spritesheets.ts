@@ -14,15 +14,14 @@ export class Spritesheets {
     private constructor() {}
 
     public static async loadSpritesheets() {
+        LoggingService.log('Spritesheets', 'loadSpritesheets')
+
         return new Promise((resolve, reject) => {
-            LoggingService.log('Spritesheets', 'loadSpritesheets')
-    
             if (Spritesheets._spritesheetsStartedLoading) {
                 return
             }
             Spritesheets._spritesheetsStartedLoading = true
     
-            // Load
             try {
                 PIXI.Loader.shared.add(SpritesheetUrls.PLAYER_BODY_WALKING).load(() => {
                     LoggingService.log('Spritesheets', 'Finished loading spritesheets')
@@ -33,6 +32,7 @@ export class Spritesheets {
                 })
             } catch (error) {
                 LoggingService.error('Failed to load Spritesheets', 'Error', error)
+                reject(error)
             }
         })
     }

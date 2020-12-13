@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { WeaponName } from './WeaponName'
-import { Assets, AssetUrls } from '../asset/Assets'
+import { Assets } from '../asset/Assets'
 import { LoggingService } from '../service/LoggingService'
 import { WeaponStats } from './Weapon'
 
@@ -16,7 +16,7 @@ export class WeaponHelper {
 
         const details: any = WeaponHelper.getWeaponDetailsByName(name)
 
-        const url = AssetUrls.BASE_IMAGE_DIR + '/weapons/' + details.dir + '/' + name
+        const url = Assets.BASE_IMAGE_DIR + '/weapons/' + details.dir + '/' + name
         const texture = PIXI.Texture.from(Assets.get(url))
 
         return texture

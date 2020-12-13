@@ -1,7 +1,58 @@
-export class AssetUrls {
+import * as PIXI from 'pixi.js'
+import { LoggingService } from '../service/LoggingService'
+
+export class Assets {
+    private static _imagesStartLoading: boolean = false
+    private static _imagesFinishedLoading: boolean = false
+
+    public static TILE_DIR = 'assets/image/gamemap/tiles/'
+    public static BASE_IMAGE_DIR: string = 'assets/image'
+
     private constructor() {}
 
-    public static BASE_IMAGE_DIR: string = 'assets/image'
+    public static async loadImages() {
+        LoggingService.log('Assets', 'loadImages')
+
+        return new Promise((resolve, reject) => {
+            if (Assets._imagesStartLoading) {
+                return
+            }
+            Assets._imagesStartLoading = true
+
+            try {
+                const assetKeys = Object.values(AssetUrls)
+                const assets = []
+                
+                assetKeys.forEach((key: string) => {
+                    assets.push(Assets.get(key))
+                })
+
+                PIXI.Loader.shared.add(assets).load(() => {
+                    LoggingService.log('Assets', 'Finished loading images')
+
+                    Assets._imagesFinishedLoading = true
+
+                    resolve(true)
+                })
+            } catch (error) {
+                LoggingService.error('Failed to load images', 'Error', error)
+                reject(error)
+            }
+        })
+    }
+
+    public static get(res: string): HTMLImageElement {
+        return require('../../' + res + '.png')
+    }
+
+    public static isImagesFinishedLoading() {
+        return this._imagesFinishedLoading
+    }
+}
+
+export class AssetUrls {
+    
+    private constructor() {}
 
     public static PLAYER_IDLE = 'assets/image/player/body/body-idle'
     public static PLAYER_HEAD_HUMAN_DEFAULT = 'assets/image/player/head/head-default'
@@ -13,14 +64,5 @@ export class AssetUrls {
 
     // Spherical/GameMap
     public static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
-    public static TILE_DIR = 'assets/image/gamemap/tiles/'
-    public static TILE_TEST = AssetUrls.TILE_DIR + 'cloningfacility/tile_0'
-}
-
-export class Assets {
-    private constructor() {}
-
-    public static get(res: string): HTMLImageElement {
-        return require('../../' + res + '.png')
-    }
+    public static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
 }

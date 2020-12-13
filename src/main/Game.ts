@@ -8,6 +8,7 @@ import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
+import { Assets } from '../asset/Assets'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -45,6 +46,7 @@ export class Game implements IGame {
     async bootstrap() {
         LoggingService.log('Game', 'bootstrap')
 
+        await Assets.loadImages()
         await Spritesheets.loadSpritesheets()
 
         // TODO: Main loader load, then other inits
