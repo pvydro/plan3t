@@ -81,18 +81,14 @@ export class GravityManager implements IGravityManager {
             const rectRightSide = rect.x + rect.width
             const rectBottomSide = rect.y
 
-            console.log(centerX)
-            console.log(i, 'left', rectLeftSide, 'right', rectRightSide, 'bottom', rectBottomSide, 'x', rect.x, 'y', rect.y)
-            console.log('bottomY', entityBottomY)
-
             // Check if above, and within horizontally, rectangle
             if (entityBottomY <= rectBottomSide
             && centerX >= rectLeftSide
             && centerX <= rectRightSide) {
                 if (entityBottomY + entity.yVel >= rect.y) {
-                    console.log('collided! ', i)
-                    
-                    entity.yVel = 0
+                    const difference = rect.y - entityBottomY
+                    entity.yVel = difference
+                    entity.landedOnGround()
                 }
             }
         })

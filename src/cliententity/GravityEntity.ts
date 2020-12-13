@@ -4,6 +4,7 @@ import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity
 export interface IGravityEntity extends IClientEntity {
     isOnGround: boolean
     comeToStop(): void
+    landedOnGround(): void
 }
 
 export interface GravityEntityOptions extends ClientEntityOptions {
@@ -38,6 +39,10 @@ export class GravityEntity extends ClientEntity {
         const xVel = this.xVel + (0 - this.xVel) / this.horizontalFriction
 
         this.xVel = xVel
+    }
+
+    landedOnGround() {
+        this._onGround = true
     }
 
     get isOnGround() {

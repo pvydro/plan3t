@@ -45,7 +45,7 @@ export class ClientPlayer extends GravityEntity {
     constructor(options: ClientPlayerOptions) {
         super({
             horizontalFriction: 5,
-            weight: 0.01
+            weight: 0.5
         })
 
         this._clientControl = options.clientControl
