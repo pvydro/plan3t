@@ -45,8 +45,7 @@ export class PlayerController implements IPlayerController {
     comeToStop() {
         this.player.bodyState = PlayerBodyState.Idle
 
-        const xVel = this.player.xVel + (0 - this.player.xVel) / this.floorFriction
-        this.player.xVel = xVel
+        this.player.comeToStop()
     }
 
     moveLeft() {

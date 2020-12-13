@@ -1,20 +1,17 @@
-import * as PIXI from 'pixi.js'
 import { Entity } from '../../network/rooms/Entity'
 import { Direction } from '../../engine/math/Direction'
-import { IClientEntity, ClientEntity } from '../ClientEntity'
 import { PlayerHead } from './PlayerHead'
 import { PlayerBody } from './PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
 import { PlayerHand } from './PlayerHand'
-import { Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
-import { Vector2 } from '../../engine/math/Vector2'
+import { GravityEntity, IGravityEntity } from '../GravityEntity'
 
-export interface IClientPlayer extends IClientEntity {
+export interface IClientPlayer extends IGravityEntity {
     direction: Direction
     bodyState: PlayerBodyState
     emitter: Emitter
@@ -33,7 +30,7 @@ export interface ClientPlayerOptions {
     clientControl?: boolean
 }
 
-export class ClientPlayer extends ClientEntity {
+export class ClientPlayer extends GravityEntity {
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
@@ -44,7 +41,11 @@ export class ClientPlayer extends ClientEntity {
     emitter: Emitter = new Emitter()
 
     constructor(options: ClientPlayerOptions) {
-        super()
+        super({
+            horizontalFriction: 5,
+            weight: 0.01
+        })
+
         this._clientControl = options.clientControl
         
         const player = this
@@ -87,6 +88,9 @@ export class ClientPlayer extends ClientEntity {
     
     update() {
         if (this.isClientControl) this.controller.update()
+
+        super.update()
+
         this.head.update()
         this.body.update()
         this.hand.update()

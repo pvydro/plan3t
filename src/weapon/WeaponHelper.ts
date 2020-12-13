@@ -27,9 +27,6 @@ export class WeaponHelper {
 
         const data = weaponStats[name]
 
-        console.log(data)
-        console.log(weaponStats)
-
         return data
     }
 

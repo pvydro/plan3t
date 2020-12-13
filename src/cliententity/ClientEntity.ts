@@ -1,18 +1,15 @@
-import * as PIXI from 'pixi.js'
-import { Assets, AssetUrls } from '../asset/Assets'
 import { Entity } from '../network/rooms/Entity'
 import { Sprite } from '../engine/display/Sprite'
 import { IContainer, Container } from '../engine/display/Container'
-import { IDimension, Dimension } from '../engine/math/Dimension'
+import { IDimension } from '../engine/math/Dimension'
+import { IUpdatable } from '../interface/IUpdatable'
 
-export interface IClientEntity extends IContainer {
+export interface IClientEntity extends IContainer, IUpdatable {
     x: number
     y: number
     xVel: number
     yVel: number
     type: string
-
-    update(): void
 }
 
 export enum EntityType {
