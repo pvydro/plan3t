@@ -17,8 +17,8 @@ export interface CollisionDebuggerOptions {
 
 export class CollisionDebugger extends Container implements ICollisionDebugger {
     collisionRectangles?: Rect[]
-    color: number = 0xFF0000
-    lineWidth: number = 2
+    color: number = 0x60b5b2
+    lineWidth: number = 1
     
     constructor(options?: CollisionDebuggerOptions) {
         super()

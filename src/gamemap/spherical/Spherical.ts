@@ -3,7 +3,9 @@ import { IDemolishable } from '../../interface/IDemolishable'
 import { Dimension } from '../../engine/math/Dimension'
 import { ISphericalBuilder, SphericalBuilder } from './SphericalBuilder'
 import { SphericalBiome, SphericalData } from './SphericalData'
-import { CollisionDebugger, ICollisionDebugger } from '../../engine/collision/CollisionDebugger'
+import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
+import { ShowCollisionDebug } from '../../utils/Constants'
+
 export interface ISpherical extends IDemolishable {
     
 }
@@ -25,11 +27,16 @@ export class Spherical extends Container implements ISpherical {
         const sphericalRespone = this.builder.buildSphericalFromData(data)
         const sphericalContainer = sphericalRespone.tileLayer
 
-        this.collisionDebugger = new CollisionDebugger({ collisionRectangles: sphericalRespone.collisionRects })
-        this.collisionDebugger.initializeAndShowGraphics()
-
         this.addChild(sphericalContainer)
-        this.addChild(this.collisionDebugger)
+        
+        if (ShowCollisionDebug) {
+            this.collisionDebugger = new CollisionDebugger({
+                lineWidth: 0.5,
+                collisionRectangles: sphericalRespone.collisionRects
+            })
+            this.collisionDebugger.initializeAndShowGraphics()
+            this.addChild(this.collisionDebugger)
+        }
     }
 
     demolish() {
