@@ -71,10 +71,6 @@ export class GravityManager implements IGravityManager {
         const entityBottomY = entity.y + (entityBounds.width * GlobalScale)
         const centerX = entity.x
 
-        const debug = new CollisionDebugger({ collisionRects: this.gameMapCollidableRects })
-        debug.initializeAndShowGraphics()
-        camera.viewport.addChild(debug)
-
         this.gameMapCollidableRects.forEach((rect: Rect, i) => {
             // Check if yVel will pass block, if so, set yvel to max without passed
             const rectLeftSide = rect.x
@@ -88,7 +84,7 @@ export class GravityManager implements IGravityManager {
                 if (entityBottomY + entity.yVel >= rect.y) {
                     const difference = rect.y - entityBottomY
                     entity.yVel = difference
-                    entity.landedOnGround()
+                    entity.landedOnGround(rect)
                 }
             }
         })

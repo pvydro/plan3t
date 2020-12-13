@@ -35,7 +35,7 @@ export class Spherical extends Container implements ISpherical {
         
         if (ShowCollisionDebug) {
             this.collisionDebugger = new CollisionDebugger({
-                lineWidth: 0.5,
+                lineWidth: 3,
                 collisionRects: sphericalRespone.collisionRects
             })
             this.collisionDebugger.scale.set(0.2, 0.2)

@@ -4,7 +4,7 @@ import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity
 export interface IGravityEntity extends IClientEntity {
     isOnGround: boolean
     comeToStop(): void
-    landedOnGround(): void
+    landedOnGround(groundRect: Rect): void
 }
 
 export interface GravityEntityOptions extends ClientEntityOptions {
@@ -14,6 +14,7 @@ export interface GravityEntityOptions extends ClientEntityOptions {
 }
 
 export class GravityEntity extends ClientEntity {
+    _currentGroundRect?: Rect
     _onGround: boolean = false
     horizontalFriction: number
     boundingBox: IRect
@@ -28,6 +29,17 @@ export class GravityEntity extends ClientEntity {
     }
 
     update() {
+        // Check if on ground based on current rect
+        if (this._currentGroundRect) {
+            const centerX = this.x
+
+            if (centerX < this._currentGroundRect.x
+            || centerX > this._currentGroundRect.x + this._currentGroundRect.width) {
+                this._onGround = false
+            }
+        }
+
+        // Increase vertical velocity if not on ground
         if (this.isOnGround === false) {
             this.yVel += (this.weight / 3) // * GravityManager.gravity
         } else {
@@ -41,8 +53,10 @@ export class GravityEntity extends ClientEntity {
         this.xVel = xVel
     }
 
-    landedOnGround() {
+    landedOnGround(groundRect: Rect) {
         this._onGround = true
+
+        this._currentGroundRect = groundRect
     }
 
     get isOnGround() {
