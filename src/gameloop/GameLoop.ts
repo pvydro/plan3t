@@ -44,6 +44,9 @@ export class GameLoop implements IGameLoop {
         }
         entities.forEach((entity: ClientEntity) => {
             entity.update()
+            
+            // check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+
             entity.x += entity.xVel
             entity.y += entity.yVel
         })

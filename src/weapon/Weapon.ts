@@ -1,5 +1,5 @@
-import { Container } from '../display/Container'
-import { Sprite } from '../display/Sprite'
+import { Container } from '../engine/display/Container'
+import { Sprite } from '../engine/display/Sprite'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
 

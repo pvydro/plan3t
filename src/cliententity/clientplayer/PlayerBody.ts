@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
-import { IContainer, Container } from '../../display/Container'
+import { IContainer, Container } from '../../engine/display/Container'
 import { IClientPlayer } from './ClientPlayer'
 import { IPlayerBodyAnimator, PlayerBodyAnimator } from './PlayerBodyAnimator'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { Sprite } from '../../display/Sprite'
+import { Sprite } from '../../engine/display/Sprite'
 import { Direction } from '../../math/Direction'
 
 export interface IPlayerBody extends IContainer, IUpdatable {

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { IDimension } from '../math/Dimension'
+import { IDimension } from '../../math/Dimension'
 
 export interface ISprite {
 

@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
-import { Container } from '../../display/Container'
-import { Sprite } from '../../display/Sprite'
+import { Container } from '../../engine/display/Container'
+import { Sprite } from '../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'

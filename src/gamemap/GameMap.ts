@@ -1,8 +1,9 @@
-import { Container } from 'pixi.js'
 import { GameMapHelper } from './GameMapHelper'
 import { IDemolishable } from '../interface/IDemolishable'
 import { LoggingService } from '../service/LoggingService'
 import { Spherical } from './spherical/Spherical'
+import { Container } from '../engine/display/Container'
+import { GlobalScale } from '../utils/Constants'
 
 export interface IGameMap extends IDemolishable {
     initializeSpherical(): Promise<void>
@@ -17,9 +18,8 @@ export class GameMap extends Container implements IGameMap {
     
     constructor(options?: GameMapOptions) {
         super()
-        // createGameMap(seed?)
-        // GameMapHelper.parseSphericalToArray()
-        // GameMapHelper.parseSphericalToContainer(options?)
+
+        this.scale.set(GlobalScale, GlobalScale)
     }
 
     // TODO: Seed
@@ -27,8 +27,6 @@ export class GameMap extends Container implements IGameMap {
         LoggingService.log('GameMap', 'initializeSpherical')
 
         GameMapHelper.getRandomSphericalData().then((sphericalData) => {
-            LoggingService.log('GameMap', 'Spherical', sphericalData)
-
             const spherical = new Spherical(sphericalData)
 
             this.addChild(spherical)

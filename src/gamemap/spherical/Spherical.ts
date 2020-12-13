@@ -1,4 +1,4 @@
-import { Container } from '../../display/Container'
+import { Container } from '../../engine/display/Container'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Dimension } from '../../math/Dimension'
 import { ISphericalBuilder, SphericalBuilder } from './SphericalBuilder'

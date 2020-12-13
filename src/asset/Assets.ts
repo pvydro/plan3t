@@ -36,6 +36,7 @@ export class Assets {
                 })
             } catch (error) {
                 LoggingService.error('Failed to load images', 'Error', error)
+                
                 reject(error)
             }
         })
@@ -51,7 +52,7 @@ export class Assets {
 }
 
 export class AssetUrls {
-    
+
     private constructor() {}
 
     public static PLAYER_IDLE = 'assets/image/player/body/body-idle'
@@ -64,5 +65,6 @@ export class AssetUrls {
 
     // Spherical/GameMap
     public static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
+    public static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
     public static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
 }

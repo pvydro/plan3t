@@ -1,8 +1,8 @@
 import { SphericalData, SphericalPoint } from './Spherical'
 import { Assets } from '../../asset/Assets'
-import { Sprite } from '../../display/Sprite'
+import { Sprite } from '../../engine/display/Sprite'
 import { Dimension } from '../../math/Dimension'
-import { Container } from '../../display/Container'
+import { Container } from '../../engine/display/Container'
 
 export interface ISphericalBuilder {
     buildSphericalFromData(data: SphericalData)
