@@ -1,10 +1,8 @@
 import { ISphericalData, SphericalData, SphericalPoint } from './SphericalData'
-import { Assets } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
-import { Dimension } from '../../engine/math/Dimension'
 import { Container } from '../../engine/display/Container'
 import { LoggingService } from '../../service/LoggingService'
-import { IRect, Rect } from '../../engine/math/Rect'
+import { Rect } from '../../engine/math/Rect'
 import { SphericalHelper } from './SphericalHelper'
 
 export interface ISphericalBuilder {
@@ -13,7 +11,7 @@ export interface ISphericalBuilder {
 
 export interface SphericalResponse {
     tileLayer: Container
-    collisionRects: IRect[]
+    collisionRects: Rect[]
 }
 
 export class SphericalBuilder implements ISphericalBuilder {
@@ -41,40 +39,48 @@ export class SphericalBuilder implements ISphericalBuilder {
         // Construct collision layer
         const collisionRects = this.buildCollisionRectanglesFromData(data)
 
+        console.log('rect', collisionRects)
+
         return {
             tileLayer,
             collisionRects
         }
     }
 
-    private buildCollisionRectanglesFromData(data: SphericalData): IRect[] {
+    private buildCollisionRectanglesFromData(data: SphericalData): Rect[] {
         LoggingService.log('SphericalBuilder', 'buildCollisionLayerFromData')
 
-        const collisionRects: IRect[] = []
+        const collisionRects: Rect[] = []
         const tileSize = SphericalHelper.getTileSizeForBiome(data.biome)
         
         for (var y = 0; y < data.dimension.height; y++) {
             let isOnACollidableTile = false
-            let currentCollisionRect: IRect = undefined
+            let currentCollisionRect: Rect = undefined
 
             for (var x = 0; x < data.dimension.width; x++) {
                 const currentPoint = data.getPointAt(x, y)
 
                 if (currentPoint.tileDepth > 0) {
+                    console.log('WOAHAHAH')
                     // Start Rect
                     if (isOnACollidableTile == false) {
                         isOnACollidableTile = true
+
                         currentCollisionRect = Rect.Zero
-                        currentCollisionRect.x = x * tileSize
+                        currentCollisionRect.position = {
+                            x: x * tileSize,
+                            y: y * tileSize
+                        }
+
+                        collisionRects.push(currentCollisionRect)
                     }
 
+                    currentCollisionRect.height = tileSize
                     currentCollisionRect.width += tileSize
                 } else {
                     // Finish Rect
                     if (isOnACollidableTile) {
                         isOnACollidableTile = false
-                        
-                        collisionRects.push(currentCollisionRect)
 
                         currentCollisionRect = undefined
                     }

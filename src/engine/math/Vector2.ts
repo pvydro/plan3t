@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
 import { BasicLerp } from '../../utils/Constants'
 
-export interface IVector2 extends PIXI.IPoint {
-
+export interface IVector2 {
+    x: number, y: number
 }
 
 export class Vector2 extends PIXI.Point implements IVector2 {
