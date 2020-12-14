@@ -1,17 +1,11 @@
-import { Camera } from '../camera/Camera'
 import { ClientEntity } from '../cliententity/ClientEntity'
 import { GravityEntity } from '../cliententity/GravityEntity'
-import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
-import { Rect } from '../engine/math/Rect'
-import { Vector2 } from '../engine/math/Vector2'
 import { GameMap } from '../gamemap/GameMap'
-import { SphericalHelper } from '../gamemap/spherical/SphericalHelper'
 import { LoggingService } from '../service/LoggingService'
-import { GlobalScale } from '../utils/Constants'
+import { CollisionManager, ICollisionManager } from './CollisionManager'
 
 export interface IGravityManager {
     initialize(): void
-    registerEntityForCollision(entity: GravityEntity)
     applyVelocityToEntity(entity: ClientEntity | GravityEntity, checkCollision?: boolean)
 }
 
@@ -21,6 +15,7 @@ export interface GravityManagerOptions {
 
 export class GravityManager implements IGravityManager {
     private static INSTANCE: GravityManager
+    collisionManager: ICollisionManager
     gameMap: GameMap
 
     static getInstance() {
@@ -33,6 +28,9 @@ export class GravityManager implements IGravityManager {
 
     private constructor() {
         this.gameMap = GameMap.getInstance()
+        this.collisionManager = new CollisionManager({
+            gameMap: this.gameMap
+        })
     }
 
 
@@ -40,59 +38,12 @@ export class GravityManager implements IGravityManager {
         LoggingService.log('GravityManager', 'initialize')
     }
 
-    registerEntityForCollision(entity: GravityEntity) {
-        LoggingService.log('GravityManager', 'registerEntityForCollision')
-
-        // Loop through game map collidables
-        this.gameMapCollidableRects.forEach((collidableRect: Rect) => {
-            // console.log(collidableRect.x)
-            // this.bump.rectangleCollision(collidableRect, entity.boundingBox, true)
-        })
-    }
-
     applyVelocityToEntity(entity: ClientEntity | GravityEntity, checkCollision: boolean = true) {
         if (checkCollision && entity instanceof GravityEntity) {
-            entity = this.checkEntityCollision(entity as GravityEntity)
+            entity = this.collisionManager.checkEntityCollision(entity as GravityEntity)
         }
         
         entity.x += entity.xVel
         entity.y += entity.yVel
-    }
-
-    checkEntityCollision(entity: GravityEntity): GravityEntity {
-        entity = this.checkEntityCollisionAgainstMap(entity)
-
-        return entity
-    }
-
-    private checkEntityCollisionAgainstMap(entity: GravityEntity): GravityEntity {
-        const camera = Camera.getInstance()
-        const entityBounds = entity.boundingBox
-        const entityBottomY = entity.y + (entityBounds.width * GlobalScale)
-        const centerX = entity.x
-
-        this.gameMapCollidableRects.forEach((rect: Rect, i) => {
-            // Check if yVel will pass block, if so, set yvel to max without passed
-            const rectLeftSide = rect.x
-            const rectRightSide = rect.x + rect.width
-            const rectBottomSide = rect.y
-
-            // Check if above, and within horizontally, rectangle
-            if (entityBottomY <= rectBottomSide
-            && centerX >= rectLeftSide
-            && centerX <= rectRightSide) {
-                if (entityBottomY + entity.yVel >= rect.y) {
-                    const difference = rect.y - entityBottomY
-                    entity.yVel = difference
-                    entity.landedOnGround(rect)
-                }
-            }
-        })
-
-        return entity
-    }
-
-    get gameMapCollidableRects() {
-        return this.gameMap.collidableRects
     }
 }

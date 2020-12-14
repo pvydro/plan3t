@@ -57,7 +57,6 @@ export class EntityManager implements IEntityManager {
 
         this.camera.addChild(this.currentPlayerEntity)
         this.camera.follow(playerDisplayObject)
-        this.gravityManager.registerEntityForCollision(player)
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {

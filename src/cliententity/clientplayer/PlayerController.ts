@@ -21,6 +21,7 @@ export class PlayerController implements IPlayerController {
     mousePos: IVector2 = Vector2.Zero
 
     playerWalkingSpeed: number = 5
+    playerJumpingHeight: number = 8
     floorFriction = 5
 
     constructor(options: PlayerControllerOptions) {
@@ -58,6 +59,16 @@ export class PlayerController implements IPlayerController {
         this.player.xVel = this.playerWalkingSpeed
     }
 
+    jump() {
+        if (!this.player.isOnGround) {
+            return
+        }
+        
+        this.player.bodyState = PlayerBodyState.Jumping
+        this.player._onGround = false
+        this.player.yVel = -this.playerJumpingHeight
+    }
+
     changeDirectionBasedOnMouse() {
         const projectedPlayerPos = Camera.getInstance().viewport.toScreen(this.player.position)
 
@@ -75,11 +86,9 @@ export class PlayerController implements IPlayerController {
         InputProcessor.on('keydown', (e: KeyboardEvent) => {
             switch (e.which) {
                 case Key.A:
-                    // this.moveLeft()
                     this.leftKeyDown = true
                     break
                 case Key.D:
-                    this.moveRight()
                     this.rightKeyDown = true
                     break
             }
@@ -93,6 +102,15 @@ export class PlayerController implements IPlayerController {
                     break
                 case Key.D:
                     this.rightKeyDown = false
+                    break
+            }
+        })
+
+        // KeyPress
+        InputProcessor.on('keypress', (e: KeyboardEvent) => {
+            switch(e.which) {
+                case Key.Space:
+                    this.jump()
                     break
             }
         })
