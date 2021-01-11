@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 
 export class Assets {
     private static _imagesStartLoading: boolean = false
@@ -11,7 +11,7 @@ export class Assets {
     private constructor() {}
 
     public static async loadImages() {
-        LoggingService.log('Assets', 'loadImages')
+        Flogger.log('Assets', 'loadImages')
 
         return new Promise((resolve, reject) => {
             if (Assets._imagesStartLoading) {
@@ -28,14 +28,14 @@ export class Assets {
                 })
 
                 PIXI.Loader.shared.add(assets).load(() => {
-                    LoggingService.log('Assets', 'Finished loading images')
+                    Flogger.log('Assets', 'Finished loading images')
 
                     Assets._imagesFinishedLoading = true
 
                     resolve(true)
                 })
             } catch (error) {
-                LoggingService.error('Failed to load images', 'Error', error)
+                Flogger.error('Failed to load images', 'Error', error)
                 
                 reject(error)
             }

@@ -7,12 +7,12 @@ import { Player } from "./Player"
 const WORLD_SIZE = 2000;
 export const DEFAULT_PLAYER_RADIUS = 10;
 
-export class GameState extends Schema {
+export class NetworkGameState extends Schema {
 
   width = WORLD_SIZE;
   height = WORLD_SIZE;
 
-  @filterChildren(function(client, key: string, value: Entity, root: GameState) {
+  @filterChildren(function(client, key: string, value: Entity, root: NetworkGameState) {
     const currentPlayer = root.entities.get(client.sessionId);
     if (currentPlayer) {
         const a = value.x - currentPlayer.x;

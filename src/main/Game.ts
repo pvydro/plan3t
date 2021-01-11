@@ -1,67 +1,48 @@
 import * as PIXI from 'pixi.js'
 import * as Viewport from 'pixi-viewport'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { Spritesheets } from '../asset/Spritesheets'
-import { WindowSize, WorldSize } from '../utils/Constants'
-import { IRoomManager } from '../manager/RoomManager'
-import { IClientManager } from '../manager/ClientManager'
-import { IEntityManager } from '../manager/EntityManager'
+import { WindowSize } from '../utils/Constants'
+import { ClientManager, IClientManager } from '../manager/ClientManager'
+import { EntityManager } from '../manager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
-import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { Assets } from '../asset/Assets'
-import { GravityManager, IGravityManager } from '../manager/GravityManager'
+import { Camera } from '../camera/Camera'
 
 export interface IGame {
     bootstrap(): Promise<void>
     view: any
-    cameraViewport: Viewport
     renderer: PIXI.Renderer
-}
-
-export interface GameOptions {
-    roomManager: IRoomManager
-    clientManager: IClientManager
-    entityManager: IEntityManager
+    cameraViewport: Viewport
 }
 
 export class Game implements IGame {
     _application: PIXI.Application
-
-    roomManager: IRoomManager
-    clientManager: IClientManager
-    gameMapManager: IGameMapManager
-    gravityManager: IGravityManager
+    _clientCamera
+    _clientManager: IClientManager
+    _entityManager
 
     gameLoop: IGameLoop
 
-    constructor(options: GameOptions) {
-        this.roomManager = options.roomManager
-        this.clientManager = options.clientManager
-
-        this.gameMapManager = new GameMapManager({
-            clientManager: this.clientManager
-        })
-        
-        this.gravityManager = GravityManager.getInstance()
-
+    constructor() {
         this.instantiateApplication()
+
+        const game = this
+        this._entityManager = new EntityManager({ game })
+        this._clientCamera = Camera.getInstance()
+        this._clientManager = new ClientManager({ game, entityManager: this.entityManager })
     }
 
     async bootstrap() {
-        LoggingService.log('Game', 'bootstrap')
+        Flogger.log('Game', 'bootstrap')
 
         await Assets.loadImages()
         await Spritesheets.loadSpritesheets()
-
-        // TODO: Main loader load, then other inits
-        // Internal state manager for loading screen, Scene
-        await this.clientManager.initialize()
-        await this.roomManager.initializeRoom()
         
-        this.initializeBackground()
-        await this.initializeGameMap()
+        await this.clientManager.initialize()
+        await this.clientManager.gameStateManager.initialize()
+
         this.initializeGameLoop()
-        this.initializeCamera()
     }
 
     instantiateApplication() {
@@ -74,41 +55,22 @@ export class Game implements IGame {
             antialias: false,
         })
     }
-    
-    initializeCamera() {
-        this.stage.addChild(this.cameraViewport)
-    }
 
     initializeGameLoop() {
         this.gameLoop = new GameLoop({
             clientManager: this.clientManager,
-            roomManager: this.roomManager
+            // roomManager: this.roomManager
         })
 
         this.gameLoop.startGameLoop()
     }
 
-    initializeMouseMovement() {
-        this.cameraViewport.on('mousemove', (e) => {
-            const point = this.cameraViewport.toLocal(e.data.global)
-            this.room.send('mouse', { x: point.x, y: point.y })
-        })
-    }
-
-    initializeBackground() {
-        const boundaries = new PIXI.Graphics()
-        boundaries.beginFill(0x000000)
-        boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
-        this.cameraViewport.addChild(boundaries)
-    }
-
-    async initializeGameMap() {
-        await this.gameMapManager.initialize()
-    }
-
-    get room() {
-        return this.roomManager.currentRoom
-    }
+    // initializeMouseMovement() {
+    //     // this.cameraViewport.on('mousemove', (e) => {
+    //     //     const point = this.cameraViewport.toLocal(e.data.global)
+    //     //     this.room.send('mouse', { x: point.x, y: point.y })
+    //     // })
+    // }
 
     get gameMap() {
         return this.clientManager.gameMap
@@ -122,19 +84,27 @@ export class Game implements IGame {
         return this._application.view
     }
 
-    get camera() {
-        return this.clientManager.clientCamera
-    }
-
-    get cameraViewport() {
-        return this.clientManager.clientCamera.viewport
-    }
-
     get renderer() {
         return this._application.renderer
     }
 
     get stage() {
         return this._application.stage
+    }
+
+    get entityManager() {
+        return this._entityManager
+    }
+
+    get clientManager() {
+        return this._clientManager
+    }
+
+    get camera() {
+        return this._clientCamera
+    }
+
+    get cameraViewport() {
+        return this._clientCamera.viewport
     }
 }

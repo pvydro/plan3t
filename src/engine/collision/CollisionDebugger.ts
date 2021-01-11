@@ -2,7 +2,7 @@ import { Container, IContainer } from '../display/Container'
 import { IRect, Rect } from '../math/Rect'
 import { Graphix } from '../display/Graphix'
 import { IDemolishable } from '../../interface/IDemolishable'
-import { LoggingService } from '../../service/LoggingService'
+import { Flogger } from '../../service/Flogger'
 
 export interface ICollisionDebugger extends IContainer, IDemolishable {
     initializeAndShowGraphics(): void
@@ -39,7 +39,7 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
     createDebugGraphics(rectangles?: Rect[]): Graphix {
         rectangles = rectangles ? rectangles : this.collisionRects
 
-        LoggingService.log('CollisionDebugger', 'createDebugGraphics', 'rectangles', rectangles)
+        Flogger.log('CollisionDebugger', 'createDebugGraphics', 'rectangles', rectangles)
 
         const rectangleGraphics = new Graphix()
 

@@ -2,7 +2,8 @@ import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
-import { IRoomManager } from '../manager/RoomManager'
+import { IRoomManager, RoomManager } from '../manager/RoomManager'
+import { Flogger } from '../service/Flogger'
 
 export interface IGameLoop {
     startGameLoop(): void
@@ -10,25 +11,27 @@ export interface IGameLoop {
 }
 
 export interface GameLoopOptions {
-    clientManager: IClientManager
-    roomManager: IRoomManager
+    clientManager?: IClientManager
+    roomManager?: IRoomManager
 }
 
 export class GameLoop implements IGameLoop {
+    _initialized: boolean = false
     _shouldLoop: boolean = true
-    clientManager: IClientManager
-    entityManager: IEntityManager
-    gravityManager: IGravityManager
-    roomManager: IRoomManager
+    clientManager?: IClientManager = undefined
+    entityManager?: IEntityManager = undefined
+    gravityManager: IGravityManager = undefined
+    roomManager?: IRoomManager = undefined
 
     constructor(options: GameLoopOptions) {
-        this.clientManager = options.clientManager
-        this.entityManager = options.clientManager.entityManager
-        this.roomManager = options.roomManager
+        this.assignOptions(options)
+
         this.gravityManager = GravityManager.getInstance()
     }
 
-    startGameLoop() {
+    startGameLoop(options?: GameLoopOptions) {
+        this.assignOptions(options)
+
         this._shouldLoop = true
         requestAnimationFrame(this.gameLoop.bind(this))
     }
@@ -38,33 +41,39 @@ export class GameLoop implements IGameLoop {
     }
 
     gameLoop() {
+        // Update current state
+        this.clientManager.gameStateManager.update()
+
         // Update all ClientEntities
-        const entitiesMap = this.entityManager.clientEntities
-        let entities: ClientEntity[] = []
-        for (let id in entitiesMap) {
-            entities.push(entitiesMap[id])
+        if (this.entityManager !== undefined) {
+            const entitiesMap = this.entityManager.clientEntities
+            let entities: ClientEntity[] = []
+            for (let id in entitiesMap) {
+                entities.push(entitiesMap[id])
+            }
+            entities.forEach((entity: ClientEntity) => {
+                entity.update()
+                
+                // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+                this.gravityManager.applyVelocityToEntity(entity)
+            })
         }
-        entities.forEach((entity: ClientEntity) => {
-            entity.update()
-            
-            // check x + xVel for entity if colliding or in path colliding via CollisionManager B)
-            this.gravityManager.applyVelocityToEntity(entity)
 
-            // entity.x += entity.xVel
-            // entity.y += entity.yVel
-        })
-
-        // Update camera
-        this.clientManager.clientCamera.update()
-
-        // Bring entities to server instance values
-        // for (let id in entities) {
-        //     entities[id].x = BasicLerp(entities[id].x, currentRoom.state.entities[id].x, 0.2)
-        //     entities[id].y = BasicLerp(entities[id].y, currentRoom.state.entities[id].y, 0.2)
-        // }
+        // Update camera & client manager
+        if (this.clientManager !== undefined) {
+            this.clientManager.clientCamera.update()
+        }
 
         if (this._shouldLoop) {
             requestAnimationFrame(this.gameLoop.bind(this))
+        }
+    }
+
+    assignOptions(options: GameLoopOptions) {
+        if (options !== undefined) {
+            this.clientManager = options.clientManager ?? this.clientManager
+            this.entityManager = options.clientManager.entityManager ?? this.entityManager
+            this.roomManager = options.roomManager ?? this.roomManager
         }
     }
 }

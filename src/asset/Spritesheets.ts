@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 
 export class SpritesheetUrls {
     private constructor() {}
@@ -14,7 +14,7 @@ export class Spritesheets {
     private constructor() {}
 
     public static async loadSpritesheets() {
-        LoggingService.log('Spritesheets', 'loadSpritesheets')
+        Flogger.log('Spritesheets', 'loadSpritesheets')
 
         return new Promise((resolve, reject) => {
             if (Spritesheets._spritesheetsStartedLoading) {
@@ -24,14 +24,14 @@ export class Spritesheets {
     
             try {
                 PIXI.Loader.shared.add(SpritesheetUrls.PLAYER_BODY_WALKING).load(() => {
-                    LoggingService.log('Spritesheets', 'Finished loading spritesheets')
+                    Flogger.log('Spritesheets', 'Finished loading spritesheets')
                     
                     this._spritesheetsFinishedLoading = true
     
                     resolve(true)
                 })
             } catch (error) {
-                LoggingService.error('Failed to load Spritesheets', 'Error', error)
+                Flogger.error('Failed to load Spritesheets', 'Error', error)
                 reject(error)
             }
         })

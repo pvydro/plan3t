@@ -1,4 +1,4 @@
-export class LoggingService {
+export class Flogger {
     public static isLoggingEnabled: boolean = true
   
     static init() {
@@ -6,7 +6,7 @@ export class LoggingService {
     }
   
     static log(message: string, ...object: any) {
-      if (!LoggingService.isLoggingEnabled) return
+      if (!Flogger.isLoggingEnabled) return
       
       if (object) {
         console.log(`%c${message}: ${JSON.stringify(object)}`, 'color: orange')

@@ -4,8 +4,9 @@ import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { RoomManager } from '../manager/RoomManager'
 import { ICamera } from '../camera/Camera'
 import { ClientEntity } from '../cliententity/ClientEntity'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { GravityManager, IGravityManager } from './GravityManager'
+import { Game } from '../main/Game'
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -18,7 +19,7 @@ export interface IEntityManager {
 }
 
 export interface EntityManagerOptions {
-    camera: ICamera
+    game?: Game
 }
 
 export class EntityManager implements IEntityManager {
@@ -26,26 +27,29 @@ export class EntityManager implements IEntityManager {
     _clientEntities: { [id: string]: any } = {}//ClientEntity } = {}
     _currentPlayerEntity: any//PIXI.Graphics
 
-    camera: ICamera
+    game: Game
     gravityManager: IGravityManager
 
     constructor(options: EntityManagerOptions) {
-        this.camera = options.camera
+        this.game = options.game
 
         this.gravityManager = GravityManager.getInstance()
     }
 
     createEnemyPlayer(entity: Entity, sessionID: string) {
-        LoggingService.log('EntityManager', 'createEntity', 'sessionID', sessionID)
+        Flogger.log('EntityManager', 'createEntity', 'sessionID', sessionID)
+        
         const enemyPlayer = new ClientPlayer({ entity })
         
         this._entities[sessionID] = entity
         this._clientEntities[sessionID] = enemyPlayer
         
-        this.viewport.addChild(enemyPlayer)
+        this.cameraViewport.addChild(enemyPlayer)
     }
     
     createClientPlayer(entity: Entity, sessionID: string) {
+        Flogger.log('EntityManager', 'createClientPlayer', 'sessionID', sessionID)
+
         const player = new ClientPlayer({
             entity,
             clientControl: true
@@ -55,15 +59,15 @@ export class EntityManager implements IEntityManager {
         this._currentPlayerEntity = player
         this._clientEntities[sessionID] = this.currentPlayerEntity
 
-        this.camera.addChild(this.currentPlayerEntity)
-        this.camera.follow(playerDisplayObject)
+        this.cameraViewport.addChild(this.currentPlayerEntity)
+        this.cameraViewport.follow(playerDisplayObject)
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {
         const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionID)
 
         if (!isLocalPlayer) {
-            const clientEntity = this.clientEntities[sessionID]
+            // const clientEntity = this.clientEntities[sessionID]
 
             
             // this.clientEntities[sessionID].x = entity.x
@@ -74,17 +78,21 @@ export class EntityManager implements IEntityManager {
     removeEntity(sessionID: string, entity?: Entity) {
         const removedClientEntity = this.clientEntities[sessionID]
         
-        this.viewport.removeChild(removedClientEntity)
+        this.cameraViewport.removeChild(removedClientEntity)
 
         delete this.entities[sessionID]
     }
 
-    get currentPlayerEntity() {
-        return this._currentPlayerEntity
+    get camera() {
+        return this.game.camera
     }
 
-    get viewport() {
+    get cameraViewport() {
         return this.camera.viewport
+    }
+
+    get currentPlayerEntity() {
+        return this._currentPlayerEntity
     }
 
     get entities() {

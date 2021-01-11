@@ -1,7 +1,7 @@
 import { ClientEntity } from '../cliententity/ClientEntity'
 import { GravityEntity } from '../cliententity/GravityEntity'
 import { GameMap } from '../gamemap/GameMap'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { CollisionManager, ICollisionManager } from './CollisionManager'
 
 export interface IGravityManager {
@@ -33,9 +33,8 @@ export class GravityManager implements IGravityManager {
         })
     }
 
-
     initialize() {
-        LoggingService.log('GravityManager', 'initialize')
+        Flogger.log('GravityManager', 'initialize')
     }
 
     applyVelocityToEntity(entity: ClientEntity | GravityEntity, checkCollision: boolean = true) {

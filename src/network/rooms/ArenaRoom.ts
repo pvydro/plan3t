@@ -1,16 +1,16 @@
 import { Room, Client } from "colyseus"
 import { Entity } from "./Entity"
-import { GameState } from "./GameState"
+import { NetworkGameState } from "./GameState"
 
 interface MouseMessage {
   x: number
   y: number
 }
 
-export class ArenaRoom extends Room<GameState> {
+export class ArenaRoom extends Room<NetworkGameState> {
 
   onCreate() {
-    this.setState(new GameState())
+    this.setState(new NetworkGameState())
     this.state.initialize()
 
     this.onMessage("mouse", (client, message: MouseMessage) => {

@@ -1,7 +1,7 @@
 import { ISphericalData, SphericalData, SphericalPoint } from './SphericalData'
 import { Sprite } from '../../engine/display/Sprite'
 import { Container } from '../../engine/display/Container'
-import { LoggingService } from '../../service/LoggingService'
+import { Flogger } from '../../service/Flogger'
 import { Rect } from '../../engine/math/Rect'
 import { SphericalHelper } from './SphericalHelper'
 import { GlobalScale } from '../../utils/Constants'
@@ -20,7 +20,7 @@ export class SphericalBuilder implements ISphericalBuilder {
     constructor() {}
 
     buildSphericalFromData(data: SphericalData) {
-        LoggingService.log('SphericalBuilder', 'buildSphericalFromData')
+        Flogger.log('SphericalBuilder', 'buildSphericalFromData')
 
         const tileLayer = new Container()
 
@@ -47,7 +47,7 @@ export class SphericalBuilder implements ISphericalBuilder {
     }
 
     private buildCollisionRectanglesFromData(data: SphericalData): Rect[] {
-        LoggingService.log('SphericalBuilder', 'buildCollisionLayerFromData')
+        Flogger.log('SphericalBuilder', 'buildCollisionLayerFromData')
 
         const collisionRects: Rect[] = []
         const tileSize = SphericalHelper.getTileSizeForBiome(data.biome)

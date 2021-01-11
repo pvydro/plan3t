@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { WeaponName } from './WeaponName'
 import { Assets } from '../asset/Assets'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { WeaponStats } from './Weapon'
 
 const weaponStats = require('../json/WeaponStats.json')
@@ -12,7 +12,7 @@ export class WeaponHelper {
     }
 
     public static getWeaponTextureByName(name: WeaponName) {
-        LoggingService.log('WeaponHelper', 'getWeaponTextureByName', name)
+        Flogger.log('WeaponHelper', 'getWeaponTextureByName', name)
 
         const details: any = WeaponHelper.getWeaponDetailsByName(name)
 
@@ -23,7 +23,7 @@ export class WeaponHelper {
     }
 
     public static getWeaponDetailsByName(name: WeaponName): any {
-        LoggingService.log('WeaponHelper', 'getWeaponDetailsByName', name)
+        Flogger.log('WeaponHelper', 'getWeaponDetailsByName', name)
 
         const data = weaponStats[name]
 

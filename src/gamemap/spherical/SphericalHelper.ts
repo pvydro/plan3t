@@ -1,5 +1,5 @@
 import { Assets } from "../../asset/Assets";
-import { LoggingService } from "../../service/LoggingService";
+import { Flogger } from "../../service/Flogger";
 import { SphericalBiome, SphericalPoint } from "./SphericalData";
 
 export interface ISphericalHelper {
@@ -32,7 +32,7 @@ export class SphericalHelper implements ISphericalHelper {
 
             return texture
         } catch (error) {
-            LoggingService.error('SphericalHelper', 'Error getting texture for point', 'Error', error)
+            Flogger.error('SphericalHelper', 'Error getting texture for point', 'Error', error)
         }
     }
 

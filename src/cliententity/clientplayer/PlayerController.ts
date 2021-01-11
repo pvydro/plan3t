@@ -1,4 +1,4 @@
-import { LoggingService } from '../../service/LoggingService'
+import { Flogger } from '../../service/Flogger'
 import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
@@ -80,7 +80,7 @@ export class PlayerController implements IPlayerController {
     }
 
     addListeners() {
-        LoggingService.log('PlayerController', 'addKeyListeners')
+        Flogger.log('PlayerController', 'addKeyListeners')
 
         // KeyDown
         InputProcessor.on('keydown', (e: KeyboardEvent) => {

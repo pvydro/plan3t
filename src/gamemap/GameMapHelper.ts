@@ -1,6 +1,6 @@
 import { Assets, AssetUrls } from '../asset/Assets'
 import { Dimension } from '../engine/math/Dimension'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { SphericalData, SphericalPoint, SphericalBiome, ISphericalData } from './spherical/SphericalData'
 
 export interface PixelData {
@@ -21,14 +21,14 @@ export class GameMapHelper implements IGameMapHelper {
     private constructor() {}
 
     static async getRandomSphericalData(): Promise<SphericalData> {
-        LoggingService.log('GameMapHelper', 'getRandomSpherical')
+        Flogger.log('GameMapHelper', 'getRandomSpherical')
 
         return new Promise((resolve, reject) => {
             const sphericalImage = new Image()
             sphericalImage.src = AssetUrls.SPHERICAL_TEST + '.png'
     
             sphericalImage.onload = () => {
-                LoggingService.log('GameMapHelper', 'getRandomSpherical', 'image loaded')
+                Flogger.log('GameMapHelper', 'getRandomSpherical', 'image loaded')
 
                 const sphericalCanvas = GameMapHelper.convertImageToCanvas(sphericalImage)
                 const pixelData = GameMapHelper.getPixelDataFromCanvas(sphericalCanvas)
@@ -38,7 +38,7 @@ export class GameMapHelper implements IGameMapHelper {
             }
 
             sphericalImage.onerror = (error) => {
-                LoggingService.error('GameMapHelper', 'getRandomSpherical', 'image failed to load', error)
+                Flogger.error('GameMapHelper', 'getRandomSpherical', 'image failed to load', error)
 
                 reject(error)
             }

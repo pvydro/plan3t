@@ -1,6 +1,6 @@
 import { GameMapHelper } from './GameMapHelper'
 import { IDemolishable } from '../interface/IDemolishable'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { Spherical } from './spherical/Spherical'
 import { Container } from '../engine/display/Container'
 import { GlobalScale } from '../utils/Constants'
@@ -32,7 +32,7 @@ export class GameMap extends Container implements IGameMap {
 
     // TODO: Seed
     async initializeSpherical(seed?: string) {
-        LoggingService.log('GameMap', 'initializeSpherical')
+        Flogger.log('GameMap', 'initializeSpherical')
 
         GameMapHelper.getRandomSphericalData().then((sphericalData) => {
             const spherical = new Spherical(sphericalData)
@@ -44,7 +44,7 @@ export class GameMap extends Container implements IGameMap {
     }
 
     demolish() {
-        LoggingService.log('GameMap', 'demolish')
+        Flogger.log('GameMap', 'demolish')
     }
 
     get collidableRects() {

@@ -4,7 +4,7 @@ import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
-import { LoggingService } from '../../service/LoggingService'
+import { Flogger } from '../../service/Flogger'
 import { Weapon } from '../../weapon/Weapon'
 import { WeaponHelper } from '../../weapon/WeaponHelper'
 import { WeaponName } from '../../weapon/WeaponName'
@@ -106,7 +106,7 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
 
     showSecondHand(shouldShow: boolean, handX?: number, handY?: number) {
-        LoggingService.log('PlayerHand', 'showSecondHand', 'shouldShow', shouldShow, 'handX', handX, 'handY', handY)
+        Flogger.log('PlayerHand', 'showSecondHand', 'shouldShow', shouldShow, 'handX', handX, 'handY', handY)
         if (shouldShow === true) {
             this.secondHandSprite.alpha = 1
         } else {

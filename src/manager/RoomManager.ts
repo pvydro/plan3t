@@ -1,12 +1,13 @@
 import * as PIXI from 'pixi.js'
 import { Room } from 'colyseus.js'
-import { GameState } from '../network/rooms/GameState'
+import { NetworkGameState } from '../network/rooms/GameState'
 import { Entity } from '../network/rooms/Entity'
 import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from './ClientManager'
 import { IEntityManager } from './EntityManager'
 import { ICamera, Camera } from '../camera/Camera'
 import { BasicLerp } from '../utils/Constants'
+import { Flogger } from '../service/Flogger'
 
 export interface IRoomManager {
     initializeRoom(): Promise<void>
@@ -19,7 +20,7 @@ export interface RoomManagerOptions {
 }
 
 export class RoomManager implements IRoomManager {
-    static _room: Room<GameState>
+    static _room: Room<NetworkGameState>
     
     clientManager: IClientManager
     entityManager: IEntityManager
@@ -30,9 +31,10 @@ export class RoomManager implements IRoomManager {
     }
 
     async initializeRoom() {
+        Flogger.log('RoomManager', 'initializeRoom')
         const client = this.clientManager.client
 
-        this.currentRoom = await client.joinOrCreate<GameState>('GameRoom')
+        this.currentRoom = await client.joinOrCreate<NetworkGameState>('GameRoom')
 
         this.initializeCurrentRoomEntities()
     }

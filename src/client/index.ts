@@ -9,16 +9,17 @@ import { Camera } from '../camera/Camera'
 
 window.PIXI = PIXI
 
-const camera = Camera.getInstance()
-const entityManager = new EntityManager({ camera })
-const clientManager = new ClientManager({ entityManager, camera })
-const roomManager = new RoomManager({ clientManager })
+// const camera = Camera.getInstance()
+// const entityManager = new EntityManager({ camera })
+// const clientManager = new ClientManager({ entityManager, camera })
+// const roomManager = new RoomManager({ clientManager })
 
-const game: IGame = new Game({
-    clientManager,
-    roomManager,
-    entityManager,
-})
+const game: IGame = new Game()
+//     {
+//     clientManager,
+//     roomManager,
+//     entityManager,
+// })
 
 // Startup
 game.bootstrap().then(() => {
@@ -28,7 +29,7 @@ game.bootstrap().then(() => {
     
     // allow to resize viewport and renderer
     window.onresize = () => {
-        game.cameraViewport.resize(window.innerWidth, window.innerHeight);
-        game.renderer.resize(window.innerWidth, window.innerHeight);
+        game.cameraViewport.resize(window.innerWidth, window.innerHeight)
+        game.renderer.resize(window.innerWidth, window.innerHeight)
     }
 })

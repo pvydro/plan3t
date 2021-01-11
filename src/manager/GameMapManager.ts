@@ -1,5 +1,5 @@
 import { GameMap } from '../gamemap/GameMap'
-import { LoggingService } from '../service/LoggingService'
+import { Flogger } from '../service/Flogger'
 import { IClientManager } from './ClientManager'
 
 export interface IGameMapManager {
@@ -20,7 +20,7 @@ export class GameMapManager implements IGameMapManager {
     }
 
     async initialize() {
-        LoggingService.log('GameMapManager', 'initializeGameMap')
+        Flogger.log('GameMapManager', 'initializeGameMap')
 
         if (this.gameMap !== undefined) {
             this.gameMap.demolish()
