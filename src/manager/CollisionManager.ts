@@ -67,7 +67,7 @@ export class CollisionManager implements ICollisionManager {
         const entityRightX = entity.x + ((entityBounds.width / 2) * GlobalScale)
         const entityLeftX = entity.x - ((entityBounds.width / 2) * GlobalScale)
 
-        if (collisionRect.y <= entity.y) {
+        if (collisionRect.y <= (entity.y + (entityBounds.height / 2))) {
             if (entityRightX + entity.xVel >= collisionRect.x) {
                 const difference = collisionRect.x - entityRightX
                 entity.xVel = difference

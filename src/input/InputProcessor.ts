@@ -10,7 +10,7 @@ export class InputProcessor {
 
     private constructor() {
         const clonedEvents = [
-            'mousemove', 'keydown', 'keyup', 'keypress'
+            'mousemove', 'mousedown', 'mouseup', 'keydown', 'keyup', 'keypress'
         ]
 
         clonedEvents.forEach((eventString: string) => {

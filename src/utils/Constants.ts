@@ -19,7 +19,7 @@ export class Constants {
 }
 
 export class GravityConstants {
-    public static DropAcceleration: number = 3.5
+    public static DropAcceleration: number = 3.15
 
     private constructor() {}
 }

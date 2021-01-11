@@ -10,6 +10,7 @@ import { WeaponHelper } from '../../weapon/WeaponHelper'
 import { WeaponName } from '../../weapon/WeaponName'
 import { ClientPlayer } from './ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
+import { InputProcessor } from '../../input/InputProcessor'
 
 export interface IPlayerHand extends IUpdatable {
     setWeapon(name: WeaponName): void
@@ -34,7 +35,7 @@ export class PlayerHand extends Container implements IPlayerHand {
     handSprite: Sprite
     secondHandSprite: Sprite
     primaryWeapon: Weapon
-    
+    currentWeapon: Weapon
 
     constructor(options: PlayerHandOptions) {
         super()
@@ -49,6 +50,7 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.secondHandSprite.alpha = 0
         
         this.primaryWeapon = new Weapon()
+        this.currentWeapon = this.primaryWeapon
         
         this.rotationContainer = new Container()
 
@@ -58,6 +60,8 @@ export class PlayerHand extends Container implements IPlayerHand {
 
         this.addChild(this.rotationContainer)
         this.rotationContainer.x = 4
+
+        this.applyListeners()
     }
 
     update() {
@@ -84,11 +88,14 @@ export class PlayerHand extends Container implements IPlayerHand {
             ? -this.rotation + (this.rotation / 2)
             : this.rotation - halfACircleInRadians - (this.rotation / 2)
             
+        this.primaryWeapon.update()
+        // this.secondaryWeapon.update()
     }
 
     setWeapon(name: WeaponName) {
         this.primaryWeapon.configureByName(name)
-
+        this.currentWeapon = this.primaryWeapon
+        
         const stats = WeaponHelper.getWeaponStatsByName(name)
 
         if (stats.secondHandX !== undefined || stats.secondHandY !== undefined) {
@@ -115,6 +122,22 @@ export class PlayerHand extends Container implements IPlayerHand {
     empty() {
         this.primaryWeapon.clearChildren()
         this.primaryWeapon.reset()
+    }
+
+    mouseDown() {
+        if (this.currentWeapon) {
+            this.currentWeapon.triggerDown = true
+        }
+    }
+
+    mouseUp() {
+        if (this.primaryWeapon) this.primaryWeapon.triggerDown = false
+        // if (this.secondaryWeapon) this.secondaryWeapon.triggerDown = false
+    }
+
+    applyListeners() {
+        InputProcessor.on('mousedown', () => { this.mouseDown() })
+        InputProcessor.on('mouseup', () => { this.mouseUp() })
     }
 
     set direction(value: Direction) {

@@ -7,7 +7,9 @@
         "bulletsPerClip": 25,
         "handleOffsetX": -4,
         "handleOffsetY": 0.5,
-        "handDropAmount": 2
+        "handDropAmount": 2,
+        "recoilX": 0.25,
+        "recoilY": 1.25
     },
     "p3": {
         "dir": "smgs",
@@ -19,7 +21,9 @@
         "handDropAmount": 4,
         "handPushAmount": -1,
         "secondHandX": 8,
-        "secondHandY": -1.5
+        "secondHandY": -1.5,
+        "recoilX": 0.25,
+        "recoilY": 1.25
     },
     "tachyon": {
         "dir": "smgs",
@@ -31,7 +35,9 @@
         "handDropAmount": 3,
         "handPushAmount": 3,
         "secondHandX": 5.5,
-        "secondHandY": -2
+        "secondHandY": -2,
+        "recoilX": 0.25,
+        "recoilY": 1.25
     },
 
     "bully": {
@@ -45,7 +51,9 @@
         "handDropAmount": 2,
         "handPushAmount": -2,
         "secondHandX": 8,
-        "secondHandY": -2
+        "secondHandY": -2,
+        "recoilX": 0.45,
+        "recoilY": 1.25
     },
     "komplimenter": {
         "dir": "assault-rifles",
@@ -58,7 +66,9 @@
         "handDropAmount": 2,
         "handPushAmount": -3,
         "secondHandX": 8,
-        "secondHandY": -7.5
+        "secondHandY": -7.5,
+        "recoilX": 0.25,
+        "recoilY": 1.25
     },
     "kortni": {
         "dir": "assault-rifles",
@@ -69,7 +79,9 @@
         "handleOffsetX": -7.5,
         "handleOffsetY": -1.5,
         "handDropAmount": 3,
-        "handPushAmount": -1
+        "handPushAmount": -1,
+        "recoilX": 0.25,
+        "recoilY": 1.25
     },
 
     "raze": {
@@ -83,6 +95,8 @@
         "handDropAmount": 4,
         "handPushAmount": 2,
         "secondHandX": -7,
-        "secondHandY": -1.5
+        "secondHandY": -1.5,
+        "recoilX": 0.25,
+        "recoilY": 1.25
     }
 }

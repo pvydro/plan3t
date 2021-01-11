@@ -7,6 +7,8 @@ import { IUpdatable } from '../interface/IUpdatable'
 export interface IClientEntity extends IContainer, IUpdatable {
     x: number
     y: number
+    halfWidth: number
+    halfHeight: number
     xVel: number
     yVel: number
     type: string
@@ -57,5 +59,13 @@ export class ClientEntity extends Container implements IClientEntity {
     set dimension(value: IDimension) {
         this.width = value.width
         this.height = value.height
+    }
+
+    get halfWidth() {
+        return this.width / 2
+    }
+
+    get halfHeight() {
+        return this.height / 2
     }
 }
