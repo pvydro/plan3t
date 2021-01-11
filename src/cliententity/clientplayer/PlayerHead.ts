@@ -58,20 +58,22 @@ export class PlayerHead extends Container {
         this._headBobOffset += (targetOffset - this.headBobOffset) / this.headBobEaseAmount
         this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
 
+        console.log(this._crouchedOffset)
+
         this.position.y = -3 + this.headBobOffset + this._crouchedOffset
 
         this.controller.update()
     }
 
     bobHead() {
-        const graceSpace = 0.25 + this._crouchedOffset
-
         if (this.player.legsState === PlayerLegsState.Crouched) {
             this._targetCrouchedOffset = 3.5
-        } else if (this.player.legsState === PlayerLegsState.Standing) {
+        } else {
             this._targetCrouchedOffset = 0
         }
         
+        const graceSpace = 0.25 + this._targetCrouchedOffset
+
         if (this.player.bodyState === PlayerBodyState.Idle) {
             if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - graceSpace)) {
                 this.swapHeadBobState()

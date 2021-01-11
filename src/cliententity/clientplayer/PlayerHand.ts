@@ -22,6 +22,7 @@ export interface PlayerHandOptions {
 
 export class PlayerHand extends Container implements IPlayerHand {
     _player: ClientPlayer
+    rotationContainer: Container
     handOffsetDamping = 5
     controller: IPlayerHandController
     currentDirection: Direction = Direction.Right
@@ -32,10 +33,8 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     handSprite: Sprite
     secondHandSprite: Sprite
-
     primaryWeapon: Weapon
     
-    rotationContainer: Container
 
     constructor(options: PlayerHandOptions) {
         super()
@@ -59,12 +58,6 @@ export class PlayerHand extends Container implements IPlayerHand {
 
         this.addChild(this.rotationContainer)
         this.rotationContainer.x = 4
-
-        // this.position.x -= 20
-
-        // this.addChild(this.secondHandSprite)
-        // this.addChild(this.primaryWeapon)
-        // this.addChild(this.handSprite)
     }
 
     update() {
