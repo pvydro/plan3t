@@ -15,9 +15,13 @@ export const GlobalScale = 5
 export const ShowCollisionDebug = false
 
 export class Constants {
-    private constructor() {
-        
-    }
+    private constructor() {}
+}
+
+export class GravityConstants {
+    public static DropAcceleration: number = 2.1
+
+    private constructor() {}
 }
 
 export enum Events {

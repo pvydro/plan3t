@@ -65,7 +65,7 @@ export class PlayerHead extends Container {
 
     bobHead() {
         if (this.player.legsState === PlayerLegsState.Crouched) {
-            this._targetCrouchedOffset = 2.5
+            this._targetCrouchedOffset = 3
         } else {
             this._targetCrouchedOffset = 0
         }

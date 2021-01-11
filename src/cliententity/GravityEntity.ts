@@ -1,4 +1,5 @@
 import { IRect, Rect } from '../engine/math/Rect'
+import { GravityConstants } from '../utils/Constants'
 import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity'
 
 export interface IGravityEntity extends IClientEntity {
@@ -41,7 +42,7 @@ export class GravityEntity extends ClientEntity {
 
         // Increase vertical velocity if not on ground
         if (this.isOnGround === false) {
-            this.yVel += (this.weight / 3) // * GravityManager.gravity
+            this.yVel += (this.weight / 3) * GravityConstants.DropAcceleration // * GravityManager.gravity
         } else {
             this.yVel = 0
         }
