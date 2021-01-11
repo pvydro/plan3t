@@ -21,6 +21,7 @@ export class PlayerController implements IPlayerController {
     downKeyDown: boolean = false
     mousePos: IVector2 = Vector2.Zero
 
+    playerCrouchDivisor: number = 1.75
     playerWalkingSpeed: number = 5
     playerJumpingHeight: number = 8
     floorFriction = 5
@@ -65,12 +66,12 @@ export class PlayerController implements IPlayerController {
 
     moveLeft() {
         this.player.bodyState = PlayerBodyState.Walking
-        this.player.xVel = -this.playerWalkingSpeed
+        this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
     }
 
     moveRight() {
         this.player.bodyState = PlayerBodyState.Walking
-        this.player.xVel = this.playerWalkingSpeed
+        this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
     }
 
     jump() {
@@ -140,5 +141,9 @@ export class PlayerController implements IPlayerController {
             this.mousePos.x = e.clientX
             this.mousePos.y = e.clientY
         })
+    }
+
+    get walkDivisor() {
+        return this.player.legsState === PlayerLegsState.Crouched ? this.playerCrouchDivisor : 1
     }
 }

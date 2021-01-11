@@ -18,7 +18,7 @@ export interface PlayerHeadControllerOptions {
 export class PlayerHeadController implements IPlayerHeadController {
     _shouldRotateHeadWithMouseMove: boolean = true
     playerHead: PlayerHead
-    playerHeadRotationDamping: number = 20
+    playerHeadRotationDamping: number = 10
     player: ClientPlayer
     mousePos: Vector2 = Vector2.Zero
 

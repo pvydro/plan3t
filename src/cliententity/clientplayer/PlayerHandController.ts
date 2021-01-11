@@ -40,8 +40,8 @@ export class PlayerHandController implements IPlayerHandController {
         let targetVerticalOffset = 0
 
         if (this.playerHand.player.legsState === PlayerLegsState.Crouched) {
-            targetHorizontalOffset = 4
-            targetVerticalOffset = 2
+            targetHorizontalOffset = 2.5
+            targetVerticalOffset = 1
         } else {
             targetHorizontalOffset = 0
             targetVerticalOffset = 0
