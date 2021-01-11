@@ -2,11 +2,12 @@ import * as PIXI from 'pixi.js'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState, PlayerLegsState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { Events } from '../../utils/Constants'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
+import { HighlightSpanKind } from 'typescript'
 
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number
@@ -23,6 +24,8 @@ export class PlayerHead extends Container {
     currentDirection: Direction = Direction.Right
 
     _headBobOffset = 0
+    _targetCrouchedOffset = 0
+    _crouchedOffset = 0
     targetHeadBobOffset = 0
     headBobState = 'up'
 
@@ -48,19 +51,28 @@ export class PlayerHead extends Container {
 
     update() {
         this.bobHead()
-        
-        const bobEaseAmt = this.player.bodyState === PlayerBodyState.Walking ? 8 : 50
-        this._headBobOffset += (this.targetHeadBobOffset - this.headBobOffset) / bobEaseAmt
 
-        this.position.y = -3 + this.headBobOffset
+        const targetOffset = this.targetHeadBobOffset
+        const crouchEaseAmt = 2
+
+        this._headBobOffset += (targetOffset - this.headBobOffset) / this.headBobEaseAmount
+        this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
+
+        this.position.y = -3 + this.headBobOffset + this._crouchedOffset
 
         this.controller.update()
     }
 
     bobHead() {
-        const graceSpace = 0.25
+        const graceSpace = 0.25 + this._crouchedOffset
 
-        if (this.player.bodyState == PlayerBodyState.Idle) {
+        if (this.player.legsState === PlayerLegsState.Crouched) {
+            this._targetCrouchedOffset = 3.5
+        } else if (this.player.legsState === PlayerLegsState.Standing) {
+            this._targetCrouchedOffset = 0
+        }
+        
+        if (this.player.bodyState === PlayerBodyState.Idle) {
             if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - graceSpace)) {
                 this.swapHeadBobState()
             }
@@ -68,7 +80,8 @@ export class PlayerHead extends Container {
     }
 
     swapHeadBobState() {
-        const targetBobAmt = this.player.bodyState === PlayerBodyState.Walking ? 1.25 : 1
+        let targetBobAmt = this.player.bodyState === PlayerBodyState.Walking ? 1.25 : 1
+        targetBobAmt += this._crouchedOffset
 
         this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
         this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt
@@ -87,5 +100,15 @@ export class PlayerHead extends Container {
 
     get headBobOffset() {
         return this._headBobOffset
+    }
+
+    get headBobEaseAmount() {
+        if (this.player.legsState === PlayerLegsState.Crouched) {
+            return 200
+        } else if (this.player.bodyState === PlayerBodyState.Walking) {
+            return 30
+        } else {
+            return 50
+        }
     }
 }

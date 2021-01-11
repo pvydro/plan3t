@@ -4,7 +4,7 @@ import { Camera, ICamera } from '../camera/Camera'
 import { IEntityManager } from '../manager/EntityManager'
 import { GameMap, IGameMap } from '../gamemap/GameMap'
 import { GameStateManager, IGameStateManager } from './GameStateManager'
-import { Game, IGame } from '../main/Game'
+import { Game } from '../main/Game'
 
 export interface IClientManager {
     client: Client

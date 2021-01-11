@@ -21,9 +21,14 @@ export interface IClientPlayer extends IGravityEntity {
 }
 
 export enum PlayerBodyState {
-    Idle = 'IDLE',
-    Walking = 'WALKING',
-    Jumping = 'JUMPING'
+    Idle = 'Idle',
+    Walking = 'Walking',
+    Jumping = 'Jumping'
+}
+
+export enum PlayerLegsState {
+    Standing = 'Idle',
+    Crouched = 'Crouched'
 }
 
 export interface ClientPlayerOptions {
@@ -40,6 +45,7 @@ export class ClientPlayer extends GravityEntity {
     _clientControl: boolean = false
     _direction: Direction = Direction.Right
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
+    _legsState: PlayerLegsState = PlayerLegsState.Standing
     emitter: Emitter = new Emitter()
 
     constructor(options: ClientPlayerOptions) {
@@ -115,6 +121,10 @@ export class ClientPlayer extends GravityEntity {
         this._bodyState = value
     }
 
+    set legsState(value: PlayerLegsState) {
+        this._legsState = value
+    }
+
     set direction(value: Direction) {
         this._direction = value
         this.body.direction = value
@@ -124,6 +134,10 @@ export class ClientPlayer extends GravityEntity {
 
     get bodyState() {
         return this._bodyState
+    }
+
+    get legsState() {
+        return this._legsState
     }
 
     get direction() {

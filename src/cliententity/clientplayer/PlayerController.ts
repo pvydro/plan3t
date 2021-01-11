@@ -1,5 +1,5 @@
 import { Flogger } from '../../service/Flogger'
-import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState, PlayerLegsState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Camera } from '../../camera/Camera'
@@ -18,6 +18,7 @@ export class PlayerController implements IPlayerController {
     player: ClientPlayer
     leftKeyDown: boolean = false
     rightKeyDown: boolean = false
+    downKeyDown: boolean = false
     mousePos: IVector2 = Vector2.Zero
 
     playerWalkingSpeed: number = 5
@@ -39,6 +40,11 @@ export class PlayerController implements IPlayerController {
         } else if (this.rightKeyDown) {
             this.moveRight()
         }
+        if (this.downKeyDown) {
+            this.duck()
+        } else if (this.player.legsState === PlayerLegsState.Crouched) {
+            this.standUp()
+        }
 
         this.changeDirectionBasedOnMouse()
     }
@@ -47,6 +53,14 @@ export class PlayerController implements IPlayerController {
         this.player.bodyState = PlayerBodyState.Idle
 
         this.player.comeToStop()
+    }
+
+    standUp() {
+        this.player.legsState = PlayerLegsState.Standing
+    }
+
+    duck() {
+        this.player.legsState = PlayerLegsState.Crouched
     }
 
     moveLeft() {
@@ -91,6 +105,9 @@ export class PlayerController implements IPlayerController {
                 case Key.D:
                     this.rightKeyDown = true
                     break
+                case Key.S:
+                    this.downKeyDown = true
+                    break
             }
         })
 
@@ -102,6 +119,9 @@ export class PlayerController implements IPlayerController {
                     break
                 case Key.D:
                     this.rightKeyDown = false
+                    break
+                case Key.S:
+                    this.downKeyDown = false
                     break
             }
         })
