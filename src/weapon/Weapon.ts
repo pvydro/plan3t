@@ -47,6 +47,7 @@ export class Weapon extends Container implements IWeapon {
     recoilDamping: number = 2
 
     fireRateMultiplier: number = 200
+    recoilXMultiplier: number = 4
 
     offset = { x: 0, y: 0 }
     _currentRecoilOffset = { x: 0, y: 0 }
@@ -62,6 +63,8 @@ export class Weapon extends Container implements IWeapon {
     }
 
     update() {
+        // const recoilOffsetMultiplier = this.direction === Direction.Left ? 1 : -1
+        
         if (this.triggerDown) {
             this.shoot()
         }
@@ -70,10 +73,10 @@ export class Weapon extends Container implements IWeapon {
         this._currentRecoilOffset.x += (0 - this._currentRecoilOffset.x) / this.recoilDamping
         this._currentRecoilOffset.y += (0 - this._currentRecoilOffset.y) / this.recoilDamping
 
-        if (this.sprite) {
-            this.sprite.x = this.offset.x + this._currentRecoilOffset.x
-            this.sprite.y = this.offset.y + this._currentRecoilOffset.y
-        }
+        // if (this.sprite) {
+        //     this.sprite.x = this.offset.x + this._currentRecoilOffset.x
+        //     this.sprite.y = this.offset.y + this._currentRecoilOffset.y
+        // }
     }
 
     async shoot(): Promise<void> {
@@ -110,7 +113,7 @@ export class Weapon extends Container implements IWeapon {
     applyRecoil() {
         let int = { interpolation: 0 }
         let recoilOffset: any = { x: 0, y: 0 }
-        const recoilX = this.recoilX * 10
+        const recoilX = this.recoilX * this.recoilXMultiplier
         const recoilY = this.recoilY * 0
 
         if (this.recoilAnimation) {
@@ -148,6 +151,8 @@ export class Weapon extends Container implements IWeapon {
         this.sprite = new Sprite({ texture })
         this.offset.x = stats.handleOffsetX
         this.offset.y = baseYOffset + stats.handleOffsetY
+        this.sprite.x = this.offset.x// + this._currentRecoilOffset.x
+        this.sprite.y = this.offset.y// + this._currentRecoilOffset.y
 
         this.addChild(this.sprite)
 

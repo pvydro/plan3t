@@ -37,6 +37,8 @@ export class PlayerHand extends Container implements IPlayerHand {
     primaryWeapon: Weapon
     currentWeapon: Weapon
 
+    recoilOffsetDivisor: number = 3
+
     constructor(options: PlayerHandOptions) {
         super()
         this._player = options.player
@@ -68,7 +70,7 @@ export class PlayerHand extends Container implements IPlayerHand {
         const halfACircleInRadians = 3.14159
         const handPushAmount = this.primaryWeapon && this.primaryWeapon.handPushAmount ? this.primaryWeapon.handPushAmount : 0
         const handDropAmount = this.primaryWeapon && this.primaryWeapon.handDropAmount ? this.primaryWeapon.handDropAmount : 0
-
+        const recoilOffsetMultiplier = this.player.direction === Direction.Left ? -1 : 1
         const direction = this._player.direction
         const bobOffsetY = this._player.head.headBobOffset / 1.5
         let newOffsetX = direction === Direction.Right
@@ -79,8 +81,10 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
         this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
 
-        this.x = this.currentOffsetX
-        this.y = this.currentOffsetY
+        this.x = this.currentOffsetX + (this.currentWeapon._currentRecoilOffset.x * recoilOffsetMultiplier)
+        this.y = this.currentOffsetY + (this.currentWeapon._currentRecoilOffset.y * recoilOffsetMultiplier)
+
+        this.handSprite.x = (this.currentWeapon._currentRecoilOffset.x / this.recoilOffsetDivisor) * recoilOffsetMultiplier
 
         this.controller.update(this.player.isClientControl)
 

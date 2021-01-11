@@ -87,7 +87,7 @@
     "raze": {
         "dir": "snipers",
         "damage": 99,
-        "fireRate": 0.475,
+        "fireRate": 4,
         "weightPounds": 3.2,
         "bulletsPerClip": 3,
         "handleOffsetX": -20,
@@ -96,7 +96,7 @@
         "handPushAmount": 2,
         "secondHandX": -7,
         "secondHandY": -1.5,
-        "recoilX": 0.25,
+        "recoilX": 0.85,
         "recoilY": 1.25
     }
 }
