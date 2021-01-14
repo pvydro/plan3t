@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
+import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Events } from '../../utils/Constants'
 import { IClientPlayer, PlayerBodyState } from './ClientPlayer'
@@ -44,7 +45,7 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
         const walkingSheetUrl = SpritesheetUrls.PLAYER_BODY_WALKING
         const sheet = Spritesheets.get(walkingSheetUrl)
 
-        this.runningSprite = new PIXI.AnimatedSprite(sheet.animations['tile'])
+        this.runningSprite = new AnimatedSprite({ sheet: sheet.animations['tile'] })
         this.runningSprite.animationSpeed = 0.25
         this.runningSprite.anchor.set(0.5, 0.5)
         this.runningSprite.loop = true

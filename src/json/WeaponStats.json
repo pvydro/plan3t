@@ -14,7 +14,7 @@
     "p3": {
         "dir": "smgs",
         "damage": 19,
-        "fireRate": 1.8,
+        "fireRate": 0.9,
         "bulletsPerClip": 50,
         "handleOffsetX": -15,
         "handleOffsetY": -3,
