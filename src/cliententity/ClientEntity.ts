@@ -18,7 +18,6 @@ export enum EntityType {
     ClientPlayer = 'ClientPlayer',
     EnemyPlayer = 'EnemyPlayer',
     EnemyBall = 'EnemyBall'
-    // NPC_... = 'NPC_...'
 }
 
 export interface ClientEntityOptions {

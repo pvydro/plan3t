@@ -11,6 +11,7 @@ import { InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
 import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
+import { EntityManager } from '../../manager/EntityManager'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -34,9 +35,11 @@ export enum PlayerLegsState {
 export interface ClientPlayerOptions {
     entity: Entity
     clientControl?: boolean
+    entityManager?: EntityManager
 }
 
 export class ClientPlayer extends GravityEntity {
+    _entityManager?: EntityManager
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
@@ -53,7 +56,9 @@ export class ClientPlayer extends GravityEntity {
             horizontalFriction: 5,
             weight: 0.5
         })
-
+        if (options.entityManager) {
+            this._entityManager = options.entityManager
+        }
         this._clientControl = options.clientControl
         
         const player = this
@@ -146,5 +151,9 @@ export class ClientPlayer extends GravityEntity {
 
     get isClientControl() {
         return this._clientControl
+    }
+
+    get entityManager() {
+        return this._entityManager
     }
 }

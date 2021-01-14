@@ -7,6 +7,7 @@ import { ClientEntity } from '../cliententity/ClientEntity'
 import { Flogger } from '../service/Flogger'
 import { GravityManager, IGravityManager } from './GravityManager'
 import { Game } from '../main/Game'
+import { Bullet, ProjectileType } from '../weapon/projectile/Bullet'
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -16,6 +17,7 @@ export interface IEntityManager {
     createEnemyPlayer(entity: Entity, sessionID: string): void
     updateEntity(entity: Entity, sessionID: string, changes?: any): void
     removeEntity(sessionID: string, entity?: Entity): void
+    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
 }
 
 export interface EntityManagerOptions {
@@ -52,7 +54,8 @@ export class EntityManager implements IEntityManager {
 
         const player = new ClientPlayer({
             entity,
-            clientControl: true
+            clientControl: true,
+            entityManager: this
         })
         const playerDisplayObject = (player as PIXI.DisplayObject)
 
@@ -81,6 +84,18 @@ export class EntityManager implements IEntityManager {
         this.cameraViewport.removeChild(removedClientEntity)
 
         delete this.entities[sessionID]
+    }
+
+    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
+        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type])
+
+        const bullet = new Bullet({
+            rotation, velocity
+        })
+        bullet.x = x
+        bullet.y = y
+
+        this.cameraViewport.addChild(bullet)
     }
 
     get camera() {

@@ -1,8 +1,10 @@
 import gsap from 'gsap/all'
 import { TweenLite } from 'gsap/all'
+import { PlayerHand } from '../cliententity/clientplayer/PlayerHand'
 import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { Flogger } from '../service/Flogger'
+import { ProjectileType } from './projectile/Bullet'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
 
@@ -28,6 +30,8 @@ export interface WeaponStats {
 }
 
 export class Weapon extends Container implements IWeapon {
+    playerHand?: PlayerHand
+
     name: WeaponName
     damage: number
     fireRate?: number
@@ -52,13 +56,16 @@ export class Weapon extends Container implements IWeapon {
     offset = { x: 0, y: 0 }
     _currentRecoilOffset = { x: 0, y: 0 }
 
-    constructor(name?: WeaponName) {
+    constructor(name?: WeaponName, hand?: PlayerHand) {
         super()
 
-        if (this.name) {
+        if (name) {
             this.name = name
 
             this.configureByName(this.name)
+        }
+        if (hand) {
+            this.playerHand = hand
         }
     }
 
@@ -106,6 +113,19 @@ export class Weapon extends Container implements IWeapon {
 
     fireBullet() {
         Flogger.log('Weapon', 'fireBullet')
+        
+        if (this.playerHand !== undefined
+        && this.playerHand.player !== undefined) {
+            const entityManager = this.playerHand.player.entityManager
+            const bulletX = this.playerHand.player.x
+            const bulletY = this.playerHand.player.y
+
+            if (entityManager !== undefined) {
+                entityManager.createProjectile(ProjectileType.Bullet,
+                    bulletX, bulletY, this.playerHand.rotation)
+            }
+            
+        }
 
         this.applyRecoil()
     }

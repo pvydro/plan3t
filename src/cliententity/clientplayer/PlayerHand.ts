@@ -51,7 +51,7 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.secondHandSprite.anchor.set(0.5, 0.5)
         this.secondHandSprite.alpha = 0
         
-        this.primaryWeapon = new Weapon()
+        this.primaryWeapon = new Weapon(undefined, this)
         this.currentWeapon = this.primaryWeapon
         
         this.rotationContainer = new Container()
