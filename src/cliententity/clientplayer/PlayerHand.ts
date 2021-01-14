@@ -81,10 +81,10 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
         this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
 
-        this.x = this.currentOffsetX + (this.currentWeapon._currentRecoilOffset.x * recoilOffsetMultiplier)
-        this.y = this.currentOffsetY + (this.currentWeapon._currentRecoilOffset.y * recoilOffsetMultiplier)
+        this.x = this.currentOffsetX + (this.currentWeapon._currentRecoilOffset.x * this.player.direction)
+        this.y = this.currentOffsetY + (this.currentWeapon._currentRecoilOffset.y * this.player.direction)
 
-        this.handSprite.x = (this.currentWeapon._currentRecoilOffset.x / this.recoilOffsetDivisor) * recoilOffsetMultiplier
+        this.handSprite.x = (this.currentWeapon._currentRecoilOffset.x / this.recoilOffsetDivisor) * this.player.direction
 
         this.controller.update(this.player.isClientControl)
 

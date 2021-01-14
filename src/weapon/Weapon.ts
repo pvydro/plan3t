@@ -1,9 +1,12 @@
 import gsap from 'gsap/all'
 import { TweenLite } from 'gsap/all'
+import { Camera } from '../camera/Camera'
 import { PlayerHand } from '../cliententity/clientplayer/PlayerHand'
 import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
+import { Direction } from '../engine/math/Direction'
 import { Flogger } from '../service/Flogger'
+import { GlobalScale } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
@@ -48,10 +51,12 @@ export class Weapon extends Container implements IWeapon {
     triggerDown: boolean = false
     currentShootPromise: Promise<void>
     recoilAnimation?: TweenLite
-    recoilDamping: number = 2
+    recoilXDamping: number = 2
+    recoilYDamping: number = 1.1
 
     fireRateMultiplier: number = 200
     recoilXMultiplier: number = 4
+    recoilYMultiplier: number = 0.025
 
     offset = { x: 0, y: 0 }
     _currentRecoilOffset = { x: 0, y: 0 }
@@ -77,8 +82,8 @@ export class Weapon extends Container implements IWeapon {
         }
 
         // Recoil movement
-        this._currentRecoilOffset.x += (0 - this._currentRecoilOffset.x) / this.recoilDamping
-        this._currentRecoilOffset.y += (0 - this._currentRecoilOffset.y) / this.recoilDamping
+        this._currentRecoilOffset.x += (0 - this._currentRecoilOffset.x) / this.recoilXDamping
+        this._currentRecoilOffset.y += (0 - this._currentRecoilOffset.y) / this.recoilYDamping
 
         // if (this.sprite) {
         //     this.sprite.x = this.offset.x + this._currentRecoilOffset.x
@@ -117,8 +122,9 @@ export class Weapon extends Container implements IWeapon {
         if (this.playerHand !== undefined
         && this.playerHand.player !== undefined) {
             const entityManager = this.playerHand.player.entityManager
+            const crouchOffset = this.playerHand.currentOffsetY
             const bulletX = this.playerHand.player.x
-            const bulletY = this.playerHand.player.y
+            const bulletY = this.playerHand.player.y + this.y + crouchOffset
 
             if (entityManager !== undefined) {
                 entityManager.createProjectile(ProjectileType.Bullet,
@@ -134,7 +140,7 @@ export class Weapon extends Container implements IWeapon {
         let int = { interpolation: 0 }
         let recoilOffset: any = { x: 0, y: 0 }
         const recoilX = this.recoilX * this.recoilXMultiplier
-        const recoilY = this.recoilY * 0
+        const recoilY = this.recoilY * this.recoilYMultiplier
 
         if (this.recoilAnimation) {
             this.recoilAnimation.pause()

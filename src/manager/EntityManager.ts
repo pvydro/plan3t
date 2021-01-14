@@ -25,6 +25,8 @@ export interface EntityManagerOptions {
 }
 
 export class EntityManager implements IEntityManager {
+    private static BulletIndex = 1
+
     _entities: { [id: string]: any } = {}
     _clientEntities: { [id: string]: any } = {}//ClientEntity } = {}
     _currentPlayerEntity: any//PIXI.Graphics
@@ -92,10 +94,11 @@ export class EntityManager implements IEntityManager {
         const bullet = new Bullet({
             rotation, velocity
         })
+        bullet.sprite.anchor.set(0.5, 0.5)
         bullet.x = x
         bullet.y = y
 
-        this.cameraViewport.addChild(bullet)
+        this.cameraViewport.addChildAt(bullet, EntityManager.BulletIndex)
     }
 
     get camera() {
