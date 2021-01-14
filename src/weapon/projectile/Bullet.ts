@@ -26,10 +26,13 @@ export class Bullet extends ClientEntity {
             sprite,
         })
 
-        if (options) {
-            this.rotation = options.rotation ?? 0
-            this.velocity = options.velocity ?? Defaults.BulletVelocity
-        }
+        this.rotation = options.rotation ?? 0
+        this.velocity = options.velocity ?? Defaults.BulletVelocity
+
+        this.xVel = this.velocity * Math.cos(this.rotation)
+        this.yVel = this.velocity * Math.sin(this.rotation)
+
+        console.log(this.xVel, this.yVel)
 
         this.scale.set(GlobalScale, GlobalScale)
     }

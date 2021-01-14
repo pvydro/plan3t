@@ -70,7 +70,6 @@ export class PlayerHand extends Container implements IPlayerHand {
         const halfACircleInRadians = 3.14159
         const handPushAmount = this.primaryWeapon && this.primaryWeapon.handPushAmount ? this.primaryWeapon.handPushAmount : 0
         const handDropAmount = this.primaryWeapon && this.primaryWeapon.handDropAmount ? this.primaryWeapon.handDropAmount : 0
-        const recoilOffsetMultiplier = this.player.direction === Direction.Left ? -1 : 1
         const direction = this._player.direction
         const bobOffsetY = this._player.head.headBobOffset / 1.5
         let newOffsetX = direction === Direction.Right

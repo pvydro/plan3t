@@ -25,7 +25,7 @@ export class GravityConstants {
 }
 
 export class Defaults {
-    public static BulletVelocity = 10
+    public static BulletVelocity = 25
 
     private constructor() {}
 }

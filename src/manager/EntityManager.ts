@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { v4 as uuidv4 } from 'uuid';
 import { Entity } from '../network/rooms/Entity'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { RoomManager } from '../manager/RoomManager'
@@ -99,6 +100,7 @@ export class EntityManager implements IEntityManager {
         bullet.y = y
 
         this.cameraViewport.addChildAt(bullet, EntityManager.BulletIndex)
+        this.clientEntities[uuidv4()] = bullet
     }
 
     get camera() {

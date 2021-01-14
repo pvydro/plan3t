@@ -2,13 +2,13 @@
     "komp9": {
         "dir": "smgs",
         "damage": 22,
-        "fireRate": 1.5,
+        "fireRate": 0.75,
         "weightPounds": 1.15,
         "bulletsPerClip": 25,
         "handleOffsetX": -4,
         "handleOffsetY": 0.5,
         "handDropAmount": 2,
-        "recoilX": 0.25,
+        "recoilX": 0.8,
         "recoilY": 1.25
     },
     "p3": {

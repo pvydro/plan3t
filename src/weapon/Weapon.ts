@@ -6,7 +6,7 @@ import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
 import { Flogger } from '../service/Flogger'
-import { GlobalScale } from '../utils/Constants'
+import { Defaults, GlobalScale } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
@@ -45,6 +45,7 @@ export class Weapon extends Container implements IWeapon {
     handPushAmount?: number = 0
     recoilX: number = 0
     recoilY: number = 0
+    bulletVelocity: number = Defaults.BulletVelocity
 
     sprite: Sprite
 
@@ -57,6 +58,9 @@ export class Weapon extends Container implements IWeapon {
     fireRateMultiplier: number = 200
     recoilXMultiplier: number = 4
     recoilYMultiplier: number = 0.025
+    recoilRandomizer: number = 1
+    recoilRandomizerMaximum: number = 1.25
+    recoilRandomizerMinimum: number = 0.5
 
     offset = { x: 0, y: 0 }
     _currentRecoilOffset = { x: 0, y: 0 }
@@ -121,14 +125,16 @@ export class Weapon extends Container implements IWeapon {
         
         if (this.playerHand !== undefined
         && this.playerHand.player !== undefined) {
+            const direction = this.playerHand.player.direction
             const entityManager = this.playerHand.player.entityManager
             const crouchOffset = this.playerHand.currentOffsetY
             const bulletX = this.playerHand.player.x
             const bulletY = this.playerHand.player.y + this.y + crouchOffset
 
+
             if (entityManager !== undefined) {
                 entityManager.createProjectile(ProjectileType.Bullet,
-                    bulletX, bulletY, this.playerHand.rotation)
+                    bulletX, bulletY, this.playerHand.rotation, this.bulletVelocity * direction)
             }
             
         }
@@ -139,12 +145,15 @@ export class Weapon extends Container implements IWeapon {
     applyRecoil() {
         let int = { interpolation: 0 }
         let recoilOffset: any = { x: 0, y: 0 }
-        const recoilX = this.recoilX * this.recoilXMultiplier
+        const recoilX = (this.recoilX * this.recoilXMultiplier) * this.recoilRandomizer
         const recoilY = this.recoilY * this.recoilYMultiplier
 
         if (this.recoilAnimation) {
             this.recoilAnimation.pause()
         }
+
+        this.recoilRandomizer = Math.random() + this.recoilRandomizerMinimum
+        if (this.recoilRandomizer > this.recoilRandomizerMaximum) this.recoilRandomizer = this.recoilRandomizerMaximum
         
         this.recoilAnimation = gsap.to(int, { interpolation: 1, duration: 0.125, ease: 'power4', onUpdate() {
             console.log(int.interpolation)
