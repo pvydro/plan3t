@@ -15,4 +15,12 @@ export class Container extends PIXI.Container implements IContainer {
             child.destroy()
         })
     }
+
+    get halfWidth() {
+        return this.width / 2
+    }
+
+    get halfHeight() {
+        return this.height / 2
+    }
 }

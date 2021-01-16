@@ -1,3 +1,4 @@
+import { Container } from 'pixi.js'
 import { Particle } from '../engine/display/particle/Particle'
 
 export interface IParticleManager {
@@ -10,8 +11,8 @@ export interface ParticleManagerOptions {
 
 export class ParticleManager {
     private static INSTANCE: ParticleManager
-    container: PIXI.ParticleContainer
-    _particles
+    container: Container
+    // _particles
 
     public static getInstance() {
         if (ParticleManager.INSTANCE === undefined) {
@@ -22,14 +23,16 @@ export class ParticleManager {
     }
 
     private constructor() {
-        this.container = new PIXI.ParticleContainer()
+        this.container = new Container()
     }
 
-    addParticle(particle: Particle) {
-        this.container.addChild(particle)
+    addParticle(particle: Particle, container?: Container) {
+        const cont = container ?? this.container
+        cont.addChild(particle)
     }
 
-    removeParticle(particle: Particle) {
-        this.container.removeChild(particle)
+    removeParticle(particle: Particle, container?: Container) {
+        const cont = container ?? this.container
+        cont.removeChild(particle)
     }
 }

@@ -8,6 +8,7 @@ import { EntityManager } from '../manager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { Assets } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
+import { ParticleManager } from '../manager/ParticleManager'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -18,9 +19,10 @@ export interface IGame {
 
 export class Game implements IGame {
     _application: PIXI.Application
-    _clientCamera
+    _clientCamera: Camera
     _clientManager: IClientManager
-    _entityManager
+    _entityManager: EntityManager
+    _particleManager: ParticleManager
 
     gameLoop: IGameLoop
 
@@ -31,6 +33,8 @@ export class Game implements IGame {
         this._entityManager = new EntityManager({ game })
         this._clientCamera = Camera.getInstance()
         this._clientManager = new ClientManager({ game, entityManager: this.entityManager })
+        this._particleManager = ParticleManager.getInstance()
+        this._clientCamera.viewport.addChild(this._particleManager.container)
     }
 
     async bootstrap() {
@@ -41,6 +45,9 @@ export class Game implements IGame {
         
         await this.clientManager.initialize()
         await this.clientManager.gameStateManager.initialize()
+
+        this._particleManager = ParticleManager.getInstance()
+        this.cameraViewport.addChild(this._particleManager.container)
 
         this.initializeGameLoop()
     }

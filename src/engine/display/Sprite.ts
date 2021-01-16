@@ -23,4 +23,12 @@ export class Sprite extends PIXI.Sprite implements ISprite {
         this.width = value.width
         this.height = value.height
     }
+
+    get halfWidth() {
+        return this.width / 2
+    }
+
+    get halfHeight() {
+        return this.height / 2
+    }
 }

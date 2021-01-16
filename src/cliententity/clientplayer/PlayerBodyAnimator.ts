@@ -45,10 +45,12 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
         const walkingSheetUrl = SpritesheetUrls.PLAYER_BODY_WALKING
         const sheet = Spritesheets.get(walkingSheetUrl)
 
-        this.runningSprite = new AnimatedSprite({ sheet: sheet.animations['tile'] })
-        this.runningSprite.animationSpeed = 0.25
+        this.runningSprite = new AnimatedSprite({
+            sheet: sheet.animations['tile'],
+            animationSpeed: 0.25,
+            loop: true
+        })
         this.runningSprite.anchor.set(0.5, 0.5)
-        this.runningSprite.loop = true
 
         this.runningSprite.onFrameChange = () => {
             if (this.runningSprite.currentFrame == Math.floor(this.runningSprite.totalFrames / 2) - 1

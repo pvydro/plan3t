@@ -3,8 +3,11 @@ import { TweenLite } from 'gsap/all'
 import { Camera } from '../camera/Camera'
 import { PlayerHand } from '../cliententity/clientplayer/PlayerHand'
 import { Container } from '../engine/display/Container'
+import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
+import { Vector2 } from '../engine/math/Vector2'
+import { ParticleManager } from '../manager/ParticleManager'
 import { Flogger } from '../service/Flogger'
 import { Defaults, GlobalScale } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
@@ -24,6 +27,7 @@ export interface WeaponStats {
     bulletsPerClip?: number
     handleOffsetX?: number
     handleOffsetY?: number
+    barrelOffsetY?: number
     handDropAmount?: number
     handPushAmount?: number
     secondHandX?: number
@@ -62,8 +66,10 @@ export class Weapon extends Container implements IWeapon {
     recoilRandomizerMaximum: number = 1.25
     recoilRandomizerMinimum: number = 0.5
 
+    barrelOffsetY?: number = 5
     offset = { x: 0, y: 0 }
     _currentRecoilOffset = { x: 0, y: 0 }
+    _currentRotatedBarrelPoint = { x: 0, y: 0 }
 
     constructor(name?: WeaponName, hand?: PlayerHand) {
         super()
@@ -101,7 +107,9 @@ export class Weapon extends Container implements IWeapon {
         } else {
             this.currentShootPromise = new Promise((resolve) => {
                 // Recoil & shoot logic
+                this.addMuzzleFlash()
                 this.fireBullet()
+                this.applyRecoil()
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -122,24 +130,20 @@ export class Weapon extends Container implements IWeapon {
 
     fireBullet() {
         Flogger.log('Weapon', 'fireBullet')
-        
         if (this.playerHand !== undefined
         && this.playerHand.player !== undefined) {
             const direction = this.playerHand.player.direction
             const entityManager = this.playerHand.player.entityManager
             const crouchOffset = this.playerHand.currentOffsetY
-            const bulletX = this.playerHand.player.x
-            const bulletY = this.playerHand.player.y + this.y + crouchOffset
+            const bulletX = this._currentRotatedBarrelPoint.x
+            const bulletY = this._currentRotatedBarrelPoint.y
 
 
             if (entityManager !== undefined) {
                 entityManager.createProjectile(ProjectileType.Bullet,
                     bulletX, bulletY, this.playerHand.rotation, this.bulletVelocity * direction)
             }
-            
         }
-
-        this.applyRecoil()
     }
 
     applyRecoil() {
@@ -161,6 +165,46 @@ export class Weapon extends Container implements IWeapon {
             recoilOffset.y = -recoilY * int.interpolation
         }})
         this._currentRecoilOffset = recoilOffset
+    }
+
+    addMuzzleFlash() {
+        let rotation = this.playerHand ? this.playerHand.rotation : this.rotation
+        const player = this.playerHand.player
+
+        if (player) {
+            rotation *= player.direction
+
+            const referenceX = player.x + this.x
+            const referenceY = player.y + (this.y * GlobalScale)
+
+            const halfWidth = (this.sprite.halfWidth * GlobalScale) + ((this.playerHand.rotationContainer.x) * GlobalScale)
+            const halfHeight = (-this.sprite.halfHeight * GlobalScale)
+                + (this.barrelOffsetY * GlobalScale)
+
+            const handX = (this.playerHand.handSprite.x * GlobalScale) * player.direction
+
+            let distanceX = (halfWidth * Math.cos(rotation)) - (halfHeight * Math.sin(rotation))
+            let distanceY = (halfWidth * Math.sin(rotation)) + (halfHeight * Math.cos(rotation))
+            let translatedX = referenceX + (distanceX * player.direction) + handX
+            let translatedY = referenceY + (distanceY * 1.1)
+            translatedX += (this.handPushAmount * GlobalScale) * player.direction
+            translatedY += (this.handDropAmount * GlobalScale)
+            
+            this._currentRotatedBarrelPoint = {
+                x: translatedX, y: translatedY
+            }
+            
+            const particle = new MuzzleFlashParticle({
+                position: new Vector2(translatedX, translatedY),
+                rotation: rotation * player.direction
+            })
+
+            if (player.direction === Direction.Left) {
+                particle.scale.x = (particle.scale.x * -1)
+            }
+
+            ParticleManager.getInstance().addParticle(particle)
+        }
     }
 
     configureStats(stats: WeaponStats) {

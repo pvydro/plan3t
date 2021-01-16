@@ -70,4 +70,25 @@ export class AssetUrls {
 
     // Projectiles
     public static PROJECTILE_BULLET = 'assets/image/weapons/projectiles/bullet'
+
+    // Particles
+    public static MUZZLE_FLASH_A_0 = 'assets/image/particles/muzzleflash/a/0'
+    public static MUZZLE_FLASH_A_1 = 'assets/image/particles/muzzleflash/a/1'
+    public static MUZZLE_FLASH_A_2 = 'assets/image/particles/muzzleflash/a/2'
+    public static MUZZLE_FLASH_A_3 = 'assets/image/particles/muzzleflash/a/3'
+
+    public static MUZZLE_FLASH_B_0 = 'assets/image/particles/muzzleflash/b/0'
+    public static MUZZLE_FLASH_B_1 = 'assets/image/particles/muzzleflash/b/1'
+    public static MUZZLE_FLASH_B_2 = 'assets/image/particles/muzzleflash/b/2'
+    public static MUZZLE_FLASH_B_3 = 'assets/image/particles/muzzleflash/b/3'
+    
+    public static MUZZLE_FLASH_C_0 = 'assets/image/particles/muzzleflash/c/0'
+    public static MUZZLE_FLASH_C_1 = 'assets/image/particles/muzzleflash/c/1'
+    public static MUZZLE_FLASH_C_2 = 'assets/image/particles/muzzleflash/c/2'
+    public static MUZZLE_FLASH_C_3 = 'assets/image/particles/muzzleflash/c/3'
+    
+    public static MUZZLE_FLASH_D_0 = 'assets/image/particles/muzzleflash/d/0'
+    public static MUZZLE_FLASH_D_1 = 'assets/image/particles/muzzleflash/d/1'
+    public static MUZZLE_FLASH_D_2 = 'assets/image/particles/muzzleflash/d/2'
+    public static MUZZLE_FLASH_D_3 = 'assets/image/particles/muzzleflash/d/3'
 }

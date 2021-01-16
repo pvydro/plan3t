@@ -3,7 +3,6 @@ import { WeaponName } from './WeaponName'
 import { Assets } from '../asset/Assets'
 import { Flogger } from '../service/Flogger'
 import { WeaponStats } from './Weapon'
-
 const weaponStats = require('../json/WeaponStats.json')
 
 export class WeaponHelper {
