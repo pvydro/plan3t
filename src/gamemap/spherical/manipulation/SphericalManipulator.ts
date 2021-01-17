@@ -18,12 +18,13 @@ export class SphericalManipulator implements ISphericalManipulator {
         let context = canvas.getContext('2d')
 
         context = SphericalManipulator.generateSphericalLayers(canvas, context)
-        context = SphericalTerrainExpander.expandSphericalTerrain(canvas, context)
+        context = await SphericalTerrainExpander.expandSphericalTerrain(canvas, context)
         context = await SphericalManipulator.smoothOutSpherical(canvas, context)
 
         canvas = trimCanvas(canvas)
 
         canvas.style.transform = 'scale(4) translate(200px, 200px)'
+        // canvas.style.border = '1px dashed blue'
         document.body.appendChild(canvas)
 
         return canvas
