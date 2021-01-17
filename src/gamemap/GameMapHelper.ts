@@ -1,6 +1,7 @@
 import { Assets, AssetUrls } from '../asset/Assets'
 import { Dimension } from '../engine/math/Dimension'
 import { Flogger } from '../service/Flogger'
+import { SphericalManipulator } from './spherical/manipulation/SphericalManipulator'
 import { SphericalData, SphericalPoint, SphericalBiome, ISphericalData } from './spherical/SphericalData'
 
 export interface PixelData {
@@ -25,13 +26,14 @@ export class GameMapHelper implements IGameMapHelper {
 
         return new Promise((resolve, reject) => {
             const sphericalImage = new Image()
-            sphericalImage.src = AssetUrls.SPHERICAL_TEST + '.png'
+            sphericalImage.src = AssetUrls.SPHERICAL_SM_0 + '.png'
     
             sphericalImage.onload = () => {
                 Flogger.log('GameMapHelper', 'getRandomSpherical', 'image loaded')
 
                 const sphericalCanvas = GameMapHelper.convertImageToCanvas(sphericalImage)
-                const pixelData = GameMapHelper.getPixelDataFromCanvas(sphericalCanvas)
+                const sphericalCanvasManipulated = SphericalManipulator.manipulateSphericalCanvas(sphericalCanvas)
+                const pixelData = GameMapHelper.getPixelDataFromCanvas(sphericalCanvasManipulated)
                 const sphericalData = GameMapHelper.convertPixelDataToSphericalData(pixelData, sphericalCanvas)
         
                 return resolve(sphericalData)
@@ -71,9 +73,11 @@ export class GameMapHelper implements IGameMapHelper {
     private static convertImageToCanvas(image: HTMLImageElement): HTMLCanvasElement {
         const canvas = document.createElement('canvas')
         
-        canvas.width = image.width
-        canvas.height = image.height
-        canvas.getContext('2d').drawImage(image, 0, 0)
+        const expansionWidth = 20
+
+        canvas.width = image.width + expansionWidth
+        canvas.height = image.height + expansionWidth
+        canvas.getContext('2d').drawImage(image, expansionWidth / 2, expansionWidth / 2)
         
         return canvas
     }

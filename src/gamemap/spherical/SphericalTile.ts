@@ -4,6 +4,13 @@ import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { IDemolishable } from '../../interface/IDemolishable'
 
+export interface SphericalTileColorData {
+    r: number
+    g: number
+    b: number
+    a: number
+}
+
 export interface ISphericalTile extends IDemolishable {
 
 }

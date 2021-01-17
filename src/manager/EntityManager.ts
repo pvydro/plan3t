@@ -60,6 +60,8 @@ export class EntityManager implements IEntityManager {
             clientControl: true,
             entityManager: this
         })
+        player.y = -20
+        player.x = 1000
         const playerDisplayObject = (player as PIXI.DisplayObject)
 
         this._currentPlayerEntity = player

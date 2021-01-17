@@ -66,6 +66,7 @@ export class AssetUrls {
     // Spherical/GameMap
     public static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
     public static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
+    public static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'
     public static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
 
     // Projectiles

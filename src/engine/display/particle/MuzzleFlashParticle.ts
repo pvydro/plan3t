@@ -25,7 +25,6 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
         // const walkingSheetUrl = SpritesheetUrls.PLAYER_BODY_WALKING
         const sprite = new AnimatedSprite({
             textureUrls: MuzzleFlashParticle.randomAnimation,
-            // MuzzleFlashParticle.randomAnimation,//[ AssetUrls.MUZZLE_FLASH_A_0, AssetUrls.MUZZLE_FLASH_A_1, AssetUrls.MUZZLE_FLASH_A_2, AssetUrls.MUZZLE_FLASH_A_3, ],
             animationSpeed: 0.25,
         })
 

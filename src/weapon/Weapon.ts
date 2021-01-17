@@ -160,7 +160,6 @@ export class Weapon extends Container implements IWeapon {
         if (this.recoilRandomizer > this.recoilRandomizerMaximum) this.recoilRandomizer = this.recoilRandomizerMaximum
         
         this.recoilAnimation = gsap.to(int, { interpolation: 1, duration: 0.125, ease: 'power4', onUpdate() {
-            console.log(int.interpolation)
             recoilOffset.x = -recoilX * int.interpolation
             recoilOffset.y = -recoilY * int.interpolation
         }})

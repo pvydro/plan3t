@@ -32,8 +32,6 @@ export class Bullet extends ClientEntity {
         this.xVel = this.velocity * Math.cos(this.rotation)
         this.yVel = this.velocity * Math.sin(this.rotation)
 
-        console.log(this.xVel, this.yVel)
-
         this.scale.set(GlobalScale, GlobalScale)
     }
 }

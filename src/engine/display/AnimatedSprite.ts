@@ -21,7 +21,6 @@ export class AnimatedSprite extends PIXI.AnimatedSprite implements IAnimatedSpri
     constructor(options: AnimatedSpriteOptions) {
         let data = options.sheet ?? []
         if (!options.sheet && options.textureUrls && options.textureUrls.length > 0) {
-            console.log(options.textureUrls)
             for (let i = 0; i < options.textureUrls.length; i++) {
                 let texture = PIXI.Texture.from(Assets.get(options.textureUrls[i]))
                 data.push(texture)
