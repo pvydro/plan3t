@@ -24,7 +24,7 @@ export class GameMapHelper implements IGameMapHelper {
     static async getRandomSphericalData(): Promise<SphericalData> {
         Flogger.log('GameMapHelper', 'getRandomSpherical')
 
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const sphericalImage = new Image()
             sphericalImage.src = AssetUrls.SPHERICAL_SM_0 + '.png'
     
@@ -32,11 +32,14 @@ export class GameMapHelper implements IGameMapHelper {
                 Flogger.log('GameMapHelper', 'getRandomSpherical', 'image loaded')
 
                 const sphericalCanvas = GameMapHelper.convertImageToCanvas(sphericalImage)
-                const sphericalCanvasManipulated = SphericalManipulator.manipulateSphericalCanvas(sphericalCanvas)
-                const pixelData = GameMapHelper.getPixelDataFromCanvas(sphericalCanvasManipulated)
-                const sphericalData = GameMapHelper.convertPixelDataToSphericalData(pixelData, sphericalCanvas)
+                
+                SphericalManipulator.manipulateSphericalCanvas(sphericalCanvas).then((manipulated) => {
+                    const pixelData = GameMapHelper.getPixelDataFromCanvas(manipulated)
+                    const sphericalData = GameMapHelper.convertPixelDataToSphericalData(pixelData, sphericalCanvas)
+
+                    resolve(sphericalData)
+                })
         
-                return resolve(sphericalData)
             }
 
             sphericalImage.onerror = (error) => {
@@ -73,7 +76,7 @@ export class GameMapHelper implements IGameMapHelper {
     private static convertImageToCanvas(image: HTMLImageElement): HTMLCanvasElement {
         const canvas = document.createElement('canvas')
         
-        const expansionWidth = 20
+        const expansionWidth = canvas.width / 4
 
         canvas.width = image.width + expansionWidth
         canvas.height = image.height + expansionWidth

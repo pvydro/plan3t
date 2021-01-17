@@ -1,3 +1,4 @@
+import { createTextChangeRange } from 'typescript'
 import { Flogger } from '../../../service/Flogger'
 import { trimCanvas } from '../../../utils/CanvasHelper'
 import { SphericalTileColorData } from '../SphericalTile'
@@ -11,20 +12,34 @@ export interface ISphericalManipulator {
 export class SphericalManipulator implements ISphericalManipulator {
     private constructor() {}
 
-    static manipulateSphericalCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+    static async manipulateSphericalCanvas(canvas: HTMLCanvasElement): Promise<HTMLCanvasElement> {
         Flogger.log('SphericalManipulator', 'manipulateSphericalCanvas')
 
         let context = canvas.getContext('2d')
 
         context = SphericalManipulator.generateSphericalLayers(canvas, context)
         context = SphericalTerrainExpander.expandSphericalTerrain(canvas, context)
+        context = await SphericalManipulator.smoothOutSpherical(canvas, context)
 
         canvas = trimCanvas(canvas)
 
-        // canvas.style.transform = 'scale(4) translate(200px, 200px)'
-        // document.body.appendChild(canvas)
+        canvas.style.transform = 'scale(4) translate(200px, 200px)'
+        document.body.appendChild(canvas)
 
         return canvas
+    }
+
+    private static async smoothOutSpherical(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): Promise<CanvasRenderingContext2D> {
+        return new Promise((resolve, reject) => {
+            const cloneImage = new Image()
+            cloneImage.src = canvas.toDataURL()
+    
+            cloneImage.onload = () => {
+                context.drawImage(cloneImage, 0, 1)
+                context.drawImage(cloneImage, 0, -1)
+                resolve(context)
+            }
+        })
     }
 
     private static generateSphericalLayers(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): CanvasRenderingContext2D {

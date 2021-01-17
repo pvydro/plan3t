@@ -12,14 +12,14 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
     static expandSphericalTerrain(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, terrainGrowThreshold?: number): CanvasRenderingContext2D {
         const width = canvas.width
         const height = canvas.height
-        const growThreshold = terrainGrowThreshold ?? 4
-        const minGrowth = 4
+        const growThreshold = terrainGrowThreshold ?? width / 12
+        // const minGrowth = 2
         const tileColorValue: SphericalTileColorData = SphericalTileValues.BaseGroundTile
         
         // Top bumps
         for (var x = 0; x < width; x++) {
             for (var y = 0; y < height; y++) {
-                const randomThreshold = Math.floor(Math.random() * growThreshold) + minGrowth
+                const randomThreshold = Math.floor(Math.random() * growThreshold)// + minGrowth
                 let rightPixelImageData = context.getImageData(x + randomThreshold, y, 1, 1)
                 const rightA = rightPixelImageData.data[3] / 255
 
