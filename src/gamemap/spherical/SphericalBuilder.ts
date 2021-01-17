@@ -59,28 +59,30 @@ export class SphericalBuilder implements ISphericalBuilder {
             for (var x = 0; x < data.dimension.width; x++) {
                 const currentPoint = data.getPointAt(x, y)
 
-                if (currentPoint.tileDepth > 0) {
-                    // Start Rect
-                    if (isOnACollidableTile == false) {
-                        isOnACollidableTile = true
-
-                        currentCollisionRect = Rect.Zero
-                        currentCollisionRect.position = {
-                            x: x * tileSize,
-                            y: y * tileSize
+                if (currentPoint) {
+                    if (currentPoint.tileDepth > 0) {
+                        // Start Rect
+                        if (isOnACollidableTile == false) {
+                            isOnACollidableTile = true
+    
+                            currentCollisionRect = Rect.Zero
+                            currentCollisionRect.position = {
+                                x: x * tileSize,
+                                y: y * tileSize
+                            }
+    
+                            collisionRects.push(currentCollisionRect)
                         }
-
-                        collisionRects.push(currentCollisionRect)
-                    }
-
-                    currentCollisionRect.height = tileSize
-                    currentCollisionRect.width += tileSize
-                } else {
-                    // Finish Rect
-                    if (isOnACollidableTile) {
-                        isOnACollidableTile = false
-
-                        currentCollisionRect = undefined
+    
+                        currentCollisionRect.height = tileSize
+                        currentCollisionRect.width += tileSize
+                    } else {
+                        // Finish Rect
+                        if (isOnACollidableTile) {
+                            isOnACollidableTile = false
+    
+                            currentCollisionRect = undefined
+                        }
                     }
                 }
             }

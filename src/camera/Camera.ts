@@ -3,6 +3,8 @@ import * as Viewport from 'pixi-viewport'
 import { IUpdatable } from '../interface/IUpdatable'
 import { InputProcessor } from '../input/InputProcessor'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
+import { Key } from 'ts-keycode-enum'
+import { SlowMo } from 'gsap/all'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -35,6 +37,17 @@ export class Camera implements ICamera {
         this._viewport = this.viewport
 
         this.trackMousePosition()
+        this.addKeyListeners()
+    }
+
+    addKeyListeners() {
+        InputProcessor.on('keydown', (event: KeyboardEvent) => {
+            if (event.which === Key.DownArrow) {
+                this.viewport.zoomPercent(-0.2)
+            } else if (event.which === Key.UpArrow) {
+                this.viewport.zoomPercent(0.2)
+            }
+        })
     }
 
     trackMousePosition() {

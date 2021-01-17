@@ -1,4 +1,5 @@
 import { Flogger } from '../../../service/Flogger'
+import { trimCanvas } from '../../../utils/CanvasHelper'
 import { SphericalTileColorData } from '../SphericalTile'
 import { SphericalTileValues } from '../SphericalTileHelper'
 import { SphericalTerrainExpander } from './SphericalTerrainExpander'
@@ -18,8 +19,10 @@ export class SphericalManipulator implements ISphericalManipulator {
         context = SphericalManipulator.generateSphericalLayers(canvas, context)
         context = SphericalTerrainExpander.expandSphericalTerrain(canvas, context)
 
-        canvas.style.transform = 'scale(4) translate(200px, 200px)'
-        document.body.appendChild(canvas)
+        canvas = trimCanvas(canvas)
+
+        // canvas.style.transform = 'scale(4) translate(200px, 200px)'
+        // document.body.appendChild(canvas)
 
         return canvas
     }

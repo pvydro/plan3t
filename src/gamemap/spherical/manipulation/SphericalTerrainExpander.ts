@@ -13,36 +13,37 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
         const width = canvas.width
         const height = canvas.height
         const growThreshold = terrainGrowThreshold ?? 4
+        const minGrowth = 4
         const tileColorValue: SphericalTileColorData = SphericalTileValues.BaseGroundTile
         
         // Top bumps
-        for (var y = 0; y < height; y++) {
-            for (var x = 0; x < width; x++) {
-                const randomThreshold = Math.floor(Math.random() * growThreshold) + 1
-                let bottomPixelImageData = context.getImageData(x, y + randomThreshold, 1, 1)
-                const bottomA = bottomPixelImageData.data[3] / 255
+        for (var x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                const randomThreshold = Math.floor(Math.random() * growThreshold) + minGrowth
+                let rightPixelImageData = context.getImageData(x + randomThreshold, y, 1, 1)
+                const rightA = rightPixelImageData.data[3] / 255
 
-                if (bottomA !== 0) {
-                    bottomPixelImageData = SphericalManipulator.applyTileDataToImageData(bottomPixelImageData, tileColorValue)
+                if (rightA !== 0) {
+                    rightPixelImageData = SphericalManipulator.applyTileDataToImageData(rightPixelImageData, tileColorValue)
                     for (var i = 0; i < randomThreshold; i++) {
-                        context.putImageData(bottomPixelImageData, x, y + i)
+                        context.putImageData(rightPixelImageData, x + i, y)
                     }
                 } 
             }
         }
 
         // Bottom bunp
-        for (var x = 0; x < width; x++) {
-            for (var y = height; y >= 0; y--) {
+        for (var x = width; x >= 0; x--) {
+            for (var y = 0; y < height; y++) {
                 const randomThreshold = Math.floor(Math.random() * growThreshold) + 1 
-                let topPixelImageData = context.getImageData(x, y - randomThreshold, 1, 1)
-                const topA = topPixelImageData.data[3] / 255
+                let leftPixelImageData = context.getImageData(x - randomThreshold, y, 1, 1)
+                const topA = leftPixelImageData.data[3] / 255
 
                 if (topA !== 0) {
-                    topPixelImageData = SphericalManipulator.applyTileDataToImageData(topPixelImageData, tileColorValue)
+                    leftPixelImageData = SphericalManipulator.applyTileDataToImageData(leftPixelImageData, tileColorValue)
                     
                     for (var i = 0; i < randomThreshold; i++) {
-                        context.putImageData(topPixelImageData, x, y - i)
+                        context.putImageData(leftPixelImageData, x - i, y)
                     }
                 }
             }

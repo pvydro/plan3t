@@ -7,7 +7,7 @@ const game: IGame = new Game()
 
 // Startup
 game.bootstrap().then(() => {
-    // document.body.appendChild(game.view)
+    document.body.appendChild(game.view)
     
     (window as any).game = game
     
