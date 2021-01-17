@@ -50,7 +50,7 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
                 }
             }
     
-            // Top bump
+            // Top & bottom bump
             const cloneImage = new Image()
             const cloneHeightMultiplier = 1.1
             cloneImage.src = canvas.toDataURL()
@@ -60,8 +60,6 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
                 const newHeight = height * cloneHeightMultiplier
                 const x = (width / 2) - (newWidth / 2)
                 const y = (height / 2) - (newHeight / 2)
-
-                context.imageSmoothingEnabled = false
                 context.drawImage(cloneImage, x, y, newWidth, newHeight)
 
                 resolve(context)

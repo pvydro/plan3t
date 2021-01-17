@@ -1,8 +1,8 @@
-import { createTextChangeRange } from 'typescript'
 import { Flogger } from '../../../service/Flogger'
 import { trimCanvas } from '../../../utils/CanvasHelper'
 import { SphericalTileColorData } from '../SphericalTile'
 import { SphericalTileValues } from '../SphericalTileHelper'
+import { SphericalLayerGenerator } from './SphericalLayerGenerator'
 import { SphericalTerrainExpander } from './SphericalTerrainExpander'
 
 export interface ISphericalManipulator {
@@ -16,10 +16,11 @@ export class SphericalManipulator implements ISphericalManipulator {
         Flogger.log('SphericalManipulator', 'manipulateSphericalCanvas')
 
         let context = canvas.getContext('2d')
+        context.imageSmoothingEnabled = false
 
-        context = SphericalManipulator.generateSphericalLayers(canvas, context)
         context = await SphericalTerrainExpander.expandSphericalTerrain(canvas, context)
         context = await SphericalManipulator.smoothOutSpherical(canvas, context)
+        context = await SphericalLayerGenerator.generateSphericalLayersToCanvas(canvas, context)
 
         canvas = trimCanvas(canvas)
 
@@ -41,31 +42,6 @@ export class SphericalManipulator implements ISphericalManipulator {
                 resolve(context)
             }
         })
-    }
-
-    private static generateSphericalLayers(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): CanvasRenderingContext2D {
-        const width = canvas.width
-        const height = canvas.height
-        const tileColorValue: SphericalTileColorData = SphericalTileValues.BaseGroundTile
-
-        for (var y = 0; y < height; y++) {
-            for (var x = 0; x < width; x++) {
-
-                let iteratedPixelImageData = context.getImageData(x, y, 1, 1)
-                const colorData: Uint8ClampedArray = iteratedPixelImageData.data
-
-                const a = colorData[3] / 255
-
-                if (a === 0) {
-                    // Not solid
-                } else {
-                    iteratedPixelImageData = SphericalManipulator.applyTileDataToImageData(iteratedPixelImageData, tileColorValue)
-                    context.putImageData(iteratedPixelImageData, x, y)
-                }
-            }
-        }
-
-        return context
     }
 
     public static applyTileDataToImageData(imageData: ImageData, tileColorData: SphericalTileColorData): ImageData {
