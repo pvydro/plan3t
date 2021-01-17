@@ -14,8 +14,7 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
             const width = canvas.width
             const height = canvas.height
             const growThreshold = terrainGrowThreshold ?? width / 12
-            // const minGrowth = 2
-            const tileColorValue: SphericalTileColorData = SphericalTileValues.BaseGroundTile
+            const tileColorValue: SphericalTileColorData = SphericalTileValues.CoreGrassTile
             
             // Left bumps
             for (var x = 0; x < width; x++) {
