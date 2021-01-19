@@ -1,9 +1,8 @@
 import { Dimension } from '../../engine/math/Dimension'
-
 export enum SphericalBiome {
-    CloningFacility = 'cloningfacility'
+    CloningFacility = 'cloningfacility',
+    Kepler = 'kepler'
 }
-
 
 export interface ISphericalData {
     points: SphericalPoint[]
@@ -14,7 +13,7 @@ export interface ISphericalData {
 export interface SphericalPoint {
     x: number
     y: number
-    tileValue: number
+    tileValue: { r: number, g: number, b: number }
     tileDepth: number
 }
 

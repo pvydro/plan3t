@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js'
+import { SphericalBiome } from '../gamemap/spherical/SphericalData'
+import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/SphericalTileHelper'
 import { Flogger } from '../service/Flogger'
 
 export class Assets {
@@ -13,6 +15,8 @@ export class Assets {
     public static async loadImages() {
         Flogger.log('Assets', 'loadImages')
 
+        await Assets.loadAllTileImages()
+        
         return new Promise((resolve, reject) => {
             if (Assets._imagesStartLoading) {
                 return
@@ -42,6 +46,38 @@ export class Assets {
         })
     }
 
+    private static async loadAllTileImages() {
+        Flogger.log('Assets', 'loadAllTileImages')
+
+        return new Promise((resolve, reject) => {
+            if (Assets._imagesStartLoading) {
+                return
+            }
+            
+            const biomeKeys = Object.values(SphericalBiome)
+            const tileValues = Object.values(SphericalTileValues)
+            const tileAssets = []
+
+            console.log('biome', tileValues)
+
+            biomeKeys.forEach((biome: SphericalBiome) => {
+                tileValues.forEach((value) => {
+                    const tileUrl = SphericalTileHelper.getResourceForTileColorData(value, biome)
+
+                    tileAssets.push(Assets.get(tileUrl))
+                })
+            })
+
+            PIXI.Loader.shared.add(tileAssets).load(() => {
+                Flogger.log('Assets', 'Finished loading images')
+
+                Assets._imagesFinishedLoading = true
+
+                resolve(true)
+            })
+        })
+    }
+
     public static get(res: string): HTMLImageElement {
         return require('../../' + res + '.png')
     }
@@ -68,6 +104,9 @@ export class AssetUrls {
     public static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
     public static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'
     public static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
+
+    // public static TILE_KEPLER_GROUND_CORE = Assets.TILE_DIR + 'kepler/ground'
+    // public static TILE_KEPLER_GRASS_CORE = Assets.TILE_DIR + 'kepler/tile_0'
 
     // Projectiles
     public static PROJECTILE_BULLET = 'assets/image/weapons/projectiles/bullet'

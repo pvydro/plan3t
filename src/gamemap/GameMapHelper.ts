@@ -5,10 +5,10 @@ import { SphericalManipulator } from './spherical/manipulation/SphericalManipula
 import { SphericalData, SphericalPoint, SphericalBiome, ISphericalData } from './spherical/SphericalData'
 
 export interface PixelData {
-    red: number
-    green: number
-    blue: number
-    alpha: number
+    r: number
+    g: number
+    b: number
+    a: number
     x: number
     y: number
 }
@@ -54,8 +54,8 @@ export class GameMapHelper implements IGameMapHelper {
         const points: SphericalPoint[] = []
 
         pixelData.forEach((pixel: PixelData) => {
-            const tileValue = pixel.red
-            const tileDepth = pixel.alpha
+            const tileValue = { r: pixel.r, g: pixel.g, b: pixel.b }
+            const tileDepth = pixel.a
             const x = pixel.x
             const y = pixel.y
 
@@ -66,7 +66,7 @@ export class GameMapHelper implements IGameMapHelper {
 
         const sphericalData = new SphericalData({
             points,
-            biome: SphericalBiome.CloningFacility,
+            biome: SphericalBiome.Kepler,
             dimension: new Dimension(canvas.width, canvas.height)
         })
 
@@ -100,7 +100,7 @@ export class GameMapHelper implements IGameMapHelper {
             let y = (i / 4 - x) / canvas.width;
 
             const parsedData: PixelData = {
-                red, green, blue, alpha, x, y
+                r: red, g: green, b: blue, a: alpha, x, y
             }
             
             colorData.push(parsedData)

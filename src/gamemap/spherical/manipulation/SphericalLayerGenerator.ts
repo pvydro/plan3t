@@ -38,11 +38,11 @@ export class SphericalLayerGenerator implements ISphericalLayerGenerator {
 
             // Mantle Core
             newContext = SphericalLayerGenerator.generateCoreCell(canvas, context,
-                SphericalLayerGenerator.MantleCorePercent, SphericalTileValues.MantleGroundTile)
+                SphericalLayerGenerator.MantleCorePercent, SphericalTileValues.CoreMantleTile)
 
             // Inner Core
             newContext = SphericalLayerGenerator.generateCoreCell(canvas, context,
-                SphericalLayerGenerator.InnerCorePercent, SphericalTileValues.InnerCoreTile)
+                SphericalLayerGenerator.InnerCorePercent, SphericalTileValues.CoreInfernoTile)
 
             resolve(newContext)
         })
@@ -58,7 +58,7 @@ export class SphericalLayerGenerator implements ISphericalLayerGenerator {
                 const newHeight = canvas.height * estatePercent
                 const x = (canvas.width / 2) - (newWidth / 2)
                 const y = (canvas.height / 2) - (newHeight / 2)
-                const clonedCanvas = cloneCanvas(canvas)
+                let clonedCanvas = cloneCanvas(canvas)
                 let clonedCtx = clonedCanvas.getContext('2d')
                 
                 clonedCtx = recolorCanvas2DContext(clonedCanvas, clonedCtx, coreGroundTile)
@@ -67,8 +67,10 @@ export class SphericalLayerGenerator implements ISphericalLayerGenerator {
                 clonedImage.onload = function() {
                     context.drawImage(clonedImage, x, y, newWidth, newHeight)
 
+                    clonedCanvas = undefined
                     clonedCtx = undefined
                     clonedImage = undefined
+
 
                     resolve(context)
                 }

@@ -1,7 +1,8 @@
-import { Assets } from "../../asset/Assets";
-import { Flogger } from "../../service/Flogger";
-import { SphericalBiome, SphericalPoint } from "./SphericalData";
-
+import { Assets } from '../../asset/Assets'
+import { Flogger } from '../../service/Flogger'
+import { SphericalBiome, SphericalPoint } from './SphericalData'
+import { SphericalTileColorData } from './SphericalTile'
+import { SphericalTileHelper } from './SphericalTileHelper'
 export interface ISphericalHelper {
 
 }
@@ -14,21 +15,12 @@ export class SphericalHelper implements ISphericalHelper {
         return (point.tileDepth > 0)
     }
 
-    static getResourceForPoint(point: SphericalPoint, biome: SphericalBiome): string {
-        let tileResource: string
-
-        if (point.tileValue >= 0) {
-            tileResource = Assets.TILE_DIR + biome + '/tile_0'
-        }
-
-        return tileResource
-    }
-
     static getTextureForPoint(point: SphericalPoint, biome: SphericalBiome): PIXI.Texture {
-        const textureResource = SphericalHelper.getResourceForPoint(point, biome)
+        const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
+        const tileUrl: string = SphericalTileHelper.getResourceForTileColorData(tileData, biome)
 
         try {
-            const texture = PIXI.Texture.from(Assets.get(textureResource))
+            const texture = PIXI.Texture.from(Assets.get(tileUrl))
 
             return texture
         } catch (error) {
@@ -37,12 +29,9 @@ export class SphericalHelper implements ISphericalHelper {
     }
 
     static getTileSizeForBiome(biome?: SphericalBiome): number {
-        let tileSize
+        let tileSize = 16
 
         switch (biome) {
-            case SphericalBiome.CloningFacility:
-                tileSize = 16
-                break
             default:
                 tileSize = 16
         }
