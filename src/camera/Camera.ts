@@ -147,6 +147,8 @@ export interface ICamera extends IUpdatable {
 export class Camera implements ICamera {
     private static INSTANCE: Camera
     private baseZoom: number = 3
+    private baseWidth: number = 1280
+    private _resizeScale: number = 1
     private _target: { x: number, y: number } = undefined
     private _zoom: number = this.baseZoom
     private _stage: Container
@@ -171,6 +173,7 @@ export class Camera implements ICamera {
         this._stage.width = 1080
         this._stage.height = 720
 
+        this.resize(window.innerWidth, window.innerHeight)
         this.setZoom(this.baseZoom)
 
         this.viewport.addChild(this.stage)
@@ -188,13 +191,25 @@ export class Camera implements ICamera {
     }
 
     resize(width: number, height: number) {
+        console.log('r')
+        this._resizeScale = width / this.baseWidth
 
+        this.setZoom(this._zoom)
+
+        // this.viewport.width = width
+        // this.viewport.height = height
     }
 
     setZoom(amount: number) {
         this._zoom = amount
 
-        this.stage.scale.set(this._zoom, this._zoom)
+        const resizeZoom = this._zoom * this._resizeScale
+
+        this.stage.scale.set(resizeZoom, resizeZoom)
+    }
+
+    get zoom() {
+        return this._zoom * this._resizeScale
     }
 
     get viewport() {
@@ -214,12 +229,12 @@ export class Camera implements ICamera {
     }
 
     set x(value: number) {
-        const newValue = -value * this._zoom
+        const newValue = -value * this.zoom
         this.stage.x = newValue + (this.width / 2)
     }
 
     set y(value: number) {
-        const newValue = -value * this._zoom
+        const newValue = -value * this.zoom
         this.stage.y = newValue + (this.height / 2)
     }
 }

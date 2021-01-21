@@ -44,7 +44,7 @@ export class Game implements IGame {
         await Spritesheets.loadSpritesheets()
         
         await this.clientManager.initialize()
-        await this.clientManager.gameStateManager.initialize()
+        this.clientManager.gameStateManager.initialize()
 
         this.cameraViewport.addChild(this._particleManager.container)
 
