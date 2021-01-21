@@ -1,3 +1,5 @@
+import { Container } from 'pixi.js'
+import { Viewport } from '../camera/Viewport'
 import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
@@ -53,11 +55,15 @@ export class GameplayState extends GameState implements IGameplayState {
         const boundaries = new PIXI.Graphics()
         boundaries.beginFill(0x000000)
         boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
-        this.cameraViewport.addChild(boundaries)
+        this.camera.stage.addChild(boundaries)
     }
 
     get camera() {
         return this.game.camera
+    }
+
+    get cameraStage() {
+        return this.camera.stage
     }
 
     get cameraViewport() {

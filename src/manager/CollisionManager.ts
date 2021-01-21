@@ -27,7 +27,7 @@ export class CollisionManager implements ICollisionManager {
     private checkEntityCollisionAgainstMap(entity: GravityEntity): GravityEntity {
         this.gameMapCollidableRects.forEach((rect: Rect, i) => {
             entity = this.checkGroundCollision(entity, rect)
-            entity = this.checkSideCollision(entity, rect)
+            // entity = this.checkSideCollision(entity, rect)
         })
 
         return entity

@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js'
-import * as Viewport from 'pixi-viewport'
 import { Flogger } from '../service/Flogger'
 import { Spritesheets } from '../asset/Spritesheets'
 import { WindowSize } from '../utils/Constants'
@@ -9,11 +8,13 @@ import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { Assets } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
 import { ParticleManager } from '../manager/ParticleManager'
+import { Viewport } from '../camera/Viewport'
 
 export interface IGame {
     bootstrap(): Promise<void>
     view: any
     renderer: PIXI.Renderer
+    camera: Camera
     cameraViewport: Viewport
 }
 
@@ -34,7 +35,6 @@ export class Game implements IGame {
         this._clientCamera = Camera.getInstance()
         this._clientManager = new ClientManager({ game, entityManager: this.entityManager })
         this._particleManager = ParticleManager.getInstance()
-        this._clientCamera.viewport.addChild(this._particleManager.container)
     }
 
     async bootstrap() {
@@ -46,7 +46,6 @@ export class Game implements IGame {
         await this.clientManager.initialize()
         await this.clientManager.gameStateManager.initialize()
 
-        this._particleManager = ParticleManager.getInstance()
         this.cameraViewport.addChild(this._particleManager.container)
 
         this.initializeGameLoop()

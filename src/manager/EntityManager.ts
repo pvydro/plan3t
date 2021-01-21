@@ -49,7 +49,7 @@ export class EntityManager implements IEntityManager {
         this._entities[sessionID] = entity
         this._clientEntities[sessionID] = enemyPlayer
         
-        this.cameraViewport.addChild(enemyPlayer)
+        this.cameraStage.addChild(enemyPlayer)
     }
     
     createClientPlayer(entity: Entity, sessionID: string) {
@@ -61,14 +61,14 @@ export class EntityManager implements IEntityManager {
             entityManager: this
         })
         player.y = -20
-        player.x = 1000
+        player.x = 150
         const playerDisplayObject = (player as PIXI.DisplayObject)
 
         this._currentPlayerEntity = player
         this._clientEntities[sessionID] = this.currentPlayerEntity
 
-        this.cameraViewport.addChild(this.currentPlayerEntity)
-        this.cameraViewport.follow(playerDisplayObject)
+        this.cameraStage.addChild(this.currentPlayerEntity)
+        this.camera.follow(playerDisplayObject)
     }
 
     updateEntity(entity: Entity, sessionID: string, changes?: any) {
@@ -86,7 +86,7 @@ export class EntityManager implements IEntityManager {
     removeEntity(sessionID: string, entity?: Entity) {
         const removedClientEntity = this.clientEntities[sessionID]
         
-        this.cameraViewport.removeChild(removedClientEntity)
+        this.cameraStage.removeChild(removedClientEntity)
 
         delete this.entities[sessionID]
     }
@@ -101,7 +101,7 @@ export class EntityManager implements IEntityManager {
         bullet.x = x
         bullet.y = y
 
-        this.cameraViewport.addChildAt(bullet, EntityManager.BulletIndex)
+        this.cameraStage.addChildAt(bullet, EntityManager.BulletIndex)
         this.clientEntities[uuidv4()] = bullet
     }
 
@@ -111,6 +111,10 @@ export class EntityManager implements IEntityManager {
 
     get cameraViewport() {
         return this.camera.viewport
+    }
+
+    get cameraStage() {
+        return this.camera.stage
     }
 
     get currentPlayerEntity() {

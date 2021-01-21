@@ -30,7 +30,11 @@ export class GameMapManager implements IGameMapManager {
         
         await this._gameMap.initializeSpherical()
 
-        this.viewport.addChild(this._gameMap)
+        this.stage.addChild(this._gameMap)
+    }
+
+    get stage() {
+        return this.camera.stage
     }
 
     get viewport() {

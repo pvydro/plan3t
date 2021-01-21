@@ -13,7 +13,8 @@ game.bootstrap().then(() => {
     
     // allow to resize viewport and renderer
     window.onresize = () => {
-        game.cameraViewport.resize(window.innerWidth, window.innerHeight)
+        game.camera.resize(window.innerWidth, window.innerHeight)
+        // game.cameraViewport.resize(window.innerWidth, window.innerHeight)
         game.renderer.resize(window.innerWidth, window.innerHeight)
     }
 })

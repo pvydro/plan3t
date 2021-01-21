@@ -11,7 +11,7 @@ export const WorldSize = {
 export const BasicLerp = (pointA: number, pointB: number, time: number) => {
     return (pointB - pointA) * time + pointA
 }
-export const GlobalScale = 5
+export const GlobalScale = 1//5
 export const ShowCollisionDebug = false
 
 export class Constants {
@@ -19,13 +19,13 @@ export class Constants {
 }
 
 export class GravityConstants {
-    public static DropAcceleration: number = 3.5
+    public static DropAcceleration: number = 1//3.5
 
     private constructor() {}
 }
 
 export class Defaults {
-    public static BulletVelocity = 25
+    public static BulletVelocity = 5
 
     private constructor() {}
 }
