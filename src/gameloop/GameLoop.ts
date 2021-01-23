@@ -41,8 +41,6 @@ export class GameLoop implements IGameLoop {
     }
 
     gameLoop() {
-        // Update current state
-        this.clientManager.gameStateManager.update()
 
         // Update all ClientEntities
         if (this.entityManager !== undefined) {
@@ -63,6 +61,9 @@ export class GameLoop implements IGameLoop {
         if (this.clientManager !== undefined) {
             this.clientManager.clientCamera.update()
         }
+
+        // Update current state
+        this.clientManager.gameStateManager.update()
 
         if (this._shouldLoop) {
             requestAnimationFrame(this.gameLoop.bind(this))

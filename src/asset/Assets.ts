@@ -100,6 +100,7 @@ export class AssetUrls {
     public static ENEMY_FLYINGEYE_IDLE = 'assets/image/enemy/flyingeye/flyingeye'
 
     // Spherical/GameMap
+    public static SKY_DAWN = 'assets/image/gamemap/skies/dawn'
     public static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
     public static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
     public static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'

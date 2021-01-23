@@ -5,8 +5,10 @@ import { Spherical } from './spherical/Spherical'
 import { Container } from '../engine/display/Container'
 import { GlobalScale } from '../utils/Constants'
 import { Rect } from '../engine/math/Rect'
+import { GameMapSky } from './GameMapSky'
+import { IUpdatable } from '../interface/IUpdatable'
 
-export interface IGameMap extends IDemolishable {
+export interface IGameMap extends IDemolishable, IUpdatable {
     initializeSpherical(): Promise<void>
     demolish(): void
     collidableRects: Rect[]
@@ -15,6 +17,8 @@ export interface IGameMap extends IDemolishable {
 export class GameMap extends Container implements IGameMap {
     private static INSTANCE?: GameMap
     currentSpherical?: Spherical
+
+    sky: GameMapSky
     
     static getInstance() {
         if (GameMap.INSTANCE === undefined) {
@@ -27,7 +31,14 @@ export class GameMap extends Container implements IGameMap {
     private constructor() {
         super()
 
+        this.sky = new GameMapSky()
+        this.addChild(this.sky)
+
         this.scale.set(GlobalScale, GlobalScale)
+    }
+
+    update() {
+        this.sky.update()
     }
 
     // TODO: Seed

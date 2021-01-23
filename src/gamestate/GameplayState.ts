@@ -4,6 +4,7 @@ import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
+import { ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
 import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
@@ -43,10 +44,12 @@ export class GameplayState extends GameState implements IGameplayState {
         this.stage.addChild(this.cameraViewport)
 
         if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
+
+        this.camera.stage.addChild(ParticleManager.getInstance().container)
     }
 
     update() {
-        
+        this.gameMapManager.update()
     }
 
     demolish() {

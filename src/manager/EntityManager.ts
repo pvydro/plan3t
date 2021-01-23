@@ -26,7 +26,7 @@ export interface EntityManagerOptions {
 }
 
 export class EntityManager implements IEntityManager {
-    private static BulletIndex = 1
+    // private static BulletIndex = 1
 
     _entities: { [id: string]: any } = {}
     _clientEntities: { [id: string]: any } = {}//ClientEntity } = {}
@@ -101,7 +101,8 @@ export class EntityManager implements IEntityManager {
         bullet.x = x
         bullet.y = y
 
-        this.cameraStage.addChildAt(bullet, EntityManager.BulletIndex)
+        const maximumIndex = this.cameraStage.children.length - 1
+        this.cameraStage.addChildAt(bullet, maximumIndex)
         this.clientEntities[uuidv4()] = bullet
     }
 

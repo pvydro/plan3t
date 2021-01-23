@@ -40,6 +40,12 @@ export class ClientManager implements ClientManager {
         this._gameStateManager = new GameStateManager({ game: this._game })
     }
 
+    update() {
+        if (this._gameStateManager) {
+            this._gameStateManager.update()
+        }
+    }
+
     get client() {
         return this._client
     }

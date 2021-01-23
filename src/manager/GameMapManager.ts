@@ -1,8 +1,9 @@
 import { GameMap } from '../gamemap/GameMap'
+import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
 import { IClientManager } from './ClientManager'
 
-export interface IGameMapManager {
+export interface IGameMapManager extends IUpdatable {
     gameMap: GameMap
     initialize()
 }
@@ -31,6 +32,12 @@ export class GameMapManager implements IGameMapManager {
         await this._gameMap.initializeSpherical()
 
         this.stage.addChild(this._gameMap)
+    }
+
+    update() {
+        if (this._gameMap) {
+            this._gameMap.update()
+        }
     }
 
     get stage() {

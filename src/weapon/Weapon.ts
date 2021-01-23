@@ -134,7 +134,7 @@ export class Weapon extends Container implements IWeapon {
         && this.playerHand.player !== undefined) {
             const direction = this.playerHand.player.direction
             const entityManager = this.playerHand.player.entityManager
-            const crouchOffset = this.playerHand.currentOffsetY
+            // const crouchOffset = this.playerHand.currentOffsetY
             const bulletX = this._currentRotatedBarrelPoint.x
             const bulletY = this._currentRotatedBarrelPoint.y
 
