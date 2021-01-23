@@ -23,12 +23,12 @@ export class CameraDebugger extends Container implements ICameraDebugger {
 
         this.debugGraphics = new Graphix()
 
-        this.debugGraphics.beginFill(this.color)//.fillStyle(this.lineWidth, this.color)
-        this.debugGraphics.drawRect(0, 0, 40, 40)
+        this.debugGraphics.beginFill(this.color)
+        this.debugGraphics.drawRect(0, 0, 5, 5)
         this.debugGraphics.endFill()
 
         InputProcessor.on('mousemove', (ev) => {
-            this.update(ev.x, ev.y)
+            this.update(ev.x - 2.5, ev.y - 2.5)
         })
 
         this.addChild(this.debugGraphics)

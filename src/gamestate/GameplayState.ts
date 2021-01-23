@@ -6,6 +6,7 @@ import { GameStateID } from '../manager/GameStateManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
+import { Crosshair } from '../ui/hud/Crosshair'
 import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 
@@ -18,6 +19,7 @@ export class GameplayState extends GameState implements IGameplayState {
     clientManager: IClientManager
     gameMapManager: IGameMapManager
     gravityManager: IGravityManager
+    crosshair: Crosshair
 
     constructor(options: GameStateOptions) {
         super({
@@ -33,6 +35,8 @@ export class GameplayState extends GameState implements IGameplayState {
         this.roomManager = new RoomManager({
             clientManager: this.clientManager
         })
+
+        this.crosshair = Crosshair.getInstance()
     }
     
     async initialize() {
@@ -46,10 +50,13 @@ export class GameplayState extends GameState implements IGameplayState {
         if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
 
         this.camera.stage.addChild(ParticleManager.getInstance().container)
+
+        this.camera.viewport.addChild(this.crosshair)
     }
 
     update() {
         this.gameMapManager.update()
+        this.crosshair.update()
     }
 
     demolish() {
