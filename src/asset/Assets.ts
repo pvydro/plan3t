@@ -132,4 +132,7 @@ export class AssetUrls {
     public static MUZZLE_FLASH_D_1 = 'assets/image/particles/muzzleflash/d/1'
     public static MUZZLE_FLASH_D_2 = 'assets/image/particles/muzzleflash/d/2'
     public static MUZZLE_FLASH_D_3 = 'assets/image/particles/muzzleflash/d/3'
+
+    // Lights
+    public static LIGHT_PLAYER = 'assets/image/lights/playerlight'
 }

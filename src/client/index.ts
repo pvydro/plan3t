@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { IGame, Game } from '../main/Game'
 
 window.PIXI = PIXI
+global.PIXI = PIXI
 
 const game: IGame = new Game()
 

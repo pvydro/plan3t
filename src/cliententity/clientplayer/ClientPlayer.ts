@@ -12,6 +12,7 @@ import { Key } from 'ts-keycode-enum'
 import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
 import { EntityManager } from '../../manager/EntityManager'
+import { Light } from '../../engine/display/lighting/Light'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -60,6 +61,15 @@ export class ClientPlayer extends GravityEntity {
             this._entityManager = options.entityManager
         }
         this._clientControl = options.clientControl
+
+        // Temp
+        const tempLight = new Light()
+        tempLight.width = window.innerWidth / 4
+        tempLight.height = window.innerHeight / 4
+        tempLight.x = -(tempLight.width / 2)
+        tempLight.y = -(tempLight.height / 2)
+        tempLight.alpha = 0.3//0.2//0.15
+        this.addChild(tempLight)
         
         const player = this
 
@@ -78,7 +88,7 @@ export class ClientPlayer extends GravityEntity {
 
         this.scale.set(GlobalScale, GlobalScale)
 
-        // Temp
+
         if (options.clientControl) {
             InputProcessor.on('keydown', (ev: KeyboardEvent) => {
                 if (ev.which === Key.One) {
