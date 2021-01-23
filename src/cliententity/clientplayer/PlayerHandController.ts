@@ -60,7 +60,7 @@ export class PlayerHandController implements IPlayerHandController {
     followMouse() {
         const direction = this.playerHand.player.direction
         let recoilRotation = this.playerHand.primaryWeapon._currentRecoilOffset.y * direction
-        const projectedPlayerPos = Camera.getInstance().viewport.toScreen(this.playerHand.player.position)
+        const projectedPlayerPos = this.playerHand.player.position
         const playerX = projectedPlayerPos.x
         const playerY = projectedPlayerPos.y
         
@@ -77,8 +77,9 @@ export class PlayerHandController implements IPlayerHandController {
 
     trackMousePosition() {
         InputProcessor.on('mousemove', (event: MouseEvent) => {
-            this.mousePos.x = event.clientX
-            this.mousePos.y = event.clientY
+            const projectedPos = Camera.getInstance().toScreen({ x: event.clientX, y: event.clientY })
+            this.mousePos.x = projectedPos.x
+            this.mousePos.y = projectedPos.y
         })
     }
 }

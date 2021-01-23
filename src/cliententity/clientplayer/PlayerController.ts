@@ -85,7 +85,11 @@ export class PlayerController implements IPlayerController {
     }
 
     changeDirectionBasedOnMouse() {
-        const projectedPlayerPos = Camera.getInstance().viewport.toScreen(this.player.position)
+        const projectedPlayerPos = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2
+        }
+        //Camera.getInstance().toScreen(this.player.position)
 
         if (this.mousePos.x < projectedPlayerPos.x) {
             this.player.direction = Direction.Left

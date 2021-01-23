@@ -13,6 +13,7 @@ export const BasicLerp = (pointA: number, pointB: number, time: number) => {
 }
 export const GlobalScale = 1//5
 export const ShowCollisionDebug = false
+export const ShowCameraProjectionDebug = false
 
 export class Constants {
     private constructor() {}

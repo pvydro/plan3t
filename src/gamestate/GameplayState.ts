@@ -1,11 +1,11 @@
-import { Container } from 'pixi.js'
+import { Camera } from '../camera/Camera'
 import { Viewport } from '../camera/Viewport'
 import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
-import { WorldSize } from '../utils/Constants'
+import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 
 export interface IGameplayState extends IGameState {
@@ -41,6 +41,8 @@ export class GameplayState extends GameState implements IGameplayState {
 
         // To get the camera, you need the game stage, pass Game through StateManager
         this.stage.addChild(this.cameraViewport)
+
+        if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
     }
 
     update() {

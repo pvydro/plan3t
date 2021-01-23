@@ -2,12 +2,14 @@ import { Container } from '../engine/display/Container'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
+import { CameraDebugger } from './CameraDebugger'
 import { Viewport } from './Viewport'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
     stage: Container
     resize(width: number, height: number): void
+    toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
 }
 
 export class Camera implements ICamera {
@@ -21,10 +23,11 @@ export class Camera implements ICamera {
     _viewport: Viewport
     _x: number = 0
     _y: number = 0
-    _offsetEaseDamping = 5
+    offsetEaseDamping = 10
     targetOffset: IVector2 = Vector2.Zero
     offset: IVector2 = Vector2.Zero
-    followDamping: number = 5
+
+    cameraDebugger: CameraDebugger
 
     public static getInstance() {
         if (Camera.INSTANCE === undefined) {
@@ -48,6 +51,11 @@ export class Camera implements ICamera {
         this.trackMousePosition()
     }
 
+    initializeDebugger() {
+        this.cameraDebugger = new CameraDebugger(this)
+        this.stage.addChild(this.cameraDebugger)
+    }
+
     trackMousePosition() {
         InputProcessor.on('mousemove', (event: MouseEvent) => {
             const mouseX = event.clientX
@@ -58,8 +66,8 @@ export class Camera implements ICamera {
     }
 
     updateMousePosition(mouseX: number, mouseY: number) {
-        const viewportMiddleX = this.width / 2//this.x + this.width / 2
-        const viewportMiddleY = this.height / 2//this._viewport.height / 2
+        const viewportMiddleX = this.width / 2
+        const viewportMiddleY = this.height / 2
         const offsetX = (mouseX - viewportMiddleX) / 20
         const offsetY = (mouseY - viewportMiddleY) / 15
 
@@ -69,8 +77,8 @@ export class Camera implements ICamera {
 
     update() {
         if (this._target !== undefined) {
-            this.offset.x += (this.targetOffset.x - this.offset.x) / this._offsetEaseDamping
-            this.offset.y += (this.targetOffset.y - this.offset.y) / this._offsetEaseDamping
+            this.offset.x += (this.targetOffset.x - this.offset.x) / this.offsetEaseDamping
+            this.offset.y += (this.targetOffset.y - this.offset.y) / this.offsetEaseDamping
             
             this.x = this._target.x + this.offset.x
             this.y = this._target.y + this.offset.y
@@ -93,6 +101,16 @@ export class Camera implements ICamera {
         const resizeZoom = this._zoom * this._resizeScale
 
         this.stage.scale.set(resizeZoom, resizeZoom)
+    }
+
+    toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {
+        const newX = (point.x / this.zoom)
+        - (this.stage.x / this.zoom)
+        const newY = (point.y / this.zoom)
+        - (this.stage.y / this.zoom)
+        const newVec = new Vector2(newX, newY)
+
+        return newVec
     }
 
     get target() {
