@@ -17,6 +17,4 @@ game.bootstrap().then(() => {
     document.body.appendChild(game.view)
     
     (window as any).game = game
-    
-    // allow to resize viewport and renderer
 })

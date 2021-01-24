@@ -13,6 +13,7 @@ import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
 import { EntityManager } from '../../manager/EntityManager'
 import { Light } from '../../engine/display/lighting/Light'
+import { PlayerLight } from './PlayerLight'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -44,6 +45,7 @@ export class ClientPlayer extends GravityEntity {
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
+    light: PlayerLight
     collision: PlayerCollision
     controller: IPlayerController
     _clientControl: boolean = false
@@ -63,22 +65,24 @@ export class ClientPlayer extends GravityEntity {
         this._clientControl = options.clientControl
 
         // Temp
-        const tempLight = new Light()
-        tempLight.width = window.innerWidth / 4
-        tempLight.height = window.innerHeight / 4
-        tempLight.x = -(tempLight.width / 2)
-        tempLight.y = -(tempLight.height / 2)
-        tempLight.alpha = 0.3//0.2//0.15
-        this.addChild(tempLight)
+        // const tempLight = new Light()
+        // tempLight.width = window.innerWidth / 4
+        // tempLight.height = window.innerHeight / 4
+        // tempLight.x = -(tempLight.width / 2)
+        // tempLight.y = -(tempLight.height / 2)
+        // tempLight.alpha = 0.3//0.2//0.15
+        // this.addChild(tempLight)
         
         const player = this
 
         this.hand = new PlayerHand({ player })
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
+        this.light = new PlayerLight({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
         
+        this.addChild(this.light)
         this.addChild(this.body)
         this.addChild(this.head)
         this.addChild(this.hand)

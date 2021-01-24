@@ -5,6 +5,7 @@ import { Flogger } from '../../service/Flogger'
 import { Rect } from '../../engine/math/Rect'
 import { SphericalHelper } from './SphericalHelper'
 import { GlobalScale } from '../../utils/Constants'
+import { SphericalTile } from './SphericalTile'
 
 export interface ISphericalBuilder {
     buildSphericalFromData(data: ISphericalData): SphericalResponse
@@ -28,7 +29,7 @@ export class SphericalBuilder implements ISphericalBuilder {
         data.points.forEach((point: SphericalPoint) => {
             if (SphericalHelper.isPointSolid(point)) {
                 const newTileTexture = SphericalHelper.getTextureForPoint(point, data.biome)
-                const newTileSprite = new Sprite({ texture: newTileTexture })
+                const newTileSprite = new SphericalTile({ texture: newTileTexture })
                 
                 newTileSprite.x = point.x * newTileTexture.width
                 newTileSprite.y = point.y * newTileTexture.height

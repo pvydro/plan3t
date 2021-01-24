@@ -10,8 +10,6 @@ export interface IRect {
 }
 
 export class Rect extends PIXI.Rectangle implements IRect {
-    _position?: IVector2
-
     constructor(x: number, y: number, width: number, height: number) {
         super(x, y, width, height)
     }

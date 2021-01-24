@@ -7,12 +7,12 @@ export class Assets {
     private static _imagesStartLoading: boolean = false
     private static _imagesFinishedLoading: boolean = false
 
-    public static TILE_DIR = 'assets/image/gamemap/tiles/'
-    public static BASE_IMAGE_DIR: string = 'assets/image'
+    static TILE_DIR = 'assets/image/gamemap/tiles/'
+    static BASE_IMAGE_DIR: string = 'assets/image'
 
     private constructor() {}
 
-    public static async loadImages() {
+    static async loadImages() {
         Flogger.log('Assets', 'loadImages')
 
         await Assets.loadAllTileImages()
