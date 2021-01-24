@@ -16,6 +16,7 @@ export class Camera implements ICamera {
     private static INSTANCE: Camera
     private baseZoom: number = 3
     private baseWidth: number = 1280
+    static Zero: Vector2 = Vector2.Zero
     _resizeScale: number = 1
     _target: { x: number, y: number, width?: number, height?: number } = undefined
     _zoom: number = this.baseZoom
@@ -83,6 +84,8 @@ export class Camera implements ICamera {
             this.x = this._target.x + this.offset.x
             this.y = this._target.y + this.offset.y
         }
+
+        Camera.Zero = this.toScreen({ x: 0, y: 0 })
     }
 
     follow(object: { x: number, y: number, width?: number, height?: number }) {

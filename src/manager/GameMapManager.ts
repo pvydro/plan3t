@@ -5,7 +5,7 @@ import { IClientManager } from './ClientManager'
 
 export interface IGameMapManager extends IUpdatable {
     gameMap: GameMap
-    initialize()
+    initialize(): void
 }
 
 export interface GameMapManagerOptions {

@@ -1,5 +1,6 @@
 import { Camera } from '../camera/Camera'
 import { Viewport } from '../camera/Viewport'
+import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
 import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
@@ -19,6 +20,7 @@ export class GameplayState extends GameState implements IGameplayState {
     clientManager: IClientManager
     gameMapManager: IGameMapManager
     gravityManager: IGravityManager
+    ambientLight: GameplayAmbientLight
     crosshair: Crosshair
 
     constructor(options: GameStateOptions) {
@@ -36,26 +38,30 @@ export class GameplayState extends GameState implements IGameplayState {
             clientManager: this.clientManager
         })
 
+        this.ambientLight = new GameplayAmbientLight()
         this.crosshair = Crosshair.getInstance()
     }
     
     async initialize() {
         await this.initializeBackground()
         await this.gameMapManager.initialize()
-        await this.roomManager.initializeRoom()
 
         // To get the camera, you need the game stage, pass Game through StateManager
         this.stage.addChild(this.cameraViewport)
 
         if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
 
+        this.camera.stage.addChild(this.ambientLight)
         this.camera.stage.addChild(ParticleManager.getInstance().container)
+
+        await this.roomManager.initializeRoom()
 
         this.camera.viewport.addChild(this.crosshair)
     }
 
     update() {
         this.gameMapManager.update()
+        this.ambientLight.update()
         this.crosshair.update()
     }
 
