@@ -24,13 +24,15 @@ export class PlayerHandController implements IPlayerHandController {
 
     constructor(options: PlayerHandControllerOptions) {
         this.playerHand = options.playerHand
-
-        this.trackMousePosition()
     }
 
     update(clientControl: boolean) {
         if (clientControl) {
             this.followMouse()
+        
+            const projectedPos = Camera.Mouse
+            this.mousePos.x = projectedPos.x
+            this.mousePos.y = projectedPos.y
         }
         this.followState()
     }
@@ -73,13 +75,5 @@ export class PlayerHandController implements IPlayerHandController {
         this.playerHand.rotation = direction === Direction.Right ? angle : angle - halfACircleInRadians
 
         this.playerHand.rotation += recoilRotation
-    }
-
-    trackMousePosition() {
-        InputProcessor.on('mousemove', (event: MouseEvent) => {
-            const projectedPos = Camera.getInstance().toScreen({ x: event.clientX, y: event.clientY })
-            this.mousePos.x = projectedPos.x
-            this.mousePos.y = projectedPos.y
-        })
     }
 }

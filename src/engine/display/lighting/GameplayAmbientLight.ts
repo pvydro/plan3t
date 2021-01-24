@@ -17,7 +17,7 @@ export class GameplayAmbientLight extends Container implements IGameplayAmbientL
         this.overlayDarkener = new Darkener({
             width: WindowSize.width,
             height: WindowSize.height,
-            alpha: 0.8
+            alpha: 1//0.8
         })
 
         this.addChild(this.overlayDarkener)

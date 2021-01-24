@@ -17,6 +17,9 @@ export class Camera implements ICamera {
     private baseZoom: number = 3
     private baseWidth: number = 1280
     static Zero: Vector2 = Vector2.Zero
+    static Mouse: Vector2 = Vector2.Zero
+    _mouseX: number = 0
+    _mouseY: number = 0
     _resizeScale: number = 1
     _target: { x: number, y: number, width?: number, height?: number } = undefined
     _zoom: number = this.baseZoom
@@ -59,14 +62,14 @@ export class Camera implements ICamera {
 
     trackMousePosition() {
         InputProcessor.on('mousemove', (event: MouseEvent) => {
-            const mouseX = event.clientX
-            const mouseY = event.clientY
+            this._mouseX = event.clientX
+            this._mouseY = event.clientY
 
-            this.updateMousePosition(mouseX, mouseY)
+            this.updateMouseFollowOffset(this._mouseX, this._mouseY)
         })
     }
 
-    updateMousePosition(mouseX: number, mouseY: number) {
+    updateMouseFollowOffset(mouseX: number, mouseY: number) {
         const viewportMiddleX = this.width / 2
         const viewportMiddleY = this.height / 2
         const offsetX = (mouseX - viewportMiddleX) / 20
@@ -86,6 +89,7 @@ export class Camera implements ICamera {
         }
 
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
+        Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
     }
 
     follow(object: { x: number, y: number, width?: number, height?: number }) {
