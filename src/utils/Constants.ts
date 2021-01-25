@@ -27,6 +27,7 @@ export class GravityConstants {
 
 export class Defaults {
     public static BulletVelocity = 5
+    public static ShouldLightsJitter = false
 
     private constructor() {}
 }

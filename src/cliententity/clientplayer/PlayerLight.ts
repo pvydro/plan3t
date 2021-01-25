@@ -30,11 +30,21 @@ export class PlayerLight extends Container implements IPlayerLight {
         // this.alpha = 0.2
     }
 
+    update() {
+        for (var i in this.lights) {
+            this.lights[i].update()
+        }
+    }
+
     constructLights() {
         const totalWidth = WindowSize.width / 20//4
 
         for (var i = 0; i < this.totalLights; i++) {
-            const light = new Light({ texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG)) })
+            const light = new Light({
+                texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG)),
+                shouldJitter: true,
+                maximumJitterAmount: 2
+            })
             const size = totalWidth * (i + 1)
 
             light.width = size
