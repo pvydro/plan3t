@@ -38,7 +38,7 @@ export class PlayerLight extends Container implements IPlayerLight {
         this.targetLightYVel = this.player.yVel * 5
         this.lightYVel += (this.targetLightYVel - this.lightYVel) / this.lightYVelDamping
 
-        for (var i = 0; i < this.lights.length - 1; i++) {
+        for (var i = 0; i < this.lights.length; i++) {
             this.lights[i].update()
             this.lights[i].x = -(this.lightXVel / (i + 2))
             this.lights[i].y = -(this.lightYVel / (i + 2))
