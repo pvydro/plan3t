@@ -51,6 +51,7 @@ export class Game implements IGame {
 
     instantiateApplication() {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
+        PIXI.settings.ROUND_PIXELS = true
 
         this._application = new PIXI.Application({
             width: WindowSize.width,

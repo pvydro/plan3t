@@ -42,6 +42,8 @@ export class Light extends Container implements ILight {
         this.maximumJitterAmount = (options && options.maximumJitterAmount) ? options.maximumJitterAmount : this.maximumJitterAmount
 
         this.addChild(this.sprite)
+
+        this.sprite.anchor.set(0.5, 0.5)
     }
 
     update() {
