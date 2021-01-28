@@ -137,5 +137,6 @@ export class AssetUrls {
     public static LIGHT_HARD_LG = 'assets/image/lights/lighthardlg'
 
     // Passive Creatures
-    public static PASSIVE_CREATURE_HORNET = 'assets/image/creature/passive/swamp_hornet'
+    public static PASSIVE_CREATURE_HORNET = 'assets/image/creature/passive/swamphornet/swamphornet'
+    public static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
 }
