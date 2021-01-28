@@ -7,6 +7,7 @@ import { GameStateID } from '../manager/GameStateManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
+import { PassiveHornet } from '../passivecreature/passivehornet/PassiveHornet'
 import { Crosshair } from '../ui/hud/Crosshair'
 import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
@@ -22,6 +23,8 @@ export class GameplayState extends GameState implements IGameplayState {
     gravityManager: IGravityManager
     ambientLight: GameplayAmbientLight
     crosshair: Crosshair
+
+    hornet: PassiveHornet
 
     constructor(options: GameStateOptions) {
         super({
@@ -40,6 +43,8 @@ export class GameplayState extends GameState implements IGameplayState {
 
         this.ambientLight = new GameplayAmbientLight()
         this.crosshair = Crosshair.getInstance()
+
+        this.hornet = new PassiveHornet()
     }
     
     async initialize() {
@@ -57,12 +62,16 @@ export class GameplayState extends GameState implements IGameplayState {
         await this.roomManager.initializeRoom()
 
         this.camera.viewport.addChild(this.crosshair)
+
+
+        this.camera.stage.addChild(this.hornet)
     }
 
     update() {
         this.gameMapManager.update()
         this.ambientLight.update()
         this.crosshair.update()
+        this.hornet.update()
     }
 
     demolish() {
