@@ -3,6 +3,7 @@ import { Camera } from '../../../camera/Camera'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { WindowSize } from '../../../utils/Constants'
 import { Darkener } from './Darkener'
+import { Light } from './Light'
 
 export interface IGameplayAmbientLight extends IUpdatable {
 
@@ -10,6 +11,7 @@ export interface IGameplayAmbientLight extends IUpdatable {
 
 export class GameplayAmbientLight extends Container implements IGameplayAmbientLight {
     overlayDarkener: Darkener
+    overlayVignetteLight: Light
 
     constructor() {
         super()

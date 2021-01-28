@@ -17,30 +17,47 @@ export class PlayerLight extends Container implements IPlayerLight {
     totalLights: number = 4
     lights: Light[] = []
 
+    targetLightXVel: number = 0
+    lightXVel: number = 0
+    lightXVelDamping: number = 20
+    targetLightYVel: number = 0
+    lightYVel: number = 0
+    lightYVelDamping: number = 10
+
     constructor(options: PlayerLightOptions) {
         super()
 
+        this.player = options.player
+
         this.constructLights()
+    }
 
-        // this.player = options.player
+    update() {
+        this.targetLightXVel = this.player.xVel * 7
+        this.lightXVel += (this.targetLightXVel - this.lightXVel) / this.lightXVelDamping
+        this.targetLightYVel = this.player.yVel * 5
+        this.lightYVel += (this.targetLightYVel - this.lightYVel) / this.lightYVelDamping
 
-        // this.x = //-this.halfWidth
-        // this.y = //-this.halfHeight
-
-        // this.alpha = 0.2
+        for (var i = 0; i < this.lights.length; i++) {
+            this.lights[i].update()
+            this.lights[i].x = -(this.lightXVel / (i + 2))
+            this.lights[i].y = -(this.lightYVel / (i + 2))
+        }
     }
 
     constructLights() {
         const totalWidth = WindowSize.width / 20//4
 
         for (var i = 0; i < this.totalLights; i++) {
-            const light = new Light({ texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG)) })
+            const light = new Light({
+                texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG)),
+                shouldJitter: true,
+                maximumJitterAmount: 2
+            })
             const size = totalWidth * (i + 1)
 
             light.width = size
             light.height = size
-            light.x = -(size / 2)
-            light.y = -(size / 2)
 
             light.alpha = 0.175//125
 

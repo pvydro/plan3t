@@ -7,7 +7,6 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { Events } from '../../utils/Constants'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
-import { HighlightSpanKind } from 'typescript'
 
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number
@@ -37,9 +36,11 @@ export class PlayerHead extends Container {
             player: this.player
         })
 
+//
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_HUMAN_DEFAULT))
         this.headSprite = new Sprite({ texture })
         this.headSprite.anchor.set(0.475, 0.9)
+//
 
         this.addChild(this.headSprite)
 

@@ -28,8 +28,15 @@ export class Camera implements ICamera {
     _x: number = 0
     _y: number = 0
     offsetEaseDamping = 10
+    jitterDamping: number = 100
+    jitterXCooldown: number = 10
+    jitterYCooldown: number = 20
+    maximumJitterCooldown: number = 500
+    maximumJitterAmount: number = 10
     targetOffset: IVector2 = Vector2.Zero
     offset: IVector2 = Vector2.Zero
+    _targetJitterOffset: Vector2 = Vector2.Zero
+    _jitterOffset: Vector2 = Vector2.Zero
 
     cameraDebugger: CameraDebugger
 
@@ -69,6 +76,21 @@ export class Camera implements ICamera {
         })
     }
 
+    update() {
+        this.updateCameraSway()
+
+        if (this._target !== undefined) {
+            this.offset.x += (this.targetOffset.x - this.offset.x) / this.offsetEaseDamping
+            this.offset.y += ((this.targetOffset.y + this._jitterOffset.y) - this.offset.y) / this.offsetEaseDamping
+            
+            this.x = this._target.x + this.offset.x + this._jitterOffset.x
+            this.y = this._target.y + this.offset.y
+        }
+
+        Camera.Zero = this.toScreen({ x: 0, y: 0 })
+        Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
+    }
+
     updateMouseFollowOffset(mouseX: number, mouseY: number) {
         const viewportMiddleX = this.width / 2
         const viewportMiddleY = this.height / 2
@@ -79,17 +101,23 @@ export class Camera implements ICamera {
         this.targetOffset.y = offsetY
     }
 
-    update() {
-        if (this._target !== undefined) {
-            this.offset.x += (this.targetOffset.x - this.offset.x) / this.offsetEaseDamping
-            this.offset.y += (this.targetOffset.y - this.offset.y) / this.offsetEaseDamping
-            
-            this.x = this._target.x + this.offset.x
-            this.y = this._target.y + this.offset.y
-        }
+    updateCameraSway() {
+        this._jitterOffset.x += (this._targetJitterOffset.x - this._jitterOffset.x) / this.jitterDamping
+        this._jitterOffset.y += (this._targetJitterOffset.y - this._jitterOffset.y) / this.jitterDamping
 
-        Camera.Zero = this.toScreen({ x: 0, y: 0 })
-        Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
+        this.jitterXCooldown--
+        this.jitterYCooldown--
+
+        if (this.jitterXCooldown <= 0) {
+            this.jitterXCooldown = Math.random() * this.maximumJitterCooldown
+
+            this._targetJitterOffset.x = Math.random() * (this.maximumJitterAmount)
+        }
+        if (this.jitterYCooldown <= 0) {
+            this.jitterYCooldown = Math.random() * this.maximumJitterCooldown
+
+            this._targetJitterOffset.y = Math.random() * (this.maximumJitterAmount / 2)
+        }
     }
 
     follow(object: { x: number, y: number, width?: number, height?: number }) {
