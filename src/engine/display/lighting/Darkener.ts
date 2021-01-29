@@ -10,6 +10,7 @@ export interface DarkenerOptions {
     width?: number
     height?: number
     alpha?: number
+    color?: number
 }
 
 export class Darkener extends Container implements IDarkener {
@@ -19,7 +20,8 @@ export class Darkener extends Container implements IDarkener {
         const op = {
             width: options && options.width ? options.width : WindowSize.width,
             height: options && options.height ? options.height : WindowSize.height,
-            alpha: options && options.alpha ? options.alpha : 0.5
+            alpha: options && options.alpha ? options.alpha : 0.5,
+            color: options && options.color ? options.color : 0x1e1e1e
         }
 
         this.createRect(op)
@@ -28,7 +30,7 @@ export class Darkener extends Container implements IDarkener {
     createRect(options: DarkenerOptions) {
         const graphics = new Graphix()
 
-        graphics.beginFill(0x1e1e1e)//000000)
+        graphics.beginFill(options.color)
         graphics.drawRect(0, 0, options.width, options.height)
         graphics.endFill()
 

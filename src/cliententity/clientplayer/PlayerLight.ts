@@ -64,5 +64,17 @@ export class PlayerLight extends Container implements IPlayerLight {
             this.lights.push(light)
             this.addChild(light)
         }
+
+        const ambientLight = new Light({
+            texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_VIGNETTE_BORDER)),
+            shouldJitter: true,
+            maximumJitterAmount: 5
+        })
+        ambientLight.alpha = 0.25
+        ambientLight.scale.set(1.5, 1.5)
+
+        this.lights.push(ambientLight)
+
+        this.addChild(ambientLight)
     }
 }

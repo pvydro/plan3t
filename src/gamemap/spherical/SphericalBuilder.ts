@@ -5,10 +5,12 @@ import { Flogger } from '../../service/Flogger'
 import { Rect } from '../../engine/math/Rect'
 import { SphericalHelper } from './SphericalHelper'
 import { GlobalScale } from '../../utils/Constants'
-import { SphericalTile } from './SphericalTile'
+import { SphericalTile, SphericalTileColorData } from './SphericalTile'
+import { SphericalTileHelper } from './SphericalTileHelper'
+import { IVector2 } from '../../engine/math/Vector2'
 
 export interface ISphericalBuilder {
-    buildSphericalFromData(data: ISphericalData): SphericalResponse
+    buildSphericalFromData(data: ISphericalData): Promise<SphericalResponse>
 }
 
 export interface SphericalResponse {
@@ -20,23 +22,27 @@ export class SphericalBuilder implements ISphericalBuilder {
 
     constructor() {}
 
-    buildSphericalFromData(data: SphericalData) {
+    async buildSphericalFromData(data: SphericalData) {
         Flogger.log('SphericalBuilder', 'buildSphericalFromData')
 
         const tileLayer = new Container()
 
         // Construct tileLayer
-        data.points.forEach((point: SphericalPoint) => {
+        for (var i = 0; i < data.points.length; i++) {
+            const point = data.points[i]
             if (SphericalHelper.isPointSolid(point)) {
-                const newTileTexture = SphericalHelper.getTextureForPoint(point, data.biome)
-                const newTileSprite = new SphericalTile({ texture: newTileTexture })
+                const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
+                const tilesheetUrl: string = SphericalTileHelper.getTilesheetFromColorData(tileData, data.biome)
+                const tileCoords: IVector2 = SphericalTileHelper.getTilesheetCoordsFromPoint(point)
+                const texture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
+                const newTileSprite = new SphericalTile({ texture })
                 
-                newTileSprite.x = point.x * newTileTexture.width
-                newTileSprite.y = point.y * newTileTexture.height
+                newTileSprite.x = point.x * newTileSprite.width
+                newTileSprite.y = point.y * newTileSprite.height
 
                 tileLayer.addChild(newTileSprite)
             }
-        })
+        }
 
         // Construct collision layer
         const collisionRects = this.buildCollisionRectanglesFromData(data)

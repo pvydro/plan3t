@@ -63,15 +63,14 @@ export class GameplayState extends GameState implements IGameplayState {
 
         this.camera.viewport.addChild(this.crosshair)
 
-
-        this.camera.stage.addChild(this.hornet)
+        // this.camera.stage.addChild(this.hornet)
     }
 
     update() {
         this.gameMapManager.update()
         this.ambientLight.update()
         this.crosshair.update()
-        this.hornet.update()
+        // this.hornet.update()
     }
 
     demolish() {

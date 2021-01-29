@@ -18,16 +18,12 @@ export interface SphericalTileOptions {
 }
 
 export class SphericalTile extends Sprite implements ISphericalTile {
-    // tileSprite: Sprite
 
     constructor(options: SphericalTileOptions) {
         super({ texture: options.texture })
-
-        // this.addChild(this.tileSprite)
     }
 
     demolish() {
-        // this.tileSprite.destroy()
         this.destroy()
     }
 }

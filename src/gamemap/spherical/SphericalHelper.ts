@@ -1,8 +1,6 @@
-import { Assets } from '../../asset/Assets'
-import { Flogger } from '../../service/Flogger'
+import { IVector2 } from '../../engine/math/Vector2'
 import { SphericalBiome, SphericalPoint } from './SphericalData'
-import { SphericalTileColorData } from './SphericalTile'
-import { SphericalTileHelper } from './SphericalTileHelper'
+
 export interface ISphericalHelper {
 
 }
@@ -15,27 +13,32 @@ export class SphericalHelper implements ISphericalHelper {
         return (point.tileDepth > 0)
     }
 
-    static getTextureForPoint(point: SphericalPoint, biome: SphericalBiome): PIXI.Texture {
-        const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
-        const tileUrl: string = SphericalTileHelper.getResourceForTileColorData(tileData, biome)
+    // static async getTextureForPoint(point: SphericalPoint, biome: SphericalBiome): Promise<PIXI.Texture> {
+    //     try {
+    //         const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
+    //         const tilesheetUrl: string = SphericalTileHelper.getTilesheetFromColorData(tileData, biome)
+    //         const tileCoords: IVector2 = SphericalTileHelper.getTilesheetCoordsFromPoint(point)
+    //         const tileTexture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
 
-        try {
-            const texture = PIXI.Texture.from(Assets.get(tileUrl))
-
-            return texture
-        } catch (error) {
-            Flogger.error('SphericalHelper', 'Error getting texture for point', 'Error', error)
-        }
-    }
+    //         return tileTexture
+    //     } catch (error) {
+    //         Flogger.error('SphericalHelper', 'Error getting texture for point', 'Error', error)
+    //     }
+    // }
 
     static getTileSizeForBiome(biome?: SphericalBiome): number {
-        let tileSize = 16
+        return SphericalHelper.getTileSize()
+        // let tileSize = 16
 
-        switch (biome) {
-            default:
-                tileSize = 16
-        }
+        // switch (biome) {
+        //     default:
+        //         tileSize = 16
+        // }
 
-        return tileSize
+        // return tileSize
+    }
+
+    static getTileSize(): number {
+        return 16
     }
 }

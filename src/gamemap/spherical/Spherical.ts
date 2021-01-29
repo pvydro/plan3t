@@ -1,7 +1,7 @@
 import { Container } from '../../engine/display/Container'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Dimension } from '../../engine/math/Dimension'
-import { ISphericalBuilder, SphericalBuilder } from './SphericalBuilder'
+import { ISphericalBuilder, SphericalBuilder, SphericalResponse } from './SphericalBuilder'
 import { SphericalBiome, SphericalData } from './SphericalData'
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
 import { ShowCollisionDebug } from '../../utils/Constants'
@@ -10,6 +10,7 @@ import { Rect } from '../../engine/math/Rect'
 export interface ISpherical extends IDemolishable {
     collisionRects: Rect[]
     tileLayer: Container
+    initializeSpherical(): Promise<void>
 }
 
 export class Spherical extends Container implements ISpherical {
@@ -18,32 +19,40 @@ export class Spherical extends Container implements ISpherical {
     collisionDebugger: CollisionDebugger
     tileLayer: Container
 
+    data: SphericalData
     biome: SphericalBiome
     dimension: Dimension
 
     constructor(data: SphericalData) {
         super()
 
+        this.data = data
         this.builder = new SphericalBuilder()
         this.biome = data.biome
-        this.dimension = data.dimension
-        
-        const sphericalRespone = this.builder.buildSphericalFromData(data)
-        
-        this.tileLayer = sphericalRespone.tileLayer
-        this.collisionRects = sphericalRespone.collisionRects
+        this.dimension = data.dimension    
+    }
 
-        this.addChild(this.tileLayer)
+    async initializeSpherical(): Promise<void> {
+        return new Promise((resolve) => {
+            this.builder.buildSphericalFromData(this.data).then((response: SphericalResponse) => {
+                this.tileLayer = response.tileLayer
+                this.collisionRects = response.collisionRects
         
-        if (ShowCollisionDebug) {
-            this.collisionDebugger = new CollisionDebugger({
-                lineWidth: 0.5,
-                collisionRects: sphericalRespone.collisionRects
+                this.addChild(this.tileLayer)
+                
+                if (ShowCollisionDebug) {
+                    this.collisionDebugger = new CollisionDebugger({
+                        lineWidth: 0.5,
+                        collisionRects: response.collisionRects
+                    })
+                    
+                    this.collisionDebugger.initializeAndShowGraphics()
+                    this.addChild(this.collisionDebugger)
+                }
+
+                resolve()
             })
-            // this.collisionDebugger.scale.set(0.2, 0.2)
-            this.collisionDebugger.initializeAndShowGraphics()
-            this.addChild(this.collisionDebugger)
-        }
+        })
     }
 
     demolish() {

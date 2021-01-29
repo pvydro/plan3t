@@ -1,4 +1,5 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
+import { Camera } from '../../camera/Camera'
 import { Sprite } from '../../engine/display/Sprite'
 import { IPassiveCreature, PassiveCreature } from '../PassiveCreature'
 
@@ -27,6 +28,14 @@ export class PassiveHornet extends PassiveCreature implements IPassiveHornet {
     findNewPosition() {
         this.hornetTargetX = Math.random() * this.hornetTargetXMax
         this.hornetTargetY = Math.random() * this.hornetTargetYMax
+
+        const projected = Camera.getInstance().toScreen({
+            x: this.hornetTargetX,
+            y: this.hornetTargetY
+        })
+
+        this.hornetTargetX = projected.x
+        this.hornetTargetY = projected.y
     
         console.log('findNewPosition')
 

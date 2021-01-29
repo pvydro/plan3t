@@ -42,15 +42,24 @@ export class GameMap extends Container implements IGameMap {
     }
 
     // TODO: Seed
-    async initializeSpherical(seed?: string) {
-        Flogger.log('GameMap', 'initializeSpherical')
+    async initializeSpherical(seed?: string): Promise<void> {
+        Flogger.log('GameMap', 'initializeSpherical', 'seed', seed)
 
-        GameMapHelper.getRandomSphericalData().then((sphericalData) => {
-            const spherical = new Spherical(sphericalData)
+        return new Promise((resolve, reject) => {
+            GameMapHelper.getRandomSphericalData().then((sphericalData) => {
+                const spherical = new Spherical(sphericalData)
+    
+                spherical.initializeSpherical().then(() => {
+                    this.currentSpherical = spherical
+        
+                    this.addChild(this.currentSpherical)
 
-            this.currentSpherical = spherical
-
-            this.addChild(this.currentSpherical)
+                    resolve()
+                }).catch((error) => {
+                    reject(error)
+                })
+    
+            })
         })
     }
 

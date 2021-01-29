@@ -60,7 +60,7 @@ export class GameMapHelper implements IGameMapHelper {
             const y = pixel.y
 
             points.push({
-                tileValue, tileDepth, x, y
+                tileValue, tileDepth, x, y,
             })
         })
 

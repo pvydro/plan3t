@@ -62,7 +62,7 @@ export class Assets {
 
             biomeKeys.forEach((biome: SphericalBiome) => {
                 tileValues.forEach((value) => {
-                    const tileUrl = SphericalTileHelper.getResourceForTileColorData(value, biome)
+                    const tileUrl = SphericalTileHelper.getTilesheetFromColorData(value, biome)
 
                     tileAssets.push(Assets.get(tileUrl))
                 })

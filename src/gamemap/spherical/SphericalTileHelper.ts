@@ -1,6 +1,10 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { SphericalBiome } from './SphericalData'
+import { ImageUtils } from '../../utils/ImageUtils'
+import { IVector2 } from '../../engine/math/Vector2'
+import { SphericalBiome, SphericalPoint } from './SphericalData'
 import { SphericalTileColorData } from './SphericalTile'
+import { Constants } from '../../utils/Constants'
+import { SphericalHelper } from './SphericalHelper'
 
 export interface ISphericalTileHelper {
 
@@ -25,9 +29,9 @@ export class SphericalTileValues {
 }
 
 export class SphericalTileHelper {
-    private constructor() {
-        
-    }
+
+
+    private constructor() {}
 
     static matchColorDataToTileValue(colorData: { r: number, g: number, b: number }): SphericalTileColorData {
         const tileKeys = Object.values(SphericalTileValues)
@@ -46,7 +50,7 @@ export class SphericalTileHelper {
         return chosenKey
     }
 
-    static getResourceForTileColorData(value: SphericalTileColorData, biome: SphericalBiome): string {
+    static getTilesheetFromColorData(value: SphericalTileColorData, biome: SphericalBiome): string {
         const tileDir = Assets.TILE_DIR
         const biomeDir = tileDir + biome
         let dir = biomeDir + '/'
@@ -70,5 +74,33 @@ export class SphericalTileHelper {
         }
 
         return dir
+    }
+
+    static getTilesheetCoordsFromPoint(point: SphericalPoint): IVector2 {
+        // TODO Orientation logic
+
+        return { x: 0, y: 0 }
+    }
+
+    static async getTileTextureFromTilesheetCoords(tilesheetUrl: string, coords: IVector2): Promise<PIXI.Texture> {
+        const scissors = ImageUtils.Manipulator
+        const tileSize = SphericalHelper.getTileSize()
+
+        return new Promise((resolve, reject) => {
+            scissors(tilesheetUrl + '.png', function () {
+                this.crop(
+                    coords.x * tileSize,
+                    coords.y * tileSize,
+                    tileSize, tileSize
+                ).toDataURL((dataURL) => {
+                    console.log(dataURL)
+    
+                    const tileTexture = PIXI.Texture.from(dataURL)
+        
+                    resolve(tileTexture)
+                })
+            })
+    
+        })
     }
 }
