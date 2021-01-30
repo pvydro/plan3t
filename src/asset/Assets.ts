@@ -139,4 +139,8 @@ export class AssetUrls {
     // Passive Creatures
     public static PASSIVE_CREATURE_HORNET = 'assets/image/creature/passive/swamphornet/swamphornet'
     public static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
+
+    // InGameHUD
+    public static HEALTH_BAR_BG = 'assets/image/ui/ingamehud/healthbarbg'
+    public static HEALTH_BAR_FILL = 'assets/image/ui/ingamehud/healthbarfill'
 }

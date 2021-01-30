@@ -20,16 +20,21 @@ export class Constants {
 }
 
 export class GravityConstants {
-    public static DropAcceleration: number = 1//3.5
+    static DropAcceleration: number = 1//3.5
 
     private constructor() {}
 }
 
 export class Defaults {
-    public static BulletVelocity = 5
-    public static ShouldLightsJitter = false
+    static BulletVelocity = 5
+    static ShouldLightsJitter = false
 
     private constructor() {}
+}
+
+export class UIConstants {
+    static HUDScale = 6
+    static HUDPadding = 42
 }
 
 export enum Events {
