@@ -5,6 +5,7 @@ import { SphericalBiome, SphericalPoint } from './SphericalData'
 import { SphericalTileColorData } from './SphericalTile'
 import { Constants } from '../../utils/Constants'
 import { SphericalHelper } from './SphericalHelper'
+import { SphericalTileTextureCache } from './SphericalTileTextureCache'
 
 export interface ISphericalTileHelper {
 
@@ -102,24 +103,11 @@ export class SphericalTileHelper {
     }
 
     static async getTileTextureFromTilesheetCoords(tilesheetUrl: string, coords: IVector2): Promise<PIXI.Texture> {
-        const scissors = ImageUtils.Manipulator
-        const tileSize = SphericalHelper.getTileSize()
-
         return new Promise((resolve, reject) => {
-            scissors(tilesheetUrl + '.png', function () {
-                this.crop(
-                    coords.x * tileSize,
-                    coords.y * tileSize,
-                    tileSize, tileSize
-                ).toDataURL((dataURL) => {
-                    console.log(dataURL)
-    
-                    const tileTexture = PIXI.Texture.from(dataURL)
-        
-                    resolve(tileTexture)
-                })
+            SphericalTileTextureCache.getTile(tilesheetUrl, coords).then((tileURI: any) => {
+                const tileTexture = PIXI.Texture.from(tileURI)
+                resolve(tileTexture)
             })
-    
         })
     }
 }

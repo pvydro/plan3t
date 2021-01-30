@@ -11,7 +11,7 @@ export class SphericalHelper implements ISphericalHelper {
 
     static isPointSolid(point: SphericalPoint): boolean {
         return (point && point.tileDepth > 0)
-    }
+    } 
 
     // static async getTextureForPoint(point: SphericalPoint, biome: SphericalBiome): Promise<PIXI.Texture> {
     //     try {

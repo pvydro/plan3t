@@ -17,7 +17,7 @@ export interface ISphericalLayerGenerator {
 }
 
 export class SphericalLayerGenerator implements ISphericalLayerGenerator {
-    static DirtCorePercent = 0.92
+    static DirtCorePercent = 0.95
     static GroundCorePercent = 0.8
     static MantleCorePercent = 0.5
     static InnerCorePercent = 0.25
@@ -54,7 +54,7 @@ export class SphericalLayerGenerator implements ISphericalLayerGenerator {
             clonedImage.src = canvas.toDataURL()
             
             clonedImage.onload = () => {
-                const newWidth = (canvas.width * estatePercent) * 1.05
+                const newWidth = (canvas.width * estatePercent) * (coreGroundTile == SphericalTileValues.CoreGrassTile ? 1.05 : 1.02)
                 const newHeight = canvas.height * estatePercent
                 const x = (canvas.width / 2) - (newWidth / 2)
                 const y = (canvas.height / 2) - (newHeight / 2)
