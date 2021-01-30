@@ -15,10 +15,8 @@ export class SphericalTileTextureCache {
     static async getSheet(key: string): Promise<HTMLImageElement> {
         return new Promise((resolve, reject) => {
             if (this.sheetMap.has(key)) {
-                console.log('cached sheet!')
                 return resolve(this.sheetMap.get(key))
             } else {
-                console.log('new sheet!')
                 const image = new Image()
 
                 image.src = key + '.png'

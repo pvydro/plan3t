@@ -1,11 +1,11 @@
-import { Assets, AssetUrls } from '../../asset/Assets'
-import { ImageUtils } from '../../utils/ImageUtils'
-import { IVector2 } from '../../engine/math/Vector2'
-import { SphericalBiome, SphericalPoint } from './SphericalData'
+import { Assets } from '../../asset/Assets'
+import { IVector2, Vector2 } from '../../engine/math/Vector2'
+import { SphericalBiome } from './SphericalData'
 import { SphericalTileColorData } from './SphericalTile'
-import { Constants } from '../../utils/Constants'
-import { SphericalHelper } from './SphericalHelper'
 import { SphericalTileTextureCache } from './SphericalTileTextureCache'
+import { Flogger } from '../../service/Flogger'
+import { SphericalPoint } from './SphericalPoint'
+import { SphericalTileCoordinator } from './SphericalTileCoordinator'
 
 export interface ISphericalTileHelper {
 
@@ -34,7 +34,7 @@ export class SphericalTileHelper {
 
     private constructor() {}
 
-    static matchColorDataToTileValue(colorData: { r: number, g: number, b: number }): SphericalTileColorData {
+    static matchColorDataToTileValue(colorData: SphericalTileColorData): SphericalTileColorData {
         const tileKeys = Object.values(SphericalTileValues)
         let chosenKey = SphericalTileValues.CoreGroundTile
 
@@ -78,28 +78,14 @@ export class SphericalTileHelper {
     }
 
     static getTilesheetCoordsFromPoint(point: SphericalPoint): IVector2 {
-        let x = 1
-        let y = 0
+        let coords: IVector2 = Vector2.Zero
 
-        if (point.rightPoint !== undefined
-        && point.leftPoint !== undefined) {
-            x = 1
-        } else if (point.rightPoint !== undefined) {
-            x = 0
-        } else if (point.leftPoint !== undefined) {
-            x = 2
-        }
+        coords = SphericalTileCoordinator.checkLeftAndRight(point, coords)
+        coords = SphericalTileCoordinator.checkTopAndBottom(point, coords)
+        coords = SphericalTileCoordinator.checkTopCorners(point, coords)
+        coords = SphericalTileCoordinator.checkBottomCorners(point, coords)
 
-        if (point.topPoint !== undefined
-        && point.bottomPoint !== undefined) {
-            y = 1
-        } else if (point.topPoint !== undefined) {
-            y = 2
-        } else if (point.bottomPoint !== undefined) {
-            y = 0
-        }
-
-        return { x, y }
+        return coords
     }
 
     static async getTileTextureFromTilesheetCoords(tilesheetUrl: string, coords: IVector2): Promise<PIXI.Texture> {
@@ -107,6 +93,10 @@ export class SphericalTileHelper {
             SphericalTileTextureCache.getTile(tilesheetUrl, coords).then((tileURI: any) => {
                 const tileTexture = PIXI.Texture.from(tileURI)
                 resolve(tileTexture)
+            }).catch((e) => {
+                Flogger.error('SphericalTileHelper', 'Error getting tile', 'tilesheetUrl', tilesheetUrl, 'coords', coords)
+
+                reject(e)
             })
         })
     }

@@ -1,4 +1,4 @@
-import { ISphericalData, SphericalData, SphericalPoint } from './SphericalData'
+import { ISphericalData, SphericalData } from './SphericalData'
 import { Sprite } from '../../engine/display/Sprite'
 import { Container } from '../../engine/display/Container'
 import { Flogger } from '../../service/Flogger'

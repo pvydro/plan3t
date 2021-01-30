@@ -2,7 +2,8 @@ import { Assets, AssetUrls } from '../asset/Assets'
 import { Dimension } from '../engine/math/Dimension'
 import { Flogger } from '../service/Flogger'
 import { SphericalManipulator } from './spherical/manipulation/SphericalManipulator'
-import { SphericalData, SphericalPoint, SphericalBiome, ISphericalData } from './spherical/SphericalData'
+import { SphericalData, SphericalBiome, ISphericalData } from './spherical/SphericalData'
+import { SphericalPoint } from './spherical/SphericalPoint'
 
 export interface PixelData {
     r: number
@@ -54,14 +55,12 @@ export class GameMapHelper implements IGameMapHelper {
         const points: SphericalPoint[] = []
 
         pixelData.forEach((pixel: PixelData) => {
-            const tileValue = { r: pixel.r, g: pixel.g, b: pixel.b }
+            const tileValue = { r: pixel.r, g: pixel.g, b: pixel.b, a: pixel.a }
             const tileDepth = pixel.a
             const x = pixel.x
             const y = pixel.y
 
-            points.push({
-                tileValue, tileDepth, x, y,
-            })
+            points.push(new SphericalPoint({ tileValue, tileDepth, x, y }))
         })
 
         const sphericalData = new SphericalData({
@@ -75,7 +74,6 @@ export class GameMapHelper implements IGameMapHelper {
 
     private static convertImageToCanvas(image: HTMLImageElement): HTMLCanvasElement {
         const canvas = document.createElement('canvas')
-        
         const expansionWidth = canvas.width / 4
 
         canvas.width = image.width + expansionWidth

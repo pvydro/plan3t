@@ -1,5 +1,6 @@
 import { IVector2 } from '../../engine/math/Vector2'
-import { SphericalBiome, SphericalPoint } from './SphericalData'
+import { SphericalBiome, SphericalData } from './SphericalData'
+import { SphericalPoint } from './SphericalPoint'
 
 export interface ISphericalHelper {
 
@@ -11,20 +12,34 @@ export class SphericalHelper implements ISphericalHelper {
 
     static isPointSolid(point: SphericalPoint): boolean {
         return (point && point.tileDepth > 0)
-    } 
+    }
 
-    // static async getTextureForPoint(point: SphericalPoint, biome: SphericalBiome): Promise<PIXI.Texture> {
-    //     try {
-    //         const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
-    //         const tilesheetUrl: string = SphericalTileHelper.getTilesheetFromColorData(tileData, biome)
-    //         const tileCoords: IVector2 = SphericalTileHelper.getTilesheetCoordsFromPoint(point)
-    //         const tileTexture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
+    static isLeftPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+        return this.isAdjacentPointSolid(point, data, { x: -1, y: 0 })
+    }
 
-    //         return tileTexture
-    //     } catch (error) {
-    //         Flogger.error('SphericalHelper', 'Error getting texture for point', 'Error', error)
-    //     }
-    // }
+    static isRightPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+        return this.isAdjacentPointSolid(point, data, { x: 1, y: 0 })
+    }
+
+    static isTopPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+        return this.isAdjacentPointSolid(point, data, { x: 0, y: -1 })
+    }
+
+    static isBottomPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+        return this.isAdjacentPointSolid(point, data, { x: 0, y: 1 })
+    }
+
+    static isAdjacentPointSolid(point: SphericalPoint, data: SphericalData, offset: IVector2): boolean {
+        let isSolid = false
+        const adjacentPoint = data.getPointAt(point.x + offset.x, point.y + offset.y)
+
+        if (this.isPointSolid(adjacentPoint)) {
+            isSolid = true
+        }
+
+        return isSolid
+    }
 
     static getTileSizeForBiome(biome?: SphericalBiome): number {
         return SphericalHelper.getTileSize()
