@@ -55,7 +55,12 @@ export class EntityManager implements IEntityManager {
     createClientPlayer(entity: Entity, sessionID: string) {
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionID', sessionID)
 
-        const player = new ClientPlayer({
+        // const player = new ClientPlayer({
+        //     entity,
+        //     clientControl: true,
+        //     entityManager: this
+        // })
+        const player = ClientPlayer.getInstance({
             entity,
             clientControl: true,
             entityManager: this

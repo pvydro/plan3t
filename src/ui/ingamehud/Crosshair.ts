@@ -1,3 +1,5 @@
+import { Camera } from '../../camera/Camera'
+import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
@@ -14,13 +16,21 @@ export enum CrosshairState {
 
 export class Crosshair extends Container implements ICrosshair {
     private static INSTANCE: Crosshair
-    mousePos: IVector2 = Vector2.Zero
+    
     state: CrosshairState = CrosshairState.Gameplay
+
+    mousePos: IVector2 = Vector2.Zero
+    growthOffset: number = 0
+    targetGrowthOffset: number = 0
+    mouseDistanceGrowthDivisor: number = 25
+    growthDamping: number = 2
 
     nodeOne: Graphix = this.constructNode()
     nodeTwo: Graphix = this.constructNode()
     nodeThree: Graphix = this.constructNode()
     nodes: Graphix[] = [ this.nodeOne, this.nodeTwo, this.nodeThree ]
+    nodeDistance: number = 3
+
     
     static getInstance() {
         if (Crosshair.INSTANCE === undefined) {
@@ -49,12 +59,31 @@ export class Crosshair extends Container implements ICrosshair {
     }
 
     update() {
+        this.growWithMouseDistance()
+
         this.x = this.mousePos.x
         this.y = this.mousePos.y
+
+        this.growthOffset += (this.targetGrowthOffset - this.growthOffset) / this.growthDamping
+
+        this.applyGrowthOffsetToNodes()
     }
     
     growWithMouseDistance() {
-        // TODO: This
+        const mousePos = Camera.Mouse
+        const player = ClientPlayer.getInstance()
+        
+        if (player !== undefined) {
+            const playerPos = player.position
+            const diffX = Math.abs(playerPos.x - mousePos.x)
+
+            this.targetGrowthOffset = diffX / this.mouseDistanceGrowthDivisor
+        }
+    }
+
+    applyGrowthOffsetToNodes() {
+        this.nodeTwo.x = -this.nodeDistance - this.growthOffset
+        this.nodeThree.x = this.nodeDistance + this.growthOffset
     }
 
     constructNode(): Graphix {
@@ -71,11 +100,11 @@ export class Crosshair extends Container implements ICrosshair {
         switch (this.state) {
             case CrosshairState.Gameplay:
 
-                this.nodeTwo.x = -3
+                this.nodeTwo.x = -this.nodeDistance
                 this.nodeTwo.y = -2
                 this.nodeTwo.height = 5
 
-                this.nodeThree.x = 3
+                this.nodeThree.x = this.nodeDistance
                 this.nodeThree.y = -2
                 this.nodeThree.height = 5
 

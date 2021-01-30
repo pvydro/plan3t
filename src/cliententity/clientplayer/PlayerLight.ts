@@ -70,8 +70,11 @@ export class PlayerLight extends Container implements IPlayerLight {
             shouldJitter: true,
             maximumJitterAmount: 5
         })
+        const ambientLightSize = this.lights[1].width * 1.1
+
         ambientLight.alpha = 0.25
-        ambientLight.scale.set(1.5, 1.5)
+        ambientLight.width = ambientLightSize
+        ambientLight.height = ambientLightSize
 
         this.lights.push(ambientLight)
 

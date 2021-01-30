@@ -148,6 +148,10 @@ export class Camera implements ICamera {
         return newVec
     }
 
+    static toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {
+        return Camera.getInstance().toScreen(point)
+    }
+
     get target() {
         return this._target
     }

@@ -41,6 +41,7 @@ export interface ClientPlayerOptions {
 }
 
 export class ClientPlayer extends GravityEntity {
+    private static INSTANCE: ClientPlayer
     _entityManager?: EntityManager
     head: PlayerHead
     body: PlayerBody
@@ -53,6 +54,18 @@ export class ClientPlayer extends GravityEntity {
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
     _legsState: PlayerLegsState = PlayerLegsState.Standing
     emitter: Emitter = new Emitter()
+
+    static getInstance(options?: ClientPlayerOptions) {
+        if (ClientPlayer.INSTANCE === undefined) {
+            if (options === undefined) {
+                return undefined
+            } else {
+                ClientPlayer.INSTANCE = new ClientPlayer(options)
+            }
+        }
+
+        return ClientPlayer.INSTANCE
+    }
 
     constructor(options: ClientPlayerOptions) {
         super({

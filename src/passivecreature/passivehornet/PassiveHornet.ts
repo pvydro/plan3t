@@ -29,7 +29,7 @@ export class PassiveHornet extends PassiveCreature implements IPassiveHornet {
         this.hornetTargetX = Math.random() * this.hornetTargetXMax
         this.hornetTargetY = Math.random() * this.hornetTargetYMax
 
-        const projected = Camera.getInstance().toScreen({
+        const projected = Camera.toScreen({
             x: this.hornetTargetX,
             y: this.hornetTargetY
         })
