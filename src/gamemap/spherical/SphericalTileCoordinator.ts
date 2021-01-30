@@ -52,7 +52,7 @@ export class SphericalTileCoordinator implements ISphericalTileCoordinator {
 
             } else if (point.isEqualToPoint(point.topPoint)
             && point.isEqualToPoint(point.rightPoint)
-            && !point.isEqualToPoint(point.topRightPoint)) {
+            && point.topRightPoint == undefined) {
 
                 coords.x = 4
                 coords.y = 0

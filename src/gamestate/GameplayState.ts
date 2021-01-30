@@ -8,7 +8,8 @@ import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
 import { PassiveHornet } from '../passivecreature/passivehornet/PassiveHornet'
-import { Crosshair } from '../ui/hud/Crosshair'
+import { Crosshair } from '../ui/ingamehud/Crosshair'
+import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 
@@ -22,7 +23,7 @@ export class GameplayState extends GameState implements IGameplayState {
     gameMapManager: IGameMapManager
     gravityManager: IGravityManager
     ambientLight: GameplayAmbientLight
-    crosshair: Crosshair
+    inGameHUD: InGameHUD
 
     hornet: PassiveHornet
 
@@ -42,7 +43,7 @@ export class GameplayState extends GameState implements IGameplayState {
         })
 
         this.ambientLight = new GameplayAmbientLight()
-        this.crosshair = Crosshair.getInstance()
+        this.inGameHUD = new InGameHUD()
 
         this.hornet = new PassiveHornet()
     }
@@ -50,6 +51,7 @@ export class GameplayState extends GameState implements IGameplayState {
     async initialize() {
         await this.initializeBackground()
         await this.gameMapManager.initialize()
+        await this.inGameHUD.initializeHUD()
 
         // To get the camera, you need the game stage, pass Game through StateManager
         this.stage.addChild(this.cameraViewport)
@@ -61,7 +63,7 @@ export class GameplayState extends GameState implements IGameplayState {
 
         await this.roomManager.initializeRoom()
 
-        this.camera.viewport.addChild(this.crosshair)
+        this.camera.viewport.addChild(this.inGameHUD)
 
         // this.camera.stage.addChild(this.hornet)
     }
@@ -69,7 +71,7 @@ export class GameplayState extends GameState implements IGameplayState {
     update() {
         this.gameMapManager.update()
         this.ambientLight.update()
-        this.crosshair.update()
+        this.inGameHUD.update()
         // this.hornet.update()
     }
 
