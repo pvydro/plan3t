@@ -77,9 +77,28 @@ export class SphericalTileHelper {
     }
 
     static getTilesheetCoordsFromPoint(point: SphericalPoint): IVector2 {
-        // TODO Orientation logic
+        let x = 1
+        let y = 0
 
-        return { x: 0, y: 0 }
+        if (point.rightPoint !== undefined
+        && point.leftPoint !== undefined) {
+            x = 1
+        } else if (point.rightPoint !== undefined) {
+            x = 0
+        } else if (point.leftPoint !== undefined) {
+            x = 2
+        }
+
+        if (point.topPoint !== undefined
+        && point.bottomPoint !== undefined) {
+            y = 1
+        } else if (point.topPoint !== undefined) {
+            y = 2
+        } else if (point.bottomPoint !== undefined) {
+            y = 0
+        }
+
+        return { x, y }
     }
 
     static async getTileTextureFromTilesheetCoords(tilesheetUrl: string, coords: IVector2): Promise<PIXI.Texture> {

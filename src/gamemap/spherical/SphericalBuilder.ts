@@ -31,14 +31,17 @@ export class SphericalBuilder implements ISphericalBuilder {
         for (var i = 0; i < data.points.length; i++) {
             const point = data.points[i]
             if (SphericalHelper.isPointSolid(point)) {
+                const newX = point.x * SphericalHelper.getTileSize()
+                const newY = point.y * SphericalHelper.getTileSize()
+
                 const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
                 const tilesheetUrl: string = SphericalTileHelper.getTilesheetFromColorData(tileData, data.biome)
                 const tileCoords: IVector2 = SphericalTileHelper.getTilesheetCoordsFromPoint(point)
                 const texture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
                 const newTileSprite = new SphericalTile({ texture })
                 
-                newTileSprite.x = point.x * newTileSprite.width
-                newTileSprite.y = point.y * newTileSprite.height
+                newTileSprite.x = newX
+                newTileSprite.y = newY
 
                 tileLayer.addChild(newTileSprite)
             }

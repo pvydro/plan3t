@@ -1,5 +1,6 @@
 import { Dimension } from '../../engine/math/Dimension'
 import { Flogger } from '../../service/Flogger'
+import { SphericalHelper } from './SphericalHelper'
 export enum SphericalBiome {
     CloningFacility = 'cloningfacility',
     Kepler = 'kepler'
@@ -41,14 +42,19 @@ export class SphericalData implements ISphericalData {
         for (var i = 0; i < this.points.length; i++) {
             const point = this.points[i]
 
-            point.leftPoint = this.getPointAt(point.x - 1, point.y)
-            point.rightPoint = this.getPointAt(point.x + 1, point.y)
-            point.bottomPoint = this.getPointAt(point.x, point.y + 1)
-            point.topPoint = this.getPointAt(point.x, point.y - 1)
+            const leftPoint = this.getPointAt(point.x - 1, point.y)
+            const rightPoint = this.getPointAt(point.x + 1, point.y)
+            const topPoint = this.getPointAt(point.x, point.y - 1)
+            const bottomPoint = this.getPointAt(point.x, point.y + 1)
+
+            point.leftPoint = SphericalHelper.isPointSolid(leftPoint) ? leftPoint : undefined
+            point.rightPoint = SphericalHelper.isPointSolid(rightPoint) ? rightPoint : undefined
+            point.topPoint = SphericalHelper.isPointSolid(topPoint) ? topPoint : undefined
+            point.bottomPoint = SphericalHelper.isPointSolid(bottomPoint) ? bottomPoint : undefined
         }
     }
 
-    getPointAt(x: number, y: number): SphericalPoint | undefined {
+    getPointAt(x: number, y: number): SphericalPoint {
         return this.points.find((point) => (point.x == x && point.y == y))
     }
 }
