@@ -18,6 +18,7 @@ game.bootstrap().then(() => {
     })
 
     game.view.style.cursor = 'none'
+    // return
     document.body.appendChild(game.view)
     
     (window as any).game = game

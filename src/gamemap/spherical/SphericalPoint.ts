@@ -45,10 +45,12 @@ export class SphericalPoint implements ISphericalPoint {
         this.y = options.y
     }
 
-    isEqualToPoint(point: ISphericalPoint) {
+    isEqualToPoint(point: ISphericalPoint | SphericalTileColorData) {
         if (point === undefined) { return false }
 
-        const tileValue = point.tileValue
+        const tileValue = (point as SphericalTileColorData)
+            ? point as SphericalTileColorData
+            : (point as ISphericalPoint).tileValue
         const comparedTileValue = this.tileValue
 
         return (tileValue.r === comparedTileValue.r

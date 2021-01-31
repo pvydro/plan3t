@@ -6,6 +6,7 @@ import { SphericalTileTextureCache } from './SphericalTileTextureCache'
 import { Flogger } from '../../service/Flogger'
 import { SphericalPoint } from './SphericalPoint'
 import { SphericalTileCoordinator } from './SphericalTileCoordinator'
+import { Spherical } from './Spherical'
 
 export interface ISphericalTileHelper {
 
@@ -99,5 +100,17 @@ export class SphericalTileHelper {
                 reject(e)
             })
         })
+    }
+
+    static canPointGrowFoliage(point: SphericalPoint): boolean {
+        const isGrass: boolean = point.isEqualToPoint(SphericalTileValues.CoreGrassTile)//(point.tileValue == SphericalTileValues.CoreGrassTile)
+        const hasAir: boolean = (point.topPoint === undefined || point.topPoint.tileDepth < 1)
+        let canGrow = false
+
+        if (isGrass && hasAir) {
+            canGrow = true
+        }
+
+        return canGrow
     }
 }

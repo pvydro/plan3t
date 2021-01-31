@@ -28,7 +28,11 @@ export class Assets {
                 const assets = []
                 
                 assetKeys.forEach((key: string) => {
-                    assets.push(Assets.get(key))
+                    try {
+                        assets.push(Assets.get(key))
+                    } catch (error) {
+                        Flogger.error('Failed to get asset for ' + key, 'error', error)
+                    }
                 })
 
                 PIXI.Loader.shared.add(assets).load(() => {
@@ -57,15 +61,28 @@ export class Assets {
             const biomeKeys = Object.values(SphericalBiome)
             const tileValues = Object.values(SphericalTileValues)
             const tileAssets = []
-
-            console.log('biome', tileValues)
+            const tileDir = Assets.TILE_DIR
+            const totalFoliage = 3
 
             biomeKeys.forEach((biome: SphericalBiome) => {
+                const biomeDir = tileDir + biome
+
                 tileValues.forEach((value) => {
                     const tileUrl = SphericalTileHelper.getTilesheetFromColorData(value, biome)
 
                     tileAssets.push(Assets.get(tileUrl))
                 })
+
+                for (var i = 0; i < totalFoliage; i++) {
+                    let foliageDir = biomeDir + '/' + 'foliage' + i
+
+                    try {
+                        tileAssets.push(Assets.get(foliageDir))
+                    } catch (error) {
+                        Flogger.error('No foliage for ' + biome)
+                    }
+
+                }
             })
 
             PIXI.Loader.shared.add(tileAssets).load(() => {
@@ -144,4 +161,6 @@ export class AssetUrls {
     static HEALTH_BAR_BG = 'assets/image/ui/ingamehud/healthbarbg'
     static HEALTH_BAR_FILL = 'assets/image/ui/ingamehud/healthbarfill'
     static AMMO_STATUS_BG = 'assets/image/ui/ingamehud/ammostatusbg'
+
+    // Tile decoration
 }

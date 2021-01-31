@@ -33,12 +33,14 @@ export class SphericalBuilder implements ISphericalBuilder {
             if (SphericalHelper.isPointSolid(point)) {
                 const newX = point.x * SphericalHelper.getTileSize()
                 const newY = point.y * SphericalHelper.getTileSize()
-
+                const biome = data.biome
                 const tileData: SphericalTileColorData = SphericalTileHelper.matchColorDataToTileValue(point.tileValue)
                 const tilesheetUrl: string = SphericalTileHelper.getTilesheetFromColorData(tileData, data.biome)
                 const tileCoords: IVector2 = SphericalTileHelper.getTilesheetCoordsFromPoint(point)
                 const texture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
-                const newTileSprite = new SphericalTile({ texture })
+                const canGrowFoliage: boolean = SphericalTileHelper.canPointGrowFoliage(point)
+
+                const newTileSprite = new SphericalTile({ texture, biome, canGrowFoliage })
                 
                 newTileSprite.x = newX
                 newTileSprite.y = newY

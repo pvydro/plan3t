@@ -17,8 +17,8 @@ export interface ISphericalLayerGenerator {
 }
 
 export class SphericalLayerGenerator implements ISphericalLayerGenerator {
-    static DirtCorePercent = 0.94
-    static GroundCorePercent = 0.8
+    static DirtCorePercent = 0.8//0.94
+    static GroundCorePercent = 0.7//0.8
     static MantleCorePercent = 0.5
     static InnerCorePercent = 0.25
 
