@@ -44,7 +44,7 @@ export class SphericalTile extends Sprite implements ISphericalTile {
 
         if (shouldSpawnFoliage) {
             const foliage = new SphericalTileFoliage({ tile: this })
-            foliage.anchor.y = 1
+            foliage.anchor.set(0, 1)
 
             this.decorations.push(foliage)
 

@@ -62,7 +62,7 @@ export class Assets {
             const tileValues = Object.values(SphericalTileValues)
             const tileAssets = []
             const tileDir = Assets.TILE_DIR
-            const totalFoliage = 3
+            const totalFoliage = 10
 
             biomeKeys.forEach((biome: SphericalBiome) => {
                 const biomeDir = tileDir + biome

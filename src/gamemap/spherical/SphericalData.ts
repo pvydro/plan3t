@@ -56,6 +56,18 @@ export class SphericalData implements ISphericalData {
     }
 
     getPointAt(x: number, y: number): SphericalPoint {
-        return this.points.find((point) => (point.x == x && point.y == y))
+        let foundPoint = undefined
+
+        for (var i in this.points) {
+            const point = this.points[i]
+
+            const isMatch = (point.x == x && point.y == y)
+
+            if (isMatch) {
+                foundPoint = point
+            }
+        }
+
+        return foundPoint
     }
 }

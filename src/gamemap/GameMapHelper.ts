@@ -27,7 +27,7 @@ export class GameMapHelper implements IGameMapHelper {
 
         return new Promise(async (resolve, reject) => {
             const sphericalImage = new Image()
-            sphericalImage.src = AssetUrls.SPHERICAL_TEST + '.png'
+            sphericalImage.src = AssetUrls.SPHERICAL_SM_0 + '.png'
     
             sphericalImage.onload = () => {
                 Flogger.log('GameMapHelper', 'getRandomSpherical', 'image loaded')

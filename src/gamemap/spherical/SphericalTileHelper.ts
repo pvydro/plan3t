@@ -6,7 +6,6 @@ import { SphericalTileTextureCache } from './SphericalTileTextureCache'
 import { Flogger } from '../../service/Flogger'
 import { SphericalPoint } from './SphericalPoint'
 import { SphericalTileCoordinator } from './SphericalTileCoordinator'
-import { Spherical } from './Spherical'
 
 export interface ISphericalTileHelper {
 

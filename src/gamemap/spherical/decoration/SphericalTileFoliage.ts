@@ -12,6 +12,8 @@ export interface SphericalTileFoliageOptions {
 }
 
 export class SphericalTileFoliage extends Sprite implements ISphericalTileFoliage {
+    static TotalFoliages = 6
+
     constructor(options: SphericalTileFoliageOptions) {
 
         const textureDir = SphericalTileFoliage.findFoliageDirForTile(options.tile)
@@ -21,7 +23,7 @@ export class SphericalTileFoliage extends Sprite implements ISphericalTileFoliag
     }
 
     static findFoliageDirForTile(tile: SphericalTile) {
-        const chosenFoliage = NumberUtils.getRandomIntegerBetween(0, 2)
+        const chosenFoliage = NumberUtils.getRandomIntegerBetween(0, SphericalTileFoliage.TotalFoliages)
         const tileDir = Assets.TILE_DIR + tile.biome + '/foliage' + chosenFoliage
 
         return tileDir
