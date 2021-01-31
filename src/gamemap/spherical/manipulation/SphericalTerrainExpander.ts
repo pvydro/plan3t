@@ -1,5 +1,5 @@
-import { SphericalTileColorData } from '../SphericalTile'
-import { SphericalTileValues } from '../SphericalTileHelper'
+import { SphericalTileColorData } from '../tile/SphericalTile'
+import { SphericalTileValues } from '../tile/SphericalTileHelper'
 import { SphericalManipulator } from './SphericalManipulator'
 
 export interface ISphericalTerrainExpander {

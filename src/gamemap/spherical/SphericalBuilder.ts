@@ -5,8 +5,8 @@ import { Flogger } from '../../service/Flogger'
 import { Rect } from '../../engine/math/Rect'
 import { SphericalHelper } from './SphericalHelper'
 import { GlobalScale } from '../../utils/Constants'
-import { SphericalTile, SphericalTileColorData } from './SphericalTile'
-import { SphericalTileHelper } from './SphericalTileHelper'
+import { SphericalTile, SphericalTileColorData } from './tile/SphericalTile'
+import { SphericalTileHelper } from './tile/SphericalTileHelper'
 import { IVector2 } from '../../engine/math/Vector2'
 
 export interface ISphericalBuilder {

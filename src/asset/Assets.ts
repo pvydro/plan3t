@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { SphericalBiome } from '../gamemap/spherical/SphericalData'
-import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/SphericalTileHelper'
+import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/tile/SphericalTileHelper'
 import { Flogger } from '../service/Flogger'
 
 export class Assets {

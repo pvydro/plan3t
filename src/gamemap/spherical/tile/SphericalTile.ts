@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
-import { Sprite } from '../../engine/display/Sprite'
-import { IDemolishable } from '../../interface/IDemolishable'
-import { SphericalTileFoliage } from './decoration/SphericalTileFoliage'
-import { SphericalBiome } from './SphericalData'
+import { Sprite } from '../../../engine/display/Sprite'
+import { IDemolishable } from '../../../interface/IDemolishable'
+import { SphericalTileFoliage } from '../decoration/SphericalTileFoliage'
+import { SphericalBiome } from '../SphericalData'
 
 export interface SphericalTileColorData {
     r: number

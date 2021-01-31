@@ -1,6 +1,5 @@
-import { IVector2, Vector2 } from "../../engine/math/Vector2";
-import { SphericalHelper } from "./SphericalHelper";
-import { ISphericalPoint } from "./SphericalPoint";
+import { IVector2 } from '../../../engine/math/Vector2'
+import { ISphericalPoint } from '../SphericalPoint'
 
 export interface ISphericalTileCoordinator {
 

@@ -1,6 +1,6 @@
 import { cloneCanvas, recolorCanvas2DContext } from '../../../utils/CanvasHelper'
-import { SphericalTileColorData } from '../SphericalTile'
-import { SphericalTileValues } from '../SphericalTileHelper'
+import { SphericalTileColorData } from '../tile/SphericalTile'
+import { SphericalTileValues } from '../tile/SphericalTileHelper'
 
 /**
  * Cores:

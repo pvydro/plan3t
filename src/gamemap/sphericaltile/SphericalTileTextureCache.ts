@@ -1,6 +1,6 @@
 import { IVector2 } from '../../engine/math/Vector2'
 import { ImageUtils } from '../../utils/ImageUtils'
-import { SphericalHelper } from './SphericalHelper'
+import { SphericalHelper } from '../spherical/SphericalHelper'
 
 export interface ISphericalTileTextureCache {
 

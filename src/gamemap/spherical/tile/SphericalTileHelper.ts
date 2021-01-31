@@ -1,10 +1,10 @@
-import { Assets } from '../../asset/Assets'
-import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { SphericalBiome } from './SphericalData'
-import { SphericalTileColorData } from './SphericalTile'
+import { Assets } from '../../../asset/Assets'
+import { IVector2, Vector2 } from '../../../engine/math/Vector2'
+import { SphericalBiome } from '../SphericalData'
+import { SphericalTileColorData } from '../../sphericaltile/SphericalTile'
 import { SphericalTileTextureCache } from './SphericalTileTextureCache'
-import { Flogger } from '../../service/Flogger'
-import { SphericalPoint } from './SphericalPoint'
+import { Flogger } from '../../../service/Flogger'
+import { SphericalPoint } from '../SphericalPoint'
 import { SphericalTileCoordinator } from './SphericalTileCoordinator'
 
 export interface ISphericalTileHelper {
@@ -30,8 +30,6 @@ export class SphericalTileValues {
 }
 
 export class SphericalTileHelper {
-
-
     private constructor() {}
 
     static matchColorDataToTileValue(colorData: SphericalTileColorData): SphericalTileColorData {

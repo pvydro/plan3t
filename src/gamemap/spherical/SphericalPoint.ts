@@ -1,4 +1,4 @@
-import { SphericalTileColorData } from './SphericalTile'
+import { SphericalTileColorData } from './tile/SphericalTile'
 
 export interface ISphericalPoint {
     x: number
