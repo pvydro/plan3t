@@ -1,15 +1,15 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
-import { Container } from '../../../engine/display/Container'
+import { UIComponent } from '../../../ui/UIComponent'
 import { Sprite } from '../../../engine/display/Sprite'
 
 export interface IHealthBar {
 
 }
 
-export class HealthBar extends Container implements IHealthBar {
+export class HealthBar extends UIComponent implements IHealthBar {
     backgroundSprite: Sprite
     fillSprite: Sprite
-        
+    
     constructor() {
         super()
         
@@ -19,7 +19,7 @@ export class HealthBar extends Container implements IHealthBar {
         const fillTexture = PIXI.Texture.from(Assets.get(AssetUrls.HEALTH_BAR_FILL))
         this.fillSprite = new Sprite({ texture: fillTexture })
 
-        this.fillSprite.position.set(3, 3)
+        this.fillSprite.position.set(6, 4)
 
         this.addChild(this.backgroundSprite)
         this.addChild(this.fillSprite)

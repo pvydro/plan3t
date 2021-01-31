@@ -78,11 +78,11 @@ export class Assets {
         })
     }
 
-    public static get(res: string): HTMLImageElement {
+    static get(res: string): HTMLImageElement {
         return require('../../' + res + '.png')
     }
 
-    public static isImagesFinishedLoading() {
+    static isImagesFinishedLoading() {
         return this._imagesFinishedLoading
     }
 }
@@ -91,56 +91,57 @@ export class AssetUrls {
 
     private constructor() {}
 
-    public static PLAYER_IDLE = 'assets/image/player/body/body-idle'
-    public static PLAYER_HEAD_HUMAN_DEFAULT = 'assets/image/player/head/head-default'
-    public static PLAYER_HAND_HUMAN_DEFAULT = 'assets/image/player/hand/hand-default'
-    public static PLAYER_HEAD_HUMAN_ASTRO = 'assets/image/player/head/head-astro'
+    static PLAYER_IDLE = 'assets/image/player/body/body-idle'
+    static PLAYER_HEAD_HUMAN_DEFAULT = 'assets/image/player/head/head-default'
+    static PLAYER_HAND_HUMAN_DEFAULT = 'assets/image/player/hand/hand-default'
+    static PLAYER_HEAD_HUMAN_ASTRO = 'assets/image/player/head/head-astro'
 
     // Enemy
-    public static ENEMY_FLYINGEYE_IDLE = 'assets/image/enemy/flyingeye/flyingeye'
+    static ENEMY_FLYINGEYE_IDLE = 'assets/image/enemy/flyingeye/flyingeye'
 
     // Spherical/GameMap
-    public static SKY_DAWN = 'assets/image/gamemap/skies/dawn'
-    public static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
-    public static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
-    public static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'
-    public static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
+    static SKY_DAWN = 'assets/image/gamemap/skies/dawn'
+    static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
+    static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
+    static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'
+    static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
 
-    // public static TILE_KEPLER_GROUND_CORE = Assets.TILE_DIR + 'kepler/ground'
-    // public static TILE_KEPLER_GRASS_CORE = Assets.TILE_DIR + 'kepler/tile_0'
+    // static TILE_KEPLER_GROUND_CORE = Assets.TILE_DIR + 'kepler/ground'
+    // static TILE_KEPLER_GRASS_CORE = Assets.TILE_DIR + 'kepler/tile_0'
 
     // Projectiles
-    public static PROJECTILE_BULLET = 'assets/image/weapons/projectiles/bullet'
+    static PROJECTILE_BULLET = 'assets/image/weapons/projectiles/bullet'
 
     // Particles
-    public static MUZZLE_FLASH_A_0 = 'assets/image/particles/muzzleflash/a/0'
-    public static MUZZLE_FLASH_A_1 = 'assets/image/particles/muzzleflash/a/1'
-    public static MUZZLE_FLASH_A_2 = 'assets/image/particles/muzzleflash/a/2'
-    public static MUZZLE_FLASH_A_3 = 'assets/image/particles/muzzleflash/a/3'
+    static MUZZLE_FLASH_A_0 = 'assets/image/particles/muzzleflash/a/0'
+    static MUZZLE_FLASH_A_1 = 'assets/image/particles/muzzleflash/a/1'
+    static MUZZLE_FLASH_A_2 = 'assets/image/particles/muzzleflash/a/2'
+    static MUZZLE_FLASH_A_3 = 'assets/image/particles/muzzleflash/a/3'
 
-    public static MUZZLE_FLASH_B_0 = 'assets/image/particles/muzzleflash/b/0'
-    public static MUZZLE_FLASH_B_1 = 'assets/image/particles/muzzleflash/b/1'
-    public static MUZZLE_FLASH_B_2 = 'assets/image/particles/muzzleflash/b/2'
-    public static MUZZLE_FLASH_B_3 = 'assets/image/particles/muzzleflash/b/3'
+    static MUZZLE_FLASH_B_0 = 'assets/image/particles/muzzleflash/b/0'
+    static MUZZLE_FLASH_B_1 = 'assets/image/particles/muzzleflash/b/1'
+    static MUZZLE_FLASH_B_2 = 'assets/image/particles/muzzleflash/b/2'
+    static MUZZLE_FLASH_B_3 = 'assets/image/particles/muzzleflash/b/3'
     
-    public static MUZZLE_FLASH_C_0 = 'assets/image/particles/muzzleflash/c/0'
-    public static MUZZLE_FLASH_C_1 = 'assets/image/particles/muzzleflash/c/1'
-    public static MUZZLE_FLASH_C_2 = 'assets/image/particles/muzzleflash/c/2'
-    public static MUZZLE_FLASH_C_3 = 'assets/image/particles/muzzleflash/c/3'
+    static MUZZLE_FLASH_C_0 = 'assets/image/particles/muzzleflash/c/0'
+    static MUZZLE_FLASH_C_1 = 'assets/image/particles/muzzleflash/c/1'
+    static MUZZLE_FLASH_C_2 = 'assets/image/particles/muzzleflash/c/2'
+    static MUZZLE_FLASH_C_3 = 'assets/image/particles/muzzleflash/c/3'
     
-    public static MUZZLE_FLASH_D_0 = 'assets/image/particles/muzzleflash/d/0'
-    public static MUZZLE_FLASH_D_1 = 'assets/image/particles/muzzleflash/d/1'
-    public static MUZZLE_FLASH_D_2 = 'assets/image/particles/muzzleflash/d/2'
-    public static MUZZLE_FLASH_D_3 = 'assets/image/particles/muzzleflash/d/3'
+    static MUZZLE_FLASH_D_0 = 'assets/image/particles/muzzleflash/d/0'
+    static MUZZLE_FLASH_D_1 = 'assets/image/particles/muzzleflash/d/1'
+    static MUZZLE_FLASH_D_2 = 'assets/image/particles/muzzleflash/d/2'
+    static MUZZLE_FLASH_D_3 = 'assets/image/particles/muzzleflash/d/3'
 
     // Lights
-    public static LIGHT_HARD_LG = 'assets/image/lights/lighthardlg'
+    static LIGHT_HARD_LG = 'assets/image/lights/lighthardlg'
 
     // Passive Creatures
-    public static PASSIVE_CREATURE_HORNET = 'assets/image/creature/passive/swamphornet/swamphornet'
-    public static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
+    static PASSIVE_CREATURE_HORNET = 'assets/image/creature/passive/swamphornet/swamphornet'
+    static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
 
     // InGameHUD
-    public static HEALTH_BAR_BG = 'assets/image/ui/ingamehud/healthbarbg'
-    public static HEALTH_BAR_FILL = 'assets/image/ui/ingamehud/healthbarfill'
+    static HEALTH_BAR_BG = 'assets/image/ui/ingamehud/healthbarbg'
+    static HEALTH_BAR_FILL = 'assets/image/ui/ingamehud/healthbarfill'
+    static AMMO_STATUS_BG = 'assets/image/ui/ingamehud/ammostatusbg'
 }
