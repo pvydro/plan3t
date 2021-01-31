@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { IGame, Game } from '../main/Game'
+import { Constants, WindowSize } from '../utils/Constants'
 
 window.PIXI = PIXI
 global.PIXI = PIXI
@@ -9,6 +10,9 @@ const game: IGame = new Game()
 // Startup
 game.bootstrap().then(() => {
     window.addEventListener('resize', () => {
+        WindowSize.width = window.innerWidth
+        WindowSize.height = window.innerHeight
+
         game.camera.resize(window.innerWidth, window.innerHeight)
         game.renderer.resize(window.innerWidth, window.innerHeight)
     })

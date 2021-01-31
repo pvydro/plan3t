@@ -1,6 +1,9 @@
 import { Container } from 'pixi.js'
 import { Assets, AssetUrls } from '../../asset/Assets'
+import { Camera } from '../../camera/Camera'
 import { ILight, Light } from '../../engine/display/lighting/Light'
+import { IVector2, Vector2 } from '../../engine/math/Vector2'
+import { Crosshair } from '../../ui/ingamehud/Crosshair'
 import { WindowSize } from '../../utils/Constants'
 import { ClientPlayer } from './ClientPlayer'
 
@@ -24,6 +27,11 @@ export class PlayerLight extends Container implements IPlayerLight {
     lightYVel: number = 0
     lightYVelDamping: number = 10
 
+    mouseOffset: IVector2 = Vector2.Zero
+    mouseOffsetDamping: number = 100
+    mouseOffsetXDivisor: number = 30
+    mouseOffsetYDivisor: number = 20
+
     constructor(options: PlayerLightOptions) {
         super()
 
@@ -33,6 +41,12 @@ export class PlayerLight extends Container implements IPlayerLight {
     }
 
     update() {
+        const mouseOffsetX = Crosshair.getInstance().mouseDistance.x / this.mouseOffsetXDivisor
+        const mouseOffsetY = Crosshair.getInstance().mouseDistance.y / this.mouseOffsetYDivisor
+
+        this.mouseOffset.x += (mouseOffsetX - this.mouseOffset.x) / this.mouseOffsetDamping
+        this.mouseOffset.y += (mouseOffsetY - this.mouseOffset.y) / this.mouseOffsetDamping
+
         this.targetLightXVel = this.player.xVel * 7
         this.lightXVel += (this.targetLightXVel - this.lightXVel) / this.lightXVelDamping
         this.targetLightYVel = this.player.yVel * 5
@@ -40,13 +54,27 @@ export class PlayerLight extends Container implements IPlayerLight {
 
         for (var i = 0; i < this.lights.length; i++) {
             this.lights[i].update()
-            this.lights[i].x = -(this.lightXVel / (i + 2))
-            this.lights[i].y = -(this.lightYVel / (i + 2))
+
+            this.lights[i].x = -(this.lightXVel / (i + 2)) - (this.mouseOffset.x * i)
+            this.lights[i].y = -(this.lightYVel / (i + 2)) - (this.mouseOffset.y * i)
         }
     }
 
     constructLights() {
         const totalWidth = WindowSize.width / 20//4
+
+        const ambientLight = new Light({
+            texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_VIGNETTE_BORDER)),
+            shouldJitter: true,
+            maximumJitterAmount: 5
+        })
+        const ambientLightSize = 256
+
+        ambientLight.alpha = 0.25
+        ambientLight.width = ambientLightSize
+        ambientLight.height = ambientLightSize
+
+        this.lights.push(ambientLight)
 
         for (var i = 0; i < this.totalLights; i++) {
             const light = new Light({
@@ -64,19 +92,6 @@ export class PlayerLight extends Container implements IPlayerLight {
             this.lights.push(light)
             this.addChild(light)
         }
-
-        const ambientLight = new Light({
-            texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_VIGNETTE_BORDER)),
-            shouldJitter: true,
-            maximumJitterAmount: 5
-        })
-        const ambientLightSize = this.lights[1].width * 1.1
-
-        ambientLight.alpha = 0.25
-        ambientLight.width = ambientLightSize
-        ambientLight.height = ambientLightSize
-
-        this.lights.push(ambientLight)
 
         this.addChild(ambientLight)
     }

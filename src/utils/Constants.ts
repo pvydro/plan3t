@@ -33,7 +33,7 @@ export class Defaults {
 }
 
 export class UIConstants {
-    static HUDScale = 6
+    static HUDScale = 5
     static HUDPadding = 42
 }
 

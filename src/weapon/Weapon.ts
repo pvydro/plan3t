@@ -130,7 +130,8 @@ export class Weapon extends Container implements IWeapon {
 
     fireBullet() {
         Flogger.log('Weapon', 'fireBullet')
-        if (this.playerHand !== undefined
+        if (this.sprite !== undefined
+        && this.playerHand !== undefined
         && this.playerHand.player !== undefined) {
             const direction = this.playerHand.player.direction
             const entityManager = this.playerHand.player.entityManager
@@ -170,7 +171,7 @@ export class Weapon extends Container implements IWeapon {
         let rotation = this.playerHand ? this.playerHand.rotation : this.rotation
         const player = this.playerHand.player
 
-        if (player) {
+        if (player && this.sprite) {
             rotation *= player.direction
 
             const referenceX = player.x + this.x

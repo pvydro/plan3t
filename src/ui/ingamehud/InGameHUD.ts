@@ -33,8 +33,12 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
             this.addChild(this.ammoStatus)
             this.addChild(this.crosshair)
 
-            this.applyPosition()
             this.applyScale()
+            this.applyPosition()
+
+            window.onresize = () => {
+                this.applyPosition()
+            }
 
             resolve()
         })
@@ -58,10 +62,8 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
 
         // Ammo status
         this.ammoStatus.position.x = WindowSize.width - UIConstants.HUDPadding
-        - (this.ammoStatus.width / UIConstants.HUDScale)
         this.ammoStatus.position.y = WindowSize.height - UIConstants.HUDPadding
         - (this.ammoStatus.backgroundSprite.height * UIConstants.HUDScale)
-
     }
     
     update(): void {

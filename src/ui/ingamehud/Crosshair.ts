@@ -20,6 +20,7 @@ export class Crosshair extends Container implements ICrosshair {
     state: CrosshairState = CrosshairState.Gameplay
 
     mousePos: IVector2 = Vector2.Zero
+    mouseDistance: IVector2 = Vector2.Zero
     growthOffset: number = 0
     targetGrowthOffset: number = 0
     mouseDistanceGrowthDivisor: number = 25
@@ -75,9 +76,15 @@ export class Crosshair extends Container implements ICrosshair {
         
         if (player !== undefined) {
             const playerPos = player.position
-            const diffX = Math.abs(playerPos.x - mousePos.x)
 
-            this.targetGrowthOffset = diffX / this.mouseDistanceGrowthDivisor
+            this.mouseDistance.x = playerPos.x - mousePos.x
+            this.mouseDistance.y = playerPos.y - mousePos.y
+
+            const diffX = Math.abs(this.mouseDistance.x)
+            const diffY = Math.abs(this.mouseDistance.y)
+            const diff = (diffX + diffY) / 1.5
+
+            this.targetGrowthOffset = diff / this.mouseDistanceGrowthDivisor
         }
     }
 

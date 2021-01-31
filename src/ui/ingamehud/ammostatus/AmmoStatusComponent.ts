@@ -14,6 +14,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
 
         const backgroundTexture = PIXI.Texture.from(Assets.get(AssetUrls.AMMO_STATUS_BG))
         this.backgroundSprite = new Sprite({ texture: backgroundTexture })
+        this.backgroundSprite.anchor.set(1, 0)
 
         this.addChild(this.backgroundSprite)
     }
