@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { IGame, Game } from '../main/Game'
-import { Constants, WindowSize } from '../utils/Constants'
+import { WindowSize } from '../utils/Constants'
 
 window.PIXI = PIXI
 global.PIXI = PIXI

@@ -1,6 +1,6 @@
-import { Assets, AssetUrls } from '../../../asset/Assets'
-import { Sprite } from '../../../engine/display/Sprite'
-import { NumberUtils } from '../../../utils/NumberUtils'
+import { Assets, AssetUrls } from '../../../../asset/Assets'
+import { Sprite } from '../../../../engine/display/Sprite'
+import { NumberUtils } from '../../../../utils/NumberUtils'
 import { SphericalTile } from '../SphericalTile'
 
 export interface ISphericalTileFoliage {

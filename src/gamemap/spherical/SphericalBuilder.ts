@@ -40,7 +40,7 @@ export class SphericalBuilder implements ISphericalBuilder {
                 const texture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
                 const canGrowFoliage: boolean = SphericalTileHelper.canPointGrowFoliage(point)
 
-                const newTileSprite = new SphericalTile({ texture, biome, canGrowFoliage })
+                const newTileSprite = new SphericalTile({ texture, data, point, biome, canGrowFoliage })
                 
                 newTileSprite.x = newX
                 newTileSprite.y = newY

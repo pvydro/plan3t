@@ -1,7 +1,7 @@
 import { Assets } from '../../../asset/Assets'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
 import { SphericalBiome } from '../SphericalData'
-import { SphericalTileColorData } from '../../sphericaltile/SphericalTile'
+import { SphericalTileColorData } from '../tile/SphericalTile'
 import { SphericalTileTextureCache } from './SphericalTileTextureCache'
 import { Flogger } from '../../../service/Flogger'
 import { SphericalPoint } from '../SphericalPoint'

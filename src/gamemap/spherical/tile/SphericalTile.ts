@@ -1,8 +1,10 @@
 import * as PIXI from 'pixi.js'
 import { Sprite } from '../../../engine/display/Sprite'
 import { IDemolishable } from '../../../interface/IDemolishable'
-import { SphericalTileFoliage } from '../decoration/SphericalTileFoliage'
-import { SphericalBiome } from '../SphericalData'
+import { SphericalTileFoliage } from './decoration/SphericalTileFoliage'
+import { SphericalBiome, SphericalData } from '../SphericalData'
+import { SphericalPoint } from '../SphericalPoint'
+import { ISphericalTileDarkener, SphericalTileDarkener } from './SphericalTileDarkener'
 
 export interface SphericalTileColorData {
     r: number
@@ -17,22 +19,33 @@ export interface ISphericalTile extends IDemolishable {
 
 export interface SphericalTileOptions {
     texture: PIXI.Texture
+    point: SphericalPoint
+    data: SphericalData
     biome: SphericalBiome
     canGrowFoliage?: boolean
 }
 
 export class SphericalTile extends Sprite implements ISphericalTile {
+    point: SphericalPoint
+    data: SphericalData
     decorations: any[] = []
     biome: SphericalBiome
+    darkener: ISphericalTileDarkener
 
     constructor(options: SphericalTileOptions) {
         super({ texture: options.texture })
 
+        this.point = options.point
+        this.data = options.data
         this.biome = options.biome
-
+        
         if (options.canGrowFoliage) {
             this.applyRandomFoliage()
         }
+
+        this.darkener = new SphericalTileDarkener({ tile: this })
+        this.darkener.calculateDepthBasedOnSurroundings()
+        this.darkener.applyTint()
     }
 
     demolish() {
