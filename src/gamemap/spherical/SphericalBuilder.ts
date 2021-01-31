@@ -72,7 +72,7 @@ export class SphericalBuilder implements ISphericalBuilder {
                 const currentPoint = data.getPointAt(x, y)
 
                 if (currentPoint) {
-                    if (currentPoint.tileDepth > 0) {
+                    if (currentPoint.tileSolidity > 0) {
                         // Start Rect
                         if (isOnACollidableTile == false) {
                             isOnACollidableTile = true

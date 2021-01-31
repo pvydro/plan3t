@@ -103,7 +103,7 @@ export class SphericalTileHelper {
 
     static canPointGrowFoliage(point: SphericalPoint): boolean {
         const isGrass: boolean = point.isEqualToPoint(SphericalTileValues.CoreGrassTile)//(point.tileValue == SphericalTileValues.CoreGrassTile)
-        const hasAir: boolean = (point.topPoint === undefined || point.topPoint.tileDepth < 1)
+        const hasAir: boolean = (point.topPoint === undefined || point.topPoint.tileSolidity < 1)
         let canGrow = false
 
         if (isGrass && hasAir) {

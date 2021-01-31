@@ -4,7 +4,7 @@ export interface ISphericalPoint {
     x: number
     y: number
     tileValue: SphericalTileColorData
-    tileDepth: number
+    tileSolidity: number
     leftPoint?: SphericalPoint
     rightPoint?: SphericalPoint
     topPoint?: SphericalPoint
@@ -19,7 +19,7 @@ export interface ISphericalPoint {
 
 export interface SphericalPointOptions {
     tileValue: SphericalTileColorData
-    tileDepth: number
+    tileSolidity: number
     x: number
     y: number
 }
@@ -28,7 +28,7 @@ export class SphericalPoint implements ISphericalPoint {
     x: number
     y: number
     tileValue: SphericalTileColorData
-    tileDepth: number
+    tileSolidity: number
     leftPoint?: SphericalPoint
     rightPoint?: SphericalPoint
     topPoint?: SphericalPoint
@@ -40,7 +40,7 @@ export class SphericalPoint implements ISphericalPoint {
 
     constructor(options: SphericalPointOptions) {
         this.tileValue = options.tileValue
-        this.tileDepth = options.tileDepth
+        this.tileSolidity = options.tileSolidity
         this.x = options.x
         this.y = options.y
     }

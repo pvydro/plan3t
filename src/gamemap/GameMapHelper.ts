@@ -56,11 +56,11 @@ export class GameMapHelper implements IGameMapHelper {
 
         pixelData.forEach((pixel: PixelData) => {
             const tileValue = { r: pixel.r, g: pixel.g, b: pixel.b, a: pixel.a }
-            const tileDepth = pixel.a
+            const tileSolidity = pixel.a
             const x = pixel.x
             const y = pixel.y
 
-            points.push(new SphericalPoint({ tileValue, tileDepth, x, y }))
+            points.push(new SphericalPoint({ tileValue, tileSolidity: tileSolidity, x, y }))
         })
 
         const sphericalData = new SphericalData({

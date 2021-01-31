@@ -11,7 +11,7 @@ export class SphericalHelper implements ISphericalHelper {
     private constructor() {}
 
     static isPointSolid(point: SphericalPoint): boolean {
-        return (point && point.tileDepth > 0)
+        return (point && point.tileSolidity > 0)
     }
 
     static isLeftPointSolid(point: SphericalPoint, data: SphericalData): boolean {
