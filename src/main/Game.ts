@@ -50,6 +50,8 @@ export class Game implements IGame {
     }
 
     instantiateApplication() {
+        const gameCanvas: HTMLCanvasElement = document.getElementById('game-canvas') as HTMLCanvasElement
+
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
         PIXI.settings.ROUND_PIXELS = true
 
@@ -58,6 +60,7 @@ export class Game implements IGame {
             height: window.innerHeight,
             backgroundColor: 0x0c0c0c,
             antialias: false,
+            view: gameCanvas
         })
     }
 

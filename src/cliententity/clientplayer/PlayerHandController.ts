@@ -1,5 +1,4 @@
 import { Camera } from '../../camera/Camera'
-import { InputProcessor } from '../../input/InputProcessor'
 import { Direction } from '../../engine/math/Direction'
 import { PlayerHand } from './PlayerHand'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'

@@ -43,7 +43,7 @@ export class GameplayState extends GameState implements IGameplayState {
         })
 
         this.ambientLight = new GameplayAmbientLight()
-        this.inGameHUD = new InGameHUD()
+        this.inGameHUD = InGameHUD.getInstance()
 
         this.hornet = new PassiveHornet()
     }

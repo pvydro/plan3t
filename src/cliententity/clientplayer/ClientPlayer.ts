@@ -16,6 +16,7 @@ import { Light } from '../../engine/display/lighting/Light'
 import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { PlayerWeaponHolster } from './PlayerWeaponHolster'
+import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -118,7 +119,7 @@ export class ClientPlayer extends GravityEntity {
 
         this.collision.update()
     }
-    
+
     equipWeapon(weapon: Weapon | null) {
         if (name === null) {
             this.hand.empty()

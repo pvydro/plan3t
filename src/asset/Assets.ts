@@ -31,7 +31,7 @@ export class Assets {
                     try {
                         assets.push(Assets.get(key))
                     } catch (error) {
-                        Flogger.error('Failed to get asset for ' + key, 'error', error)
+                        Flogger.warn('Failed to get asset for ' + key, 'error', error)
                     }
                 })
 
@@ -79,7 +79,7 @@ export class Assets {
                     try {
                         tileAssets.push(Assets.get(foliageDir))
                     } catch (error) {
-                        Flogger.error('No foliage for ' + biome)
+                        Flogger.warn('No foliage for ' + biome, 'i', i)
                     }
 
                 }

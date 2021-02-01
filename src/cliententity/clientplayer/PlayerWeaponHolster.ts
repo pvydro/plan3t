@@ -1,6 +1,8 @@
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Flogger } from '../../service/Flogger'
+import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
+import { Emitter } from '../../utils/Emitter'
 import { IWeapon, Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
 import { ClientPlayer } from './ClientPlayer'
@@ -39,7 +41,6 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         this.applyListeners()
     }
 
-
     applyListeners() {
         InputProcessor.on('mousedown', () => { this.mouseDown() })
         InputProcessor.on('mouseup', () => { this.mouseUp() })
@@ -54,7 +55,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         })
     }
 
-    swapWeapon(): void {
+    swapWeapon() {
         Flogger.log('PlayerWeaponHolster', 'swapWeapon')
 
         const weaponStatus = (this.currentWeaponStatus === CurrentWeaponStatus.Primary)
@@ -78,7 +79,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     setLoadout(loadout: WeaponHolsterLoadout) {
-        this.currentLoadout = loadout
+        const ammoStatusComponent = InGameHUD.getInstance().ammoStatus
 
         if (loadout.primaryWeaponName !== undefined) {
             this.primaryWeapon.configureByName(loadout.primaryWeaponName)
@@ -87,6 +88,14 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         if (loadout.secondaryWeaponName !== undefined) {
             this.secondaryWeapon.configureByName(loadout.secondaryWeaponName)
         }
+
+        this.currentLoadout = loadout
+        this.currentWeaponStatus = CurrentWeaponStatus.Primary
+        this.updateWeaponStatus()
+
+        setTimeout(() => {
+            ammoStatusComponent.refreshClientLoadout()
+        }, 100)
     }
 
     private updateWeaponStatus() {
@@ -100,7 +109,11 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
                 break
         }
 
-        this.player.equipWeapon(this.currentWeapon as Weapon)
+        try {
+            this.player.equipWeapon(this.currentWeapon as Weapon)
+        } catch (error) {
+            Flogger.error('PlayerWeaponHolster', 'Failed to equip weapon', 'error', error)
+        }
     }
 
     private mouseDown() {
