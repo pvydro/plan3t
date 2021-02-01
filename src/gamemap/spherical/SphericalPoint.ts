@@ -14,7 +14,8 @@ export interface ISphericalPoint {
     bottomLeftPoint?: SphericalPoint
     bottomRightPoint?: SphericalPoint
 
-    isEqualToPoint(point: ISphericalPoint): boolean
+    isEqualToPoint(point: ISphericalPoint | SphericalTileColorData): boolean
+    isSolid(): boolean
 }
 
 export interface SphericalPointOptions {
@@ -56,5 +57,9 @@ export class SphericalPoint implements ISphericalPoint {
         return (tileValue.r === comparedTileValue.r
             && tileValue.g === comparedTileValue.g
             && tileValue.b === comparedTileValue.b)
+    }
+
+    isSolid() {
+        return (this.tileValue.a === 255)
     }
 }

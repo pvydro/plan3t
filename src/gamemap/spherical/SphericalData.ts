@@ -14,8 +14,6 @@ export interface ISphericalData {
     dimension: Dimension
 }
 
-
-
 export class SphericalData implements ISphericalData {
     points: SphericalPoint[]
     biome: SphericalBiome
