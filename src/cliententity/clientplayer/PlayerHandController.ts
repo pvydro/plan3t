@@ -61,15 +61,16 @@ export class PlayerHandController implements IPlayerHandController {
 
     followMouse() {
         const direction = this.playerHand.player.direction
-        let recoilRotation = this.playerHand.primaryWeapon._currentRecoilOffset.y * direction
+        let recoilRotation = this.playerHand.equippedWeapon
+            ? this.playerHand.equippedWeapon._currentRecoilOffset.y * direction : 0
         const projectedPlayerPos = this.playerHand.player.position
         const playerX = projectedPlayerPos.x
         const playerY = projectedPlayerPos.y
-        
+        const recoilRandomizer = this.playerHand.equippedWeapon ? this.playerHand.equippedWeapon.recoilRandomizer : 0
         const angle = Math.atan2(this.mousePos.y - playerY, this.mousePos.x - playerX)
         const halfACircleInRadians = 3.14159
         
-        recoilRotation *= this.playerHand.primaryWeapon.recoilRandomizer
+        recoilRotation *= recoilRandomizer
 
         this.targetRotation = direction === Direction.Right ? angle : angle - halfACircleInRadians
         this.playerHand.rotation = direction === Direction.Right ? angle : angle - halfACircleInRadians

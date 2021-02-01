@@ -7,13 +7,12 @@ import { Direction } from '../../engine/math/Direction'
 import { Flogger } from '../../service/Flogger'
 import { Weapon } from '../../weapon/Weapon'
 import { WeaponHelper } from '../../weapon/WeaponHelper'
-import { WeaponName } from '../../weapon/WeaponName'
 import { ClientPlayer } from './ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
 import { InputProcessor } from '../../input/InputProcessor'
 
 export interface IPlayerHand extends IUpdatable {
-    setWeapon(name: WeaponName): void
+    setWeapon(weapon: Weapon): void
     empty(): void
 }
 
@@ -34,8 +33,7 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     handSprite: Sprite
     secondHandSprite: Sprite
-    primaryWeapon: Weapon
-    currentWeapon: Weapon
+    equippedWeapon?: Weapon
 
     recoilOffsetDivisor: number = 3
 
@@ -50,26 +48,20 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.handSprite.anchor.set(0.5, 0.5)
         this.secondHandSprite.anchor.set(0.5, 0.5)
         this.secondHandSprite.alpha = 0
-        
-        this.primaryWeapon = new Weapon(undefined, this)
-        this.currentWeapon = this.primaryWeapon
-        
+
         this.rotationContainer = new Container()
 
         this.rotationContainer.addChild(this.secondHandSprite)
-        this.rotationContainer.addChild(this.primaryWeapon)
         this.rotationContainer.addChild(this.handSprite)
 
         this.addChild(this.rotationContainer)
         this.rotationContainer.x = 4
-
-        this.applyListeners()
     }
 
     update() {
         const halfACircleInRadians = 3.14159
-        const handPushAmount = this.primaryWeapon && this.primaryWeapon.handPushAmount ? this.primaryWeapon.handPushAmount : 0
-        const handDropAmount = this.primaryWeapon && this.primaryWeapon.handDropAmount ? this.primaryWeapon.handDropAmount : 0
+        const handPushAmount = this.equippedWeapon && this.equippedWeapon.handPushAmount ? this.equippedWeapon.handPushAmount : 0
+        const handDropAmount = this.equippedWeapon && this.equippedWeapon.handDropAmount ? this.equippedWeapon.handDropAmount : 0
         const direction = this._player.direction
         const bobOffsetY = this._player.head.headBobOffset / 1.5
         let newOffsetX = direction === Direction.Right
@@ -80,26 +72,34 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
         this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
 
-        this.x = this.currentOffsetX + (this.currentWeapon._currentRecoilOffset.x * this.player.direction)
-        this.y = this.currentOffsetY + (this.currentWeapon._currentRecoilOffset.y * this.player.direction)
+        const recoilOffsetX = (this.equippedWeapon && this.equippedWeapon._currentRecoilOffset)
+            ? this.equippedWeapon._currentRecoilOffset.x : 0
+        const recoilOffsetY = (this.equippedWeapon && this.equippedWeapon._currentRecoilOffset)
+            ? this.equippedWeapon._currentRecoilOffset.y : 0
+        this.x = this.currentOffsetX + (recoilOffsetX * this.player.direction)
+        this.y = this.currentOffsetY + (recoilOffsetY * this.player.direction)
 
-        this.handSprite.x = (this.currentWeapon._currentRecoilOffset.x / this.recoilOffsetDivisor) * this.player.direction
+        this.handSprite.x = (recoilOffsetX / this.recoilOffsetDivisor) * this.player.direction
 
-        this.controller.update(this.player.isClientControl)
+        this.controller.update(this.player.isClientPlayer)
 
         this.secondHandSprite.rotation = direction === Direction.Right
             ? -this.rotation + (this.rotation / 2)
             : this.rotation - halfACircleInRadians - (this.rotation / 2)
             
-        this.primaryWeapon.update()
-        // this.secondaryWeapon.update()
+        if (this.equippedWeapon) this.equippedWeapon.update()
     }
 
-    setWeapon(name: WeaponName) {
-        this.primaryWeapon.configureByName(name)
-        this.currentWeapon = this.primaryWeapon
+    setWeapon(weapon: Weapon) {
+        if (this.equippedWeapon) this.empty()
+
+        this.equippedWeapon = weapon
+
+        if (!this.equippedWeapon) return
         
-        const stats = WeaponHelper.getWeaponStatsByName(name)
+        const stats = WeaponHelper.getWeaponStatsByName(weapon.name)
+
+        this.rotationContainer.addChildAt(this.equippedWeapon, 0)
 
         if (stats.secondHandX !== undefined || stats.secondHandY !== undefined) {
             this.showSecondHand(true, stats.secondHandX, stats.secondHandY)
@@ -123,24 +123,7 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
     
     empty() {
-        this.primaryWeapon.clearChildren()
-        this.primaryWeapon.reset()
-    }
-
-    mouseDown() {
-        if (this.currentWeapon) {
-            this.currentWeapon.triggerDown = true
-        }
-    }
-
-    mouseUp() {
-        if (this.primaryWeapon) this.primaryWeapon.triggerDown = false
-        // if (this.secondaryWeapon) this.secondaryWeapon.triggerDown = false
-    }
-
-    applyListeners() {
-        InputProcessor.on('mousedown', () => { this.mouseDown() })
-        InputProcessor.on('mouseup', () => { this.mouseUp() })
+        this.rotationContainer.removeChild(this.equippedWeapon)
     }
 
     set direction(value: Direction) {

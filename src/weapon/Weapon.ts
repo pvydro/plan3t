@@ -2,11 +2,13 @@ import gsap from 'gsap/all'
 import { TweenLite } from 'gsap/all'
 import { Camera } from '../camera/Camera'
 import { PlayerHand } from '../cliententity/clientplayer/PlayerHand'
+import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
 import { Container } from '../engine/display/Container'
 import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
 import { Vector2 } from '../engine/math/Vector2'
+import { InputProcessor } from '../input/InputProcessor'
 import { ParticleManager } from '../manager/ParticleManager'
 import { Flogger } from '../service/Flogger'
 import { Defaults, GlobalScale } from '../utils/Constants'
@@ -36,8 +38,13 @@ export interface WeaponStats {
     recoilY: number
 }
 
+export interface WeaponOptions {
+    name?: WeaponName
+    holster?: PlayerWeaponHolster
+}
+
 export class Weapon extends Container implements IWeapon {
-    playerHand?: PlayerHand
+    playerHolster?: PlayerWeaponHolster
 
     name: WeaponName
     damage: number
@@ -71,22 +78,22 @@ export class Weapon extends Container implements IWeapon {
     _currentRecoilOffset = { x: 0, y: 0 }
     _currentRotatedBarrelPoint = { x: 0, y: 0 }
 
-    constructor(name?: WeaponName, hand?: PlayerHand) {
+    constructor(options?: WeaponOptions) {
         super()
 
-        if (name) {
-            this.name = name
-
-            this.configureByName(this.name)
-        }
-        if (hand) {
-            this.playerHand = hand
+        if (options) {
+            if (options.name) {
+                this.name = options.name
+    
+                this.configureByName(this.name)
+            }
+            if (options.holster) {
+                this.playerHolster = options.holster
+            }
         }
     }
-
+    
     update() {
-        // const recoilOffsetMultiplier = this.direction === Direction.Left ? 1 : -1
-        
         if (this.triggerDown) {
             this.shoot()
         }
@@ -94,11 +101,6 @@ export class Weapon extends Container implements IWeapon {
         // Recoil movement
         this._currentRecoilOffset.x += (0 - this._currentRecoilOffset.x) / this.recoilXDamping
         this._currentRecoilOffset.y += (0 - this._currentRecoilOffset.y) / this.recoilYDamping
-
-        // if (this.sprite) {
-        //     this.sprite.x = this.offset.x + this._currentRecoilOffset.x
-        //     this.sprite.y = this.offset.y + this._currentRecoilOffset.y
-        // }
     }
 
     async shoot(): Promise<void> {
@@ -129,20 +131,20 @@ export class Weapon extends Container implements IWeapon {
     }
 
     fireBullet() {
+        const playerHand = this.playerHolster ? this.playerHolster.player.hand : undefined
+
         Flogger.log('Weapon', 'fireBullet')
         if (this.sprite !== undefined
-        && this.playerHand !== undefined
-        && this.playerHand.player !== undefined) {
-            const direction = this.playerHand.player.direction
-            const entityManager = this.playerHand.player.entityManager
-            // const crouchOffset = this.playerHand.currentOffsetY
+        && playerHand !== undefined) {
+            const direction = playerHand.player.direction
+            const entityManager = playerHand.player.entityManager
             const bulletX = this._currentRotatedBarrelPoint.x
             const bulletY = this._currentRotatedBarrelPoint.y
 
 
             if (entityManager !== undefined) {
                 entityManager.createProjectile(ProjectileType.Bullet,
-                    bulletX, bulletY, this.playerHand.rotation, this.bulletVelocity * direction)
+                    bulletX, bulletY, playerHand.rotation, this.bulletVelocity * direction)
             }
         }
     }
@@ -168,20 +170,23 @@ export class Weapon extends Container implements IWeapon {
     }
 
     addMuzzleFlash() {
-        let rotation = this.playerHand ? this.playerHand.rotation : this.rotation
-        const player = this.playerHand.player
+        const player = this.playerHolster ? this.playerHolster.player : undefined
+        const playerHand = player ? player.hand : undefined
+        const handRotation = playerHand ? playerHand.rotation : undefined
+        let rotation = handRotation ? handRotation : this.rotation
 
         if (player && this.sprite) {
             rotation *= player.direction
 
             const referenceX = player.x + this.x
             const referenceY = player.y + (this.y * GlobalScale)
-
-            const halfWidth = (this.sprite.halfWidth * GlobalScale) + ((this.playerHand.rotationContainer.x) * GlobalScale)
+            const handRotationX = playerHand ? playerHand.rotationContainer.x : 0
+            const halfWidth = (this.sprite.halfWidth * GlobalScale) + (handRotationX * GlobalScale)
             const halfHeight = (-this.sprite.halfHeight * GlobalScale)
                 + (this.barrelOffsetY * GlobalScale)
 
-            const handX = (this.playerHand.handSprite.x * GlobalScale) * player.direction
+            const handSpriteX = playerHand.handSprite.x * GlobalScale
+            const handX = handSpriteX * player.direction
 
             let distanceX = (halfWidth * Math.cos(rotation)) - (halfHeight * Math.sin(rotation))
             let distanceY = (halfWidth * Math.sin(rotation)) + (halfHeight * Math.cos(rotation))
@@ -222,6 +227,8 @@ export class Weapon extends Container implements IWeapon {
     configureByName(name: WeaponName) {
         this.name = name
         this.clearChildren()
+
+        if (name === null || name === undefined) return
 
         const baseYOffset = -8
         const texture = WeaponHelper.getWeaponTextureByName(name)

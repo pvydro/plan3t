@@ -14,13 +14,15 @@ import { PlayerCollision } from './PlayerCollision'
 import { EntityManager } from '../../manager/EntityManager'
 import { Light } from '../../engine/display/lighting/Light'
 import { PlayerLight } from './PlayerLight'
+import { Weapon } from '../../weapon/Weapon'
+import { PlayerWeaponHolster } from './PlayerWeaponHolster'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
     bodyState: PlayerBodyState
     emitter: Emitter
-    isClientControl: boolean
-    equipWeapon(name: WeaponName): void
+    isClientPlayer: boolean
+    equipWeapon(weapon: Weapon): void
 }
 
 export enum PlayerBodyState {
@@ -46,6 +48,7 @@ export class ClientPlayer extends GravityEntity {
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
+    holster: PlayerWeaponHolster
     light: PlayerLight
     collision: PlayerCollision
     controller: IPlayerController
@@ -76,21 +79,13 @@ export class ClientPlayer extends GravityEntity {
             this._entityManager = options.entityManager
         }
         this._clientControl = options.clientControl
-
-        // Temp
-        // const tempLight = new Light()
-        // tempLight.width = window.innerWidth / 4
-        // tempLight.height = window.innerHeight / 4
-        // tempLight.x = -(tempLight.width / 2)
-        // tempLight.y = -(tempLight.height / 2)
-        // tempLight.alpha = 0.3//0.2//0.15
-        // this.addChild(tempLight)
         
         const player = this
 
-        this.hand = new PlayerHand({ player })
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
+        this.hand = new PlayerHand({ player })
+        this.holster = new PlayerWeaponHolster({ player })
         this.light = new PlayerLight({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
@@ -101,36 +96,18 @@ export class ClientPlayer extends GravityEntity {
         this.addChild(this.hand)
         this.addChild(this.collision)
         
-        if (this.isClientControl) this.controller = new PlayerController({ player })
+        if (this.isClientPlayer) this.controller = new PlayerController({ player })
 
         this.scale.set(GlobalScale, GlobalScale)
 
-
-        if (options.clientControl) {
-            InputProcessor.on('keydown', (ev: KeyboardEvent) => {
-                if (ev.which === Key.One) {
-                    this.equipWeapon(WeaponName.P3)
-                } else if (ev.which === Key.Two) {
-                    this.equipWeapon(WeaponName.Komp9)
-                } else if (ev.which === Key.Three) {
-                    this.equipWeapon(WeaponName.Bully)
-                } else if (ev.which === Key.Four) {
-                    this.equipWeapon(WeaponName.Raze)
-                } else if (ev.which === Key.Five) {
-                    this.equipWeapon(WeaponName.Tachyon)
-                } else if (ev.which === Key.Six) {
-                    this.equipWeapon(WeaponName.Komplimenter)
-                } else if (ev.which === Key.Seven) {
-                    this.equipWeapon(WeaponName.Kortni)
-                } else if (ev.which === Key.Zero) {
-                    this.equipWeapon(null)
-                }
-            })
-        }
+        this.holster.setLoadout({
+            primaryWeaponName: WeaponName.Komplimenter,
+            secondaryWeaponName: WeaponName.P3
+        })
     }
     
     update() {
-        if (this.isClientControl) this.controller.update()
+        if (this.isClientPlayer) this.controller.update()
 
         super.update()
 
@@ -141,12 +118,12 @@ export class ClientPlayer extends GravityEntity {
 
         this.collision.update()
     }
-
-    equipWeapon(name: WeaponName | null) {
+    
+    equipWeapon(weapon: Weapon | null) {
         if (name === null) {
             this.hand.empty()
         } else {
-            this.hand.setWeapon(name)
+            this.hand.setWeapon(weapon)
         }
     }
 
@@ -177,7 +154,7 @@ export class ClientPlayer extends GravityEntity {
         return this._direction
     }
 
-    get isClientControl() {
+    get isClientPlayer() {
         return this._clientControl
     }
 

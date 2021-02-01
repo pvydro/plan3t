@@ -28,7 +28,7 @@ export class PlayerHeadController implements IPlayerHeadController {
         this.playerHead = options.playerHead
         this.player = options.player
 
-        this._shouldRotateHeadWithMouseMove = this.player.isClientControl
+        this._shouldRotateHeadWithMouseMove = this.player.isClientPlayer
         this.trackMousePosition()
     }
 
