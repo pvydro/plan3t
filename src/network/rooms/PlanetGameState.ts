@@ -5,18 +5,6 @@ import { Entity } from './Entity'
 import { Player } from './Player'
 
 export class PlanetGameState extends Schema {
-
-  @filterChildren(function(client, key: string, value: Entity, root: PlanetGameState) {
-    const currentPlayer = root.entities.get(client.sessionId);
-    if (currentPlayer) {
-        const a = value.x - currentPlayer.x;
-        const b = value.y - currentPlayer.y;
-
-        return (Math.sqrt(a * a + b * b)) <= 500;
-    } else {
-        return false;
-    }
-  })
   @type({ map: Entity })
   entities = new MapSchema<Entity>();
 
@@ -33,8 +21,17 @@ export class PlanetGameState extends Schema {
   update() {
   }
 
+  // @filterChildren(function(client, key: string, value: Entity, root: PlanetGameState) {
+  //   const currentPlayer = root.entities.get(client.sessionId);
+  //   if (currentPlayer) {
+  //       const a = value.x - currentPlayer.x;
+  //       const b = value.y - currentPlayer.y;
 
-
+  //       return (Math.sqrt(a * a + b * b)) <= 500;
+  //   } else {
+  //       return false;
+  //   }
+  // })
 
   // createFood () {
   //   const food = new Entity().assign({

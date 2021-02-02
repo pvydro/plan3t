@@ -29,7 +29,7 @@ export class GameMapManager implements IGameMapManager {
 
         this._gameMap = GameMap.getInstance()
         
-        await this._gameMap.initializeSpherical()
+        await this._gameMap.initializeRandomSpherical()
 
         this.stage.addChild(this._gameMap)
     }

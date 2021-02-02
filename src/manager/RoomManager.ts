@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js'
 import { Room } from 'colyseus.js'
 import { PlanetGameState } from '../network/rooms/PlanetGameState'
 import { Entity } from '../network/rooms/Entity'

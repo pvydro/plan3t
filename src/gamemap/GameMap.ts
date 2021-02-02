@@ -7,9 +7,10 @@ import { GlobalScale } from '../utils/Constants'
 import { Rect } from '../engine/math/Rect'
 import { GameMapSky } from './GameMapSky'
 import { IUpdatable } from '../interface/IUpdatable'
+import { SphericalData } from './spherical/SphericalData'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
-    initializeSpherical(): Promise<void>
+    initializeRandomSpherical(): Promise<void>
     demolish(): void
     collidableRects: Rect[]
 }
@@ -42,23 +43,40 @@ export class GameMap extends Container implements IGameMap {
     }
 
     // TODO: Seed
-    async initializeSpherical(seed?: string): Promise<void> {
-        Flogger.log('GameMap', 'initializeSpherical', 'seed', seed)
+    async initializeRandomSpherical(): Promise<void> {
+        Flogger.log('GameMap', 'initializeRandomSpherical')
+
+        const randomSphericalData = await GameMapHelper.getRandomSphericalData()
+        const randomSpherical = new Spherical(randomSphericalData)
+
+        await this.applySpherical(randomSpherical)
+    }
+
+    async initializePremadeSpherical(data: SphericalData) {
+        Flogger.log('GameMap', 'initializePremadeSpherical')
+
+        const spherical = new Spherical(data)
+
+        await this.applySpherical(spherical)
+    }
+
+    private applySpherical(spherical: Spherical): Promise<void> {
+        if (this.currentSpherical !== undefined) {
+            this.currentSpherical.demolish()
+            this.removeChild(this.currentSpherical)
+        }
 
         return new Promise((resolve, reject) => {
-            GameMapHelper.getRandomSphericalData().then((sphericalData) => {
-                const spherical = new Spherical(sphericalData)
-    
-                spherical.initializeSpherical().then(() => {
-                    this.currentSpherical = spherical
-        
-                    this.addChild(this.currentSpherical)
+            spherical.initializeSpherical().then(() => {
+                this.currentSpherical = spherical
 
-                    resolve()
-                }).catch((error) => {
-                    reject(error)
-                })
-    
+                this.addChild(this.currentSpherical)
+
+                resolve()
+            }).catch((error) => {
+                Flogger.error('GameMap', 'Error applying Spherical', 'error', error)
+
+                reject()
             })
         })
     }
