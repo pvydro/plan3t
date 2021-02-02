@@ -8,7 +8,7 @@ module.exports = function (options) {
     mode: process.env.NODE_ENV || "development",
     entry: [
       'webpack-hot-middleware/client?reload=true',
-      './src/client/index.ts'
+      './src/network/client/index.ts'
     ],
     module: {
       rules: [
@@ -20,7 +20,7 @@ module.exports = function (options) {
       new webpack.HotModuleReplacementPlugin(),
 
       new HtmlWebpackPlugin({
-        template: path.resolve("src", "client", "index.html")
+        template: path.resolve("src", "network", "client", "index.html")
       }),
 
       // extract styles from bundle into a separate file

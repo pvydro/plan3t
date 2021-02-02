@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
 import { Key } from 'ts-keycode-enum'
-import { InputProcessor } from '../input/InputProcessor'
-import { IGame, Game } from '../main/Game'
-import { WindowSize } from '../utils/Constants'
+import { InputProcessor } from '../../input/InputProcessor'
+import { IGame, Game } from '../../main/Game'
+import { WindowSize } from '../../utils/Constants'
 
 window.PIXI = PIXI
 global.PIXI = PIXI

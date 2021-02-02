@@ -4,7 +4,7 @@
   "description": "paydro - plan3t",
   "main": "index.js",
   "scripts": {
-    "schema-codegen": "schema-codegen src/server/rooms/*.ts --ts --output src/client/schema/",
+    "schema-codegen": "schema-codegen src/server/rooms/*.ts --ts --output src/network/client/schema/",
     "heroku-postbuild": "tsc && webpack",
     "start": "node ./lib/index.js",
     "dev": "nodemon",
