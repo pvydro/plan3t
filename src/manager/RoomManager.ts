@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Room } from 'colyseus.js'
-import { NetworkGameState } from '../network/rooms/GameState'
+import { PlanetGameState } from '../network/rooms/PlanetGameState'
 import { Entity } from '../network/rooms/Entity'
 import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from './ClientManager'
@@ -20,7 +20,7 @@ export interface RoomManagerOptions {
 }
 
 export class RoomManager implements IRoomManager {
-    static _room: Room<NetworkGameState>
+    static _room: Room<PlanetGameState>
     
     clientManager: IClientManager
     entityManager: IEntityManager
@@ -34,7 +34,7 @@ export class RoomManager implements IRoomManager {
         Flogger.log('RoomManager', 'initializeRoom')
         const client = this.clientManager.client
 
-        this.currentRoom = await client.joinOrCreate<NetworkGameState>('GameRoom')
+        this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
 
         this.initializeCurrentRoomEntities()
     }

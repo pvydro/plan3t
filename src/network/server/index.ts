@@ -5,7 +5,7 @@ let webpack, webpackDevMiddleware, webpackHotMiddleware, webpackConfig;
 if (process.env.NODE_ENV !== "production") {
     webpack = require("webpack");
     webpackDevMiddleware = require("webpack-dev-middleware");
-    webpackConfig = require("../../webpack.config");
+    webpackConfig = require("../../../webpack.config");
     webpackHotMiddleware = require("webpack-hot-middleware");
 }
 
@@ -17,7 +17,7 @@ import basicAuth from "express-basic-auth";
 import socialRoutes from "@colyseus/social/express";
 import { monitor } from "@colyseus/monitor";
 
-import { ArenaRoom } from "../network/rooms/PlanetRoom";
+import { ArenaRoom } from "../rooms/ArenaRoom";
 
 export const port = Number(process.env.PORT || 8080);
 export const endpoint = "localhost";
