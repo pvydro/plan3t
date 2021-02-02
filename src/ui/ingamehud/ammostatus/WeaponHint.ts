@@ -58,7 +58,6 @@ export class WeaponHint extends Container implements IWeaponHint {
         for (var i in weaponSprites) {
             const sprite = weaponSprites[i]
             const outlineColor = 0x000000
-            const outlineFilter = new OutlineFilter(4, outlineColor, 0.1)
             const adjustmentFilter = new AdjustmentFilter({
                 brightness: 5,
                 contrast: 0
@@ -68,6 +67,8 @@ export class WeaponHint extends Container implements IWeaponHint {
                 adjustmentFilter, 
                 // outlineFilter
             ]
+
+            sprite.scale.set(0.5, 0.5)
         }
     }
 }

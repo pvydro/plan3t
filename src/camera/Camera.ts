@@ -32,7 +32,7 @@ export class Camera implements ICamera {
     jitterXCooldown: number = 10
     jitterYCooldown: number = 20
     maximumJitterCooldown: number = 500
-    maximumJitterAmount: number = 10
+    maximumJitterAmount: number = 20//10
     targetOffset: IVector2 = Vector2.Zero
     offset: IVector2 = Vector2.Zero
     _targetJitterOffset: Vector2 = Vector2.Zero
