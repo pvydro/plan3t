@@ -1,3 +1,4 @@
+import { Room } from 'colyseus.js'
 import { Camera } from '../camera/Camera'
 import { Viewport } from '../camera/Viewport'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
@@ -8,6 +9,7 @@ import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
 import { PassiveHornet } from '../passivecreature/passivehornet/PassiveHornet'
+import { Flogger } from '../service/Flogger'
 import { Crosshair } from '../ui/ingamehud/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
@@ -49,7 +51,13 @@ export class GameplayState extends GameState implements IGameplayState {
     }
     
     async initialize() {
+
+        // TODO - Attempt roomManager.initialize, then pull map from roommanager
+        // If map doesn't exist, create new map on client and send to server
+        // If failed to initialize room, create random map
+
         await this.initializeBackground()
+        // await this.gameMapManager.initialize()
         await this.gameMapManager.initialize()
         await this.inGameHUD.initializeHUD()
 
@@ -60,10 +68,24 @@ export class GameplayState extends GameState implements IGameplayState {
 
         this.camera.stage.addChild(this.ambientLight)
         this.camera.stage.addChild(ParticleManager.getInstance().container)
-
-        await this.roomManager.initializeRoom()
-
         this.camera.viewport.addChild(this.inGameHUD)
+
+        this.roomManager.initializeRoom().then((room: Room) => {
+            Flogger.log('GameplayState', 'Room initialized')
+
+            const data = this.gameMapManager.gameMap.currentSpherical.data
+
+            this.roomManager.currentRoom.send('newPlanet', {
+                biome: data.biome,//'test',
+                points: [ 'test1', 'test2' ],
+                dimension: {
+                    width: data.dimension.width,
+                    height: data.dimension.height,
+                }//{ width: 10, height: 10 },
+            })
+        })
+
+
 
         // this.camera.stage.addChild(this.hornet)
     }

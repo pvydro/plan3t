@@ -4,7 +4,7 @@ import { SphericalBiome } from '../SphericalData'
 import { SphericalTileColorData } from '../tile/SphericalTile'
 import { SphericalTileTextureCache } from './SphericalTileTextureCache'
 import { Flogger } from '../../../service/Flogger'
-import { SphericalPoint } from '../SphericalPoint'
+import { ISphericalPoint, SphericalPoint } from '../SphericalPoint'
 import { SphericalTileCoordinator } from './SphericalTileCoordinator'
 
 export interface ISphericalTileHelper {
@@ -75,13 +75,13 @@ export class SphericalTileHelper {
         return dir
     }
 
-    static getTilesheetCoordsFromPoint(point: SphericalPoint): IVector2 {
+    static getTilesheetCoordsFromPoint(point: ISphericalPoint): IVector2 {
         let coords: IVector2 = Vector2.Zero
 
         coords = SphericalTileCoordinator.checkLeftAndRight(point, coords)
         coords = SphericalTileCoordinator.checkTopAndBottom(point, coords)
-        coords = SphericalTileCoordinator.checkTopCorners(point, coords)
-        coords = SphericalTileCoordinator.checkBottomCorners(point, coords)
+        coords = SphericalTileCoordinator.checkTopCorners(point as SphericalPoint, coords)
+        coords = SphericalTileCoordinator.checkBottomCorners(point as SphericalPoint, coords)
 
         return coords
     }

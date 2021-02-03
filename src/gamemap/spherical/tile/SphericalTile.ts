@@ -3,8 +3,9 @@ import { Sprite } from '../../../engine/display/Sprite'
 import { IDemolishable } from '../../../interface/IDemolishable'
 import { SphericalTileFoliage } from './decoration/SphericalTileFoliage'
 import { SphericalBiome, SphericalData } from '../SphericalData'
-import { SphericalPoint } from '../SphericalPoint'
+import { ISphericalPoint, SphericalPoint } from '../SphericalPoint'
 import { ISphericalTileDarkener, SphericalTileDarkener } from './SphericalTileDarkener'
+import { DebugConstants } from '../../../utils/Constants'
 
 export interface SphericalTileColorData {
     r: number
@@ -19,14 +20,14 @@ export interface ISphericalTile extends IDemolishable {
 
 export interface SphericalTileOptions {
     texture: PIXI.Texture
-    point: SphericalPoint
+    point: ISphericalPoint
     data: SphericalData
     biome: SphericalBiome
     canGrowFoliage?: boolean
 }
 
 export class SphericalTile extends Sprite implements ISphericalTile {
-    point: SphericalPoint
+    point: ISphericalPoint
     data: SphericalData
     decorations: any[] = []
     biome: SphericalBiome
@@ -43,9 +44,11 @@ export class SphericalTile extends Sprite implements ISphericalTile {
             this.applyRandomFoliage()
         }
 
-        this.darkener = new SphericalTileDarkener({ tile: this })
-        this.darkener.calculateDepthBasedOnSurroundings()
-        this.darkener.applyTint()
+        if (!DebugConstants.DisableDepthShadows) {
+            this.darkener = new SphericalTileDarkener({ tile: this })
+            this.darkener.calculateDepthBasedOnSurroundings()
+            this.darkener.applyTint()
+        }
     }
 
     demolish() {

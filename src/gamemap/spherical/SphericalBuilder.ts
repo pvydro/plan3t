@@ -8,6 +8,7 @@ import { DebugConstants, GlobalScale } from '../../utils/Constants'
 import { SphericalTile, SphericalTileColorData } from './tile/SphericalTile'
 import { SphericalTileHelper } from './tile/SphericalTileHelper'
 import { IVector2 } from '../../engine/math/Vector2'
+import { SphericalPoint } from './SphericalPoint'
 
 export interface ISphericalBuilder {
     buildSphericalFromData(data: ISphericalData): Promise<SphericalResponse>
@@ -38,7 +39,7 @@ export class SphericalBuilder implements ISphericalBuilder {
                 const tilesheetUrl: string = SphericalTileHelper.getTilesheetFromColorData(tileData, data.biome)
                 const tileCoords: IVector2 = SphericalTileHelper.getTilesheetCoordsFromPoint(point)
                 const texture: PIXI.Texture = await SphericalTileHelper.getTileTextureFromTilesheetCoords(tilesheetUrl, tileCoords)
-                const canGrowFoliage: boolean = DebugConstants.DisableFoliage ? false : SphericalTileHelper.canPointGrowFoliage(point)
+                const canGrowFoliage: boolean = DebugConstants.DisableFoliage ? false : SphericalTileHelper.canPointGrowFoliage(point as SphericalPoint)
 
                 const newTileSprite = new SphericalTile({ texture, data, point, biome, canGrowFoliage })
                 

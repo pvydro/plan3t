@@ -14,8 +14,8 @@ export interface ISphericalPoint {
     bottomLeftPoint?: SphericalPoint
     bottomRightPoint?: SphericalPoint
 
-    isEqualToPoint(point: ISphericalPoint | SphericalTileColorData): boolean
-    isSolid(): boolean
+    // isEqualToPoint(point: ISphericalPoint | SphericalTileColorData): boolean
+    // isSolid(): boolean
 }
 
 export interface SphericalPointOptions {

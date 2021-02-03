@@ -9,7 +9,7 @@ import { BasicLerp } from '../utils/Constants'
 import { Flogger } from '../service/Flogger'
 
 export interface IRoomManager {
-    initializeRoom(): Promise<void>
+    initializeRoom(): Promise<Room>
     currentRoom: Room
     currentPlayerEntity: IClientPlayer
 }
@@ -36,9 +36,14 @@ export class RoomManager implements IRoomManager {
         this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
 
         this.initializeCurrentRoomEntities()
+
+        return this.currentRoom
     }
 
     initializeCurrentRoomEntities() {
+        this.currentRoom.listen('newMap', (message: string) => {
+            console.log('newwwwwwmappppppppp', message)
+        })
         this.currentRoom.state.entities.onAdd = (entity, sessionID: string) => {
             this.addEntity(entity, sessionID)
         }

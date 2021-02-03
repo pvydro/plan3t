@@ -1,5 +1,5 @@
 import { IVector2 } from '../../../engine/math/Vector2'
-import { ISphericalPoint } from '../SphericalPoint'
+import { ISphericalPoint, SphericalPoint } from '../SphericalPoint'
 
 export interface ISphericalTileCoordinator {
 
@@ -40,7 +40,7 @@ export class SphericalTileCoordinator implements ISphericalTileCoordinator {
         return coords
     }
 
-    static checkTopCorners(point: ISphericalPoint, coords: IVector2): IVector2 {
+    static checkTopCorners(point: SphericalPoint, coords: IVector2): IVector2 {
         if (point.topPoint !== undefined) {
             if (point.isEqualToPoint(point.topPoint)
             && point.isEqualToPoint(point.leftPoint)
@@ -62,7 +62,7 @@ export class SphericalTileCoordinator implements ISphericalTileCoordinator {
         return coords
     }
 
-    static checkBottomCorners(point: ISphericalPoint, coords: IVector2): IVector2 {
+    static checkBottomCorners(point: SphericalPoint, coords: IVector2): IVector2 {
         if (point.bottomPoint !== undefined) {
             if (point.isEqualToPoint(point.bottomPoint)
             && point.isEqualToPoint(point.leftPoint)

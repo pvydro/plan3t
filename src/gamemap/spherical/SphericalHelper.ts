@@ -1,6 +1,6 @@
 import { IVector2 } from '../../engine/math/Vector2'
 import { SphericalBiome, SphericalData } from './SphericalData'
-import { SphericalPoint } from './SphericalPoint'
+import { ISphericalPoint, SphericalPoint } from './SphericalPoint'
 
 export interface ISphericalHelper {
 
@@ -10,27 +10,27 @@ export class SphericalHelper implements ISphericalHelper {
 
     private constructor() {}
 
-    static isPointSolid(point: SphericalPoint): boolean {
+    static isPointSolid(point: ISphericalPoint): boolean {
         return (point && point.tileSolidity > 0)
     }
 
-    static isLeftPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+    static isLeftPointSolid(point: ISphericalPoint, data: SphericalData): boolean {
         return this.isAdjacentPointSolid(point, data, { x: -1, y: 0 })
     }
 
-    static isRightPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+    static isRightPointSolid(point: ISphericalPoint, data: SphericalData): boolean {
         return this.isAdjacentPointSolid(point, data, { x: 1, y: 0 })
     }
 
-    static isTopPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+    static isTopPointSolid(point: ISphericalPoint, data: SphericalData): boolean {
         return this.isAdjacentPointSolid(point, data, { x: 0, y: -1 })
     }
 
-    static isBottomPointSolid(point: SphericalPoint, data: SphericalData): boolean {
+    static isBottomPointSolid(point: ISphericalPoint, data: SphericalData): boolean {
         return this.isAdjacentPointSolid(point, data, { x: 0, y: 1 })
     }
 
-    static isAdjacentPointSolid(point: SphericalPoint, data: SphericalData, offset: IVector2): boolean {
+    static isAdjacentPointSolid(point: ISphericalPoint, data: SphericalData, offset: IVector2): boolean {
         let isSolid = false
         const adjacentPoint = data.getPointAt(point.x + offset.x, point.y + offset.y)
 

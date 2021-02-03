@@ -1,6 +1,7 @@
 import { ColorUtils } from '../../../utils/ColorUtils'
 import { NumberUtils } from '../../../utils/NumberUtils'
 import { SphericalHelper } from '../SphericalHelper'
+import { SphericalPoint } from '../SphericalPoint'
 import { SphericalTile } from './SphericalTile'
 
 export interface ISphericalTileDarkener {
@@ -55,12 +56,12 @@ export class SphericalTileDarkener implements ISphericalTileDarkener {
         for (var i = maximumDepth; i > 0; i--) {
             const newI = i + depthBreakpoint
 
-            const topRightPoint = data.getPointAt(pointPos.x + newI, pointPos.y - newI)
-            const topLeftPoint = data.getPointAt(pointPos.x - newI, pointPos.y - newI)
-            const bottomRightPoint = data.getPointAt(pointPos.x + newI, pointPos.y + newI)
-            const bottomLeftPoint = data.getPointAt(pointPos.x - newI, pointPos.y + newI)
-            const leftPoint = data.getPointAt(pointPos.x - newI, pointPos.y)
-            const rightPoint = data.getPointAt(pointPos.x + newI, pointPos.y)
+            const topRightPoint = data.getPointAt(pointPos.x + newI, pointPos.y - newI) as SphericalPoint
+            const topLeftPoint = data.getPointAt(pointPos.x - newI, pointPos.y - newI) as SphericalPoint
+            const bottomRightPoint = data.getPointAt(pointPos.x + newI, pointPos.y + newI) as SphericalPoint
+            const bottomLeftPoint = data.getPointAt(pointPos.x - newI, pointPos.y + newI) as SphericalPoint
+            const leftPoint = data.getPointAt(pointPos.x - newI, pointPos.y) as SphericalPoint
+            const rightPoint = data.getPointAt(pointPos.x + newI, pointPos.y) as SphericalPoint
 
             const solidOnTopRight = (topRightPoint !== undefined) && topRightPoint.isSolid()
             const solidOnTopLeft = (topLeftPoint !== undefined) && topLeftPoint.isSolid()

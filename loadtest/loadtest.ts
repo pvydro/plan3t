@@ -33,7 +33,7 @@ export function onJoin(this: Room) {
 }
 
 export function onMessage(this: Room, message) {
-    // console.log(this.sessionId, "received:", message);
+    console.log(this.sessionId, "received:", message);
 }
 
 export function onLeave(this: Room) {

@@ -34,7 +34,7 @@ class PlanetSphericalTile extends Schema {
   tileValue!: PlanetSphericalTileData
 }
 
-class PlanetSphericalSchema extends Schema {
+export class PlanetSphericalSchema extends Schema {
   @type('string')
   biome!: string
   @type(DimensionSchema)

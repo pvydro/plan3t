@@ -1,7 +1,7 @@
 import { Dimension } from '../../engine/math/Dimension'
 import { Flogger } from '../../service/Flogger'
 import { SphericalHelper } from './SphericalHelper'
-import { SphericalPoint } from './SphericalPoint'
+import { ISphericalPoint, SphericalPoint } from './SphericalPoint'
 
 export enum SphericalBiome {
     CloningFacility = 'cloningfacility',
@@ -9,13 +9,13 @@ export enum SphericalBiome {
 }
 
 export interface ISphericalData {
-    points: SphericalPoint[]
+    points: ISphericalPoint[]
     biome: SphericalBiome
     dimension: Dimension
 }
 
 export class SphericalData implements ISphericalData {
-    points: SphericalPoint[]
+    points: ISphericalPoint[]
     biome: SphericalBiome
     dimension: Dimension
 
@@ -33,14 +33,14 @@ export class SphericalData implements ISphericalData {
         for (var i = 0; i < this.points.length; i++) {
             const point = this.points[i]
 
-            const leftPoint = this.getPointAt(point.x - 1, point.y)
-            const rightPoint = this.getPointAt(point.x + 1, point.y)
-            const topPoint = this.getPointAt(point.x, point.y - 1)
-            const bottomPoint = this.getPointAt(point.x, point.y + 1)
-            const topLeftPoint = this.getPointAt(point.x - 1, point.y - 1)
-            const topRightPoint = this.getPointAt(point.x + 1, point.y - 1)
-            const bottomLeftPoint = this.getPointAt(point.x - 1, point.y + 1)
-            const bottomRightPoint = this.getPointAt(point.x + 1, point.y + 1)
+            const leftPoint = this.getPointAt(point.x - 1, point.y) as SphericalPoint
+            const rightPoint = this.getPointAt(point.x + 1, point.y) as SphericalPoint
+            const topPoint = this.getPointAt(point.x, point.y - 1) as SphericalPoint
+            const bottomPoint = this.getPointAt(point.x, point.y + 1) as SphericalPoint
+            const topLeftPoint = this.getPointAt(point.x - 1, point.y - 1) as SphericalPoint
+            const topRightPoint = this.getPointAt(point.x + 1, point.y - 1) as SphericalPoint
+            const bottomLeftPoint = this.getPointAt(point.x - 1, point.y + 1) as SphericalPoint
+            const bottomRightPoint = this.getPointAt(point.x + 1, point.y + 1) as SphericalPoint
 
             point.leftPoint = SphericalHelper.isLeftPointSolid(point, this) ? leftPoint : undefined
             point.rightPoint = SphericalHelper.isRightPointSolid(point, this) ? rightPoint : undefined
@@ -53,7 +53,7 @@ export class SphericalData implements ISphericalData {
         }
     }
 
-    getPointAt(x: number, y: number): SphericalPoint {
+    getPointAt(x: number, y: number): ISphericalPoint {
         let foundPoint = undefined
 
         for (var i in this.points) {
