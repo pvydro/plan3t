@@ -2,6 +2,7 @@ import { Room } from 'colyseus.js'
 import { Camera } from '../camera/Camera'
 import { Viewport } from '../camera/Viewport'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
+import { ISphericalPoint } from '../gamemap/spherical/SphericalPoint'
 import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
@@ -74,14 +75,29 @@ export class GameplayState extends GameState implements IGameplayState {
             Flogger.log('GameplayState', 'Room initialized')
 
             const data = this.gameMapManager.gameMap.currentSpherical.data
+            const dataPoints = []
+
+            // Construct message-able point array
+            data.points.forEach((point: ISphericalPoint) => {
+                dataPoints.push({
+                    x: point.x, y: point.y,
+                    tileValue: {
+                        r: point.tileValue.r,
+                        g: point.tileValue.g,
+                        b: point.tileValue.b,
+                        a: point.tileValue.a
+                    },
+                    tileSolidity: point.tileSolidity
+                })
+            })
 
             this.roomManager.currentRoom.send('newPlanet', {
-                biome: data.biome,//'test',
-                points: [ 'test1', 'test2' ],
+                biome: data.biome,
+                points: dataPoints,
                 dimension: {
                     width: data.dimension.width,
                     height: data.dimension.height,
-                }//{ width: 10, height: 10 },
+                }
             })
         })
 

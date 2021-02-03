@@ -9,15 +9,18 @@ interface MouseMessage {
   y: number
 }
 
-export class ArenaRoom extends Room<PlanetGameState> {
+export class PlanetRoom extends Room<PlanetGameState> {
+  planet?: PlanetSphericalSchema
 
   onCreate() {
 
     this.setState(new PlanetGameState())
     this.state.initialize()
 
-    this.onMessage('newPlanet', (client: Client, message: any) => {
-      Flogger.log('PlanetRoom', 'Secured new spherical data', 'message', message)
+    this.onMessage('newPlanet', (client: Client, planet: PlanetSphericalSchema) => {
+      Flogger.log('PlanetRoom', 'Secured new spherical data', 'message')
+
+      this.planet = planet
     })
 
     this.setSimulationInterval(() => this.state.update())

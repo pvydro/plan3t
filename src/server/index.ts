@@ -17,7 +17,7 @@ import basicAuth from "express-basic-auth";
 import socialRoutes from "@colyseus/social/express";
 import { monitor } from "@colyseus/monitor";
 
-import { ArenaRoom } from "../network/rooms/PlanetRoom";
+import { PlanetRoom } from "../network/rooms/PlanetRoom";
 
 export const port = Number(process.env.PORT || 8080);
 export const endpoint = "localhost";
@@ -30,7 +30,7 @@ const gameServer = new Server({
   express: app
 });
 
-gameServer.define("GameRoom", ArenaRoom);
+gameServer.define("GameRoom", PlanetRoom);
 
 if (process.env.NODE_ENV !== "production") {
     const webpackCompiler = webpack(webpackConfig({}));

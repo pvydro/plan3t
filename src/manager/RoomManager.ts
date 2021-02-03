@@ -41,9 +41,6 @@ export class RoomManager implements IRoomManager {
     }
 
     initializeCurrentRoomEntities() {
-        this.currentRoom.listen('newMap', (message: string) => {
-            console.log('newwwwwwmappppppppp', message)
-        })
         this.currentRoom.state.entities.onAdd = (entity, sessionID: string) => {
             this.addEntity(entity, sessionID)
         }
