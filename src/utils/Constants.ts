@@ -15,6 +15,11 @@ export const GlobalScale = 1//5
 export const ShowCollisionDebug = false
 export const ShowCameraProjectionDebug = false
 
+export class DebugConstants {
+    static DisableFoliage: boolean = true
+    static DisableDepthShadows: boolean = true
+}
+
 export class Constants {
     private constructor() {}
 }
@@ -26,15 +31,15 @@ export class GravityConstants {
 }
 
 export class Defaults {
-    static BulletVelocity = 5
-    static ShouldLightsJitter = false
+    static BulletVelocity: number = 5
+    static ShouldLightsJitter: boolean = false
 
     private constructor() {}
 }
 
 export class UIConstants {
-    static HUDScale = 5
-    static HUDPadding = 42
+    static HUDScale: number = 5
+    static HUDPadding: number = 42
 }
 
 export enum Events {

@@ -1,7 +1,7 @@
 import { Flogger } from '../../service/Flogger'
 import { Room, Client } from 'colyseus'
 import { Entity } from './Entity'
-import { PlanetGameState } from './PlanetGameState'
+import { PlanetGameState } from '../schema/PlanetGameState'
 
 interface MouseMessage {
   x: number
