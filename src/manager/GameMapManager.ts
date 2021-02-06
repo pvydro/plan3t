@@ -1,11 +1,13 @@
 import { GameMap } from '../gamemap/GameMap'
+import { SphericalData } from '../gamemap/spherical/SphericalData'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
 import { IClientManager } from './ClientManager'
 
 export interface IGameMapManager extends IUpdatable {
     gameMap: GameMap
-    initialize(): void
+    initialize(sphericalData?: SphericalData): Promise<void>
+    initializeRandomSpherical(): Promise<void>
 }
 
 export interface GameMapManagerOptions {
@@ -20,18 +22,21 @@ export class GameMapManager implements IGameMapManager {
         this.clientManager = options.clientManager
     }
 
-    async initialize() {
+    async initialize(sphericalData?: SphericalData) {
         Flogger.log('GameMapManager', 'initializeGameMap')
 
-        if (this.gameMap !== undefined) {
-            this.gameMap.demolish()
-        }
-
         this._gameMap = GameMap.getInstance()
+        this.stage.addChild(this._gameMap)
+        
+        if (sphericalData !== undefined) {
+            this._gameMap.initializePremadeSpherical(sphericalData)
+        }
+    }
+
+    async initializeRandomSpherical() {
+        await this.initialize()
         
         await this._gameMap.initializeRandomSpherical()
-
-        this.stage.addChild(this._gameMap)
     }
 
     update() {

@@ -2,7 +2,6 @@ import { Room } from 'colyseus.js'
 import { Camera } from '../camera/Camera'
 import { Viewport } from '../camera/Viewport'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
-import { ISphericalPoint } from '../gamemap/spherical/SphericalPoint'
 import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
@@ -11,7 +10,6 @@ import { ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager, RoomManager } from '../manager/RoomManager'
 import { PassiveHornet } from '../passivecreature/passivehornet/PassiveHornet'
 import { Flogger } from '../service/Flogger'
-import { Crosshair } from '../ui/ingamehud/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
@@ -42,7 +40,8 @@ export class GameplayState extends GameState implements IGameplayState {
             clientManager: this.clientManager
         })
         this.roomManager = new RoomManager({
-            clientManager: this.clientManager
+            clientManager: this.clientManager,
+            gameMapManager: this.gameMapManager
         })
 
         this.ambientLight = new GameplayAmbientLight()
@@ -58,52 +57,50 @@ export class GameplayState extends GameState implements IGameplayState {
         // If failed to initialize room, create random map
 
         await this.initializeBackground()
-        // await this.gameMapManager.initialize()
-        await this.gameMapManager.initialize()
-        await this.inGameHUD.initializeHUD()
-
-        // To get the camera, you need the game stage, pass Game through StateManager
-        this.stage.addChild(this.cameraViewport)
-
-        if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
-
-        this.camera.stage.addChild(this.ambientLight)
-        this.camera.stage.addChild(ParticleManager.getInstance().container)
         this.camera.viewport.addChild(this.inGameHUD)
 
-        this.roomManager.initializeRoom().then((room: Room) => {
+        this.roomManager.initializeRoom().then(async (room: Room) => {
             Flogger.log('GameplayState', 'Room initialized')
 
-            const data = this.gameMapManager.gameMap.currentSpherical.data
-            const dataPoints = []
+            console.log(room.state.planetHasBeenSet)
+
+            await this.inGameHUD.initializeHUD()
+    
+            // To get the camera, you need the game stage, pass Game through StateManager
+            this.stage.addChild(this.cameraViewport)
+    
+            if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
+    
+            this.camera.stage.addChild(this.ambientLight)
+            this.camera.stage.addChild(ParticleManager.getInstance().container)
+
+
+            // const data = this.gameMapManager.gameMap.currentSpherical.data
+            // const dataPoints = []
 
             // Construct message-able point array
-            data.points.forEach((point: ISphericalPoint) => {
-                dataPoints.push({
-                    x: point.x, y: point.y,
-                    tileValue: {
-                        r: point.tileValue.r,
-                        g: point.tileValue.g,
-                        b: point.tileValue.b,
-                        a: point.tileValue.a
-                    },
-                    tileSolidity: point.tileSolidity
-                })
-            })
+            // data.points.forEach((point: ISphericalPoint) => {
+            //     dataPoints.push({
+            //         x: point.x, y: point.y,
+            //         tileValue: {
+            //             r: point.tileValue.r,
+            //             g: point.tileValue.g,
+            //             b: point.tileValue.b,
+            //             a: point.tileValue.a
+            //         },
+            //         tileSolidity: point.tileSolidity
+            //     })
+            // })
 
-            this.roomManager.currentRoom.send('newPlanet', {
-                biome: data.biome,
-                points: dataPoints,
-                dimension: {
-                    width: data.dimension.width,
-                    height: data.dimension.height,
-                }
-            })
+            // this.roomManager.currentRoom.send('newPlanet', {
+            //     biome: data.biome,
+            //     points: dataPoints,
+            //     dimension: {
+            //         width: data.dimension.width,
+            //         height: data.dimension.height,
+            //     }
+            // })
         })
-
-
-
-        // this.camera.stage.addChild(this.hornet)
     }
 
     update() {

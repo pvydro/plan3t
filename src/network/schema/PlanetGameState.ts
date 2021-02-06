@@ -4,13 +4,7 @@ import { Schema, MapSchema, ArraySchema, type } from '@colyseus/schema'
 import { Entity } from '../rooms/Entity'
 import { Player } from '../rooms/Player'
 import { Flogger } from '../../service/Flogger'
-
-class DimensionSchema extends Schema {
-  @type('number')
-  width!: number
-  @type('number')
-  height!: number
-}
+import { DimensionSchema } from './DimensionSchema'
 
 class PlanetSphericalTileData extends Schema {
   @type('number')
@@ -47,10 +41,13 @@ export class PlanetGameState extends Schema {
   @type({ map: Entity })
   entities = new MapSchema<Entity>()
   @type(PlanetSphericalSchema)
-  planetSpherical: PlanetSphericalSchema = new PlanetSphericalSchema()
+  planetSpherical?: PlanetSphericalSchema
+  @type('boolean')
+  planetHasBeenSet: boolean = false
 
   initialize () {
-    this.planetSpherical = new PlanetSphericalSchema()
+    // this.planetSpherical = new PlanetSphericalSchema()
+    this.planetHasBeenSet = false
   }
 
   createPlayer(sessionId: string) {
