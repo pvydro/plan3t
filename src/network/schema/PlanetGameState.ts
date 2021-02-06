@@ -6,7 +6,7 @@ import { Player } from '../rooms/Player'
 import { Flogger } from '../../service/Flogger'
 import { DimensionSchema } from './DimensionSchema'
 
-class PlanetSphericalTileData extends Schema {
+export class PlanetSphericalTileData extends Schema {
   @type('number')
   r!: number
   @type('number')
@@ -17,7 +17,7 @@ class PlanetSphericalTileData extends Schema {
   a!: number
 }
 
-class PlanetSphericalTile extends Schema {
+export class PlanetSphericalTile extends Schema {
   @type('number')
   x!: number
   @type('number')

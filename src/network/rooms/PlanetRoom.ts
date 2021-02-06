@@ -2,12 +2,13 @@ import { Flogger } from '../../service/Flogger'
 import { Room, Client } from 'colyseus'
 import { Entity } from './Entity'
 import { PlanetGameState } from '../schema/PlanetGameState'
-import { PlanetSphericalSchema } from '../schema/PlanetGameState'
+import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../schema/PlanetGameState'
 import { ClientMessage, RoomMessage } from './ServerMessages'
+import { DimensionSchema } from '../schema/DimensionSchema'
+// import { SphericalData } from '../../gamemap/spherical/SphericalData'
 
-interface MouseMessage {
-  x: number
-  y: number
+interface SphericalDataMessage {
+  planet: any
 }
 
 export class PlanetRoom extends Room<PlanetGameState> {
@@ -25,15 +26,19 @@ export class PlanetRoom extends Room<PlanetGameState> {
 
   listenForPlanetFetch() {
     // Receiving planet
-    this.onMessage(RoomMessage.NewPlanet, (client: Client, planet: any) => {//PlanetSphericalSchema) => {
-      Flogger.log('PlanetRoom', 'Secured new spherical data.', 'planet', planet)
+    this.onMessage(RoomMessage.NewPlanet, (client: Client, message: SphericalDataMessage) => {
+      Flogger.log('PlanetRoom', 'Secured new spherical data.', 'message', message)
 
-      if (this.planet === undefined) {
-        this.planet = planet
-
-        this.state.planetSpherical = planet
-      } else {
-        Flogger.log('PlanetRoom', client.sessionId + ' tried to set new planet, but planet already set.')
+      try {
+        if (this.planet === undefined) {
+          this.planet = this.convertFetchedPlanetToSchema(message.planet)
+        } else {
+          Flogger.log('PlanetRoom', client.sessionId + ' tried to set new planet, but planet already set.')
+        }
+  
+        this.state.planetSpherical = this.planet
+      } catch(error) {
+        Flogger.error('PlanetRoom', 'Error settings planetSpherical schema', 'error', error)
       }
     })
 
@@ -48,6 +53,34 @@ export class PlanetRoom extends Room<PlanetGameState> {
     //     client.send(ClientMessage.NeedNewPlanet)
     //   }
     // })
+  }
+
+  private convertFetchedPlanetToSchema(planet: any) {
+    const parsedPoints: PlanetSphericalTile[] = []
+
+    // Parse points into PlanetSphericalTile schema
+    for (var i in planet.points) {
+      const point = planet.points[i]
+      parsedPoints.push(new PlanetSphericalTile({
+        x: point.x, y: point.x, tileSolidity: point.tileSolidity,
+        tileValue: new PlanetSphericalTileData({
+          r: point.tileValue.r,
+          g: point.tileValue.g,
+          b: point.tileValue.b,
+          a: point.tileValue.a,
+        })
+      }))
+    }
+
+    // Parse new data into PlanetSphericalSchema
+    return new PlanetSphericalSchema({
+      biome: planet.biome,
+      dimension: new DimensionSchema({
+        width: planet.dimension.width,
+        height: planet.dimension.height,
+      }),
+      points: parsedPoints
+    })  
   }
 
   onJoin(client: Client, options: any) {
@@ -67,5 +100,7 @@ export class PlanetRoom extends Room<PlanetGameState> {
   onStateChange() {
 
   }
+
+
 
 }

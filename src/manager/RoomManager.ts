@@ -104,7 +104,10 @@ export class RoomManager implements IRoomManager {
     async createMapAndSendToRoom(): Promise<void> {
         await this.gameMapManager.initializeRandomSpherical()
 
-        // this.currentRoom.send(RoomMessage.NewPlanet, this.gameMapManager.gameMap.currentSpherical.data)
+        const currentData = this.gameMapManager.gameMap.currentSpherical.data
+
+        this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPlainFormat() })
+            // , { planet: this.gameMapManager.gameMap.currentSpherical.data })
     }
 
     addEntity(entity: Entity, sessionID: string) {

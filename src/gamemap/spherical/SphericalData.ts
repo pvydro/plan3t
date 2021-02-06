@@ -14,6 +14,12 @@ export interface ISphericalData {
     dimension: Dimension
 }
 
+export interface PlainSphericalData {
+    points: { r: number, g: number, b: number, a: number }[],
+    biome: string,
+    dimension: { width: number, height: number }
+}
+
 export class SphericalData implements ISphericalData {
     points: ISphericalPoint[]
     biome: SphericalBiome
@@ -67,5 +73,34 @@ export class SphericalData implements ISphericalData {
         }
 
         return foundPoint
+    }
+
+    toPlainFormat(): PlainSphericalData {
+        const plainPoints = []
+
+        for (var i in this.points) {
+            const point = this.points[i]
+
+            const plainPoint = {
+                x: point.x, y: point.y, tileSolidity: point.tileSolidity,
+                tileValue: {
+                    r: point.tileValue.r,
+                    g: point.tileValue.r,
+                    b: point.tileValue.b,
+                    a: point.tileValue.a
+                },
+            }
+            
+            plainPoints.push(plainPoint)
+        }
+
+        return {
+            points: plainPoints,
+            biome: this.biome.toString(),
+            dimension: {
+                width: this.dimension.width,
+                height: this.dimension.height
+            }
+        }
     }
 }
