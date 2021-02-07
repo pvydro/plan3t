@@ -1,3 +1,4 @@
+import { Key } from 'ts-keycode-enum'
 import { Container } from '../engine/display/Container'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
@@ -73,6 +74,14 @@ export class Camera implements ICamera {
             this._mouseY = event.clientY
 
             this.updateMouseFollowOffset(this._mouseX, this._mouseY)
+        })
+
+        InputProcessor.on('keydown', (event: KeyboardEvent) => {
+            if (event.which === Key.DownArrow) {
+                this.setZoom(this.zoom - 0.1)
+            } else if (event.which === Key.UpArrow) {
+                this.setZoom(this.zoom + 0.1)
+            }
         })
     }
 

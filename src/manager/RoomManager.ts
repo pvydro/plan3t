@@ -48,12 +48,19 @@ export class RoomManager implements IRoomManager {
             this.currentRoom.onStateChange.once((state) => {
                 Flogger.log('RooManager', 'firstState received')
                 
-                if (state.planetHasBeenSet && state.planetSpherical !== undefined) {
-                    this.parseRoomSpherical(state.planetSpherical).then(() => {
+                if (state.planetHasBeenSet) {
+                    console.log('%cPlanetHasBeenSet', 'background-color: orange; font-size: 400%;')
+                    console.log(state.planetSpherical)
 
-                        resolve(this.currentRoom)
-
-                    })
+                    if (state.planetSpherical !== undefined) {
+                        this.parseRoomSpherical(state.planetSpherical).then(() => {
+                            
+                            console.log('%cParseSpherical found', 'background-color: red; font-size: 400%;')
+    
+                            resolve(this.currentRoom)
+    
+                        })
+                    }
                 } else {
                     this.createMapAndSendToRoom().then(() => {
                         this.roomState.planetHasBeenSet = true
@@ -76,13 +83,30 @@ export class RoomManager implements IRoomManager {
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {
+        Flogger.log('RoomManager', 'parseRoomSpherical', 'schema', schema)
+
         const parsedPoints = []
 
-        for (var i in schema.points) {
-            const point = schema.points[i]
+        // for (var i in schema.points) {
+        //     const point = schema.points[i]
 
+        //     console.log('%cPoint', 'background-color: navy;')
+        //     console.log(point)
+
+        //     parsedPoints.push(new SphericalPoint({
+        //         tileSolidity: point.tileSolidity, x: point.x, y: point.y,
+        //         tileValue: {
+        //             r: point.tileValue.r,
+        //             g: point.tileValue.g,
+        //             b: point.tileValue.b,
+        //             a: point.tileValue.a
+        //         }
+        //     }))
+        // }
+        schema.points.forEach((point) => {
             parsedPoints.push(new SphericalPoint({
-                tileSolidity: point.tileSolidity, x: point.x, y: point.y,
+                x: point.x, y: point.y,
+                tileSolidity: point.tileSolidity,
                 tileValue: {
                     r: point.tileValue.r,
                     g: point.tileValue.g,
@@ -90,7 +114,11 @@ export class RoomManager implements IRoomManager {
                     a: point.tileValue.a
                 }
             }))
-        }
+        })
+
+        console.log('%cparsed points', 'background-color: orange; font-size: 150%')
+        console.log(parsedPoints)
+
         // points: state.planetSpherical.points,
         const sphericalData = new SphericalData({
             points: parsedPoints,

@@ -37,22 +37,11 @@ export class PlanetRoom extends Room<PlanetGameState> {
         }
   
         this.state.planetSpherical = this.planet
+        this.state.planetHasBeenSet = true
       } catch(error) {
         Flogger.error('PlanetRoom', 'Error settings planetSpherical schema', 'error', error)
       }
     })
-
-    // this.onMessage(RoomMessage.GetPlanet, (client: Client) => {
-    //   if (this.planet !== undefined) {
-    //     Flogger.log('PlanetRoom', 'Sending servers planet to ' + client.sessionId + '.')
-
-    //     client.send(ClientMessage.ServerHasPlanet, this.planet)
-    //   } else {
-    //     Flogger.log('PlanetRoom', client.sessionId + ' requested planet, but need new planet. Sending back.')
-
-    //     client.send(ClientMessage.NeedNewPlanet)
-    //   }
-    // })
   }
 
   private convertFetchedPlanetToSchema(planet: any) {
@@ -62,7 +51,9 @@ export class PlanetRoom extends Room<PlanetGameState> {
     for (var i in planet.points) {
       const point = planet.points[i]
       parsedPoints.push(new PlanetSphericalTile({
-        x: point.x, y: point.x, tileSolidity: point.tileSolidity,
+        x: point.x,
+        y: point.y,
+        tileSolidity: point.tileSolidity,
         tileValue: new PlanetSphericalTileData({
           r: point.tileValue.r,
           g: point.tileValue.g,
@@ -98,9 +89,7 @@ export class PlanetRoom extends Room<PlanetGameState> {
   }
 
   onStateChange() {
+    Flogger.log('PlanetRoom', 'State changed.')
 
   }
-
-
-
 }

@@ -82,7 +82,9 @@ export class SphericalData implements ISphericalData {
             const point = this.points[i]
 
             const plainPoint = {
-                x: point.x, y: point.y, tileSolidity: point.tileSolidity,
+                x: point.x,
+                y: point.y,
+                tileSolidity: point.tileSolidity,
                 tileValue: {
                     r: point.tileValue.r,
                     g: point.tileValue.r,
