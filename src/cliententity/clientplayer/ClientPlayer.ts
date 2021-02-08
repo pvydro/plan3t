@@ -13,6 +13,8 @@ import { EntityManager } from '../../manager/EntityManager'
 import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { PlayerWeaponHolster } from './PlayerWeaponHolster'
+import { RoomMessager } from '../../manager/roommanager/RoomMessager'
+import { RoomMessage } from '../../network/rooms/ServerMessages'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -125,7 +127,13 @@ export class ClientPlayer extends GravityEntity {
     }
 
     set bodyState(value: PlayerBodyState) {
+        const shouldSendMessage = (this._bodyState !== value)
+
         this._bodyState = value
+
+        if (shouldSendMessage) {
+            RoomMessager.send(RoomMessage.PlayerBodyStateChanged, { state: this._bodyState })
+        }
     }
 
     set legsState(value: PlayerLegsState) {
