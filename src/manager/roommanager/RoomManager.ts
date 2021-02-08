@@ -81,10 +81,10 @@ export class RoomManager implements IRoomManager {
     }
 
     initializeCurrentRoomEntities() {
-        this.currentRoom.state.entities.onAdd = (entity, sessionID: string) => {
+        this.currentRoom.state.players.onAdd = (entity, sessionID: string) => {
             this.addEntity(entity, sessionID)
         }
-        this.currentRoom.state.entities.onRemove = (entity, sessionID: string) => {
+        this.currentRoom.state.players.onRemove = (entity, sessionID: string) => {
             this.removeEntity(sessionID)
         }
     }

@@ -38,8 +38,8 @@ export class PlanetSphericalSchema extends Schema {
 }
 
 export class PlanetGameState extends Schema {
-  @type({ map: Entity })
-  entities = new MapSchema<Entity>()
+  @type({ map: Player })
+  players = new MapSchema<Player>()
   @type(PlanetSphericalSchema)
   planetSpherical?: PlanetSphericalSchema
   @type('boolean')
@@ -53,7 +53,7 @@ export class PlanetGameState extends Schema {
   createPlayer(sessionId: string) {
     Flogger.log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
-    this.entities.set(sessionId, new Player().assign({
+    this.players.set(sessionId, new Player().assign({
       x: 0,
       y: 0
     }))

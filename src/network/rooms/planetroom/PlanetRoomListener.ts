@@ -4,43 +4,50 @@ import { DimensionSchema } from '../../schema/DimensionSchema'
 import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/PlanetGameState'
 import { NewPlanetMessagePayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoom } from './PlanetRoom'
+import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
 
 export interface IPlanetRoomListener {
     startListening(): void
 }
 
 export class PlanetRoomListener implements IPlanetRoomListener {
+    playerListener: PlanetRoomPlayerListener
+
     room: PlanetRoom
 
     constructor(room: PlanetRoom) {
         this.room = room
+
+        this.playerListener = new PlanetRoomPlayerListener(this)
     }
 
     startListening() {
         Flogger.log('PlanetRoomListener', 'startListening')
+
+        this.playerListener.startListening()
         
         this.listenForPlanet()
     }
 
     private listenForPlanet() {
-        // Receiving planet
+        Flogger.log('PlanetRoomListener', 'listenForPlanet')
+
         this.room.onMessage(RoomMessage.NewPlanet, (client: Client, message: NewPlanetMessagePayload) => {
-          Flogger.log('PlanetRoom', 'Secured new spherical data', 'message', message)
+          Flogger.log('PlanetRoomListener', 'Secured new spherical data')//, 'message', message)
     
           try {
             if (this.room.planet === undefined) {
               this.room.planet = this.convertFetchedPlanetToSchema(message.planet)
             } else {
-              Flogger.log('PlanetRoom', client.sessionId + ' tried to set new planet, but planet already set.')
+              Flogger.log('PlanetRoomListener', client.sessionId + ' tried to set new planet, but planet already set.')
             }
       
             this.room.state.planetSpherical = this.room.planet
             this.room.state.planetHasBeenSet = true
           } catch(error) {
-            Flogger.error('PlanetRoom', 'Error settings planetSpherical schema', 'error', error)
+            Flogger.error('PlanetRoomListener', 'Error setting planetSpherical schema', 'error', error)
           }
         })
-
     }
 
     private convertFetchedPlanetToSchema(planet: any) {
