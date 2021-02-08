@@ -1,15 +1,16 @@
 import { Room } from 'colyseus.js'
-import { PlanetGameState, PlanetSphericalSchema } from '../network/schema/PlanetGameState'
-import { Entity } from '../network/rooms/Entity'
-import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
-import { IClientManager } from './ClientManager'
-import { IEntityManager } from './EntityManager'
-import { Flogger } from '../service/Flogger'
-import { IGameMapManager } from './GameMapManager'
-import { SphericalBiome, SphericalData } from '../gamemap/spherical/SphericalData'
-import { SphericalPoint } from '../gamemap/spherical/SphericalPoint'
-import { Dimension } from '../engine/math/Dimension'
-import { RoomMessage } from '../network/rooms/ServerMessages'
+import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/PlanetGameState'
+import { Entity } from '../../network/rooms/Entity'
+import { IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { IClientManager } from '../ClientManager'
+import { IEntityManager } from '../EntityManager'
+import { Flogger } from '../../service/Flogger'
+import { IGameMapManager } from '../GameMapManager'
+import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
+import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
+import { Dimension } from '../../engine/math/Dimension'
+import { RoomMessage } from '../../network/rooms/ServerMessages'
+import { RoomMessager } from './RoomMessager'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -23,13 +24,26 @@ export interface RoomManagerOptions {
 }
 
 export class RoomManager implements IRoomManager {
+    private static INSTANCE: RoomManager
     static _room: Room<PlanetGameState>
     
     gameMapManager: IGameMapManager
     clientManager: IClientManager
     entityManager: IEntityManager
 
-    constructor(options: RoomManagerOptions) {
+    static getInstance(options?: RoomManagerOptions): RoomManager | undefined {
+        if (RoomManager.INSTANCE === undefined) {
+            if (options === undefined) {
+                return undefined
+            } else {
+                RoomManager.INSTANCE = new RoomManager(options)
+            }
+        }
+
+        return RoomManager.INSTANCE
+    }
+
+    private constructor(options: RoomManagerOptions) {
         this.clientManager = options.clientManager
         this.gameMapManager = options.gameMapManager
         this.entityManager = this.clientManager.entityManager
@@ -41,24 +55,18 @@ export class RoomManager implements IRoomManager {
         const client = this.clientManager.client
 
         this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
-
         this.initializeCurrentRoomEntities()
+
+        RoomMessager._isOnline = true
 
         return new Promise((resolve) => {
             this.currentRoom.onStateChange.once((state) => {
                 Flogger.log('RooManager', 'firstState received')
                 
                 if (state.planetHasBeenSet) {
-                    console.log('%cPlanetHasBeenSet', 'background-color: orange; font-size: 400%;')
-                    console.log(state.planetSpherical)
-
                     if (state.planetSpherical !== undefined) {
                         this.parseRoomSpherical(state.planetSpherical).then(() => {
-                            
-                            console.log('%cParseSpherical found', 'background-color: red; font-size: 400%;')
-    
                             resolve(this.currentRoom)
-    
                         })
                     }
                 } else {
@@ -73,7 +81,6 @@ export class RoomManager implements IRoomManager {
     }
 
     initializeCurrentRoomEntities() {
-        console.log('%cGOTEM','background-color: blue; font-size:600%;')
         this.currentRoom.state.entities.onAdd = (entity, sessionID: string) => {
             this.addEntity(entity, sessionID)
         }
@@ -87,22 +94,6 @@ export class RoomManager implements IRoomManager {
 
         const parsedPoints = []
 
-        // for (var i in schema.points) {
-        //     const point = schema.points[i]
-
-        //     console.log('%cPoint', 'background-color: navy;')
-        //     console.log(point)
-
-        //     parsedPoints.push(new SphericalPoint({
-        //         tileSolidity: point.tileSolidity, x: point.x, y: point.y,
-        //         tileValue: {
-        //             r: point.tileValue.r,
-        //             g: point.tileValue.g,
-        //             b: point.tileValue.b,
-        //             a: point.tileValue.a
-        //         }
-        //     }))
-        // }
         schema.points.forEach((point) => {
             parsedPoints.push(new SphericalPoint({
                 x: point.x, y: point.y,
@@ -116,10 +107,6 @@ export class RoomManager implements IRoomManager {
             }))
         })
 
-        console.log('%cparsed points', 'background-color: orange; font-size: 150%')
-        console.log(parsedPoints)
-
-        // points: state.planetSpherical.points,
         const sphericalData = new SphericalData({
             points: parsedPoints,
             biome: (schema.biome as SphericalBiome),
@@ -135,7 +122,6 @@ export class RoomManager implements IRoomManager {
         const currentData = this.gameMapManager.gameMap.currentSpherical.data
 
         this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPlainFormat() })
-            // , { planet: this.gameMapManager.gameMap.currentSpherical.data })
     }
 
     addEntity(entity: Entity, sessionID: string) {
@@ -146,6 +132,8 @@ export class RoomManager implements IRoomManager {
         }
     
         entity.onChange = (changes) => {
+            console.log('entity on change')
+            
             this.entityManager.updateEntity(entity, sessionID, changes)
         }
     }

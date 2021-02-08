@@ -7,16 +7,12 @@ import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
 import { PlayerHand } from './PlayerHand'
 import { WeaponName } from '../../weapon/WeaponName'
-import { InputProcessor } from '../../input/InputProcessor'
-import { Key } from 'ts-keycode-enum'
 import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
 import { EntityManager } from '../../manager/EntityManager'
-import { Light } from '../../engine/display/lighting/Light'
 import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { PlayerWeaponHolster } from './PlayerWeaponHolster'
-import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
@@ -27,14 +23,14 @@ export interface IClientPlayer extends IGravityEntity {
 }
 
 export enum PlayerBodyState {
-    Idle = 'Idle',
-    Walking = 'Walking',
-    Jumping = 'Jumping'
+    Idle = 0,
+    Walking = 1,
+    Jumping = 2
 }
 
 export enum PlayerLegsState {
-    Standing = 'Idle',
-    Crouched = 'Crouched'
+    Standing = 0,
+    Crouched = 1
 }
 
 export interface ClientPlayerOptions {
@@ -59,7 +55,7 @@ export class ClientPlayer extends GravityEntity {
     _legsState: PlayerLegsState = PlayerLegsState.Standing
     emitter: Emitter = new Emitter()
 
-    static getInstance(options?: ClientPlayerOptions) {
+    static getInstance(options?: ClientPlayerOptions): ClientPlayer | undefined {
         if (ClientPlayer.INSTANCE === undefined) {
             if (options === undefined) {
                 return undefined

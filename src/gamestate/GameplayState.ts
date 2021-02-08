@@ -8,7 +8,7 @@ import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { ParticleManager } from '../manager/ParticleManager'
-import { IRoomManager, RoomManager } from '../manager/RoomManager'
+import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { PassiveHornet } from '../passivecreature/passivehornet/PassiveHornet'
 import { Flogger } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
@@ -40,7 +40,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.gameMapManager = new GameMapManager({
             clientManager: this.clientManager
         })
-        this.roomManager = new RoomManager({
+        this.roomManager = RoomManager.getInstance({
             clientManager: this.clientManager,
             gameMapManager: this.gameMapManager
         })

@@ -2,7 +2,7 @@ import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
-import { IRoomManager, RoomManager } from '../manager/RoomManager'
+import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { Flogger } from '../service/Flogger'
 
 export interface IGameLoop {

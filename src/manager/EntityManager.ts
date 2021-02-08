@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { v4 as uuidv4 } from 'uuid';
 import { Entity } from '../network/rooms/Entity'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
-import { RoomManager } from '../manager/RoomManager'
+import { RoomManager } from './roommanager/RoomManager'
 import { ICamera } from '../camera/Camera'
 import { ClientEntity } from '../cliententity/ClientEntity'
 import { Flogger } from '../service/Flogger'
