@@ -36,15 +36,21 @@ export class SphericalTileHelper {
         const tileKeys = Object.values(SphericalTileValues)
         let chosenKey = SphericalTileValues.CoreGroundTile
 
+        console.log(colorData)
+        
         for (let i = 0; i < tileKeys.length - 1; i++) {
             const key = tileKeys[i]
 
-            if (colorData.r == key.r
-            && colorData.g == key.g
-            && colorData.b == key.b) {
+            console.log('key', key)
+
+            if (colorData['r'] == key.r
+            && colorData['g'] == key.g
+            && colorData['b'] == key.b) {
                 chosenKey = key
             }
         }
+
+        console.log('chosenKey', chosenKey)
 
         return chosenKey
     }

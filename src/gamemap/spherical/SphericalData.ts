@@ -87,7 +87,7 @@ export class SphericalData implements ISphericalData {
                 tileSolidity: point.tileSolidity,
                 tileValue: {
                     r: point.tileValue.r,
-                    g: point.tileValue.r,
+                    g: point.tileValue.g,
                     b: point.tileValue.b,
                     a: point.tileValue.a
                 },
