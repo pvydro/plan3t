@@ -2,7 +2,7 @@ import { generateId } from 'colyseus'
 import { Schema, MapSchema, ArraySchema, type } from '@colyseus/schema'
 
 import { Entity } from '../rooms/Entity'
-import { Player } from '../rooms/Player'
+import { PlayerBodyState, Player } from '../rooms/Player'
 import { Flogger } from '../../service/Flogger'
 import { DimensionSchema } from './DimensionSchema'
 
@@ -45,6 +45,8 @@ export class PlanetGameState extends Schema {
   @type('boolean')
   planetHasBeenSet: boolean = false
 
+  
+
   initialize () {
     // this.planetSpherical = new PlanetSphericalSchema()
     this.planetHasBeenSet = false
@@ -60,6 +62,23 @@ export class PlanetGameState extends Schema {
   }
 
   update() {
+
+    const playerCrouchDivisor: number = 1.75
+    const playerWalkingSpeed: number = 1.5
+    const playerJumpingHeight: number = 5
+    const floorFriction: number = 5
+
+    this.players.forEach((p: Player) => {
+      switch (p.bodyState) {
+        case PlayerBodyState.Idle:
+          break
+          case PlayerBodyState.Walking:
+          // p.xVel = -playerWalkingSpeed / 1//walkDivisor
+          break
+        case PlayerBodyState.Jumping:
+          break
+      }
+    })
   }
 
   // @filterChildren(function(client, key: string, value: Entity, root: PlanetGameState) {

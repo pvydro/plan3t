@@ -10,13 +10,14 @@ import { GravityManager, IGravityManager } from './GravityManager'
 import { Game } from '../main/Game'
 import { Bullet, ProjectileType } from '../weapon/projectile/Bullet'
 import { CameraLayer } from '../camera/CameraStage';
+import { Client } from 'colyseus.js';
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
     clientEntities: { [id: string]: ClientEntity }
     currentPlayerEntity: ClientPlayer
-    createClientPlayer(entity: Entity, sessionID: string): void
-    createEnemyPlayer(entity: Entity, sessionID: string): void
+    createClientPlayer(entity: Entity, sessionId: string): void
+    createEnemyPlayer(entity: Entity, sessionId: string): void
     updateEntity(entity: Entity, sessionID: string, changes?: any): void
     removeEntity(sessionID: string, layer?: number, entity?: Entity): void
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
@@ -42,25 +43,20 @@ export class EntityManager implements IEntityManager {
         this.gravityManager = GravityManager.getInstance()
     }
 
-    createEnemyPlayer(entity: Entity, sessionID: string) {
-        Flogger.log('EntityManager', 'createEntity', 'sessionID', sessionID)
+    createEnemyPlayer(entity: Entity, sessionId: string) {
+        Flogger.log('EntityManager', 'createEntity', 'sessionID', sessionId)
         
         const enemyPlayer = new ClientPlayer({ entity })
         
-        this._entities[sessionID] = entity
-        this._clientEntities[sessionID] = enemyPlayer
+        this._entities[sessionId] = entity
+        this._clientEntities[sessionId] = enemyPlayer
         
         this.cameraStage.addChildAtLayer(enemyPlayer, CameraLayer.Players)
     }
     
-    createClientPlayer(entity: Entity, sessionID: string) {
-        Flogger.log('EntityManager', 'createClientPlayer', 'sessionID', sessionID)
+    createClientPlayer(entity: Entity, sessionId: string) {
+        Flogger.log('EntityManager', 'createClientPlayer', 'sessionID', sessionId)
 
-        // const player = new ClientPlayer({
-        //     entity,
-        //     clientControl: true,
-        //     entityManager: this
-        // })
         const player = ClientPlayer.getInstance({
             entity,
             clientControl: true,
@@ -69,21 +65,22 @@ export class EntityManager implements IEntityManager {
         const playerDisplayObject = (player as PIXI.DisplayObject)
 
         this._currentPlayerEntity = player
-        this._clientEntities[sessionID] = this.currentPlayerEntity
+        this._clientEntities[sessionId] = this.currentPlayerEntity
 
         this.cameraStage.addChildAtLayer(this.currentPlayerEntity, CameraLayer.Players)
         this.camera.follow(playerDisplayObject)
     }
 
-    updateEntity(entity: Entity, sessionID: string, changes?: any) {
-        const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionID)
+    updateEntity(entity: Entity, sessionId: string, changes?: any) {
+        Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
+
+        const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
 
         if (!isLocalPlayer) {
-            // const clientEntity = this.clientEntities[sessionID]
+            const clientEntity = this.clientEntities[sessionId]
 
-            
-            // this.clientEntities[sessionID].x = entity.x
-            // this.clientEntities[sessionID].y = entity.y
+            clientEntity.x = entity.x
+            clientEntity.y = entity.y
         }
     }
 

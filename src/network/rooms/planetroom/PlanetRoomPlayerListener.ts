@@ -1,6 +1,6 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
-import { PlayerBodyStateChangedPayload, RoomMessage } from '../ServerMessages'
+import { PlayerPayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoomListener } from './PlanetRoomListener'
 
 export interface IPlanetRoomPlayerListener {
@@ -25,10 +25,10 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         
         const state = this.parentListener.room.state
 
-        this.parentListener.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerBodyStateChangedPayload) => {
+        this.parentListener.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
             Flogger.log('PlanetRoomPlayerListener', 'bodyStateChanged', 'sessionId', client.sessionId)
 
-            // state.players.get(client.sessionId). <-- xVel, yVel // Add body state enum
+            state.players.get(client.sessionId).bodyState = message.bodyState // <-- xVel, yVel // Add body state enum
         })
     }
 }

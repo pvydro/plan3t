@@ -49,6 +49,8 @@ export class GameplayState extends GameState implements IGameplayState {
         this.inGameHUD = InGameHUD.getInstance()
 
         this.hornet = new PassiveHornet()
+
+        this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.Players)
     }
     
     async initialize() {
@@ -108,7 +110,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.gameMapManager.update()
         this.ambientLight.update()
         this.inGameHUD.update()
-        // this.hornet.update()
+        this.hornet.update()
     }
 
     demolish() {
