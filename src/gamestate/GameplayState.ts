@@ -1,5 +1,6 @@
 import { Room } from 'colyseus.js'
 import { Camera } from '../camera/Camera'
+import { CameraLayer } from '../camera/CameraStage'
 import { Viewport } from '../camera/Viewport'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
 import { IClientManager } from '../manager/ClientManager'
@@ -71,8 +72,8 @@ export class GameplayState extends GameState implements IGameplayState {
     
             if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
     
-            this.camera.stage.addChild(this.ambientLight)
-            this.camera.stage.addChild(ParticleManager.getInstance().container)
+            this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
 
 
             // const data = this.gameMapManager.gameMap.currentSpherical.data
@@ -118,7 +119,7 @@ export class GameplayState extends GameState implements IGameplayState {
         const boundaries = new PIXI.Graphics()
         boundaries.beginFill(0x000000)
         boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
-        this.camera.stage.addChild(boundaries)
+        this.camera.stage.addChildAtLayer(boundaries, CameraLayer.Background)
     }
 
     get camera() {

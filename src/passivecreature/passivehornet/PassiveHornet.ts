@@ -36,9 +36,6 @@ export class PassiveHornet extends PassiveCreature implements IPassiveHornet {
 
         this.hornetTargetX = projected.x
         this.hornetTargetY = projected.y
-    
-        console.log('findNewPosition')
-
     }
 
     update() {

@@ -9,6 +9,7 @@ import { Flogger } from '../service/Flogger'
 import { GravityManager, IGravityManager } from './GravityManager'
 import { Game } from '../main/Game'
 import { Bullet, ProjectileType } from '../weapon/projectile/Bullet'
+import { CameraLayer } from '../camera/CameraStage';
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -17,7 +18,7 @@ export interface IEntityManager {
     createClientPlayer(entity: Entity, sessionID: string): void
     createEnemyPlayer(entity: Entity, sessionID: string): void
     updateEntity(entity: Entity, sessionID: string, changes?: any): void
-    removeEntity(sessionID: string, entity?: Entity): void
+    removeEntity(sessionID: string, layer?: number, entity?: Entity): void
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
 }
 
@@ -49,7 +50,7 @@ export class EntityManager implements IEntityManager {
         this._entities[sessionID] = entity
         this._clientEntities[sessionID] = enemyPlayer
         
-        this.cameraStage.addChild(enemyPlayer)
+        this.cameraStage.addChildAtLayer(enemyPlayer, CameraLayer.Players)
     }
     
     createClientPlayer(entity: Entity, sessionID: string) {
@@ -72,7 +73,7 @@ export class EntityManager implements IEntityManager {
         this._currentPlayerEntity = player
         this._clientEntities[sessionID] = this.currentPlayerEntity
 
-        this.cameraStage.addChild(this.currentPlayerEntity)
+        this.cameraStage.addChildAtLayer(this.currentPlayerEntity, CameraLayer.Players)
         this.camera.follow(playerDisplayObject)
     }
 
@@ -88,10 +89,10 @@ export class EntityManager implements IEntityManager {
         }
     }
 
-    removeEntity(sessionID: string, entity?: Entity) {
+    removeEntity(sessionID: string, layer?: number, entity?: Entity) {
         const removedClientEntity = this.clientEntities[sessionID]
         
-        this.cameraStage.removeChild(removedClientEntity)
+        this.cameraStage.removeFromLayer(removedClientEntity, layer)
 
         delete this.entities[sessionID]
     }

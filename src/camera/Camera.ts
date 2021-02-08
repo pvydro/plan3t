@@ -4,11 +4,12 @@ import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
 import { CameraDebugger } from './CameraDebugger'
+import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
-    stage: Container
+    stage: CameraStage
     resize(width: number, height: number): void
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
 }
@@ -24,7 +25,7 @@ export class Camera implements ICamera {
     _resizeScale: number = 1
     _target: { x: number, y: number, width?: number, height?: number } = undefined
     _zoom: number = this.baseZoom
-    _stage: Container
+    _stage: CameraStage
     _viewport: Viewport
     _x: number = 0
     _y: number = 0
@@ -50,7 +51,7 @@ export class Camera implements ICamera {
     }
 
     private constructor() {
-        this._stage = new Container()
+        this._stage = new CameraStage(this)
         this._viewport = new Viewport()
 
         this._stage.width = 1080

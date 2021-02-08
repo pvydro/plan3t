@@ -1,3 +1,4 @@
+import { CameraLayer } from '../camera/CameraStage'
 import { GameMap } from '../gamemap/GameMap'
 import { SphericalData } from '../gamemap/spherical/SphericalData'
 import { IUpdatable } from '../interface/IUpdatable'
@@ -26,7 +27,7 @@ export class GameMapManager implements IGameMapManager {
         Flogger.log('GameMapManager', 'initializeGameMap')
 
         this._gameMap = GameMap.getInstance()
-        this.stage.addChild(this._gameMap)
+        this.stage.addChildAtLayer(this._gameMap, CameraLayer.GameMap)
         
         if (sphericalData !== undefined) {
             this._gameMap.initializePremadeSpherical(sphericalData)
