@@ -76,11 +76,15 @@ export class EntityManager implements IEntityManager {
 
         const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
 
+        console.log('entity', entity.xVel)
+        
         if (!isLocalPlayer) {
             const clientEntity = this.clientEntities[sessionId]
 
-            clientEntity.x = entity.x
-            clientEntity.y = entity.y
+            clientEntity.xVel = entity.xVel
+            // clientEntity.
+            // clientEntity.x = entity.x
+            // clientEntity.y = entity.y
         }
     }
 

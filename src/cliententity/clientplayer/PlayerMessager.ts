@@ -1,9 +1,10 @@
-import { RoomMessager } from "../../manager/roommanager/RoomMessager";
-import { RoomMessage } from "../../network/rooms/ServerMessages";
-import { ClientPlayer } from "./ClientPlayer";
+import { RoomMessager } from '../../manager/roommanager/RoomMessager'
+import { RoomMessage } from '../../network/rooms/ServerMessages'
+import { ClientPlayer } from './ClientPlayer'
+import { PlayerStateFormatter } from './state/PlayerStateFormatter'
 
 export interface IPlayerMessager {
-    send(endpoint: string, message: any): void
+    send(endpoint: string): void
 }
 
 export interface PlayerMessagerOptions {
@@ -17,7 +18,11 @@ export class PlayerMessager implements IPlayerMessager {
         this.player = options.player
     }
 
-    send(endpoint: string, message: any) {
-        RoomMessager.send(endpoint, message)
+    send(endpoint: string) {
+        RoomMessager.send(endpoint, this.playerPayload)
+    }
+
+    get playerPayload() {
+        return PlayerStateFormatter.convertPlayerToPack(this.player)
     }
 }

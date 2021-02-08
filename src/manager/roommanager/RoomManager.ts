@@ -60,6 +60,7 @@ export class RoomManager implements IRoomManager {
         RoomMessager._isOnline = true
 
         return new Promise((resolve) => {
+            // First state change
             this.currentRoom.onStateChange.once((state) => {
                 Flogger.log('RooManager', 'firstState received')
                 
@@ -76,6 +77,11 @@ export class RoomManager implements IRoomManager {
                         resolve(this.currentRoom)
                     })
                 }
+            })
+
+            // All state changes
+            this.currentRoom.onStateChange((state: PlanetGameState) => {
+                // TODO this
             })
         })
     }

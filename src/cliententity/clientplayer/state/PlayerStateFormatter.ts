@@ -4,20 +4,18 @@ import { PlayerStatePack } from "./PlayerStatePack";
 export class PlayerStateFormatter {
     private constructor() {}
 
-    convertPlayerToPack(player: ClientPlayer): PlayerStatePack {
-        const direction = player.direction
-        const bodyState = player.bodyState
-        const legsState = player.legsState
+    static convertPlayerToPack(player: ClientPlayer): PlayerStatePack {
+        const direction = player.direction as number
+        const bodyState = player.bodyState as number
+        const legsState = player.legsState as number
         const x = player.x
         const y = player.y
         const xVel = player.xVel
         const yVel = player.yVel
 
         return {
-            x,
-            y,
-            xVel,
-            yVel,
+            x, y,
+            xVel, yVel,
             direction,
             bodyState,
             legsState
