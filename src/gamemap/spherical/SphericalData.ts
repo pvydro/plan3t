@@ -75,7 +75,7 @@ export class SphericalData implements ISphericalData {
         return foundPoint
     }
 
-    toPlainFormat(): PlainSphericalData {
+    toPayloadFormat(): PlainSphericalData {
         const plainPoints = []
 
         for (var i in this.points) {

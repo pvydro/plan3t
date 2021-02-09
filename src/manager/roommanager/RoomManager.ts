@@ -127,7 +127,7 @@ export class RoomManager implements IRoomManager {
 
         const currentData = this.gameMapManager.gameMap.currentSpherical.data
 
-        this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPlainFormat() })
+        this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
     }
 
     addEntity(entity: Entity, sessionID: string) {
