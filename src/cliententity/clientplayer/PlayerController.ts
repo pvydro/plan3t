@@ -43,7 +43,7 @@ export class PlayerController implements IPlayerController {
                 this.moveRight()
             }
             if (this.downKeyDown) {
-                this.duck()
+                this.crouch()
             } else if (this.player.legsState === PlayerLegsState.Crouched) {
                 this.standUp()
             }
@@ -53,6 +53,7 @@ export class PlayerController implements IPlayerController {
 
         // State based movement
         const bodyState = this.player.bodyState
+        const legsState = this.player.legsState
         const walkingDirection = this.player.walkingDirection
 
         switch (bodyState) {
@@ -71,6 +72,19 @@ export class PlayerController implements IPlayerController {
 
                 break
         }
+
+        switch (legsState) {
+            case PlayerLegsState.Standing:
+
+            break
+            case PlayerLegsState.Jumping:
+                if (this.player.isOnGround) {
+                    this.triggerJump()
+                } else if (this.player.yVel > 0) {
+                    this.player.legsState = PlayerLegsState.Standing
+                }
+            break
+        }
     }
 
     comeToStop() {
@@ -81,7 +95,7 @@ export class PlayerController implements IPlayerController {
         this.player.legsState = PlayerLegsState.Standing
     }
 
-    duck() {
+    crouch() {
         this.player.legsState = PlayerLegsState.Crouched
     }
 
@@ -101,6 +115,13 @@ export class PlayerController implements IPlayerController {
         }
         
         this.player.legsState = PlayerLegsState.Jumping
+    }
+
+    private triggerJump() {
+        if (!this.player.isOnGround) {
+            return
+        }
+
         this.player.onGround = false
         this.player.yVel = -this.playerJumpingHeight
     }

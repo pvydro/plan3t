@@ -5,7 +5,8 @@ export enum RoomMessage {
     GetPlanet = 'eGetPlanet',
     PlayerBodyStateChanged = 'ePlayerBodyStateChanged',
     PlayerDirectionChanged = 'ePlayerDirectionChanged',
-    PlayerLandedOnGround = 'ePlayerLandedOnGround'
+    PlayerLandedOnGround = 'ePlayerLandedOnGround',
+    // PlayerJumped = 'ePlayerJumped'
 }
 
 export enum ClientMessage {
