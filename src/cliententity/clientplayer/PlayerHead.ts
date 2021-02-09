@@ -61,7 +61,10 @@ export class PlayerHead extends Container {
 
         this.position.y = -3 + this.headBobOffset + this._crouchedOffset
 
-        this.controller.update()
+        if (this.player.isClientPlayer) {
+            this.controller.update()
+        }
+
     }
 
     bobHead() {

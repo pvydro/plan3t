@@ -38,7 +38,9 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     constructor(options: PlayerWeaponHolsterOptions) {
         this.player = options.player
 
-        this.applyListeners()
+        if (this.player.isClientPlayer) {
+            this.applyListeners()
+        }
     }
 
     applyListeners() {
