@@ -18,6 +18,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         Flogger.log('PlanetRoomPlayerListener', 'startListening')
 
         this.listenForBodyStateChange()
+        this.listenForLegsStateChange()
         this.listenForDirectionChange()
         this.listenForOnGroundChange()
     }
@@ -25,6 +26,16 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     private listenForBodyStateChange() {
         Flogger.log('PlanetRoomPlayerListener', 'listenForBodyStateChange')
         
+        this.parentListener.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
+            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
+
+            this.applyPlayerPayloadToPlayer(client.sessionId, message)
+        })
+    }
+
+    private listenForLegsStateChange() {
+        Flogger.log('PlanetRoomPlayerListener', 'listenForLegsStateChange')
+
         this.parentListener.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
             Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
 
@@ -58,6 +69,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
         // player.x = payload.x ?? player.x
         player.bodyState = payload.bodyState
+        player.legsState = payload.legsState
         player.direction = payload.direction
         player.walkingDirection = payload.walkingDirection
 
@@ -65,8 +77,5 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         if (payload.y !== undefined) player.y = payload.y
         if (payload.xVel !== undefined) player.xVel = payload.xVel
         if (payload.yVel !== undefined) player.yVel = payload.yVel
-
-        console.log('direction')
-        console.log(player.direction)
     }
 }

@@ -1,15 +1,16 @@
 import { type } from '@colyseus/schema'
+import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 import { Entity } from './Entity'
 
-
 export class Player extends Entity {
-    
     @type('int32')
-    bodyState: number = 0
+    bodyState: PlayerBodyState = PlayerBodyState.Idle
     @type('int32')
-    direction: number = 1
+    legsState: PlayerLegsState = PlayerLegsState.Standing
     @type('int32')
-    walkingDirection: number = 1
+    direction: Direction = Direction.Right
+    @type('int32')
+    walkingDirection: Direction = Direction.Right
 
     moveLeft() {
         this.xVel = -1.5

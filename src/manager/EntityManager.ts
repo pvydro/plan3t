@@ -13,6 +13,7 @@ import { CameraLayer } from '../camera/CameraStage';
 import { Client } from 'colyseus.js';
 import { Player } from '../network/rooms/Player';
 import { Direction } from '../engine/math/Direction';
+import { PlayerLegsState } from '../network/utils/Enum';
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -93,15 +94,16 @@ export class EntityManager implements IEntityManager {
     updatePlayer(player: Player, sessionId: string, changes?: any) {        
         if (RoomManager.isSessionALocalPlayer(sessionId)) return
         
-        const clientEntity = this.clientEntities[sessionId] as ClientPlayer
+        const clientPlayer = this.clientEntities[sessionId] as ClientPlayer
         const playerState = this.roomState.players.get(sessionId)
 
-        clientEntity.direction = playerState.direction as Direction
-        clientEntity.walkingDirection = playerState.walkingDirection as Direction
-        clientEntity.bodyState = playerState.bodyState as PlayerBodyState
+        clientPlayer.direction = playerState.direction as Direction
+        clientPlayer.walkingDirection = playerState.walkingDirection as Direction
+        clientPlayer.bodyState = playerState.bodyState as PlayerBodyState
+        clientPlayer.legsState = playerState.legsState as PlayerLegsState
         // clientEntity.xVel = playerState.xVel
-        clientEntity.x = playerState.x
-        clientEntity.y = playerState.y
+        clientPlayer.x = playerState.x
+        clientPlayer.y = playerState.y
     }
 
     removeEntity(sessionID: string, layer?: number, entity?: Entity) {
