@@ -2,11 +2,11 @@ import { Player } from '../../rooms/Player'
 import { PlanetGameState } from './PlanetGameState'
 import { PlayerBodyState, Direction } from '../../utils/Enum'
 
-export interface IPlanetGameStatePlayerController {
+export interface IPGSPlayerController {
     update(): void
 }
 
-export class PlanetGameStatePlayerController implements IPlanetGameStatePlayerController {
+export class PGSPlayerController implements IPGSPlayerController {
     state: PlanetGameState
 
     constructor(state: PlanetGameState) {
@@ -49,8 +49,6 @@ export class PlanetGameStatePlayerController implements IPlanetGameStatePlayerCo
 
                     break
             }
-            
-            p.x += p.xVel
         })
     }
 

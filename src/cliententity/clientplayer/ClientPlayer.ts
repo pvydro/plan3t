@@ -114,7 +114,6 @@ export class ClientPlayer extends GravityEntity {
 
         super.update()
         
-
         this.head.update()
         this.body.update()
         this.hand.update()
