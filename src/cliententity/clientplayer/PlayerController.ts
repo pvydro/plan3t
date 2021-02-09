@@ -19,6 +19,7 @@ export class PlayerController implements IPlayerController {
     leftKeyDown: boolean = false
     rightKeyDown: boolean = false
     downKeyDown: boolean = false
+    spaceKeyPressed: boolean = false
     mousePos: IVector2 = Vector2.Zero
 
     playerCrouchDivisor: number = 1.75
@@ -46,6 +47,10 @@ export class PlayerController implements IPlayerController {
                 this.crouch()
             } else if (this.player.legsState === PlayerLegsState.Crouched) {
                 this.standUp()
+            }
+            if (this.spaceKeyPressed) {
+                this.spaceKeyPressed = false
+                this.jump()
             }
 
             this.changeDirectionBasedOnMouse()
@@ -176,7 +181,7 @@ export class PlayerController implements IPlayerController {
         InputProcessor.on('keypress', (e: KeyboardEvent) => {
             switch(e.which) {
                 case Key.Space:
-                    this.jump()
+                    this.spaceKeyPressed = true
                     break
             }
         })
