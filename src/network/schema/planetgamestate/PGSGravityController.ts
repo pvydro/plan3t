@@ -1,3 +1,4 @@
+import { PlanetRoom } from "../../rooms/planetroom/PlanetRoom";
 import { Player } from "../../rooms/Player";
 import { PlanetGameState } from "./PlanetGameState";
 
@@ -7,9 +8,11 @@ export interface IPGSGravityController {
 
 export class PGSGravityController implements IPGSGravityController {
     state: PlanetGameState
+    // room: Room
 
     constructor(state: PlanetGameState) {
         this.state = state
+        // this.room = 
     }
  
     update() {
@@ -17,10 +20,10 @@ export class PGSGravityController implements IPGSGravityController {
         this.players.forEach((p: Player) => {
 
             if (p.hasSpawned) {
-                p.yVel += (p.weight / 3) * 1//GravityConstants.DropAcceleration <-- Constantintize this
+                p.yVel += ((p.weight / 3) * 1) * PlanetRoom.Delta//GravityConstants.DropAcceleration <-- Constantintize this
                 
-                p.x += p.xVel
-                p.y += p.yVel
+                p.x += p.xVel * PlanetRoom.Delta
+                p.y += p.yVel * PlanetRoom.Delta
             }
 
         })

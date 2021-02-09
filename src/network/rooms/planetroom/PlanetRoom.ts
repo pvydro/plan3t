@@ -13,6 +13,7 @@ export interface IPlanetRoom {
 }
 
 export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
+  static Delta: number = 1
   listener!: PlanetRoomListener
   planet?: PlanetSphericalSchema = undefined
 
@@ -25,7 +26,11 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
     this.state.initialize()
     this.listener.startListening()
 
-    this.setSimulationInterval(() => this.state.update())
+    this.setSimulationInterval((deltaTime: number) => {
+      PlanetRoom.Delta = (deltaTime * 60 / 1000)
+
+      this.state.update()
+    })
   }
 
   onJoin(client: Client, options: any) {

@@ -89,11 +89,11 @@ export class ClientPlayer extends GravityEntity {
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
         this.messager = new PlayerMessager({ player })
-        this.light = new PlayerLight({ player })
+        if (this.isClientPlayer) this.light = new PlayerLight({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
         
-        this.addChild(this.light)
+        if (this.isClientPlayer) this.addChild(this.light)
         this.addChild(this.body)
         this.addChild(this.head)
         this.addChild(this.hand)
@@ -117,7 +117,7 @@ export class ClientPlayer extends GravityEntity {
         this.body.update()
         this.head.update()
         this.hand.update()
-        this.light.update()
+        if (this.light) this.light.update()
         
         this.collision.update()
     }
