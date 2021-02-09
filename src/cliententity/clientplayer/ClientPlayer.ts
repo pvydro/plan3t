@@ -99,7 +99,7 @@ export class ClientPlayer extends GravityEntity {
         this.addChild(this.hand)
         this.addChild(this.collision)
         
-        if (this.isClientPlayer) this.controller = new PlayerController({ player })
+        this.controller = new PlayerController({ player })
 
         this.scale.set(GlobalScale, GlobalScale)
 
@@ -110,15 +110,16 @@ export class ClientPlayer extends GravityEntity {
     }
     
     update() {
-        if (this.isClientPlayer) this.controller.update()
+        this.controller.update()
 
         super.update()
+        
 
         this.head.update()
         this.body.update()
         this.hand.update()
         this.light.update()
-
+        
         this.collision.update()
     }
 
@@ -150,7 +151,7 @@ export class ClientPlayer extends GravityEntity {
         this.head.direction = value
         this.hand.direction = value
 
-        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
+        // if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
     }
 
     set walkingDirection(value: Direction) {
@@ -174,7 +175,7 @@ export class ClientPlayer extends GravityEntity {
     }
 
     get walkingDirection() {
-        return this._direction
+        return this._walkingDirection
     }
 
     get isClientPlayer() {

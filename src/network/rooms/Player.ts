@@ -3,12 +3,13 @@ import { Entity } from './Entity'
 
 
 export class Player extends Entity {
+    
     @type('int32')
-    bodyState!: number
+    bodyState: number = 0
     @type('int32')
-    direction!: number
+    direction: number = 1
     @type('int32')
-    walkingDirection!: number
+    walkingDirection: number = 1
 
     moveLeft() {
         this.xVel = -1.5

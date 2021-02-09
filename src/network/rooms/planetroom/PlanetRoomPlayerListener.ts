@@ -48,12 +48,13 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         console.log('pyld')
         console.log(payload)
 
+        // player.x = payload.x ?? player.x
+        // player.y = payload.y ?? player.y
+        // player.xVel = payload.xVel ?? player.xVel
+        // player.yVel = payload.yVel ?? player.yVel
         player.bodyState = payload.bodyState
-        player.x = payload.x
-        player.y = payload.y
-        player.xVel = payload.xVel
-        player.yVel = payload.yVel
         player.direction = payload.direction
+        player.walkingDirection = payload.walkingDirection
 
         console.log('direction')
         console.log(player.direction)

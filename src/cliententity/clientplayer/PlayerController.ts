@@ -33,27 +33,48 @@ export class PlayerController implements IPlayerController {
     }
 
     update() {
-        if (this.leftKeyDown && this.rightKeyDown
-        || !this.leftKeyDown && !this.rightKeyDown) {
-            this.comeToStop()
-        } else if (this.leftKeyDown) {
-            this.moveLeft()
-        } else if (this.rightKeyDown) {
-            this.moveRight()
-        }
-        if (this.downKeyDown) {
-            this.duck()
-        } else if (this.player.legsState === PlayerLegsState.Crouched) {
-            this.standUp()
+        if (this.player.isClientPlayer) {
+            if (this.leftKeyDown && this.rightKeyDown
+            || !this.leftKeyDown && !this.rightKeyDown) {
+                this.comeToStop()
+            } else if (this.leftKeyDown) {
+                this.moveLeft()
+            } else if (this.rightKeyDown) {
+                this.moveRight()
+            }
+            if (this.downKeyDown) {
+                this.duck()
+            } else if (this.player.legsState === PlayerLegsState.Crouched) {
+                this.standUp()
+            }
+
+            this.changeDirectionBasedOnMouse()
         }
 
-        this.changeDirectionBasedOnMouse()
+        // State based movement
+        const bodyState = this.player.bodyState
+        const walkingDirection = this.player.walkingDirection
+
+        switch (bodyState) {
+            case PlayerBodyState.Walking:
+
+                if (walkingDirection === Direction.Left) {
+                    this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
+                } else if (walkingDirection === Direction.Right) {
+                    this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
+                }
+                
+                break
+            case PlayerBodyState.Idle:
+
+                this.player.comeToStop()
+
+                break
+        }
     }
 
     comeToStop() {
         this.player.bodyState = PlayerBodyState.Idle
-
-        this.player.comeToStop()
     }
 
     standUp() {
@@ -65,13 +86,11 @@ export class PlayerController implements IPlayerController {
     }
 
     moveLeft() {
-        this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
         this.player.walkingDirection = Direction.Left
         this.player.bodyState = PlayerBodyState.Walking
     }
 
     moveRight() {
-        this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
         this.player.walkingDirection = Direction.Right
         this.player.bodyState = PlayerBodyState.Walking
     }
@@ -91,7 +110,6 @@ export class PlayerController implements IPlayerController {
             x: window.innerWidth / 2,
             y: window.innerHeight / 2
         }
-        //Camera.getInstance().toScreen(this.player.position)
 
         if (this.mousePos.x < projectedPlayerPos.x) {
             this.player.direction = Direction.Left

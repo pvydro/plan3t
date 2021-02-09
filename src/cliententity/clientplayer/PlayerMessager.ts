@@ -1,5 +1,6 @@
 import { RoomMessager } from '../../manager/roommanager/RoomMessager'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
+import { Flogger } from '../../service/Flogger'
 import { ClientPlayer } from './ClientPlayer'
 import { PlayerStateFormatter } from './state/PlayerStateFormatter'
 
@@ -19,6 +20,8 @@ export class PlayerMessager implements IPlayerMessager {
     }
 
     send(endpoint: string) {
+        Flogger.log('PlayerMessager', 'endpoint', endpoint)
+
         RoomMessager.send(endpoint, this.playerPayload)
     }
 

@@ -138,8 +138,6 @@ export class RoomManager implements IRoomManager {
         }
     
         entity.onChange = (changes) => {
-            console.log('entity on change')
-            
             this.entityManager.updateEntity(entity, sessionID, changes)
         }
     }

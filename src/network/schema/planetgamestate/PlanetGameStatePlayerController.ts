@@ -1,8 +1,6 @@
 import { Player } from '../../rooms/Player'
 import { PlanetGameState } from './PlanetGameState'
 import { PlayerBodyState, Direction } from '../../utils/Enum'
-import { INVALID_OPTION_KEYS } from 'colyseus/lib/matchmaker/RegisteredHandler'
-import { PixiPlugin } from 'gsap/all'
 
 export interface IPlanetGameStatePlayerController {
     update(): void
@@ -26,7 +24,9 @@ export class PlanetGameStatePlayerController implements IPlanetGameStatePlayerCo
                 case PlayerBodyState.Idle:
 
                     // p.comeToStop()
-                    p.xVel = 0
+                    if (p.xVel !== 0) {
+                        p.xVel = 0
+                    }
 
                     break
                 case PlayerBodyState.Walking:
@@ -34,17 +34,22 @@ export class PlanetGameStatePlayerController implements IPlanetGameStatePlayerCo
                     if (p.walkingDirection === Direction.Left) {
 
                         // p.moveLeft()
-                        p.xVel = -1.5
+                        if (p.xVel !== -playerWalkingSpeed) {
+                            p.xVel = -playerWalkingSpeed
+                        }
 
                     } else if (p.walkingDirection === Direction.Right) {
 
                         // p.moveRight()
-                        p.xVel = 1.5
+                        if (p.xVel !== playerWalkingSpeed) {
+                            p.xVel = playerWalkingSpeed
+                        }
 
                     }
 
                     break
             }
+            
             p.x += p.xVel
         })
     }

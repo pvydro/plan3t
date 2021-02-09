@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { v4 as uuidv4 } from 'uuid';
 import { Entity } from '../network/rooms/Entity'
-import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
+import { ClientPlayer, PlayerBodyState } from '../cliententity/clientplayer/ClientPlayer'
 import { RoomManager } from './roommanager/RoomManager'
 import { ICamera } from '../camera/Camera'
 import { ClientEntity } from '../cliententity/ClientEntity'
@@ -96,10 +96,10 @@ export class EntityManager implements IEntityManager {
         const clientEntity = this.clientEntities[sessionId] as ClientPlayer
         const playerState = this.roomState.players.get(sessionId)
 
-        clientEntity.direction = playerState.direction
-        clientEntity.walkingDirection = playerState.walkingDirection
-        clientEntity.bodyState = playerState.bodyState
-        clientEntity.xVel = playerState.xVel
+        clientEntity.direction = playerState.direction as Direction
+        clientEntity.walkingDirection = playerState.walkingDirection as Direction
+        clientEntity.bodyState = playerState.bodyState as PlayerBodyState
+        // clientEntity.xVel = playerState.xVel
         clientEntity.x = playerState.x
         clientEntity.y = playerState.y
     }

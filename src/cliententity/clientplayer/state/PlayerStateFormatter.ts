@@ -9,14 +9,14 @@ export class PlayerStateFormatter {
         const walkingDirection = player.walkingDirection as number
         const bodyState = player.bodyState as number
         const legsState = player.legsState as number
-        const x = player.x
-        const y = player.y
-        const xVel = player.xVel
-        const yVel = player.yVel
+        // const x = player.x
+        // const y = player.y
+        // const xVel = player.xVel
+        // const yVel = player.yVel
 
         return {
-            x, y,
-            xVel, yVel,
+            // x, y,
+            // xVel, yVel,
             direction,
             walkingDirection,
             bodyState,

@@ -1,4 +1,4 @@
-import { PlayerBodyState } from '../utils/Enum'
+import { Direction, PlayerBodyState } from '../utils/Enum'
 
 export enum RoomMessage {
     NewPlanet = 'eNewPlanet',
@@ -18,7 +18,8 @@ export interface NewPlanetMessagePayload {
 }
 
 export interface PlayerPayload extends EntityPayload {
-    direction: number
+    direction: Direction
+    walkingDirection: Direction
     bodyState: PlayerBodyState
 }
 
