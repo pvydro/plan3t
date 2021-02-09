@@ -1,5 +1,5 @@
 import { Room } from 'colyseus.js'
-import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/PlanetGameState'
+import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetGameState'
 import { Entity } from '../../network/rooms/Entity'
 import { IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from '../ClientManager'

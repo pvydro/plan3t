@@ -1,7 +1,7 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { DimensionSchema } from '../../schema/DimensionSchema'
-import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/PlanetGameState'
+import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/planetgamestate/PlanetGameState'
 import { NewPlanetMessagePayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoom } from './PlanetRoom'
 import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'

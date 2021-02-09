@@ -13,8 +13,6 @@ export class PlayerStateFormatter {
         const xVel = player.xVel
         const yVel = player.yVel
 
-        console.log('direction', direction)
-
         return {
             x, y,
             xVel, yVel,

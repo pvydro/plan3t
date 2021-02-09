@@ -1,8 +1,8 @@
 import { Flogger } from '../../../service/Flogger'
 import { Room, Client } from 'colyseus'
 import { Entity } from '../Entity'
-import { PlanetGameState } from '../../schema/PlanetGameState'
-import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/PlanetGameState'
+import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
+import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/planetgamestate/PlanetGameState'
 import { RoomMessage, NewPlanetMessagePayload } from '../ServerMessages'
 import { DimensionSchema } from '../../schema/DimensionSchema'
 import { PlanetRoomListener } from './PlanetRoomListener'
@@ -21,8 +21,8 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
     this.listener = new PlanetRoomListener(this)
 
     this.setState(new PlanetGameState())
+    
     this.state.initialize()
-
     this.listener.startListening()
 
     this.setSimulationInterval(() => this.state.update())
