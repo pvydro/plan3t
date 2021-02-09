@@ -68,7 +68,7 @@ export class EntityManager implements IEntityManager {
 
         this._currentPlayerEntity = player
         this._clientEntities[sessionId] = this.currentPlayerEntity
-
+        
         this.cameraStage.addChildAtLayer(this.currentPlayerEntity, CameraLayer.Players)
         this.camera.follow(playerDisplayObject)
     }
