@@ -101,7 +101,7 @@ export class PlayerController implements IPlayerController {
         }
         
         this.player.legsState = PlayerLegsState.Jumping
-        this.player._onGround = false
+        this.player.onGround = false
         this.player.yVel = -this.playerJumpingHeight
     }
 

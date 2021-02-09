@@ -162,6 +162,14 @@ export class ClientPlayer extends GravityEntity {
         if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
     }
 
+    set onGround(value: boolean) {
+        const shouldSendMessage = (this._onGround !== value)
+
+        this._onGround = value
+
+        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerLandedOnGround)
+    }
+
     get bodyState() {
         return this._bodyState
     }

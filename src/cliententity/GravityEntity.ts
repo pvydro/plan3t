@@ -36,7 +36,7 @@ export class GravityEntity extends ClientEntity {
 
             if (centerX < this._currentGroundRect.x
             || centerX > this._currentGroundRect.x + this._currentGroundRect.width) {
-                this._onGround = false
+                this.onGround = false
             }
         }
 
@@ -55,12 +55,16 @@ export class GravityEntity extends ClientEntity {
     }
 
     landedOnGround(groundRect: Rect) {
-        this._onGround = true
+        this.onGround = true
 
         this._currentGroundRect = groundRect
     }
 
     get isOnGround() {
         return this._onGround
+    }
+
+    set onGround(value: boolean) {
+        this._onGround = value
     }
 }
