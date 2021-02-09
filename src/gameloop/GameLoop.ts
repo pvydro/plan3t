@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js'
 import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager } from '../manager/EntityManager'
@@ -16,6 +17,7 @@ export interface GameLoopOptions {
 }
 
 export class GameLoop implements IGameLoop {
+    static Delta: number = 1
     _initialized: boolean = false
     _shouldLoop: boolean = true
     clientManager?: IClientManager = undefined
@@ -41,6 +43,7 @@ export class GameLoop implements IGameLoop {
     }
 
     gameLoop() {
+        GameLoop.Delta = PIXI.Ticker.shared.deltaTime
 
         // Update all ClientEntities
         if (this.entityManager !== undefined) {

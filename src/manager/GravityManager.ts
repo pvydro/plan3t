@@ -1,5 +1,6 @@
 import { ClientEntity } from '../cliententity/ClientEntity'
 import { GravityEntity } from '../cliententity/GravityEntity'
+import { GameLoop } from '../gameloop/GameLoop'
 import { GameMap } from '../gamemap/GameMap'
 import { Flogger } from '../service/Flogger'
 import { CollisionManager, ICollisionManager } from './CollisionManager'
@@ -42,7 +43,7 @@ export class GravityManager implements IGravityManager {
             entity = this.collisionManager.checkEntityCollision(entity as GravityEntity)
         }
         
-        entity.x += entity.xVel
-        entity.y += entity.yVel
+        entity.x += (entity.xVel * GameLoop.Delta)
+        entity.y += (entity.yVel * GameLoop.Delta)
     }
 }

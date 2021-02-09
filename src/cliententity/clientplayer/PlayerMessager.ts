@@ -46,7 +46,7 @@ export class PlayerMessager implements IPlayerMessager {
     private sendWeaponStatus() {
         Flogger.log('PlayerMessager', 'sendWeaponStatus')
 
-        throw new Error('method now implemented')
+        throw new Error('Method not implemented')
 
         // TODO onSpawn sendWeaponLoadout WeaponHolster .toPayloadFormat(),
         // TODO Send player hand payload
