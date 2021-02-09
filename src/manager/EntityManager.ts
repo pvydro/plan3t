@@ -97,7 +97,8 @@ export class EntityManager implements IEntityManager {
         const playerState = this.roomState.players.get(sessionId)
 
         clientEntity.direction = playerState.direction
-        clientEntity.bodyState = playerState.direction
+        clientEntity.walkingDirection = playerState.walkingDirection
+        clientEntity.bodyState = playerState.bodyState
         clientEntity.xVel = playerState.xVel
         clientEntity.x = playerState.x
         clientEntity.y = playerState.y

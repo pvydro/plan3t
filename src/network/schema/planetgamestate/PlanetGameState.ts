@@ -1,8 +1,6 @@
-import { generateId } from 'colyseus'
 import { Schema, MapSchema, ArraySchema, type } from '@colyseus/schema'
 
-import { Entity } from '../../rooms/Entity'
-import { PlayerBodyState, Player } from '../../rooms/Player'
+import { Player } from '../../rooms/Player'
 import { Flogger } from '../../../service/Flogger'
 import { DimensionSchema } from '../DimensionSchema'
 import { IPlanetGameStatePlayerController, PlanetGameStatePlayerController } from './PlanetGameStatePlayerController'

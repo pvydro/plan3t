@@ -65,13 +65,15 @@ export class PlayerController implements IPlayerController {
     }
 
     moveLeft() {
-        this.player.bodyState = PlayerBodyState.Walking
         this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
+        this.player.walkingDirection = Direction.Left
+        this.player.bodyState = PlayerBodyState.Walking
     }
 
     moveRight() {
-        this.player.bodyState = PlayerBodyState.Walking
         this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
+        this.player.walkingDirection = Direction.Right
+        this.player.bodyState = PlayerBodyState.Walking
     }
 
     jump() {
@@ -79,7 +81,7 @@ export class PlayerController implements IPlayerController {
             return
         }
         
-        this.player.bodyState = PlayerBodyState.Jumping
+        this.player.legsState = PlayerLegsState.Jumping
         this.player._onGround = false
         this.player.yVel = -this.playerJumpingHeight
     }

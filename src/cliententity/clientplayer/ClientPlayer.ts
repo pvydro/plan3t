@@ -27,13 +27,13 @@ export interface IClientPlayer extends IGravityEntity {
 
 export enum PlayerBodyState {
     Idle = 0,
-    Walking = 1,
-    Jumping = 2
+    Walking = 1
 }
 
 export enum PlayerLegsState {
     Standing = 0,
-    Crouched = 1
+    Crouched = 1,
+    Jumping = 2
 }
 
 export interface ClientPlayerOptions {
@@ -55,6 +55,7 @@ export class ClientPlayer extends GravityEntity {
     controller: IPlayerController
     _clientControl: boolean = false
     _direction: Direction = Direction.Right
+    _walkingDirection: Direction = Direction.Right
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
     _legsState: PlayerLegsState = PlayerLegsState.Standing
     emitter: Emitter = new Emitter()
@@ -142,14 +143,20 @@ export class ClientPlayer extends GravityEntity {
     }
 
     set direction(value: Direction) {
-        console.log('direction change', 'value', value)
-
         const shouldSendMessage = (this._direction !== value)
 
         this._direction = value
         this.body.direction = value
         this.head.direction = value
         this.hand.direction = value
+
+        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
+    }
+
+    set walkingDirection(value: Direction) {
+        const shouldSendMessage = (this._walkingDirection !== value)
+
+        this._walkingDirection = value
 
         if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
     }
@@ -163,6 +170,10 @@ export class ClientPlayer extends GravityEntity {
     }
 
     get direction() {
+        return this._direction
+    }
+
+    get walkingDirection() {
         return this._direction
     }
 

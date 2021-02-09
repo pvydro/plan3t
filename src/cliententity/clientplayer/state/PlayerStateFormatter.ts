@@ -6,6 +6,7 @@ export class PlayerStateFormatter {
 
     static convertPlayerToPack(player: ClientPlayer): PlayerStatePack {
         const direction = player.direction as number
+        const walkingDirection = player.walkingDirection as number
         const bodyState = player.bodyState as number
         const legsState = player.legsState as number
         const x = player.x
@@ -17,6 +18,7 @@ export class PlayerStateFormatter {
             x, y,
             xVel, yVel,
             direction,
+            walkingDirection,
             bodyState,
             legsState,
         }
