@@ -1,14 +1,15 @@
 import { PlayerBodyState } from './Player'
 
 export enum RoomMessage {
-    NewPlanet = 'newPlanet',
-    GetPlanet = 'getPlanet',
-    PlayerBodyStateChanged = 'playerBodyStateChanged'
+    NewPlanet = 'eNewPlanet',
+    GetPlanet = 'eGetPlanet',
+    PlayerBodyStateChanged = 'ePlayerBodyStateChanged',
+    PlayerDirectionChanged = 'ePlayerDirectionChanged'
 }
 
 export enum ClientMessage {
-    ServerHasPlanet = 'serverHasPlanet',
-    NeedNewPlanet = 'needNewPlanet'
+    ServerHasPlanet = 'eServerHasPlanet',
+    NeedNewPlanet = 'eNeedNewPlanet'
 }
 
 

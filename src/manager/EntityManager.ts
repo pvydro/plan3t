@@ -11,6 +11,8 @@ import { Game } from '../main/Game'
 import { Bullet, ProjectileType } from '../weapon/projectile/Bullet'
 import { CameraLayer } from '../camera/CameraStage';
 import { Client } from 'colyseus.js';
+import { Player } from '../network/rooms/Player';
+import { Direction } from '../engine/math/Direction';
 
 export interface IEntityManager {
     entities: { [id: string]: Entity }
@@ -75,20 +77,30 @@ export class EntityManager implements IEntityManager {
         Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
 
         const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
+        const isPlayer = (entity as Player) !== undefined
 
         console.log('entity', entity.xVel)
         
         if (!isLocalPlayer) {
             const clientEntity = this.clientEntities[sessionId]
 
-            console.log('change')
-            console.log('x', entity.x, 'y', entity.y)
-            // clientEntity.xVel = entity.xVel
-            // clientEntity.bodyState = entity
-            // clientEntity.
-            clientEntity.x = entity.x
-            // clientEntity.y = entity.y
+            if (isPlayer) {
+                this.updatePlayer(clientEntity as Player, sessionId, changes)
+            }
         }
+    }
+
+    updatePlayer(player: Player, sessionId: string, changes?: any) {        
+        if (RoomManager.isSessionALocalPlayer(sessionId)) return
+        
+        const clientEntity = this.clientEntities[sessionId] as ClientPlayer
+        const playerState = this.roomState.players.get(sessionId)
+
+        clientEntity.direction = playerState.direction
+        clientEntity.bodyState = playerState.direction
+        clientEntity.xVel = playerState.xVel
+        clientEntity.x = playerState.x
+        clientEntity.y = playerState.y
     }
 
     removeEntity(sessionID: string, layer?: number, entity?: Entity) {
@@ -136,5 +148,9 @@ export class EntityManager implements IEntityManager {
 
     get clientEntities() {
         return this._clientEntities
+    }
+
+    get roomState() {
+        return RoomManager._room.state
     }
 }

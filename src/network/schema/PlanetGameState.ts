@@ -71,9 +71,10 @@ export class PlanetGameState extends Schema {
     this.players.forEach((p: Player) => {
       switch (p.bodyState) {
         case PlayerBodyState.Idle:
+          p.xVel = 0
           break
           case PlayerBodyState.Walking:
-          // p.xVel = -playerWalkingSpeed / 1//walkDivisor
+          p.xVel = playerWalkingSpeed
           break
         case PlayerBodyState.Jumping:
           break

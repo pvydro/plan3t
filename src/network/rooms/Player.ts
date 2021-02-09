@@ -8,8 +8,8 @@ export enum PlayerBodyState {
 }
 
 export class Player extends Entity {
-    @type('int8')
+    @type('int32')
     bodyState!: number
-    @type('int8')
+    @type('int32')
     direction!: number
 }

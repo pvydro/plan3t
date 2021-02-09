@@ -134,9 +134,7 @@ export class ClientPlayer extends GravityEntity {
 
         this._bodyState = value
 
-        if (shouldSendMessage) {
-            this.messager.send(RoomMessage.PlayerBodyStateChanged)
-        }
+        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerBodyStateChanged)
     }
 
     set legsState(value: PlayerLegsState) {
@@ -144,10 +142,16 @@ export class ClientPlayer extends GravityEntity {
     }
 
     set direction(value: Direction) {
+        console.log('direction change', 'value', value)
+
+        const shouldSendMessage = (this._direction !== value)
+
         this._direction = value
         this.body.direction = value
         this.head.direction = value
         this.hand.direction = value
+
+        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
     }
 
     get bodyState() {
