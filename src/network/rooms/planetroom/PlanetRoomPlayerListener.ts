@@ -1,5 +1,6 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
+import { PlayerLegsState } from '../../utils/Enum'
 import { PlayerPayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoomListener } from './PlanetRoomListener'
 
@@ -38,6 +39,12 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
         this.parentListener.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
             Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
+
+            const player = this.parentListener.room.state.players.get(client.sessionId)
+
+            if (message.legsState == PlayerLegsState.Jumping && player.legsState !== message.legsState) {
+                player.jump()
+            }
 
             this.applyPlayerPayloadToPlayer(client.sessionId, message)
         })

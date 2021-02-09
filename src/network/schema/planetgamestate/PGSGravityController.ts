@@ -15,9 +15,13 @@ export class PGSGravityController implements IPGSGravityController {
     update() {
         
         this.players.forEach((p: Player) => {
-            
-            p.x += p.xVel
-            p.y += p.yVel
+
+            if (p.hasSpawned) {
+                p.yVel += (p.weight / 3) * 1//GravityConstants.DropAcceleration <-- Constantintize this
+                
+                p.x += p.xVel
+                p.y += p.yVel
+            }
 
         })
     }

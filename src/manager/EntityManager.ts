@@ -69,6 +69,9 @@ export class EntityManager implements IEntityManager {
 
         this._currentPlayerEntity = player
         this._clientEntities[sessionId] = this.currentPlayerEntity
+        setTimeout(() => {
+            this.roomState.players.get(sessionId).hasSpawned = true
+        }, 1000)
         
         this.cameraStage.addChildAtLayer(this.currentPlayerEntity, CameraLayer.Players)
         this.camera.follow(playerDisplayObject)
@@ -102,8 +105,8 @@ export class EntityManager implements IEntityManager {
         clientPlayer.bodyState = playerState.bodyState as PlayerBodyState
         clientPlayer.legsState = playerState.legsState as PlayerLegsState
         // clientEntity.xVel = playerState.xVel
-        clientPlayer.x = playerState.x
-        clientPlayer.y = playerState.y
+        // clientPlayer.x = playerState.x
+        // clientPlayer.y = playerState.y
     }
 
     removeEntity(sessionID: string, layer?: number, entity?: Entity) {

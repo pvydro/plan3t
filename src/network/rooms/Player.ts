@@ -1,4 +1,5 @@
 import { type } from '@colyseus/schema'
+import { Flogger } from '../../service/Flogger'
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 import { Entity } from './Entity'
 
@@ -11,6 +12,10 @@ export class Player extends Entity {
     direction: Direction = Direction.Right
     @type('int32')
     walkingDirection: Direction = Direction.Right
+    @type('float32')
+    weight: number = 0.5
+    @type('boolean')
+    hasSpawned: boolean = false
 
     moveLeft() {
         this.xVel = -1.5
@@ -18,6 +23,12 @@ export class Player extends Entity {
 
     moveRight() {
         this.xVel = 1.5
+    }
+
+    jump() {
+        Flogger.log('Player', 'jump')
+        
+        this.yVel = 5 //-PlayerController.playerJumpingHeight
     }
 
     comeToStop() {
