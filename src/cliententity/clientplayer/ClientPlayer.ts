@@ -167,7 +167,9 @@ export class ClientPlayer extends GravityEntity {
 
         this._onGround = value
 
-        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerLandedOnGround)
+        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerLandedOnGround, {
+            includePosition: true
+        })
     }
 
     get bodyState() {

@@ -1,26 +1,33 @@
-import { ClientPlayer } from "../ClientPlayer";
-import { PlayerStatePack } from "./PlayerStatePack";
+import { ClientPlayer } from '../ClientPlayer'
+import { PlayerStatePack } from './PlayerStatePack'
+
+export interface PlayerPackRules {
+    includePosition?: boolean
+    includeVelocity?: boolean
+}
 
 export class PlayerStateFormatter {
     private constructor() {}
 
-    static convertPlayerToPack(player: ClientPlayer): PlayerStatePack {
-        const direction = player.direction as number
-        const walkingDirection = player.walkingDirection as number
-        const bodyState = player.bodyState as number
-        const legsState = player.legsState as number
-        // const x = player.x
-        // const y = player.y
-        // const xVel = player.xVel
-        // const yVel = player.yVel
+    static convertPlayerToPack(player: ClientPlayer, rules?: PlayerPackRules): PlayerStatePack {
+        const payload: PlayerStatePack | any = {}
 
-        return {
-            // x, y,
-            // xVel, yVel,
-            direction,
-            walkingDirection,
-            bodyState,
-            legsState,
+        payload.direction = player.direction as number
+        payload.walkingDirection = player.walkingDirection as number
+        payload.bodyState = player.bodyState as number
+        payload.legsState = player.legsState as number
+
+        if (rules !== undefined) {
+            if (rules.includePosition) {
+                payload.x = player.x
+                payload.y = player.y
+            }
+            if (rules.includeVelocity) {
+                payload.xVel = player.xVel
+                payload.yVel = player.yVel
+            }
         }
+
+        return payload
     }
 }

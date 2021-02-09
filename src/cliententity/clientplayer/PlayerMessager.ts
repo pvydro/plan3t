@@ -1,11 +1,10 @@
 import { RoomMessager } from '../../manager/roommanager/RoomMessager'
-import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { Flogger } from '../../service/Flogger'
 import { ClientPlayer } from './ClientPlayer'
-import { PlayerStateFormatter } from './state/PlayerStateFormatter'
+import { PlayerPackRules, PlayerStateFormatter } from './state/PlayerStateFormatter'
 
 export interface IPlayerMessager {
-    send(endpoint: string): void
+    send(endpoint: string, rules?: PlayerPackRules): void
 }
 
 export interface PlayerMessagerOptions {
@@ -19,13 +18,13 @@ export class PlayerMessager implements IPlayerMessager {
         this.player = options.player
     }
 
-    send(endpoint: string) {
+    send(endpoint: string, rules?: PlayerPackRules) {
         Flogger.log('PlayerMessager', 'endpoint', endpoint)
 
-        RoomMessager.send(endpoint, this.playerPayload)
+        RoomMessager.send(endpoint, this.getPlayerPayload(rules))
     }
 
-    get playerPayload() {
-        return PlayerStateFormatter.convertPlayerToPack(this.player)
+    getPlayerPayload(rules?: PlayerPackRules) {
+        return PlayerStateFormatter.convertPlayerToPack(this.player, rules)
     }
 }
