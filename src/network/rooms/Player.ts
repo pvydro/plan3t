@@ -16,6 +16,8 @@ export class Player extends Entity {
     weight: number = 0.5
     @type('boolean')
     hasSpawned: boolean = false
+    @type('float32')
+    handRotation: number = 0
 
     moveLeft() {
         this.xVel = -1.5

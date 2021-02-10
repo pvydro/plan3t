@@ -20,6 +20,7 @@ export class PGSPlayerController implements IPGSPlayerController {
         const floorFriction: number = 5
 
         this.players.forEach((p: Player) => {
+            // Body state
             switch (p.bodyState) {
                 case PlayerBodyState.Idle:
 
