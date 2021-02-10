@@ -10,7 +10,10 @@ import { Direction } from '../../engine/math/Direction'
 
 export interface IPlayerBody extends IContainer, IUpdatable {
     sprite: PIXI.Sprite
+    currentShown?: PIXI.AnimatedSprite | Sprite
+    animator: IPlayerBodyAnimator
     showRunningSprite(): void
+    showJumpingSprite(): void
     showIdleSprite(): void
 }
 
@@ -21,8 +24,9 @@ export interface PlayerBodyOptions {
 export class PlayerBody extends Container implements IPlayerBody {
     animator: IPlayerBodyAnimator
     _sprite: Sprite
-    _runningSprite: PIXI.AnimatedSprite
-    currentShown?: any
+    _walkingSprite: PIXI.AnimatedSprite
+    _jumpingSprite: PIXI.AnimatedSprite
+    currentShown?: PIXI.AnimatedSprite | Sprite
     currentDirection: Direction = Direction.Right
 
     constructor(options: PlayerBodyOptions) {
@@ -37,10 +41,12 @@ export class PlayerBody extends Container implements IPlayerBody {
         this._sprite = new Sprite({ texture })
         this._sprite.anchor.set(0.5, 0.5)
 
-        this._runningSprite = this.animator.runningSprite
+        this._walkingSprite = this.animator.walkingSprite
+        this._jumpingSprite = this.animator.jumpingSprite
         
         this.addChild(this.sprite)
-        this.addChild(this._runningSprite)
+        this.addChild(this._walkingSprite)
+        this.addChild(this._jumpingSprite)
     }
 
     update() {
@@ -48,14 +54,15 @@ export class PlayerBody extends Container implements IPlayerBody {
     }
 
     showRunningSprite() {
-        if (this.currentShown !== this._runningSprite) {
-            this._runningSprite.gotoAndStop(0)
-            this.currentShown = this._runningSprite
+        if (this.currentShown !== this._walkingSprite) {
+            this._walkingSprite.gotoAndStop(0)
+            this.currentShown = this._walkingSprite
         }
 
         this._sprite.alpha = 0
-        this._runningSprite.alpha = 1
-        this._runningSprite.play()
+        this._jumpingSprite.alpha = 0
+        this._walkingSprite.alpha = 1
+        this._walkingSprite.play()
     }
 
     showIdleSprite() {
@@ -64,8 +71,22 @@ export class PlayerBody extends Container implements IPlayerBody {
         }
 
         this._sprite.alpha = 1
-        this._runningSprite.alpha = 0
-        this._runningSprite.stop()
+        this._walkingSprite.alpha = 0
+        this._jumpingSprite.alpha = 0
+        this._walkingSprite.stop()
+    }
+
+    showJumpingSprite() {
+        if (this.currentShown !== this._jumpingSprite) {
+            this._jumpingSprite.gotoAndPlay(0)
+            this.currentShown = this._jumpingSprite
+        } else {
+            return
+        }
+
+        this._sprite.alpha = 0
+        this._walkingSprite.alpha = 0
+        this._jumpingSprite.alpha = 1
     }
 
     get sprite() {
@@ -85,6 +106,7 @@ export class PlayerBody extends Container implements IPlayerBody {
 
     flipAllSprites() {
         this._sprite.scale.x *= -1
-        this._runningSprite.scale.x *= -1
+        this._walkingSprite.scale.x *= -1
+        this._jumpingSprite.scale.x *= -1
     }
 }

@@ -1,5 +1,4 @@
-import { Assets, AssetUrls } from '../../../asset/Assets'
-import { Spritesheets, SpritesheetUrls } from '../../../asset/Spritesheets'
+import { AssetUrls } from '../../../asset/Assets'
 import { GlobalScale } from '../../../utils/Constants'
 import { AnimatedSprite } from '../AnimatedSprite'
 import { Sprite } from '../Sprite'
@@ -22,7 +21,6 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
     ]
 
     constructor(options?: ParticlePositioningOptions) {
-        // const walkingSheetUrl = SpritesheetUrls.PLAYER_BODY_WALKING
         const sprite = new AnimatedSprite({
             textureUrls: MuzzleFlashParticle.randomAnimation,
             animationSpeed: 0.25,

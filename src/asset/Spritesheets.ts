@@ -5,6 +5,7 @@ export class SpritesheetUrls {
     private constructor() {}
 
     public static PLAYER_BODY_WALKING = 'assets/image/player/body/body_walking.json'
+    public static PLAYER_BODY_JUMPING = 'assets/image/player/body/body_jumping.json'
 }
 
 export class Spritesheets {
@@ -23,7 +24,9 @@ export class Spritesheets {
             Spritesheets._spritesheetsStartedLoading = true
     
             try {
-                PIXI.Loader.shared.add(SpritesheetUrls.PLAYER_BODY_WALKING).load(() => {
+                const assetKeys = Object.values(SpritesheetUrls)
+
+                PIXI.Loader.shared.add(assetKeys).load(() => {
                     Flogger.log('Spritesheets', 'Finished loading spritesheets')
                     
                     this._spritesheetsFinishedLoading = true

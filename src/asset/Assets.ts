@@ -123,9 +123,6 @@ export class AssetUrls {
     static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'
     static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
 
-    // static TILE_KEPLER_GROUND_CORE = Assets.TILE_DIR + 'kepler/ground'
-    // static TILE_KEPLER_GRASS_CORE = Assets.TILE_DIR + 'kepler/tile_0'
-
     // Projectiles
     static PROJECTILE_BULLET = 'assets/image/weapons/projectiles/bullet'
 

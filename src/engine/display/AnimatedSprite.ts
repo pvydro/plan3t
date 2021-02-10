@@ -28,9 +28,9 @@ export class AnimatedSprite extends PIXI.AnimatedSprite implements IAnimatedSpri
         }
         super(data)
 
-        if (options.dimension) this.dimension = options.dimension
-        if (options.animationSpeed) this.animationSpeed = options.animationSpeed
-        if (options.loop) this.loop = options.loop
+        if (options.dimension !== undefined) this.dimension = options.dimension
+        if (options.animationSpeed !== undefined) this.animationSpeed = options.animationSpeed
+        if (options.loop !== undefined) this.loop = options.loop
     }
 
     set dimension(value: IDimension) {

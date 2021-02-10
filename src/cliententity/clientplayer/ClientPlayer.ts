@@ -20,6 +20,7 @@ import { PlayerMessager } from './PlayerMessager'
 export interface IClientPlayer extends IGravityEntity {
     direction: Direction
     bodyState: PlayerBodyState
+    legsState: PlayerLegsState
     emitter: Emitter
     isClientPlayer: boolean
     equipWeapon(weapon: Weapon): void
