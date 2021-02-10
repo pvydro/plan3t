@@ -2,7 +2,7 @@
 
 "tile000.png":
 {
-	"frame": {"x":0,"y":0,"w":26,"h":26},
+	"frame": {"x":26,"y":0,"w":26,"h":26},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":26},
@@ -10,7 +10,7 @@
 },
 "tile001.png":
 {
-	"frame": {"x":26,"y":0,"w":26,"h":26},
+	"frame": {"x":52,"y":0,"w":26,"h":26},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":26},
@@ -18,7 +18,7 @@
 },
 "tile002.png":
 {
-	"frame": {"x":52,"y":0,"w":26,"h":26},
+	"frame": {"x":78,"y":0,"w":26,"h":26},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":26},
@@ -26,7 +26,7 @@
 },
 "tile003.png":
 {
-	"frame": {"x":78,"y":0,"w":26,"h":26},
+	"frame": {"x":26,"y":0,"w":26,"h":26},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":26},
