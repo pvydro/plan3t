@@ -62,23 +62,16 @@ export class EntityManager implements IEntityManager {
     createEnemyPlayer(entity: Entity, sessionId: string) {
         Flogger.log('EntityManager', 'createEntity', 'sessionId', sessionId)
         
-        const enemyPlayer = new ClientPlayer({ entity })
-        
-        // this._entities[sessionId] = entity
-        this._clientEntities[sessionId] = enemyPlayer
-        
-        this.cameraStage.addChildAtLayer(enemyPlayer, CameraLayer.Players)
+        this.playerCreator.createPlayer({ entity, sessionId })
     }
     
     createClientPlayer(entity: Entity, sessionId: string) {
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer({
+        this.playerCreator.createPlayer({
             entity, sessionId,
             isClientPlayer: true
         })
-
-        this.registerEntity(entity, sessionId, player)
     }
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {

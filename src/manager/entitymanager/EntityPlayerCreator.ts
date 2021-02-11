@@ -33,8 +33,8 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
 
         const player = this.getPlayer(options)
 
-        // this.entityManager.registerEntity(options.entity, options.sessionId)
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
+        this.entityManager.registerEntity(options.entity, options.sessionId, player)
         
         if (options.isClientPlayer === true) {
             this.currentPlayer = player
