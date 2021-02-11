@@ -15,7 +15,6 @@ import { RoomMessager } from './RoomMessager'
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
     currentRoom: Room
-    currentPlayerEntity: IClientPlayer
 }
 
 export interface RoomManagerOptions {
@@ -152,10 +151,6 @@ export class RoomManager implements IRoomManager {
         } else {
             return false
         }
-    }
-    
-    get currentPlayerEntity() {
-        return this.entityManager.currentPlayerEntity
     }
 
     get currentRoom() {

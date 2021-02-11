@@ -17,6 +17,8 @@ export interface BulletOptions {
 }
 
 export class Bullet extends ClientEntity {
+    id: number
+    private static BulletIdIteration = 0
     velocity: number
 
     constructor(options?: BulletOptions) {
@@ -25,9 +27,11 @@ export class Bullet extends ClientEntity {
         super({
             sprite,
         })
-
+        
+        this.id = Bullet.BulletIdIteration++
         this.rotation = options.rotation ?? 0
         this.velocity = options.velocity ?? Defaults.BulletVelocity
+        console.log('id', this.id)
 
         this.xVel = this.velocity * Math.cos(this.rotation)
         this.yVel = this.velocity * Math.sin(this.rotation)

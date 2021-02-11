@@ -52,13 +52,13 @@ export class GameLoop implements IGameLoop {
             for (let i in entitiesMap) {
                 const clientEntity = entitiesMap[i].clientEntity
 
-                if (clientEntity !== undefined || clientEntity !== null) {
+                if (clientEntity !== undefined && clientEntity !== null) {
                     if (typeof clientEntity.update === 'function') {
                         clientEntity.update()
-
-                        // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
-                        this.gravityManager.applyVelocityToEntity(clientEntity)
                     }
+                    
+                    // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+                    this.gravityManager.applyVelocityToEntity(clientEntity)
                 }
             }
         }

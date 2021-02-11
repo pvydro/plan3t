@@ -34,8 +34,12 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         const player = this.getPlayer(options)
 
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
-        this.entityManager.registerEntity(options.entity, options.sessionId, player)
+        this.entityManager.registerEntity(options.sessionId, {
+            clientEntity: player,
+            serverEntity: options.entity
+        })
         
+        // Client player camera follow
         if (options.isClientPlayer === true) {
             this.currentPlayer = player
             
