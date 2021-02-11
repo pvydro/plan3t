@@ -70,7 +70,7 @@ export class GameLoop implements IGameLoop {
         }
 
         // Update current state
-        this.clientManager.gameStateManager.update()
+        this.clientManager.update()
 
         if (this._shouldLoop) {
             requestAnimationFrame(this.gameLoop.bind(this))

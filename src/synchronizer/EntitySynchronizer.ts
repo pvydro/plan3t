@@ -1,13 +1,16 @@
-import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { Direction } from '../../engine/math/Direction'
-import { Entity } from '../../network/rooms/Entity'
-import { Player } from '../../network/rooms/Player'
-import { PlayerBodyState, PlayerLegsState } from '../../network/utils/Enum'
-import { Flogger } from '../../service/Flogger'
-import { RoomManager } from '../roommanager/RoomManager'
-import { IEntityManager } from './EntityManager'
+import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
+import { Direction } from '../engine/math/Direction'
+import { IUpdatable } from '../interface/IUpdatable'
+import { Entity } from '../network/rooms/Entity'
+import { Player } from '../network/rooms/Player'
+import { PlayerBodyState, PlayerLegsState } from '../network/utils/Enum'
+import { Flogger } from '../service/Flogger'
+import { RoomManager } from '../manager/roommanager/RoomManager'
+import { IEntityManager } from '../manager/entitymanager/EntityManager'
+import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
 
-export interface IEntitySynchronizer {
+export interface IEntitySynchronizer extends IUpdatable {
+    assertionService: IEntitySynchronizerAssertionService
     updateEntity(entity: Entity, sessionId: string, changes?: any)
 }
 
@@ -17,9 +20,17 @@ export interface EntitySynchronizerOptions {
 
 export class EntitySynchronizer implements IEntitySynchronizer {
     entityManager: IEntityManager
+    assertionService: IEntitySynchronizerAssertionService
 
     constructor(options: EntitySynchronizerOptions) {
+        const synchronizer = this
+
         this.entityManager = options.entityManager
+        this.assertionService = new EntitySynchronizerAssertionService({ synchronizer })
+    }
+
+    update() {
+        this.assertionService.update()
     }
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {

@@ -8,15 +8,16 @@ import { Game } from '../../main/Game'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
 import { EntityPlayerCreator, IEntityPlayerCreator } from './EntityPlayerCreator'
-import { EntitySynchronizer, IEntitySynchronizer } from './EntitySynchronizer'
+import { EntitySynchronizer, IEntitySynchronizer } from '../../synchronizer/EntitySynchronizer'
 import { EntityProjectileCreator, IEntityProjectileCreator } from './EntityProjectileCreator'
+import { IUpdatable } from '../../interface/IUpdatable'
 
 export interface LocalEntity {
     serverEntity?: Entity
     clientEntity?: ClientEntity
 }
 
-export interface IEntityManager {
+export interface IEntityManager extends IUpdatable {
     clientEntities: Map<string, LocalEntity>
     camera: Camera
     roomState: PlanetGameState
@@ -53,6 +54,10 @@ export class EntityManager implements IEntityManager {
         this.synchronizer = new EntitySynchronizer({ entityManager })
     }
 
+    update() {
+        this.synchronizer.update()
+    }
+
     removeEntity(sessionId: string, layer?: number, entity?: Entity) {
         const removedLocalEntity = this._clientEntities.get(sessionId)
         
@@ -70,7 +75,9 @@ export class EntityManager implements IEntityManager {
 
     createClientPlayer(entity: Entity, sessionId: string) {
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
+
         this.playerCreator.createPlayer({ entity, sessionId, isClientPlayer: true })
+        this.synchronizer.assertionService.startLoopingAssertion()
     }
 
     createEnemyPlayer(entity: Entity, sessionId: string) {

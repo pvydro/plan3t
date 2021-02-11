@@ -5,8 +5,9 @@ import { IEntityManager } from './entitymanager/EntityManager'
 import { GameMap, IGameMap } from '../gamemap/GameMap'
 import { GameStateManager, IGameStateManager } from './GameStateManager'
 import { Game } from '../main/Game'
+import { IUpdatable } from '../interface/IUpdatable'
 
-export interface IClientManager {
+export interface IClientManager extends IUpdatable {
     client: Client
     clientCamera: ICamera
     entityManager: IEntityManager
@@ -44,6 +45,8 @@ export class ClientManager implements ClientManager {
         if (this._gameStateManager) {
             this._gameStateManager.update()
         }
+
+        this._entityManager.update()
     }
 
     get client() {
