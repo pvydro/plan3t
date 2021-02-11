@@ -70,6 +70,7 @@ export class EntityManager implements IEntityManager {
     
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
         Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
+
         this.synchronizer.updateEntity(entity, sessionId, changes)
     }
 
@@ -82,17 +83,20 @@ export class EntityManager implements IEntityManager {
 
     createEnemyPlayer(entity: Entity, sessionId: string) {
         Flogger.log('EntityManager', 'createEntity', 'sessionId', sessionId)
+
         this.playerCreator.createPlayer({ entity, sessionId })
     }
 
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
         Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity)
+
         this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
     }
 
     registerEntity(sessionId: string, localEntity: LocalEntity) {
         Flogger.log('EntityManager', 'registerEntity', 'sessionId', sessionId)
-        this._clientEntities[sessionId] = localEntity
+
+        this._clientEntities.set(sessionId, localEntity)
     }
 
     getEntity(sessionId: string) {

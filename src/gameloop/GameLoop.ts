@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
-import { IEntityManager } from '../manager/entitymanager/EntityManager'
+import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { Flogger } from '../service/Flogger'
@@ -49,8 +49,9 @@ export class GameLoop implements IGameLoop {
         if (this.entityManager !== undefined) {
             const entitiesMap = this.entityManager.clientEntities
 
-            for (let i in entitiesMap) {
-                const clientEntity = entitiesMap[i].clientEntity
+            // for (let i in entitiesMap.keys()) {
+            this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
+                const clientEntity = localEntity.clientEntity
 
                 if (clientEntity !== undefined
                 && clientEntity !== null) {
@@ -61,7 +62,7 @@ export class GameLoop implements IGameLoop {
                     // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
                     this.gravityManager.applyVelocityToEntity(clientEntity)
                 }
-            }
+            })
         }
 
         // Update camera & client manager

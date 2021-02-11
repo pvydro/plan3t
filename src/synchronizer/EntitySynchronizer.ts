@@ -51,7 +51,9 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     private updatePlayer(player: Player, sessionId: string, changes?: any) {
         if (RoomManager.isSessionALocalPlayer(sessionId)) return
         
-        const clientPlayer = this.clientEntities.get(sessionId).clientEntity as ClientPlayer
+        const localEntity = this.clientEntities.get(sessionId)
+        // if (!localEntity) return
+        const clientPlayer = localEntity.clientEntity as ClientPlayer
         const playerState = this.roomState.players.get(sessionId)
 
         clientPlayer.direction = playerState.direction as Direction
