@@ -3,6 +3,7 @@ import { Room, Client } from 'colyseus'
 import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
 import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetGameState'
 import { IPlanetRoomListener, PlanetRoomListener } from './PlanetRoomListener'
+import { Player } from '../Player'
 
 export interface IPlanetRoom {
 
@@ -24,6 +25,10 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
     // Server-side game loop
     this.setSimulationInterval((deltaTime: number) => {
       PlanetRoom.Delta = (deltaTime * 60 / 1000)
+
+      this.state.players.forEach((p: Player) => {
+        p.x += p.xVel
+      })
 
       this.state.update()
     })

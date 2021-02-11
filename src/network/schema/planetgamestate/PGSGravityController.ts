@@ -20,11 +20,9 @@ export class PGSGravityController implements IPGSGravityController {
             if (p.hasSpawned) {
                 p.yVel += ((p.weight / 3) * 1) * PlanetRoom.Delta//GravityConstants.DropAcceleration <-- Constantintize this
                 
-                p.x += p.xVel * PlanetRoom.Delta
+                // p.x += p.xVel * PlanetRoom.Delta
                 p.y += p.yVel * PlanetRoom.Delta
             }
-
-            this.state.players.set(sessionId, p)
         })
 
     }

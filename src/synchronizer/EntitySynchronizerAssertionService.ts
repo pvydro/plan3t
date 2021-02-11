@@ -74,14 +74,15 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
         }
 
         // const localEntity = this.clientEntities.get(sessionId)
-        // this.roomState.players.forEach((player: Player, sessionId: string) => {
-        //     Flogger.log('EntitySynchronizerAssertionService', 'asserting: ' + sessionId, 'player', player)
+        this.roomState.players.forEach((player: Player, sessionId: string) => {
+            Flogger.log('EntitySynchronizerAssertionService', 'asserting: ' + sessionId, 'player', player)
 
-        //     const localPlayer = this.entitySynchronizer.clientEntities.get(sessionId).clientEntity
+            const localPlayer = this.entitySynchronizer.clientEntities.get(sessionId).clientEntity
 
-        //     localPlayer.x = player.x
-        //     // player.x
-        // })
+            // TODO Interpolate this
+            localPlayer.x = player.x
+            // player.x
+        })
     }
 
     get sessionId() {
