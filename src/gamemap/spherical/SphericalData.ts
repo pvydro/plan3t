@@ -36,7 +36,7 @@ export class SphericalData implements ISphericalData {
     private parseAdjacentPoints() {
         Flogger.log('SphericalData', 'parseAdjacentPoints')
 
-        for (var i = 0; i < this.points.length; i++) {
+        for (let i = 0; i < this.points.length; i++) {
             const point = this.points[i]
 
             const leftPoint = this.getPointAt(point.x - 1, point.y) as SphericalPoint
@@ -62,7 +62,7 @@ export class SphericalData implements ISphericalData {
     getPointAt(x: number, y: number): ISphericalPoint {
         let foundPoint = undefined
 
-        for (var i in this.points) {
+        for (let i in this.points) {
             const point = this.points[i]
 
             const isMatch = (point.x == x && point.y == y)
@@ -78,7 +78,7 @@ export class SphericalData implements ISphericalData {
     toPayloadFormat(): PlainSphericalData {
         const plainPoints = []
 
-        for (var i in this.points) {
+        for (let i in this.points) {
             const point = this.points[i]
 
             const plainPoint = {

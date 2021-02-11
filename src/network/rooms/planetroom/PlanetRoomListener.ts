@@ -54,7 +54,7 @@ export class PlanetRoomListener implements IPlanetRoomListener {
         const parsedPoints: PlanetSphericalTile[] = []
     
         // Parse points into PlanetSphericalTile schema
-        for (var i in planet.points) {
+        for (let i in planet.points) {
           const point = planet.points[i]
           parsedPoints.push(new PlanetSphericalTile({
             x: point.x,

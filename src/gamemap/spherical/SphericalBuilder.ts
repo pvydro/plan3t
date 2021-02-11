@@ -29,7 +29,7 @@ export class SphericalBuilder implements ISphericalBuilder {
         const tileLayer = new Container()
 
         // Construct tileLayer
-        for (var i = 0; i < data.points.length; i++) {
+        for (let i = 0; i < data.points.length; i++) {
             const point = data.points[i]
             if (SphericalHelper.isPointSolid(point)) {
                 const newX = point.x * SphericalHelper.getTileSize()
@@ -65,11 +65,11 @@ export class SphericalBuilder implements ISphericalBuilder {
         const collisionRects: Rect[] = []
         const tileSize = SphericalHelper.getTileSizeForBiome(data.biome)
         
-        for (var y = 0; y < data.dimension.height; y++) {
+        for (let y = 0; y < data.dimension.height; y++) {
             let isOnACollidableTile = false
             let currentCollisionRect: Rect = undefined
 
-            for (var x = 0; x < data.dimension.width; x++) {
+            for (let x = 0; x < data.dimension.width; x++) {
                 const currentPoint = data.getPointAt(x, y)
 
                 if (currentPoint) {

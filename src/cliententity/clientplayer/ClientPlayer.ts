@@ -9,11 +9,10 @@ import { PlayerHand } from './PlayerHand'
 import { WeaponName } from '../../weapon/WeaponName'
 import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
-import { EntityManager } from '../../manager/EntityManager'
+import { IEntityManager } from '../../manager/entitymanager/EntityManager'
 import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { PlayerWeaponHolster } from './PlayerWeaponHolster'
-import { RoomMessager } from '../../manager/roommanager/RoomMessager'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { PlayerMessager } from './PlayerMessager'
 
@@ -40,12 +39,12 @@ export enum PlayerLegsState {
 export interface ClientPlayerOptions {
     entity: Entity
     clientControl?: boolean
-    entityManager?: EntityManager
+    entityManager?: IEntityManager
 }
 
 export class ClientPlayer extends GravityEntity {
     private static INSTANCE: ClientPlayer
-    _entityManager?: EntityManager
+    _entityManager?: IEntityManager
     messager: PlayerMessager
     head: PlayerHead
     body: PlayerBody

@@ -52,7 +52,7 @@ export class PlayerLight extends Container implements IPlayerLight {
         this.targetLightYVel = this.player.yVel * 5
         this.lightYVel += (this.targetLightYVel - this.lightYVel) / this.lightYVelDamping
 
-        for (var i = 0; i < this.lights.length; i++) {
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].update()
 
             this.lights[i].x = -(this.lightXVel / (i + 2)) - (this.mouseOffset.x * i)
@@ -76,7 +76,7 @@ export class PlayerLight extends Container implements IPlayerLight {
 
         this.lights.push(ambientLight)
 
-        for (var i = 0; i < this.totalLights; i++) {
+        for (let i = 0; i < this.totalLights; i++) {
             const light = new Light({
                 texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG)),
                 shouldJitter: true,

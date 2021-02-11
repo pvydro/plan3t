@@ -1,7 +1,7 @@
 import { Client } from 'colyseus.js';
 import { ENDPOINT } from '../network/Network'
 import { Camera, ICamera } from '../camera/Camera'
-import { IEntityManager } from '../manager/EntityManager'
+import { IEntityManager } from './entitymanager/EntityManager'
 import { GameMap, IGameMap } from '../gamemap/GameMap'
 import { GameStateManager, IGameStateManager } from './GameStateManager'
 import { Game } from '../main/Game'

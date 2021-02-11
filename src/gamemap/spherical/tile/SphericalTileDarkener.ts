@@ -53,7 +53,7 @@ export class SphericalTileDarkener implements ISphericalTileDarkener {
         let currentDepth = 0
 
 
-        for (var i = maximumDepth; i > 0; i--) {
+        for (let i = maximumDepth; i > 0; i--) {
             const newI = i + depthBreakpoint
 
             const topRightPoint = data.getPointAt(pointPos.x + newI, pointPos.y - newI) as SphericalPoint

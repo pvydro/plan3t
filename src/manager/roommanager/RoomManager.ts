@@ -3,7 +3,7 @@ import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/pla
 import { Entity } from '../../network/rooms/Entity'
 import { IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from '../ClientManager'
-import { IEntityManager } from '../EntityManager'
+import { IEntityManager } from '../entitymanager/EntityManager'
 import { Flogger } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
@@ -80,18 +80,18 @@ export class RoomManager implements IRoomManager {
             })
 
             // All state changes
-            this.currentRoom.onStateChange((state: PlanetGameState) => {
-                // TODO this
-            })
+            // this.currentRoom.onStateChange((state: PlanetGameState) => {
+            //     // TODO this
+            // })
         })
     }
 
     initializeCurrentRoomEntities() {
-        this.currentRoom.state.players.onAdd = (entity, sessionID: string) => {
-            this.addEntity(entity, sessionID)
+        this.currentRoom.state.players.onAdd = (entity, sessionId: string) => {
+            this.addEntity(entity, sessionId)
         }
-        this.currentRoom.state.players.onRemove = (entity, sessionID: string) => {
-            this.removeEntity(sessionID)
+        this.currentRoom.state.players.onRemove = (entity, sessionId: string) => {
+            this.removeEntity(sessionId)
         }
     }
 
@@ -130,24 +130,24 @@ export class RoomManager implements IRoomManager {
         this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
     }
 
-    addEntity(entity: Entity, sessionID: string) {
-        if (RoomManager.isSessionALocalPlayer(sessionID)) {
-            this.entityManager.createClientPlayer(entity, sessionID)
+    addEntity(entity: Entity, sessionId: string) {
+        if (RoomManager.isSessionALocalPlayer(sessionId)) {
+            this.entityManager.createClientPlayer(entity, sessionId)
         } else {
-            this.entityManager.createEnemyPlayer(entity, sessionID)
+            this.entityManager.createEnemyPlayer(entity, sessionId)
         }
     
         entity.onChange = (changes) => {
-            this.entityManager.updateEntity(entity, sessionID, changes)
+            this.entityManager.updateEntity(entity, sessionId, changes)
         }
     }
 
-    removeEntity(sessionID) {
-        this.entityManager.removeEntity(sessionID)
+    removeEntity(sessionId: string) {
+        this.entityManager.removeEntity(sessionId)
     }
 
-    static isSessionALocalPlayer(sessionID: string) {
-        if (sessionID === RoomManager._room.sessionId) {
+    static isSessionALocalPlayer(sessionId: string) {
+        if (sessionId === RoomManager._room.sessionId) {
             return true
         } else {
             return false

@@ -35,7 +35,7 @@ export class CameraStage extends Container implements ICameraStage {
 
         const layerIds = Object.values(CameraLayer)
 
-        for (var i = 0; i < layerIds.length; i++) {
+        for (let i = 0; i < layerIds.length; i++) {
             const newContainer = new Container()
 
             this.layers.push(newContainer)
@@ -75,11 +75,11 @@ export class CameraStage extends Container implements ICameraStage {
     findParentLayer(child: any): number | undefined {
         let parentLayer = undefined
 
-        for (var i in this.layers) {
+        for (let i in this.layers) {
             const layerContainer = this.layers[i]
             const layerChildren = layerContainer.children
 
-            for (var j in layerChildren) {
+            for (let j in layerChildren) {
                 const layerChild = layerChildren[j]
 
                 if (child === layerChild) {

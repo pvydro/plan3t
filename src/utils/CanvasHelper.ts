@@ -69,8 +69,8 @@ export function recolorCanvas2DContext(canvas: HTMLCanvasElement, context: Canva
     const width = canvas.width
     const height = canvas.height
 
-    for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
 
             let iteratedPixelImageData = context.getImageData(x, y, 1, 1)
             const colorData: Uint8ClampedArray = iteratedPixelImageData.data

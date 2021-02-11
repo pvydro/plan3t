@@ -47,7 +47,7 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
     static get randomAnimation(): string[] {
         const finalTextures = []
 
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
             const selectedArray = Math.floor(Math.random() * 4)
 
             const chosenTexture = MuzzleFlashParticle.textureArrays[selectedArray][i]

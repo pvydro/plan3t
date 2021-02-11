@@ -17,15 +17,15 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
             const tileColorValue: SphericalTileColorData = SphericalTileValues.CoreGrassTile
             
             // Left bumps
-            for (var x = 0; x < width; x++) {
-                for (var y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                for (let y = 0; y < height; y++) {
                     const randomThreshold = Math.floor(Math.random() * growThreshold)
                     let rightPixelImageData = context.getImageData(x + randomThreshold, y, 1, 1)
                     const rightA = rightPixelImageData.data[3] / 255
     
                     if (rightA !== 0) {
                         rightPixelImageData = SphericalManipulator.applyTileDataToImageData(rightPixelImageData, tileColorValue)
-                        for (var i = 0; i < randomThreshold; i++) {
+                        for (let i = 0; i < randomThreshold; i++) {
                             context.putImageData(rightPixelImageData, x + i, y)
                         }
                     } 
@@ -33,8 +33,8 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
             }
     
             // Right bunps
-            for (var x = width; x >= 0; x--) {
-                for (var y = 0; y < height; y++) {
+            for (let x = width; x >= 0; x--) {
+                for (let y = 0; y < height; y++) {
                     const randomThreshold = Math.floor(Math.random() * growThreshold) + 1 
                     let leftPixelImageData = context.getImageData(x - randomThreshold, y, 1, 1)
                     const topA = leftPixelImageData.data[3] / 255
@@ -42,7 +42,7 @@ export class SphericalTerrainExpander implements ISphericalTerrainExpander {
                     if (topA !== 0) {
                         leftPixelImageData = SphericalManipulator.applyTileDataToImageData(leftPixelImageData, tileColorValue)
                         
-                        for (var i = 0; i < randomThreshold; i++) {
+                        for (let i = 0; i < randomThreshold; i++) {
                             context.putImageData(leftPixelImageData, x - i, y)
                         }
                     }

@@ -1,28 +1,38 @@
 import * as PIXI from 'pixi.js'
-import { v4 as uuidv4 } from 'uuid';
-import { Entity } from '../network/rooms/Entity'
-import { ClientPlayer, PlayerBodyState } from '../cliententity/clientplayer/ClientPlayer'
-import { RoomManager } from './roommanager/RoomManager'
-import { ICamera } from '../camera/Camera'
-import { ClientEntity } from '../cliententity/ClientEntity'
-import { Flogger } from '../service/Flogger'
-import { GravityManager, IGravityManager } from './GravityManager'
-import { Game } from '../main/Game'
-import { Bullet, ProjectileType } from '../weapon/projectile/Bullet'
-import { CameraLayer } from '../camera/CameraStage';
-import { Client } from 'colyseus.js';
-import { Player } from '../network/rooms/Player';
-import { Direction } from '../engine/math/Direction';
-import { PlayerLegsState } from '../network/utils/Enum';
+import { v4 as uuidv4 } from 'uuid'
+import { Entity } from '../../network/rooms/Entity'
+import { ClientPlayer, PlayerBodyState } from '../../cliententity/clientplayer/ClientPlayer'
+import { RoomManager } from '../roommanager/RoomManager'
+import { Camera, ICamera } from '../../camera/Camera'
+import { ClientEntity } from '../../cliententity/ClientEntity'
+import { Flogger } from '../../service/Flogger'
+import { GravityManager, IGravityManager } from '../GravityManager'
+import { Game } from '../../main/Game'
+import { Bullet, ProjectileType } from '../../weapon/projectile/Bullet'
+import { CameraLayer } from '../../camera/CameraStage'
+import { Player } from '../../network/rooms/Player'
+import { Direction } from '../../engine/math/Direction'
+import { PlayerLegsState } from '../../network/utils/Enum'
+import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
+import { EntityPlayerCreator, IEntityPlayerCreator } from './EntityPlayerCreator'
+import { EntitySynchronizer, IEntitySynchronizer } from './EntitySynchronizer'
+
+export interface LocalEntity {
+    serverEntity: Entity
+    clientEntity?: ClientEntity
+}
 
 export interface IEntityManager {
-    entities: { [id: string]: Entity }
-    clientEntities: { [id: string]: ClientEntity }
+    clientEntities: Map<string, LocalEntity>//{ [id: string]: ClientEntity }
     currentPlayerEntity: ClientPlayer
+    camera: Camera
+    roomState: PlanetGameState
     createClientPlayer(entity: Entity, sessionId: string): void
     createEnemyPlayer(entity: Entity, sessionId: string): void
-    updateEntity(entity: Entity, sessionID: string, changes?: any): void
-    removeEntity(sessionID: string, layer?: number, entity?: Entity): void
+    updateEntity(entity: Entity, sessionId: string, changes?: any): void
+    removeEntity(sessionId: string, layer?: number, entity?: Entity): void
+    registerEntity(entity: Entity, sessionId: string, clientEntity: ClientEntity): void
+    getEntity(sessionId: string): Entity
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
 }
 
@@ -31,50 +41,44 @@ export interface EntityManagerOptions {
 }
 
 export class EntityManager implements IEntityManager {
-    // private static BulletIndex = 1
-
-    _entities: { [id: string]: any } = {}
-    _clientEntities: { [id: string]: any } = {}//ClientEntity } = {}
+    _clientEntities: Map<string, LocalEntity> = new Map()
     _currentPlayerEntity: any//PIXI.Graphics
 
     game: Game
     gravityManager: IGravityManager
+    playerCreator: IEntityPlayerCreator
+    synchronizer: IEntitySynchronizer
 
     constructor(options: EntityManagerOptions) {
-        this.game = options.game
+        const entityManager = this
 
+        this.game = options.game
         this.gravityManager = GravityManager.getInstance()
+
+        this.playerCreator = new EntityPlayerCreator({ entityManager })
+        this.synchronizer = new EntitySynchronizer({ entityManager })
     }
 
     createEnemyPlayer(entity: Entity, sessionId: string) {
-        Flogger.log('EntityManager', 'createEntity', 'sessionID', sessionId)
+        Flogger.log('EntityManager', 'createEntity', 'sessionId', sessionId)
         
         const enemyPlayer = new ClientPlayer({ entity })
         
-        this._entities[sessionId] = entity
+        // this._entities[sessionId] = entity
         this._clientEntities[sessionId] = enemyPlayer
         
         this.cameraStage.addChildAtLayer(enemyPlayer, CameraLayer.Players)
     }
     
     createClientPlayer(entity: Entity, sessionId: string) {
-        Flogger.log('EntityManager', 'createClientPlayer', 'sessionID', sessionId)
+        Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-        const player = ClientPlayer.getInstance({
-            entity,
-            clientControl: true,
-            entityManager: this
+        const player = this.playerCreator.createPlayer({
+            entity, sessionId,
+            isClientPlayer: true
         })
-        const playerDisplayObject = (player as PIXI.DisplayObject)
 
-        this._currentPlayerEntity = player
-        this._clientEntities[sessionId] = this.currentPlayerEntity
-        setTimeout(() => {
-            this.roomState.players.get(sessionId).hasSpawned = true
-        }, 1000)
-        
-        this.cameraStage.addChildAtLayer(this.currentPlayerEntity, CameraLayer.Players)
-        this.camera.follow(playerDisplayObject)
+        this.registerEntity(entity, sessionId, player)
     }
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
@@ -82,8 +86,6 @@ export class EntityManager implements IEntityManager {
 
         const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
         const isPlayer = (entity as Player) !== undefined
-
-        console.log('entity', entity.xVel)
         
         if (!isLocalPlayer) {
             const clientEntity = this.clientEntities[sessionId]
@@ -109,12 +111,14 @@ export class EntityManager implements IEntityManager {
         // clientPlayer.y = playerState.y
     }
 
-    removeEntity(sessionID: string, layer?: number, entity?: Entity) {
-        const removedClientEntity = this.clientEntities[sessionID]
+    removeEntity(sessionId: string, layer?: number, entity?: Entity) {
+        const removedLocalEntity = this._clientEntities.get(sessionId)
         
-        this.cameraStage.removeFromLayer(removedClientEntity, layer)
+        this.cameraStage.removeFromLayer(removedLocalEntity.clientEntity, layer)
+        this._clientEntities.delete(sessionId)
 
-        delete this.entities[sessionID]
+        delete removedLocalEntity.clientEntity
+        delete removedLocalEntity.serverEntity
     }
 
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
@@ -132,6 +136,16 @@ export class EntityManager implements IEntityManager {
         this.clientEntities[uuidv4()] = bullet
     }
 
+    registerEntity(entity: Entity, sessionId: string, clientEntity?: ClientEntity) {
+        const localEntity: LocalEntity = { serverEntity: entity, clientEntity }
+
+        this._clientEntities[sessionId] = localEntity
+    }
+
+    getEntity(sessionId: string) {
+        return this._clientEntities[sessionId]
+    }
+
     get camera() {
         return this.game.camera
     }
@@ -146,10 +160,6 @@ export class EntityManager implements IEntityManager {
 
     get currentPlayerEntity() {
         return this._currentPlayerEntity
-    }
-
-    get entities() {
-        return this._entities
     }
 
     get clientEntities() {

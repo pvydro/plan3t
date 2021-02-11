@@ -55,7 +55,7 @@ export class WeaponHint extends Container implements IWeaponHint {
 
         this.weaponContainer.x = this.leftPadding
 
-        for (var i in weaponSprites) {
+        for (let i in weaponSprites) {
             const sprite = weaponSprites[i]
             const outlineColor = 0x000000
             const adjustmentFilter = new AdjustmentFilter({

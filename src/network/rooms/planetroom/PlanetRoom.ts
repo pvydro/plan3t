@@ -1,12 +1,9 @@
 import { Flogger } from '../../../service/Flogger'
 import { Room, Client } from 'colyseus'
-import { Entity } from '../Entity'
 import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
-import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/planetgamestate/PlanetGameState'
-import { RoomMessage, NewPlanetMessagePayload } from '../ServerMessages'
-import { DimensionSchema } from '../../schema/DimensionSchema'
-import { PlanetRoomListener } from './PlanetRoomListener'
-// import { SphericalData } from '../../gamemap/spherical/SphericalData'
+import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetGameState'
+import { IPlanetRoomListener, PlanetRoomListener } from './PlanetRoomListener'
+import { IPlanetRoomAssertionService, PlanetRoomAssertionService } from './assertion/PlanetRoomAssertionService'
 
 export interface IPlanetRoom {
 
@@ -14,22 +11,26 @@ export interface IPlanetRoom {
 
 export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
   static Delta: number = 1
-  listener!: PlanetRoomListener
+  listener!: IPlanetRoomListener
+  assertionService!: IPlanetRoomAssertionService
   planet?: PlanetSphericalSchema = undefined
 
   onCreate() {
-
     this.listener = new PlanetRoomListener(this)
-
+    this.assertionService = new PlanetRoomAssertionService(this)
     this.setState(new PlanetGameState())
     
+    // Internal services
     this.state.initialize()
     this.listener.startListening()
+    this.assertionService.startLoopingAssertion()
 
+    // Server-side game loop
     this.setSimulationInterval((deltaTime: number) => {
       PlanetRoom.Delta = (deltaTime * 60 / 1000)
 
       this.state.update()
+      this.assertionService.update()
     })
   }
 

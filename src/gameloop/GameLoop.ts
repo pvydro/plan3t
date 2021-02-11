@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
-import { IEntityManager } from '../manager/EntityManager'
+import { IEntityManager } from '../manager/entitymanager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { Flogger } from '../service/Flogger'
@@ -48,16 +48,19 @@ export class GameLoop implements IGameLoop {
         // Update all ClientEntities
         if (this.entityManager !== undefined) {
             const entitiesMap = this.entityManager.clientEntities
-            let entities: ClientEntity[] = []
-            for (let id in entitiesMap) {
-                entities.push(entitiesMap[id])
+
+            for (let i in entitiesMap) {
+                const clientEntity = entitiesMap[i].clientEntity
+
+                if (clientEntity !== undefined || clientEntity !== null) {
+                    if (typeof clientEntity.update === 'function') {
+                        clientEntity.update()
+
+                        // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+                        this.gravityManager.applyVelocityToEntity(clientEntity)
+                    }
+                }
             }
-            entities.forEach((entity: ClientEntity) => {
-                entity.update()
-                
-                // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
-                this.gravityManager.applyVelocityToEntity(entity)
-            })
         }
 
         // Update camera & client manager

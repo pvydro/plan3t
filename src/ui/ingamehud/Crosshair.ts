@@ -43,7 +43,7 @@ export class Crosshair extends Container implements ICrosshair {
     private constructor() {
         super()
 
-        for (var i in this.nodes) {
+        for (let i in this.nodes) {
             const node = this.nodes[i]
             this.addChild(node)
         }

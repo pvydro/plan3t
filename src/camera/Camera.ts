@@ -12,6 +12,7 @@ export interface ICamera extends IUpdatable {
     stage: CameraStage
     resize(width: number, height: number): void
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
+    follow(object: { x: number, y: number, width?: number, height?: number }): void
 }
 
 export class Camera implements ICamera {

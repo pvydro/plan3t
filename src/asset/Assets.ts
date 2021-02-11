@@ -73,7 +73,7 @@ export class Assets {
                     tileAssets.push(Assets.get(tileUrl))
                 })
 
-                for (var i = 0; i < totalFoliage; i++) {
+                for (let i = 0; i < totalFoliage; i++) {
                     let foliageDir = biomeDir + '/' + 'foliage' + i
 
                     try {
