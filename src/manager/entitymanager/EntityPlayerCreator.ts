@@ -84,10 +84,6 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         return this.entityManager.camera
     }
 
-    get cameraViewport() {
-        return this.camera.viewport
-    }
-
     get cameraStage() {
         return this.camera.stage
     }

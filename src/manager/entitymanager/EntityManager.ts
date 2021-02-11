@@ -16,6 +16,7 @@ import { PlayerLegsState } from '../../network/utils/Enum'
 import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
 import { EntityPlayerCreator, IEntityPlayerCreator } from './EntityPlayerCreator'
 import { EntitySynchronizer, IEntitySynchronizer } from './EntitySynchronizer'
+import { EntityProjectileCreator, IEntityProjectileCreator } from './EntityProjectileCreator'
 
 export interface LocalEntity {
     serverEntity?: Entity
@@ -23,8 +24,7 @@ export interface LocalEntity {
 }
 
 export interface IEntityManager {
-    clientEntities: Map<string, LocalEntity>//{ [id: string]: ClientEntity }
-    // currentPlayerEntity: ClientPlayer
+    clientEntities: Map<string, LocalEntity>
     camera: Camera
     roomState: PlanetGameState
     createClientPlayer(entity: Entity, sessionId: string): void
@@ -46,6 +46,7 @@ export class EntityManager implements IEntityManager {
     game: Game
     gravityManager: IGravityManager
     playerCreator: IEntityPlayerCreator
+    projectileCreator: IEntityProjectileCreator
     synchronizer: IEntitySynchronizer
 
     constructor(options: EntityManagerOptions) {
@@ -55,6 +56,7 @@ export class EntityManager implements IEntityManager {
         this.gravityManager = GravityManager.getInstance()
 
         this.playerCreator = new EntityPlayerCreator({ entityManager })
+        this.projectileCreator = new EntityProjectileCreator({ entityManager })
         this.synchronizer = new EntitySynchronizer({ entityManager })
     }
 
@@ -97,23 +99,11 @@ export class EntityManager implements IEntityManager {
         delete removedLocalEntity.clientEntity
         delete removedLocalEntity.serverEntity
     }
+    
+    createClientPlayer(entity: Entity, sessionId: string) {
+        Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
-        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity)
-        
-        const maximumIndex = this.cameraStage.children.length - 1
-        const bullet = new Bullet({
-            rotation, velocity
-        })
-        bullet.sprite.anchor.set(0.5, 0.5)
-        bullet.x = x
-        bullet.y = y
-
-        this.cameraStage.addChildAt(bullet, maximumIndex)
-
-        this.registerEntity(bullet.id.toString(), {
-            clientEntity: bullet
-        })
+        this.playerCreator.createPlayer({ entity, sessionId, isClientPlayer: true })
     }
 
     createEnemyPlayer(entity: Entity, sessionId: string) {
@@ -121,11 +111,11 @@ export class EntityManager implements IEntityManager {
         
         this.playerCreator.createPlayer({ entity, sessionId })
     }
-    
-    createClientPlayer(entity: Entity, sessionId: string) {
-        Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-        this.playerCreator.createPlayer({ entity, sessionId, isClientPlayer: true })
+    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
+        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity)
+
+        this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
     }
 
     registerEntity(sessionId: string, localEntity: LocalEntity) {
