@@ -112,6 +112,7 @@ export class Weapon extends Container implements IWeapon {
                 this.addMuzzleFlash()
                 this.fireBullet()
                 this.applyRecoil()
+                this.applyScreenShake()
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -121,6 +122,7 @@ export class Weapon extends Container implements IWeapon {
                 } else {
                     resolve()
                 }
+
             })
             this.currentShootPromise.then(() => {
                 this.currentShootPromise = undefined
@@ -131,9 +133,10 @@ export class Weapon extends Container implements IWeapon {
     }
 
     fireBullet() {
+        Flogger.log('Weapon', 'fireBullet')
+        
         const playerHand = this.playerHolster ? this.playerHolster.player.hand : undefined
 
-        Flogger.log('Weapon', 'fireBullet')
         if (this.sprite !== undefined
         && playerHand !== undefined) {
             const direction = playerHand.player.direction
@@ -167,6 +170,12 @@ export class Weapon extends Container implements IWeapon {
             recoilOffset.y = -recoilY * int.interpolation
         }})
         this._currentRecoilOffset = recoilOffset
+    }
+
+    applyScreenShake() {
+        const camera = Camera.getInstance()
+
+        camera.shake(1)
     }
 
     addMuzzleFlash() {

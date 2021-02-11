@@ -1,3 +1,4 @@
+import { INVALID_OPTION_KEYS } from 'colyseus/lib/matchmaker/RegisteredHandler'
 import { Key } from 'ts-keycode-enum'
 import { Container } from '../engine/display/Container'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
@@ -13,6 +14,7 @@ export interface ICamera extends IUpdatable {
     resize(width: number, height: number): void
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
     follow(object: { x: number, y: number, width?: number, height?: number }): void
+    shake(amount: number): void
 }
 
 export class Camera implements ICamera {
@@ -30,16 +32,21 @@ export class Camera implements ICamera {
     _viewport: Viewport
     _x: number = 0
     _y: number = 0
-    offsetEaseDamping = 10
+    offsetEaseDamping: number = 10
     jitterDamping: number = 100
     jitterXCooldown: number = 10
     jitterYCooldown: number = 20
     maximumJitterCooldown: number = 500
     maximumJitterAmount: number = 20//10
+    screenShakeDamping: number = 2
+    screenShakeRecoveryDamping: number = 5
+    maximumShakeAmount: number = 2
     targetOffset: IVector2 = Vector2.Zero
     offset: IVector2 = Vector2.Zero
-    _targetJitterOffset: Vector2 = Vector2.Zero
-    _jitterOffset: Vector2 = Vector2.Zero
+    _targetJitterOffset: IVector2 = Vector2.Zero
+    _jitterOffset: IVector2 = Vector2.Zero
+    _targetScreenShakeOffset: IVector2 = Vector2.Zero
+    _screenShakeOffset: IVector2 = Vector2.Zero
 
     cameraDebugger: CameraDebugger
 
@@ -65,37 +72,16 @@ export class Camera implements ICamera {
         this.trackMousePosition()
     }
 
-    initializeDebugger() {
-        this.cameraDebugger = new CameraDebugger(this)
-        this.stage.addChild(this.cameraDebugger)
-    }
-
-    trackMousePosition() {
-        InputProcessor.on('mousemove', (event: MouseEvent) => {
-            this._mouseX = event.clientX
-            this._mouseY = event.clientY
-
-            this.updateMouseFollowOffset(this._mouseX, this._mouseY)
-        })
-
-        InputProcessor.on('keydown', (event: KeyboardEvent) => {
-            if (event.which === Key.DownArrow) {
-                this.setZoom(this.zoom - 0.1)
-            } else if (event.which === Key.UpArrow) {
-                this.setZoom(this.zoom + 0.1)
-            }
-        })
-    }
-
     update() {
         this.updateCameraSway()
+        this.updateCameraShake()
 
         if (this._target !== undefined) {
             this.offset.x += (this.targetOffset.x - this.offset.x) / this.offsetEaseDamping
             this.offset.y += ((this.targetOffset.y + this._jitterOffset.y) - this.offset.y) / this.offsetEaseDamping
             
-            this.x = this._target.x + this.offset.x + this._jitterOffset.x
-            this.y = this._target.y + this.offset.y
+            this.x = this._target.x + this.offset.x + this._jitterOffset.x + this._screenShakeOffset.x
+            this.y = this._target.y + this.offset.y + this._screenShakeOffset.y
         }
 
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
@@ -131,6 +117,23 @@ export class Camera implements ICamera {
         }
     }
 
+    updateCameraShake() {
+        this._screenShakeOffset.x += (this._targetScreenShakeOffset.x - this._screenShakeOffset.x) / this.screenShakeDamping
+        this._screenShakeOffset.y += (this._targetScreenShakeOffset.y - this._screenShakeOffset.y) / this.screenShakeDamping
+
+        this._targetScreenShakeOffset.x += (0 - this._targetScreenShakeOffset.x) / this.screenShakeRecoveryDamping
+        this._targetScreenShakeOffset.y += (0 - this._targetScreenShakeOffset.y) / this.screenShakeRecoveryDamping
+    }
+
+    shake(amount: number) {
+        const maximumShake = this.maximumShakeAmount * amount
+
+        this._targetScreenShakeOffset.x = (Math.random() * maximumShake)
+        this._targetScreenShakeOffset.y = (Math.random() * maximumShake)
+        this._targetScreenShakeOffset.x *= (Math.random() > 0.5) ? 1 : -1
+        this._targetScreenShakeOffset.y *= (Math.random() > 0.5) ? 1 : -1
+    }
+
     follow(object: { x: number, y: number, width?: number, height?: number }) {
         this._target = object
     }
@@ -157,6 +160,28 @@ export class Camera implements ICamera {
         const newVec = new Vector2(newX, newY)
 
         return newVec
+    }
+
+    initializeDebugger() {
+        this.cameraDebugger = new CameraDebugger(this)
+        this.stage.addChild(this.cameraDebugger)
+    }
+
+    trackMousePosition() {
+        InputProcessor.on('mousemove', (event: MouseEvent) => {
+            this._mouseX = event.clientX
+            this._mouseY = event.clientY
+
+            this.updateMouseFollowOffset(this._mouseX, this._mouseY)
+        })
+
+        InputProcessor.on('keydown', (event: KeyboardEvent) => {
+            if (event.which === Key.DownArrow) {
+                this.setZoom(this.zoom - 0.1)
+            } else if (event.which === Key.UpArrow) {
+                this.setZoom(this.zoom + 0.1)
+            }
+        })
     }
 
     static toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {
