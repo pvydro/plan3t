@@ -1,3 +1,5 @@
+import { RoomManager } from '../manager/roommanager/RoomManager'
+import { Player } from '../network/rooms/Player'
 import { Flogger } from '../service/Flogger'
 import { EntitySynchronizer } from './EntitySynchronizer'
 
@@ -54,11 +56,44 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
         if (this._numberOfTimesAsserted % 5 === 0) {
             Flogger.log('EntitySynchronizerAssertionService', 'assertEntities', 'x5', 'numberOfTimesAsserted', this._numberOfTimesAsserted)
         }
-
         this._numberOfTimesAsserted++
+
+        this.assertPlayer()
     }
 
-    private assertPlayers() {
-        throw new Error('Method not implemented')
+    private assertPlayer() {
+        Flogger.log('EntitySynchronizerAssertionService', 'assertPlayers')
+
+        const room = RoomManager._room
+
+        if (room !== undefined) {
+            const localSessionId = room.sessionId
+            const localPlayerServerInstance = this.roomState.players.get(localSessionId)
+
+            console.log(localPlayerServerInstance)
+        }
+
+        // const localEntity = this.clientEntities.get(sessionId)
+        // this.roomState.players.forEach((player: Player, sessionId: string) => {
+        //     Flogger.log('EntitySynchronizerAssertionService', 'asserting: ' + sessionId, 'player', player)
+
+        //     const localPlayer = this.entitySynchronizer.clientEntities.get(sessionId).clientEntity
+
+        //     localPlayer.x = player.x
+        //     // player.x
+        // })
     }
+
+    get sessionId() {
+        return this.entitySynchronizer.entityManager.roomState
+    }
+
+    get roomState() {
+        return this.entitySynchronizer.roomState
+    }
+
+    get clientEntities() {
+        return this.entitySynchronizer.clientEntities
+    }
+
 }

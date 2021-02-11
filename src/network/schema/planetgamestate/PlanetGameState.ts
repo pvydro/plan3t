@@ -56,10 +56,12 @@ export class PlanetGameState extends Schema {
   createPlayer(sessionId: string) {
     Flogger.log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
-    this.players.set(sessionId, new Player().assign({ x: 0, y: 0 }))
+    this.players.set(sessionId, new Player())
   }
 
   update() {
+    // TODO: Instead of updating these in the state, update these outside, setting the state.
+
     if (this.playerController) this.playerController.update()
     if (this.gravityController) this.gravityController.update()
   }

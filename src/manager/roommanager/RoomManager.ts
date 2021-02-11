@@ -11,6 +11,7 @@ import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Dimension } from '../../engine/math/Dimension'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { RoomMessager } from './RoomMessager'
+import { Player } from '../../network/rooms/Player'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -81,6 +82,10 @@ export class RoomManager implements IRoomManager {
             // All state changes
             // this.currentRoom.onStateChange((state: PlanetGameState) => {
             //     // TODO this
+            //     // console.log('changes')
+            //     // state.players.forEach((p: Player, sessionId: string) => {
+            //     //     console.log(p.x)
+            //     // })
             // })
         })
     }

@@ -35,24 +35,29 @@ export class EntitySynchronizer implements IEntitySynchronizer {
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
         Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
+        console.log(changes)
 
         const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
         const isPlayer = (entity as Player) !== undefined
         
         if (!isLocalPlayer) {
-            const clientEntity = this.clientEntities[sessionId]
+            const serverEntity = this.clientEntities.get(sessionId).serverEntity
 
             if (isPlayer) {
-                this.updatePlayer(clientEntity as Player, sessionId, changes)
+                this.updatePlayer(serverEntity as Player, sessionId, changes)
             }
         }
     }
 
     private updatePlayer(player: Player, sessionId: string, changes?: any) {
+        Flogger.log('EntityManager', 'updatePlayer', 'sessionId', sessionId)
+
         if (RoomManager.isSessionALocalPlayer(sessionId)) return
         
         const localEntity = this.clientEntities.get(sessionId)
-        // if (!localEntity) return
+
+        if (!localEntity) return
+
         const clientPlayer = localEntity.clientEntity as ClientPlayer
         const playerState = this.roomState.players.get(sessionId)
 

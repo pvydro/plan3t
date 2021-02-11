@@ -1,9 +1,8 @@
 import * as PIXI from 'pixi.js'
-import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
-import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
+import { IRoomManager } from '../manager/roommanager/RoomManager'
 import { Flogger } from '../service/Flogger'
 
 export interface IGameLoop {
@@ -32,6 +31,8 @@ export class GameLoop implements IGameLoop {
     }
 
     startGameLoop(options?: GameLoopOptions) {
+        Flogger.log('GameLoop', 'startGameLoop')
+
         this.assignOptions(options)
 
         this._shouldLoop = true
@@ -39,6 +40,8 @@ export class GameLoop implements IGameLoop {
     }
 
     stopGameLoop() {
+        Flogger.log('GameLoop', 'stopGameLoop')
+
         this._shouldLoop = false
     }
 
@@ -47,9 +50,6 @@ export class GameLoop implements IGameLoop {
 
         // Update all ClientEntities
         if (this.entityManager !== undefined) {
-            const entitiesMap = this.entityManager.clientEntities
-
-            // for (let i in entitiesMap.keys()) {
             this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
                 const clientEntity = localEntity.clientEntity
 

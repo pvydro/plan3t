@@ -48,6 +48,11 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             this.markPlayerAsSpawned(options.sessionId)
         }
 
+        // options.entity.onChange = (changes: any) => {
+        //     console.log('entity onchange')
+        //     console.log(changes)
+        // }
+
         return player
     }
 

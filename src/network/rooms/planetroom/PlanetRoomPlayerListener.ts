@@ -82,7 +82,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
         // Rule based properties
         if (payload.y !== undefined) player.y = payload.y
-        if (payload.xVel !== undefined) player.xVel = payload.xVel
-        if (payload.yVel !== undefined) player.yVel = payload.yVel
+        // if (payload.xVel !== undefined) player.xVel = payload.xVel
+        // if (payload.yVel !== undefined) player.yVel = payload.yVel
     }
 }
