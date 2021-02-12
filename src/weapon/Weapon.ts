@@ -112,7 +112,7 @@ export class Weapon extends Container implements IWeapon {
                 this.addMuzzleFlash()
                 this.fireBullet()
                 this.applyRecoil()
-                this.applyScreenShake()
+                this.applyScreenEffects()
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -172,10 +172,14 @@ export class Weapon extends Container implements IWeapon {
         this._currentRecoilOffset = recoilOffset
     }
 
-    applyScreenShake() {
+    applyScreenEffects() {
         const camera = Camera.getInstance()
 
         camera.shake(1)
+        camera.flash({
+            minimumBrightness: 0.15,
+            maximumBrightness: 0.3
+        })
     }
 
     addMuzzleFlash() {

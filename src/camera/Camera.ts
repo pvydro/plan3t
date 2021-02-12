@@ -5,7 +5,7 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { CameraDebuggerPlugin } from './plugin/CameraDebuggerPlugin'
 import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
-import { CameraFlashPlugin } from './plugin/CameraFlashPlugin'
+import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
 import { ShowCameraProjectionDebug } from '../utils/Constants'
 
 export interface ICamera extends IUpdatable {
@@ -15,6 +15,7 @@ export interface ICamera extends IUpdatable {
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
     follow(object: { x: number, y: number, width?: number, height?: number }): void
     shake(amount: number): void
+    flash(options: CameraFlashOptions): void
 }
 
 export class Camera implements ICamera {
@@ -144,6 +145,10 @@ export class Camera implements ICamera {
         this._targetScreenShakeOffset.y = (Math.random() * maximumShake)
         this._targetScreenShakeOffset.x *= (Math.random() > 0.5) ? 1 : -1
         this._targetScreenShakeOffset.y *= (Math.random() > 0.5) ? 1 : -1
+    }
+
+    flash(options: CameraFlashOptions) {
+        this.cameraFlashPlugin.flash(options)
     }
 
     follow(object: { x: number, y: number, width?: number, height?: number }) {

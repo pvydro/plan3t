@@ -5,8 +5,14 @@ import { Flogger } from '../../service/Flogger'
 import { WindowSize } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
-export interface ICameraFlashPlugin extends IUpdatable {
+export interface CameraFlashOptions {
+    minimumBrightness?: number
+    maximumBrightness?: number
+    randomize?: boolean
+}
 
+export interface ICameraFlashPlugin extends IUpdatable {
+    flash(options: CameraFlashOptions): void
 }
 
 export interface CameraFlashPluginOptions {
@@ -16,6 +22,7 @@ export interface CameraFlashPluginOptions {
 export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
     camera: ICamera
     flashGraphic: Graphix
+    fadeToBaseDivisor: number = 2
 
     constructor(options: CameraFlashPluginOptions) {
         super()
@@ -26,8 +33,36 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
     }
     
     update() {
+        this.enforceFlashGraphicsSize()
+        this.fadeFlashGraphicsToBase()
+    }
+
+    flash(options: CameraFlashOptions) {
+        Flogger.log('CameraFlashPlugin', 'flash')
+
+        const shouldRandomize = options.randomize !== undefined ? options.randomize : true
+        const maximum = options.maximumBrightness !== undefined ? options.maximumBrightness : 1
+        const minimum = maximum - options.minimumBrightness
+        const randomizer = shouldRandomize ? Math.random() : 1
+        const newBrightness = (randomizer * minimum) + minimum
+
+        Flogger.log('CameraFlashPlugin', 'maximum', maximum, 'minimum', minimum, 'newBrightness', newBrightness)
+
+        this.flashGraphic.alpha = newBrightness
+    }
+
+    enforceFlashGraphicsSize() {
         if (this.flashGraphic.width !== WindowSize.width) this.flashGraphic.width = WindowSize.width
         if (this.flashGraphic.height !== WindowSize.height) this.flashGraphic.height = WindowSize.height
+    }
+
+    fadeFlashGraphicsToBase() {
+        if (this.flashGraphic !== undefined
+        && this.flashGraphic.alpha !== 0) {
+            this.flashGraphic.alpha += (0 - this.flashGraphic.alpha) / this.fadeToBaseDivisor
+        }
+
+        if (this.flashGraphic.alpha < 0.01) this.flashGraphic.alpha = 0
     }
 
     initializeFlashGraphics() {
