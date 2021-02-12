@@ -1,6 +1,4 @@
-import { INVALID_OPTION_KEYS } from 'colyseus/lib/matchmaker/RegisteredHandler'
 import { Key } from 'ts-keycode-enum'
-import { Container } from '../engine/display/Container'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'

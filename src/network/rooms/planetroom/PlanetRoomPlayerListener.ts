@@ -1,6 +1,6 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
-import { PlayerLegsState } from '../../utils/Enum'
+import { PlayerBodyState, PlayerLegsState } from '../../utils/Enum'
 import { PlayerPayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoomListener } from './PlanetRoomListener'
 
@@ -74,8 +74,10 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         const state = this.parentListener.room.state
         const player = state.players.get(key)
 
+        this.applyBodyStatePropertiesToPlayer(key, payload)
+
         // player.x = payload.x ?? player.x
-        player.bodyState = payload.bodyState
+        // player.bodyState = payload.bodyState
         player.legsState = payload.legsState
         player.direction = payload.direction
         player.walkingDirection = payload.walkingDirection
@@ -84,5 +86,20 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         if (payload.y !== undefined) player.y = payload.y
         // if (payload.xVel !== undefined) player.xVel = payload.xVel
         // if (payload.yVel !== undefined) player.yVel = payload.yVel
+    }
+
+    // TODO Do this when land on ground, not when on stand
+    private applyBodyStatePropertiesToPlayer(key: string, payload: PlayerPayload) {
+        const state = this.parentListener.room.state
+        const player = state.players.get(key)
+        
+        if (player.bodyState !== PlayerBodyState.Idle) {
+            if (payload.bodyState === PlayerBodyState.Idle) {
+                // First stand payload
+                if (payload.x) player.x = payload.x
+            }
+        }
+
+        player.bodyState = payload.bodyState
     }
 }

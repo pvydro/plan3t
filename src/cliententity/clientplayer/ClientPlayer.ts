@@ -135,7 +135,7 @@ export class ClientPlayer extends GravityEntity {
 
         this._bodyState = value
 
-        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerBodyStateChanged)
+        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
     }
 
     set legsState(value: PlayerLegsState) {
