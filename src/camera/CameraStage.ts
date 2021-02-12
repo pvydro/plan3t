@@ -18,14 +18,18 @@ export interface ICameraStage {
 
 }
 
+export interface CameraStageOptions {
+    camera: ICamera
+}
+
 export class CameraStage extends Container implements ICameraStage {
     layers: Container[] = []
     camera: ICamera
 
-    constructor(camera: ICamera) {
+    constructor(options: CameraStageOptions) {
         super()
 
-        this.camera = camera
+        this.camera = options.camera
 
         this.createLayerContainers()
     }

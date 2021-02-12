@@ -16,8 +16,8 @@ export const ShowCollisionDebug = false
 export const ShowCameraProjectionDebug = false
 
 export class DebugConstants {
-    static DisableFoliage: boolean = false
-    static DisableDepthShadows: boolean = false
+    static DisableFoliage: boolean = true//false
+    static DisableDepthShadows: boolean = true//false
 }
 
 export class Constants {

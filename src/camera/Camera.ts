@@ -2,9 +2,11 @@ import { Key } from 'ts-keycode-enum'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
-import { CameraDebugger } from './CameraDebugger'
+import { CameraDebuggerPlugin } from './plugin/CameraDebuggerPlugin'
 import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
+import { CameraFlashPlugin } from './plugin/CameraFlashPlugin'
+import { ShowCameraProjectionDebug } from '../utils/Constants'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -46,7 +48,8 @@ export class Camera implements ICamera {
     _targetScreenShakeOffset: IVector2 = Vector2.Zero
     _screenShakeOffset: IVector2 = Vector2.Zero
 
-    cameraDebugger: CameraDebugger
+    cameraDebuggerPlugin: CameraDebuggerPlugin
+    cameraFlashPlugin: CameraFlashPlugin
 
     public static getInstance() {
         if (Camera.INSTANCE === undefined) {
@@ -57,7 +60,10 @@ export class Camera implements ICamera {
     }
 
     private constructor() {
-        this._stage = new CameraStage(this)
+        const camera = this
+
+        this.cameraFlashPlugin = new CameraFlashPlugin({ camera })
+        this._stage = new CameraStage({ camera })
         this._viewport = new Viewport()
 
         this._stage.width = 1080
@@ -67,12 +73,20 @@ export class Camera implements ICamera {
         this.setZoom(this.baseZoom)
 
         this.viewport.addChild(this.stage)
+        this.viewport.addChild(this.cameraFlashPlugin)
         this.trackMousePosition()
+        
+        if (ShowCameraProjectionDebug) {
+            this.cameraDebuggerPlugin = new CameraDebuggerPlugin({ camera })
+
+            this.stage.addChild(this.cameraDebuggerPlugin)
+        }
     }
 
     update() {
         this.updateCameraSway()
         this.updateCameraShake()
+        this.cameraFlashPlugin.update()
 
         if (this._target !== undefined) {
             this.offset.x += (this.targetOffset.x - this.offset.x) / this.offsetEaseDamping
@@ -158,11 +172,6 @@ export class Camera implements ICamera {
         const newVec = new Vector2(newX, newY)
 
         return newVec
-    }
-
-    initializeDebugger() {
-        this.cameraDebugger = new CameraDebugger(this)
-        this.stage.addChild(this.cameraDebugger)
     }
 
     trackMousePosition() {

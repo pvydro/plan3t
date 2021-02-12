@@ -72,8 +72,6 @@ export class GameplayState extends GameState implements IGameplayState {
             // To get the camera, you need the game stage, pass Game through StateManager
             this.stage.addChild(this.cameraViewport)
     
-            if (ShowCameraProjectionDebug) Camera.getInstance().initializeDebugger()
-    
             this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
 

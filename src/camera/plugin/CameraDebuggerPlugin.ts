@@ -1,25 +1,27 @@
-import { Container } from "pixi.js";
-import { Graphix } from "../engine/display/Graphix";
-import { Sprite } from "../engine/display/Sprite";
-import { IVector2, Vector2 } from "../engine/math/Vector2";
-import { InputProcessor } from "../input/InputProcessor";
-import { IUpdatable } from "../interface/IUpdatable";
-import { Camera, ICamera } from "./Camera";
+import { Container } from 'pixi.js'
+import { Graphix } from '../../engine/display/Graphix'
+import { IVector2, Vector2 } from '../../engine/math/Vector2'
+import { InputProcessor } from '../../input/InputProcessor'
+import { ICamera } from '../Camera'
 
-export interface ICameraDebugger {
+export interface ICameraDebuggerPlugin {
 
 }
 
-export class CameraDebugger extends Container implements ICameraDebugger {
+export interface CameraDebuggerOptions {
+    camera: ICamera
+}
+
+export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPlugin {
     camera: ICamera
     debugGraphics: Graphix
     color: number = 0x60b5b2
     lineWidth: number = 1
     debugPosition: IVector2 = Vector2.Zero
 
-    constructor(camera: ICamera) {
+    constructor(options: CameraDebuggerOptions) {
         super()
-        this.camera = camera
+        this.camera = options.camera
 
         this.debugGraphics = new Graphix()
 
