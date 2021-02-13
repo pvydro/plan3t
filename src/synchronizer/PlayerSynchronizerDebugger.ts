@@ -57,6 +57,6 @@ export class PlayerSynchronizerAssertionServiceDebugger extends Container implem
     }
 
     get localSessionId() {
-        return RoomManager._room.sessionId
+        return RoomManager.clientSessionId
     }
 }

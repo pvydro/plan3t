@@ -15,8 +15,10 @@ import { Weapon } from '../../weapon/Weapon'
 import { PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { PlayerMessager } from './PlayerMessager'
+import { exists } from '../../utils/Utils'
 
 export interface IClientPlayer extends IGravityEntity {
+    sessionId: string
     direction: Direction
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
@@ -40,9 +42,12 @@ export interface ClientPlayerOptions {
     entity: Entity
     clientControl?: boolean
     entityManager?: IEntityManager
+    sessionId?: string
 }
 
 export class ClientPlayer extends GravityEntity {
+    sessionId: string = ''
+
     private static INSTANCE: ClientPlayer
     _entityManager?: IEntityManager
     messager: PlayerMessager
@@ -79,6 +84,9 @@ export class ClientPlayer extends GravityEntity {
         })
         if (options.entityManager) {
             this._entityManager = options.entityManager
+        }
+        if (exists(options.sessionId)) {
+            this.sessionId = options.sessionId
         }
         this._clientControl = options.clientControl
         

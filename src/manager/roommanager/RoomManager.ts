@@ -26,6 +26,7 @@ export interface RoomManagerOptions {
 export class RoomManager implements IRoomManager {
     private static INSTANCE: RoomManager
     static _room: Room<PlanetGameState>
+    static _clientSessionId = 'local'
     
     gameMapManager: IGameMapManager
     clientManager: IClientManager
@@ -55,6 +56,9 @@ export class RoomManager implements IRoomManager {
         const client = this.clientManager.client
 
         this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
+
+        RoomManager.clientSessionId = this.currentRoom.sessionId
+        
         this.initializeCurrentRoomEntities()
 
         RoomMessager._isOnline = true
@@ -151,11 +155,22 @@ export class RoomManager implements IRoomManager {
     }
 
     static isSessionALocalPlayer(sessionId: string) {
-        if (sessionId === RoomManager._room.sessionId) {
+        if (sessionId === RoomManager.clientSessionId) {
             return true
         } else {
             return false
         }
+    }
+
+    static set clientSessionId(value: string) {
+        Flogger.color('red')
+        Flogger.log('New client session ID has been set')
+
+        this._clientSessionId = value
+    }
+
+    static get clientSessionId() {
+        return this._clientSessionId
     }
 
     get currentRoom() {

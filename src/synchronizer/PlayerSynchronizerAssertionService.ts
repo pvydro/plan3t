@@ -40,7 +40,7 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
     }
 
     get clientSessionId() {
-        return RoomManager._room.sessionId
+        return RoomManager.clientSessionId
     }
 
     get roomState() {
