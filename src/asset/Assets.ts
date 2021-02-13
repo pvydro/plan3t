@@ -43,7 +43,7 @@ export class Assets {
                     resolve(true)
                 })
             } catch (error) {
-                Flogger.error('Failed to load images', 'Error', error)
+                Flogger.error('Failed to load images', 'error', error)
                 
                 reject(error)
             }

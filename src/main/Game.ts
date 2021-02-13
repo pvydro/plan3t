@@ -9,6 +9,7 @@ import { Assets } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
 import { ParticleManager } from '../manager/ParticleManager'
 import { Viewport } from '../camera/Viewport'
+import { Fonts } from '../asset/Fonts'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -41,6 +42,7 @@ export class Game implements IGame {
         Flogger.log('Game', 'bootstrap')
 
         await Assets.loadImages()
+        await Fonts.loadFonts()
         await Spritesheets.loadSpritesheets()
         
         await this.clientManager.initialize()

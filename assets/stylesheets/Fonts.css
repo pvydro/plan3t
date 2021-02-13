@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Pixel;
+    src: url('../fonts/pixel.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: iPU;
+    src: url('../fonts/ipixelu.ttf') format('truetype')
+}

@@ -34,7 +34,7 @@ export class Spritesheets {
                     resolve(true)
                 })
             } catch (error) {
-                Flogger.error('Failed to load Spritesheets', 'Error', error)
+                Flogger.error('Failed to load Spritesheets', 'error', error)
                 reject(error)
             }
         })
