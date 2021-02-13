@@ -19,6 +19,7 @@ export interface EntitySynchronizerOptions {
 }
 
 export class EntitySynchronizer implements IEntitySynchronizer {
+    synchronizables: Entity[]
     entityManager: IEntityManager
     assertionService: IEntitySynchronizerAssertionService
 

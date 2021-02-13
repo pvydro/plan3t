@@ -11,7 +11,8 @@ export const CameraLayer = {
     Players: 5,
     Lighting: 6,
     GameMapOverlay: 7,
-    Overlay: 8
+    Overlay: 8,
+    DebugOverlay: 9
 }
 
 export interface ICameraStage {

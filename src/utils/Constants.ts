@@ -1,9 +1,11 @@
-export const WindowSize = {
+import { IDimension } from '../engine/math/Dimension'
+
+export const WindowSize: IDimension = {
     width: window.innerWidth,
     height: window.innerHeight
 }
 
-export const WorldSize = {
+export const WorldSize: IDimension = {
     width: 2000,
     height: 2000
 }
@@ -11,9 +13,10 @@ export const WorldSize = {
 export const BasicLerp = (pointA: number, pointB: number, time: number) => {
     return (pointB - pointA) * time + pointA
 }
-export const GlobalScale = 1//5
-export const ShowCollisionDebug = false
-export const ShowCameraProjectionDebug = false
+export const GlobalScale: number = 1
+export const ShowCollisionDebug: boolean = false
+export const ShowCameraProjectionDebug: boolean = false
+export const ShowPlayerSynchDebug: boolean = true
 
 export class DebugConstants {
     static DisableFoliage: boolean = false

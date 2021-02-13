@@ -63,9 +63,10 @@ export class Camera implements ICamera {
     private constructor() {
         const camera = this
 
-        this.cameraFlashPlugin = new CameraFlashPlugin({ camera })
-        this._stage = new CameraStage({ camera })
         this._viewport = new Viewport()
+        this._stage = new CameraStage({ camera })
+        this.cameraFlashPlugin = new CameraFlashPlugin({ camera })
+        this.cameraDebuggerPlugin = new CameraDebuggerPlugin({ camera })
 
         this._stage.width = 1080
         this._stage.height = 720
@@ -75,13 +76,8 @@ export class Camera implements ICamera {
 
         this.viewport.addChild(this.stage)
         this.viewport.addChild(this.cameraFlashPlugin)
+        this.stage.addChild(this.cameraDebuggerPlugin)
         this.trackMousePosition()
-        
-        if (ShowCameraProjectionDebug) {
-            this.cameraDebuggerPlugin = new CameraDebuggerPlugin({ camera })
-
-            this.stage.addChild(this.cameraDebuggerPlugin)
-        }
     }
 
     update() {
