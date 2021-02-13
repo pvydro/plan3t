@@ -1,8 +1,10 @@
+import { exists } from '../../../utils/Utils'
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { PlayerBodyState, PlayerLegsState } from '../../utils/Enum'
 import { PlayerPayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoomListener } from './PlanetRoomListener'
+import { Player } from '../Player'
 
 export interface IPlanetRoomPlayerListener {
 
@@ -74,7 +76,8 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         const state = this.parentListener.room.state
         const player = state.players.get(key)
 
-        this.applyBodyStatePropertiesToPlayer(key, payload)
+        this.applyBodyStatePropertiesToPlayer(key, payload, player)
+        this.applyVelocityPropertiesToPlayer(key, payload, player)
 
         // player.x = payload.x ?? player.x
         // player.bodyState = payload.bodyState
@@ -84,22 +87,27 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
         // Rule based properties
         if (payload.y !== undefined) player.y = payload.y
-        // if (payload.xVel !== undefined) player.xVel = payload.xVel
-        // if (payload.yVel !== undefined) player.yVel = payload.yVel
     }
 
     // TODO Do this when land on ground, not when on stand
-    private applyBodyStatePropertiesToPlayer(key: string, payload: PlayerPayload) {
-        const state = this.parentListener.room.state
-        const player = state.players.get(key)
-        
+    private applyBodyStatePropertiesToPlayer(key: string, payload: PlayerPayload, player: Player) {        
         if (player.bodyState !== PlayerBodyState.Idle) {
             if (payload.bodyState === PlayerBodyState.Idle) {
                 // First stand payload
-                if (payload.x) player.x = payload.x
+                if (exists(payload.x)) {
+                    player.x = payload.x
+                }
             }
         }
 
         player.bodyState = payload.bodyState
+    }
+
+    private applyVelocityPropertiesToPlayer(key: string, payload: PlayerPayload, player: Player) {
+        if (exists(payload.xVel)) {
+            if (payload.xVel === 0 && exists(payload.x)) {
+                player.x = payload.x
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import { Flogger } from '../service/Flogger'
 import { RoomManager } from '../manager/roommanager/RoomManager'
 import { IEntityManager } from '../manager/entitymanager/EntityManager'
 import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
+import { exists } from '../utils/Utils'
 
 export interface IEntitySynchronizer extends IUpdatable {
     assertionService: IEntitySynchronizerAssertionService
@@ -35,8 +36,6 @@ export class EntitySynchronizer implements IEntitySynchronizer {
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
         Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
-        console.log(changes)
-        console.log('x', changes.x)
 
         this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
@@ -59,7 +58,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         
         const localEntity = this.clientEntities.get(sessionId)
 
-        if (!localEntity) return
+        if (!exists(localEntity)) return
 
         const clientPlayer = localEntity.clientEntity as ClientPlayer
         const playerState = this.roomState.players.get(sessionId)
