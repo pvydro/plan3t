@@ -75,12 +75,12 @@ export class EntityManager implements IEntityManager {
     }
 
     createClientPlayer(entity: Entity, sessionId: string) {
+        Flogger.color('green')
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({ entity, sessionId, isClientPlayer: true })
 
         this.synchronizer.assertionService.clientPlayer = player
-        // this.synchronizer.assertionService.startLoopingAssertion()
     }
 
     createEnemyPlayer(entity: Entity, sessionId: string) {

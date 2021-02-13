@@ -88,7 +88,7 @@ export class ClientPlayer extends GravityEntity {
         if (exists(options.sessionId)) {
             this.sessionId = options.sessionId
         }
-        this._clientControl = options.clientControl
+        this._clientControl = options.clientControl ?? false
         
         const player = this
 

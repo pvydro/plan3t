@@ -24,6 +24,8 @@ export class PlayerMessager implements IPlayerMessager {
     send(endpoint: string, rules?: PlayerPackRules) {
         Flogger.log('PlayerMessager', 'endpoint', endpoint)
 
+        if (!this.player.isClientPlayer) return
+
         RoomMessager.send(endpoint, this.getPlayerPayload(rules))
     }
 

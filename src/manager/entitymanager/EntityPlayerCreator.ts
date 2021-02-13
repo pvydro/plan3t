@@ -63,7 +63,8 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             player = ClientPlayer.getInstance({
                 clientControl: true,
                 entity: options.entity,
-                entityManager: this.entityManager
+                entityManager: this.entityManager,
+                sessionId: options.sessionId
             })
         } else {
             player = new ClientPlayer({ entity: options.entity })

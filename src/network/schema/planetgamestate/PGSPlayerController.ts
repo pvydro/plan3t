@@ -2,6 +2,7 @@ import { Player } from '../../rooms/Player'
 import { PlanetGameState } from './PlanetGameState'
 import { PlayerBodyState, Direction, PlayerLegsState } from '../../utils/Enum'
 import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
+import { PixiPlugin } from 'gsap/all'
 
 export interface IPGSPlayerController {
     update(): void
@@ -28,6 +29,7 @@ export class PGSPlayerController implements IPGSPlayerController {
                     // p.comeToStop()
                     if (p.xVel !== 0) {
                         p.xVel += ((0 - p.xVel) / horizontalFriction) * PlanetRoom.Delta
+                        if (p.xVel <= 0.0001) p.xVel = 0
                     }
 
                     break
@@ -62,7 +64,7 @@ export class PGSPlayerController implements IPGSPlayerController {
                     break
             }
 
-            if (p.isOnGround === false) {
+            if (p.isOnGround === false && p.yVel !== 0) {
                 p.yVel += ((p.weight / 3) * 1) * PlanetRoom.Delta
             }
         })

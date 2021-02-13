@@ -35,7 +35,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     }
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
-        Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
+        Flogger.log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId)
 
         this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
@@ -52,7 +52,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     }
 
     private updatePlayer(player: Player, sessionId: string, changes?: any) {
-        Flogger.log('EntityManager', 'updatePlayer', 'sessionId', sessionId)
+        Flogger.log('EntitySynchronizer', 'updatePlayer', 'sessionId', sessionId)
 
         if (RoomManager.isSessionALocalPlayer(sessionId)) return
         
