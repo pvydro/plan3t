@@ -4,6 +4,7 @@ import { Container } from '../engine/display/Container'
 import { Graphix } from '../engine/display/Graphix'
 import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
+import { Player } from '../network/rooms/Player'
 import { Flogger } from '../service/Flogger'
 import { ShowPlayerSynchDebug } from '../utils/Constants'
 import { IPlayerSynchronizerAssertionService } from './PlayerSynchronizerAssertionService'
@@ -34,16 +35,19 @@ export class PlayerSynchronizerAssertionServiceDebugger extends Container implem
     }
 
     update() {
+        const synchPlayerInstance = this.assertionService.entityAssertionService
+            .synchronizables.get(this.localSessionId) as Player
         if (this.debugGraphics !== undefined
-        && this.assertionService.clientPlayer !== undefined) {
-            const synchPlayerInstance = this.assertionService.entityAssertionService
-                .synchronizables.get(this.localSessionId)
+        && this.assertionService.clientPlayer !== undefined
+        && synchPlayerInstance !== undefined) {
 
             this.debugGraphics.x = synchPlayerInstance.x - (this.debugGraphics.width / 2)
             this.debugGraphics.y = synchPlayerInstance.y - (this.debugGraphics.height / 2)
 
             this.rotationDebugGraphics.x = synchPlayerInstance.x - (this.rotationDebugGraphics.width / 2)
             this.rotationDebugGraphics.y = synchPlayerInstance.y - (this.rotationDebugGraphics.height / 2)
+
+            this.rotationDebugGraphics.rotation = synchPlayerInstance.weaponStatus.rotation
         }
     }
 

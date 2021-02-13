@@ -1,4 +1,4 @@
-import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
+import { ClientPlayer, IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Entity } from '../network/rooms/Entity'
 import { Flogger } from '../service/Flogger'
@@ -7,8 +7,10 @@ import { IPlayerSynchronizerAssertionService, PlayerSynchronizerAssertionService
 import { exists } from '../utils/Utils'
 import { PlanetGameState } from '../network/schema/planetgamestate/PlanetGameState'
 import { LocalEntity } from '../manager/entitymanager/EntityManager'
+import { Player } from '../network/rooms/Player'
 
 export interface IEntitySynchronizerAssertionService extends IUpdatable {
+    playerAssertionService: IPlayerSynchronizerAssertionService
     synchronizables: Map<string, Entity>
     clientPlayer: IClientPlayer
     roomState: PlanetGameState
@@ -45,9 +47,13 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
 
     applyChangesToSynchronizable(sessionId: string, entity: Entity) {
         Flogger.log('EntitySynchronizerAssertionService', 'applyChangesToSynchronizable')
+        
+        const entityPlayer = entity as Player
+        const isPlayer = entityPlayer !== undefined
+        const synchEntity = this.synchronizables.get(sessionId)
+        const synchEntityPlayer = synchEntity as Player
 
-        if (this.synchronizables.has(sessionId)) {
-            const synchEntity = this.synchronizables.get(sessionId)
+        if (sessionId !== undefined && synchEntity !== undefined) {
 
             // Position
             if (exists(entity.x) && entity.x !== synchEntity.x) {
@@ -63,6 +69,11 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
             
             this.synchronizables.set(sessionId, entity)
         }
+
+        //     this.roomState.players.forEach((player: Player, sessionId: string) => {
+        //         const localPlayer = this.entitySynchronizer.clientEntities.get(sessionId).clientEntity
+        //         localPlayer.x = player.x
+        //     })
     }
 
     set clientPlayer(value: IClientPlayer) {
@@ -72,39 +83,6 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
     get clientPlayer() {
         return this.playerAssertionService.clientPlayer
     }
-
-    // assertEntities() {
-    //     if (this._numberOfTimesAsserted % 5 === 0) {
-    //         Flogger.log('EntitySynchronizerAssertionService', 'assertEntities', 'x5', 'numberOfTimesAsserted', this._numberOfTimesAsserted)
-    //     }
-    //     this._numberOfTimesAsserted++
-
-    //     this.assertPlayer()
-    // }
-
-    // private assertPlayer() {
-    //     Flogger.log('EntitySynchronizerAssertionService', 'assertPlayers')
-
-    //     const room = RoomManager._room
-
-    //     if (room !== undefined) {
-    //         const localSessionId = room.sessionId
-    //         const localPlayerServerInstance = this.roomState.players.get(localSessionId)
-
-    //         console.log(localPlayerServerInstance)
-    //     }
-
-    //     // const localEntity = this.clientEntities.get(sessionId)
-    //     this.roomState.players.forEach((player: Player, sessionId: string) => {
-    //         Flogger.log('EntitySynchronizerAssertionService', 'asserting: ' + sessionId, 'player', player)
-
-    //         const localPlayer = this.entitySynchronizer.clientEntities.get(sessionId).clientEntity
-
-    //         // TODO Interpolate this
-    //         localPlayer.x = player.x
-    //         // player.x
-    //     })
-    // }
 
     get roomState() {
         return this.entitySynchronizer.roomState

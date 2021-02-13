@@ -5,7 +5,7 @@ import { PlayerBody } from './PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
-import { PlayerHand } from './PlayerHand'
+import { IPlayerHand, PlayerHand } from './PlayerHand'
 import { WeaponName } from '../../weapon/WeaponName'
 import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
@@ -22,6 +22,7 @@ export interface IClientPlayer extends IGravityEntity {
     direction: Direction
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
+    hand: IPlayerHand
     emitter: Emitter
     isClientPlayer: boolean
     equipWeapon(weapon: Weapon): void
@@ -124,9 +125,11 @@ export class ClientPlayer extends GravityEntity {
         
         this.body.update()
         this.head.update()
-        this.hand.update()
         if (this.light) this.light.update()
-        if (this.isClientPlayer) this.messager.update()
+        if (this.isClientPlayer) {
+            this.hand.update()
+            this.messager.update()
+        }
         
         this.collision.update()
     }

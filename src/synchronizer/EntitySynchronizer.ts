@@ -39,10 +39,10 @@ export class EntitySynchronizer implements IEntitySynchronizer {
 
         this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
-        const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
-        const isPlayer = (entity as Player) !== undefined
+        const isClientPlayer: boolean = RoomManager.isSessionALocalPlayer(sessionId)
+        const isPlayer: boolean = (entity as Player) !== undefined
         
-        if (!isLocalPlayer) {
+        if (!isClientPlayer) {
             const serverEntity = this.clientEntities.get(sessionId).serverEntity
 
             if (isPlayer) {
