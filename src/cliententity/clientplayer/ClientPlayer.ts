@@ -16,6 +16,8 @@ import { PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { PlayerMessager } from './PlayerMessager'
 import { exists } from '../../utils/Utils'
+import { TextSprite } from '../../engine/display/TextSprite'
+import { Fonts } from '../../asset/Fonts'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
@@ -107,6 +109,13 @@ export class ClientPlayer extends GravityEntity {
         this.addChild(this.head)
         this.addChild(this.hand)
         this.addChild(this.collision)
+
+        const testText = new TextSprite({
+            text: 'This is a test',
+            fontFamily: Fonts.Font.fontFamily
+        })
+
+        this.addChild(testText)
         
         this.controller = new PlayerController({ player })
 

@@ -29,19 +29,6 @@ export class Fonts {
                 })
 
                 resolve(true)
-                // Fonts.FontStrong
-
-
-                // Fonts.FontStrong.load().then(() => {
-                //     Flogger.color('yellow')
-                //     Flogger.log('Fonts', 'Pixel loaded')
-
-                //     resolve(true)
-                // }, (error) => {
-                //     Flogger.error('Failed to load font', 'error', error)
-                //     resolve(error)
-                // })
-
             } catch (error) {
                 Flogger.error('Failed to load fonts', 'error', error)
             }

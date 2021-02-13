@@ -9,11 +9,11 @@ export interface IMuzzleFlashParticle extends IParticle {
 }
 
 export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticle {
-    static aTextures = [ AssetUrls.MUZZLE_FLASH_A_0, AssetUrls.MUZZLE_FLASH_A_1, AssetUrls.MUZZLE_FLASH_A_2, AssetUrls.MUZZLE_FLASH_A_3, ]
-    static bTextures = [ AssetUrls.MUZZLE_FLASH_B_0, AssetUrls.MUZZLE_FLASH_B_1, AssetUrls.MUZZLE_FLASH_B_2, AssetUrls.MUZZLE_FLASH_B_3, ]
-    static cTextures = [ AssetUrls.MUZZLE_FLASH_C_0, AssetUrls.MUZZLE_FLASH_C_1, AssetUrls.MUZZLE_FLASH_C_2, AssetUrls.MUZZLE_FLASH_C_3, ]
-    static dTextures = [ AssetUrls.MUZZLE_FLASH_D_0, AssetUrls.MUZZLE_FLASH_D_1, AssetUrls.MUZZLE_FLASH_D_2, AssetUrls.MUZZLE_FLASH_D_3, ]
-    static textureArrays = [ 
+    private static aTextures = [ AssetUrls.MUZZLE_FLASH_A_0, AssetUrls.MUZZLE_FLASH_A_1, AssetUrls.MUZZLE_FLASH_A_2, AssetUrls.MUZZLE_FLASH_A_3, ]
+    private static bTextures = [ AssetUrls.MUZZLE_FLASH_B_0, AssetUrls.MUZZLE_FLASH_B_1, AssetUrls.MUZZLE_FLASH_B_2, AssetUrls.MUZZLE_FLASH_B_3, ]
+    private static cTextures = [ AssetUrls.MUZZLE_FLASH_C_0, AssetUrls.MUZZLE_FLASH_C_1, AssetUrls.MUZZLE_FLASH_C_2, AssetUrls.MUZZLE_FLASH_C_3, ]
+    private static dTextures = [ AssetUrls.MUZZLE_FLASH_D_0, AssetUrls.MUZZLE_FLASH_D_1, AssetUrls.MUZZLE_FLASH_D_2, AssetUrls.MUZZLE_FLASH_D_3, ]
+    private static textureArrays = [ 
         MuzzleFlashParticle.aTextures, 
         MuzzleFlashParticle.bTextures, 
         MuzzleFlashParticle.cTextures,

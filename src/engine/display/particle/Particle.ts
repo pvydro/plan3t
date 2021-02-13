@@ -12,7 +12,7 @@ export interface IParticle extends IUpdatable, IDemolishable {
 }
 
 export interface ParticleOptions extends AnimationOptions, ParticlePositioningOptions {
-    sprite: Sprite | AnimatedSprite
+    sprite?: Sprite | AnimatedSprite
 }
 
 export interface ParticlePositioningOptions {
