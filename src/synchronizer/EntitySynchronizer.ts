@@ -19,7 +19,6 @@ export interface EntitySynchronizerOptions {
 }
 
 export class EntitySynchronizer implements IEntitySynchronizer {
-    synchronizables: Entity[]
     entityManager: IEntityManager
     assertionService: IEntitySynchronizerAssertionService
 
@@ -38,6 +37,8 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
         console.log(changes)
         console.log('x', changes.x)
+
+        this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
         const isLocalPlayer = RoomManager.isSessionALocalPlayer(sessionId)
         const isPlayer = (entity as Player) !== undefined

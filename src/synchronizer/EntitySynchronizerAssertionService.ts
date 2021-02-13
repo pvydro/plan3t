@@ -1,12 +1,19 @@
 import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../interface/IUpdatable'
-import { RoomManager } from '../manager/roommanager/RoomManager'
+import { Entity } from '../network/rooms/Entity'
 import { Flogger } from '../service/Flogger'
 import { EntitySynchronizer } from './EntitySynchronizer'
 import { IPlayerSynchronizerAssertionService, PlayerSynchronizerAssertionService } from './PlayerSynchronizerAssertionService'
+import { exists } from '../utils/Utils'
+import { PlanetGameState } from '../network/schema/planetgamestate/PlanetGameState'
+import { LocalEntity } from '../manager/entitymanager/EntityManager'
 
 export interface IEntitySynchronizerAssertionService extends IUpdatable {
+    synchronizables: Map<string, Entity>
     clientPlayer: IClientPlayer
+    roomState: PlanetGameState
+    clientEntities: Map<string, LocalEntity>
+    applyChangesToSynchronizable(sessionId: string, entity: Entity): void
 }
 
 export interface EntitySynchronizerAssertionServiceOptions {
@@ -14,6 +21,8 @@ export interface EntitySynchronizerAssertionServiceOptions {
 }
 
 export class EntitySynchronizerAssertionService implements IEntitySynchronizerAssertionService {
+    synchronizables: Map<string, Entity> = new Map()
+
     entitySynchronizer: EntitySynchronizer
     _numberOfTimesAsserted: number = 0
     _currentAssertionFrameInterval: number = 100
@@ -34,37 +43,35 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
         this.playerAssertionService.update()
     }
 
+    applyChangesToSynchronizable(sessionId: string, entity: Entity) {
+        Flogger.log('EntitySynchronizerAssertionService', 'applyChangesToSynchronizable')
+
+        if (this.synchronizables.has(sessionId)) {
+            const synchEntity = this.synchronizables.get(sessionId)
+
+            // Position
+            if (exists(entity.x) && entity.x !== synchEntity.x) {
+                synchEntity.x = entity.x
+            }
+            if (exists(entity.y) && entity.y !== synchEntity.y) {
+                synchEntity.y = entity.y
+            }
+
+        } else {
+            Flogger.color('green')
+            Flogger.log('EntitySynchronizerAssertionService', 'Setting new synchronizable', 'sessionId', sessionId)
+            
+            this.synchronizables.set(sessionId, entity)
+        }
+    }
+
     set clientPlayer(value: IClientPlayer) {
         this.playerAssertionService.clientPlayer = value
     }
 
-    // startLoopingAssertion() {
-    //     Flogger.log('EntitySynchronizerAssertionService', 'startLoopingAssertion', 'already startedLoopAssertion', this.enableLoopingAssertion)
-
-    //     if (this.enableLoopingAssertion) return
-
-    //     this.enableLoopingAssertion = true
-    // }
-
-    // stopLoopingAssertion() {
-    //     Flogger.log('EntitySynchronizerAssertionService', 'startLoopingAssertion', 'startedLoopAssertion', this.enableLoopingAssertion)
-
-    //     if (!this.enableLoopingAssertion) return
-
-    //     this.enableLoopingAssertion = false
-    // }
-
-    // update() {
-    //     if (this.enableLoopingAssertion) {
-    //         this._currentAssertionFrameInterval--
-    
-    //         if (this._currentAssertionFrameInterval <= 0) {
-    //             this._currentAssertionFrameInterval = this.assertionFrameInterval
-    
-    //             this.assertEntities()
-    //         }
-    //     }
-    // }
+    get clientPlayer() {
+        return this.playerAssertionService.clientPlayer
+    }
 
     // assertEntities() {
     //     if (this._numberOfTimesAsserted % 5 === 0) {
