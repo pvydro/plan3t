@@ -26,8 +26,11 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
     this.setSimulationInterval((deltaTime: number) => {
       PlanetRoom.Delta = (deltaTime * 60 / 1000)
 
-      this.state.players.forEach((p: Player) => {
-        p.x += p.xVel
+      this.state.players.forEach((player: Player) => {
+
+        player.x += player.xVel * PlanetRoom.Delta
+        player.y += player.yVel * PlanetRoom.Delta
+        
       })
 
       this.state.update()

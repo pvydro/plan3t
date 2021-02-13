@@ -1,6 +1,7 @@
 import { Player } from '../../rooms/Player'
 import { PlanetGameState } from './PlanetGameState'
 import { PlayerBodyState, Direction } from '../../utils/Enum'
+import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
 
 export interface IPGSPlayerController {
     update(): void
@@ -17,7 +18,7 @@ export class PGSPlayerController implements IPGSPlayerController {
         const playerCrouchDivisor: number = 1.75
         const playerWalkingSpeed: number = 1.5
         const playerJumpingHeight: number = 5
-        const floorFriction: number = 5
+        const horizontalFriction: number = 5
 
         this.players.forEach((p: Player) => {
             // Body state
@@ -26,7 +27,7 @@ export class PGSPlayerController implements IPGSPlayerController {
 
                     // p.comeToStop()
                     if (p.xVel !== 0) {
-                        p.xVel = 0
+                        p.xVel += ((0 - p.xVel) / horizontalFriction) * PlanetRoom.Delta
                     }
 
                     break
