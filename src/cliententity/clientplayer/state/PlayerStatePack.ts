@@ -5,4 +5,5 @@ export interface PlayerStatePack extends EntityStatePack {
     direction: number
     bodyState: number
     legsState: number
+    isOnGround: boolean
 }

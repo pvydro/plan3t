@@ -1,6 +1,6 @@
 import { Player } from '../../rooms/Player'
 import { PlanetGameState } from './PlanetGameState'
-import { PlayerBodyState, Direction } from '../../utils/Enum'
+import { PlayerBodyState, Direction, PlayerLegsState } from '../../utils/Enum'
 import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
 
 export interface IPGSPlayerController {
@@ -50,6 +50,20 @@ export class PGSPlayerController implements IPGSPlayerController {
                     }
 
                     break
+            }
+
+            // Legs state
+            switch (p.legsState) {
+                case PlayerLegsState.Jumping:
+                    if (p.isOnGround) {
+                        p.yVel = -playerJumpingHeight
+                        p.isOnGround = false
+                    }
+                    break
+            }
+
+            if (p.isOnGround === false) {
+                p.yVel += ((p.weight / 3) * 1) * PlanetRoom.Delta
             }
         })
     }

@@ -68,6 +68,15 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         this.parentListener.room.onMessage(RoomMessage.PlayerLandedOnGround, (client: Client, message: PlayerPayload) => {
             Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLandedOnGround, 'sessionId', client.sessionId, 'message', message)
 
+            const state = this.parentListener.room.state
+            const player = state.players.get(client.sessionId)
+
+            if (message.isOnGround) {
+                player.isOnGround = true
+                player.yVel = 0
+                player.y = message.y
+            }
+            
             this.applyPlayerPayloadToPlayer(client.sessionId, message)
         })
     }
@@ -89,7 +98,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         if (payload.y !== undefined) player.y = payload.y
     }
 
-    // TODO Do this when land on ground, not when on stand
+    // TODO Do this when land on ground
     private applyBodyStatePropertiesToPlayer(key: string, payload: PlayerPayload, player: Player) {        
         if (player.bodyState !== PlayerBodyState.Idle) {
             if (payload.bodyState === PlayerBodyState.Idle) {

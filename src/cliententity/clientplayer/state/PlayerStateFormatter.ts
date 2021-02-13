@@ -16,6 +16,7 @@ export class PlayerStateFormatter {
         payload.walkingDirection = player.walkingDirection as number
         payload.bodyState = player.bodyState as number
         payload.legsState = player.legsState as number
+        payload.isOnGround = player.isOnGround
 
         if (rules !== undefined) {
             if (rules.includePosition) {

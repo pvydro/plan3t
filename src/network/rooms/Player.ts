@@ -14,10 +14,12 @@ export class Player extends Entity {
     walkingDirection: Direction = Direction.Right
     @type('float32')
     weight: number = 0.5
-    @type('boolean')
-    hasSpawned: boolean = false
     @type('float32')
     handRotation: number = 0
+    @type('boolean')
+    hasSpawned: boolean = false
+    @type('boolean')
+    isOnGround: boolean = true
 
     moveLeft() {
         this.xVel = -1.5

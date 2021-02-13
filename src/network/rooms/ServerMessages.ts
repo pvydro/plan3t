@@ -23,6 +23,7 @@ export interface PlayerPayload extends EntityPayload {
     walkingDirection: Direction
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
+    isOnGround: boolean
 }
 
 export interface EntityPayload {
