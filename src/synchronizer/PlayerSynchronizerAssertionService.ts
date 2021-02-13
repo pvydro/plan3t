@@ -39,7 +39,11 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
         
         if (player.weaponStatus !== undefined) {
             const rotation = player.weaponStatus.rotation
-            this._clientPlayer.hand.setTargetRotation(rotation)
+            const clientEntity = this.entityAssertionService.entitySynchronizer.clientEntities.get(sessionId).clientEntity as ClientPlayer
+
+            if (clientEntity.hand) {
+                clientEntity.hand.setTargetRotation(rotation)
+            }
         }
     }
 

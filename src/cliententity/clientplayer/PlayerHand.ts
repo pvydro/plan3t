@@ -13,7 +13,7 @@ import { InputProcessor } from '../../input/InputProcessor'
 
 export interface IPlayerHand extends IUpdatable {
     setWeapon(weapon: Weapon): void
-    setTargetRotation(targetRotatioN: number): void
+    setTargetRotation(targetRotation: number): void
     empty(): void
 }
 
@@ -129,7 +129,7 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     setTargetRotation(targetRotation: number) {
         console.log('setTargetRotation')
-        
+
         this.rotation = targetRotation
     }
 

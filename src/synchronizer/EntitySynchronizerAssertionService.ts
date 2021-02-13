@@ -11,6 +11,7 @@ import { Player } from '../network/rooms/Player'
 
 export interface IEntitySynchronizerAssertionService extends IUpdatable {
     playerAssertionService: IPlayerSynchronizerAssertionService
+    entitySynchronizer: EntitySynchronizer
     synchronizables: Map<string, Entity>
     clientPlayer: IClientPlayer
     roomState: PlanetGameState
