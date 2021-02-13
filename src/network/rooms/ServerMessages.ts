@@ -6,7 +6,8 @@ export enum RoomMessage {
     PlayerBodyStateChanged = 'ePlayerBodyStateChanged',
     PlayerLegsStateChanged = 'ePlayerLegsStateChanged',
     PlayerDirectionChanged = 'ePlayerDirectionChanged',
-    PlayerLandedOnGround = 'ePlayerLandedOnGround'
+    PlayerLandedOnGround = 'ePlayerLandedOnGround',
+    PlayerLookAngleChanged = 'ePlayerLookAngleChanged'
 }
 
 export enum ClientMessage {
@@ -24,6 +25,10 @@ export interface PlayerPayload extends EntityPayload {
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
     isOnGround: boolean
+}
+
+export interface WeaponStatusPayload {
+    rotation: number
 }
 
 export interface EntityPayload {

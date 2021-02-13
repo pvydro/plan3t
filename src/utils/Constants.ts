@@ -16,7 +16,7 @@ export const BasicLerp = (pointA: number, pointB: number, time: number) => {
 export const GlobalScale: number = 1
 export const ShowCollisionDebug: boolean = false
 export const ShowCameraProjectionDebug: boolean = false
-export const ShowPlayerSynchDebug: boolean = true
+export const ShowPlayerSynchDebug: boolean = false
 
 export class DebugConstants {
     static DisableFoliage: boolean = true//false

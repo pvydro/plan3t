@@ -2,7 +2,7 @@ import { exists } from '../../../utils/Utils'
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { PlayerBodyState, PlayerLegsState } from '../../utils/Enum'
-import { PlayerPayload, RoomMessage } from '../ServerMessages'
+import { PlayerPayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
 import { PlanetRoomListener } from './PlanetRoomListener'
 import { Player } from '../Player'
 
@@ -20,10 +20,21 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     startListening() {
         Flogger.log('PlanetRoomPlayerListener', 'startListening')
 
+        this.listenForWeaponStatusChanges()
         this.listenForBodyStateChange()
         this.listenForLegsStateChange()
         this.listenForDirectionChange()
         this.listenForOnGroundChange()
+    }
+
+    private listenForWeaponStatusChanges() {
+        Flogger.log('PlanetRoomPlayerListener', 'listenForRotationChange')
+
+        this.parentListener.room.onMessage(RoomMessage.PlayerLookAngleChanged, (client: Client, message: WeaponStatusPayload) => {
+            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLookAngleChanged, 'sessionId', client.sessionId, 'message', message)
+
+            this.applyWeaponStatusToPlayer(client.sessionId, message)
+        })
     }
 
     private listenForBodyStateChange() {
@@ -42,7 +53,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         this.parentListener.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
             Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
 
-            const player = this.parentListener.room.state.players.get(client.sessionId)
+            const player = this.getPlayer(client.sessionId)
 
             if (message.legsState == PlayerLegsState.Jumping && player.legsState !== message.legsState) {
                 player.jump()
@@ -81,12 +92,11 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         })
     }
 
-    applyPlayerPayloadToPlayer(key: string, payload: PlayerPayload) {
-        const state = this.parentListener.room.state
-        const player = state.players.get(key)
+    applyPlayerPayloadToPlayer(sessionId: string, payload: PlayerPayload) {
+        const player = this.getPlayer(sessionId)
 
-        this.applyBodyStatePropertiesToPlayer(key, payload, player)
-        this.applyVelocityPropertiesToPlayer(key, payload, player)
+        this.applyBodyStatePropertiesToPlayer(payload, player)
+        this.applyVelocityPropertiesToPlayer(payload, player)
 
         // player.x = payload.x ?? player.x
         // player.bodyState = payload.bodyState
@@ -98,8 +108,14 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         if (payload.y !== undefined) player.y = payload.y
     }
 
+    applyWeaponStatusToPlayer(sessionId: string, payload: WeaponStatusPayload) {
+        const player = this.getPlayer(sessionId)
+
+        player.weaponStatus.rotation = payload.rotation
+    }
+
     // TODO Do this when land on ground
-    private applyBodyStatePropertiesToPlayer(key: string, payload: PlayerPayload, player: Player) {        
+    private applyBodyStatePropertiesToPlayer(payload: PlayerPayload, player: Player) {        
         if (player.bodyState !== PlayerBodyState.Idle) {
             if (payload.bodyState === PlayerBodyState.Idle) {
                 // First stand payload
@@ -112,11 +128,18 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         player.bodyState = payload.bodyState
     }
 
-    private applyVelocityPropertiesToPlayer(key: string, payload: PlayerPayload, player: Player) {
+    private applyVelocityPropertiesToPlayer(payload: PlayerPayload, player: Player) {
         if (exists(payload.xVel)) {
             if (payload.xVel === 0 && exists(payload.x)) {
                 player.x = payload.x
             }
         }
+    }
+
+    getPlayer(sessionId: string) {
+        const state = this.parentListener.room.state
+        const player = state.players.get(sessionId)
+
+        return player
     }
 }

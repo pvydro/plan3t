@@ -1,9 +1,18 @@
-import { type } from '@colyseus/schema'
+import { Schema, type } from '@colyseus/schema'
 import { Flogger } from '../../service/Flogger'
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 import { Entity } from './Entity'
 
+class PlayerWeaponStatus extends Schema {
+    @type('float64')
+    rotation: number = 0
+}
+
 export class Player extends Entity {
+    @type(PlayerWeaponStatus)
+    weaponStatus: PlayerWeaponStatus = new PlayerWeaponStatus({
+        rotation: 0
+    })
     @type('int32')
     bodyState: PlayerBodyState = PlayerBodyState.Idle
     @type('int32')

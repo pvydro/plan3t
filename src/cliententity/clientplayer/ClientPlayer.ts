@@ -82,24 +82,24 @@ export class ClientPlayer extends GravityEntity {
             horizontalFriction: 5,
             weight: 0.5
         })
-        if (options.entityManager) {
-            this._entityManager = options.entityManager
-        }
-        if (exists(options.sessionId)) {
-            this.sessionId = options.sessionId
-        }
-        this._clientControl = options.clientControl ?? false
-        
         const player = this
+
+        if (options.entityManager) this._entityManager = options.entityManager
+        if (exists(options.sessionId)) this.sessionId = options.sessionId
+        if (options.clientControl) this._clientControl = true
+        
 
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
         this.messager = new PlayerMessager({ player })
-        if (this.isClientPlayer) this.light = new PlayerLight({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
+        if (this.isClientPlayer) {
+            this.light = new PlayerLight({ player })
+            this.messager.startSendingWeaponStatus()
+        }
         
         if (this.isClientPlayer) this.addChild(this.light)
         this.addChild(this.body)
@@ -119,13 +119,14 @@ export class ClientPlayer extends GravityEntity {
     
     update() {
         this.controller.update()
-
+        
         super.update()
         
         this.body.update()
         this.head.update()
         this.hand.update()
         if (this.light) this.light.update()
+        if (this.isClientPlayer) this.messager.update()
         
         this.collision.update()
     }
