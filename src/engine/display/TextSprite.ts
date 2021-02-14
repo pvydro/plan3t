@@ -21,7 +21,6 @@ export interface TextSpriteOptions {
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
 
-
     constructor(options: TextSpriteOptions) {
         const fontFamily = options.fontFamily ?? Fonts.Font.family
         const fontSize = options.fontSize ?? 24

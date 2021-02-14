@@ -1,27 +1,29 @@
+import { TiltShiftFilter } from 'pixi-filters'
 import { ParticleRenderer } from 'pixi.js'
 import { IDemolishable } from '../../../interface/IDemolishable'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { ParticleManager } from '../../../manager/ParticleManager'
-import { Vector2 } from '../../math/Vector2'
+import { IVector2, Vector2 } from '../../math/Vector2'
 import { AnimatedSprite, AnimationOptions } from '../AnimatedSprite'
 import { Container } from '../Container'
 import { Sprite } from '../Sprite'
+import { TextSprite } from '../TextSprite'
 
 export interface IParticle extends IUpdatable, IDemolishable {
 
 }
 
 export interface ParticleOptions extends AnimationOptions, ParticlePositioningOptions {
-    sprite?: Sprite | AnimatedSprite
+    sprite?: Sprite | AnimatedSprite | TextSprite
 }
 
 export interface ParticlePositioningOptions {
-    position?: Vector2
+    position?: IVector2
     rotation?: number
 }
 
 export class Particle extends Container implements IParticle {
-    sprite: Sprite | AnimatedSprite
+    sprite: Sprite | AnimatedSprite | TextSprite
 
     constructor(options: ParticleOptions) {
         super()
@@ -32,7 +34,10 @@ export class Particle extends Container implements IParticle {
             this.sprite.loop = options.loop ?? false
         }
         this.rotation = options.rotation ?? this.rotation
-        this.position = options.position ?? this.position
+        if (options.position) {
+            this.position.x = options.position.x ?? 0
+            this.position.y = options.position.y ?? 0
+        }
         
         this.addChild(this.sprite)
     }

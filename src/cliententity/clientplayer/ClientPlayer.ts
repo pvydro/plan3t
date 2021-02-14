@@ -18,6 +18,7 @@ import { PlayerMessager } from './PlayerMessager'
 import { exists } from '../../utils/Utils'
 import { TextSprite } from '../../engine/display/TextSprite'
 import { Fonts } from '../../asset/Fonts'
+import { ParticleManager } from '../../manager/ParticleManager'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
@@ -110,12 +111,11 @@ export class ClientPlayer extends GravityEntity {
         this.addChild(this.hand)
         this.addChild(this.collision)
 
-        const testText = new TextSprite({
-            text: 'This is a test',
-            fontFamily: Fonts.Font.fontFamily
-        })
-
-        this.addChild(testText)
+        // const testText = new TextSprite({
+        //     text: 'This is a test',
+        //     fontFamily: Fonts.FontStrong.fontFamily
+        // })
+        // this.addChild(testText)
         
         this.controller = new PlayerController({ player })
 
@@ -149,6 +149,14 @@ export class ClientPlayer extends GravityEntity {
         } else {
             this.hand.setWeapon(weapon)
         }
+
+        ParticleManager.getInstance().addTextParticle({
+            text: weapon.name,
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            }
+        })
     }
 
     set bodyState(value: PlayerBodyState) {
