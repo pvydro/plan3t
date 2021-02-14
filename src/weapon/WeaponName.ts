@@ -1,14 +1,14 @@
 export enum WeaponName {
     // SMGs
-    Komp9 = 'komp9',
-    P3 = 'p3',
-    Tachyon = 'tachyon',
+    Komp9 = 'KOMP9',
+    P3 = 'P3',
+    Tachyon = 'Tachyon',
     
     // ARs
-    Bully = 'bully',
-    Komplimenter = 'komplimenter',
-    Kortni = 'kortni',
+    Bully = 'Bully',
+    Komplimenter = 'Komplimenter',
+    Kortni = 'Kortni',
 
     // Snipers
-    Raze = 'raze'
+    Raze = 'Raze'
 }

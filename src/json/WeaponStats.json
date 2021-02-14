@@ -1,5 +1,5 @@
 {
-    "komp9": {
+    "KOMP9": {
         "dir": "smgs",
         "damage": 22,
         "fireRate": 0.75,
@@ -12,7 +12,7 @@
         "recoilY": 1.25,
         "barrelOffsetY": -3
     },
-    "p3": {
+    "P3": {
         "dir": "smgs",
         "damage": 19,
         "fireRate": 0.9,
@@ -27,7 +27,7 @@
         "recoilY": 1.25,
         "barrelOffsetY": -3
     },
-    "tachyon": {
+    "Tachyon": {
         "dir": "smgs",
         "damage": 23,
         "fireRate": 1.8,
@@ -43,7 +43,7 @@
         "barrelOffsetY": -3
     },
 
-    "bully": {
+    "Bully": {
         "dir": "assault-rifles",
         "damage": 34,
         "fireRate": 1,
@@ -59,7 +59,7 @@
         "recoilY": 1.25,
         "barrelOffsetY": -3
     },
-    "komplimenter": {
+    "Komplimenter": {
         "dir": "assault-rifles",
         "damage": 34,
         "fireRate": 1,
@@ -75,7 +75,7 @@
         "recoilY": 1.25,
         "barrelOffsetY": -3
     },
-    "kortni": {
+    "Kortni": {
         "dir": "assault-rifles",
         "damage": 45,
         "fireRate": 0.95,
@@ -89,8 +89,7 @@
         "recoilY": 1.25,
         "barrelOffsetY": -3
     },
-
-    "raze": {
+    "Raze": {
         "dir": "snipers",
         "damage": 99,
         "fireRate": 4,

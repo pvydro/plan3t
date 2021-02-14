@@ -74,6 +74,7 @@ export class GameplayState extends GameState implements IGameplayState {
     
             this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
+            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
 
 
             // const data = this.gameMapManager.gameMap.currentSpherical.data

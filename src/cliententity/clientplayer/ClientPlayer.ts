@@ -122,7 +122,7 @@ export class ClientPlayer extends GravityEntity {
         this.scale.set(GlobalScale, GlobalScale)
 
         this.holster.setLoadout({
-            primaryWeaponName: WeaponName.Komplimenter,
+            primaryWeaponName: WeaponName.Tachyon,
             secondaryWeaponName: WeaponName.P3
         })
     }
@@ -151,7 +151,7 @@ export class ClientPlayer extends GravityEntity {
         }
 
         ParticleManager.getInstance().addTextParticle({
-            text: weapon.name,
+            text: weapon.name.toUpperCase(),
             position: {
                 x: this.position.x,
                 y: this.position.y
