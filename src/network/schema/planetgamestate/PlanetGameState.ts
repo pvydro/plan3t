@@ -39,6 +39,8 @@ export class PlanetSphericalSchema extends Schema {
 }
 
 export class Projectile extends Entity {
+  @type('string')
+  sessionId!: string
   @type('number')
   rotation!: number
   @type('number')
@@ -77,7 +79,8 @@ export class PlanetGameState extends Schema {
       x: projectile.x,
       y: projectile.y,
       rotation: projectile.rotation,
-      velocity: projectile.velocity
+      velocity: projectile.velocity,
+      sessionId: projectile.sessionId
     }))
   }
 

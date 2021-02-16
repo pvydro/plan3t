@@ -132,7 +132,8 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
             x: payload.bulletX,
             y: payload.bulletY,
             rotation: payload.rotation,
-            velocity: bulletVelocity * payload.direction
+            velocity: bulletVelocity * payload.direction,
+            sessionId: sessionId
         }))
     }
 

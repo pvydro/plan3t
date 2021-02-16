@@ -104,7 +104,9 @@ export class RoomManager implements IRoomManager {
         }
 
         this.currentRoom.state.projectiles.onAdd = (projectile: Projectile, key: number) => {
-            this.addProjectile(projectile)
+            if (projectile.sessionId !== RoomManager.clientSessionId) {
+                this.addProjectile(projectile)
+            }
         }
     }
 
