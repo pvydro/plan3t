@@ -22,10 +22,11 @@ import { IPlayerHealthController, PlayerHealthController } from './PlayerHealthC
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
-    messenger: IPlayerMessenger
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
     consciousnessState: PlayerConsciousnessState
+    messenger: IPlayerMessenger
+    controller: IPlayerController
     hand: IPlayerHand
     emitter: Emitter
     direction: Direction

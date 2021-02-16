@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js'
 import { Assets } from '../../asset/Assets'
 import { IDimension } from '../math/Dimension'
+import { IVector2 } from '../math/Vector2'
 
 export interface IAnimatedSprite {
-
+    anchor: IVector2
 }
 
 export interface AnimationOptions {

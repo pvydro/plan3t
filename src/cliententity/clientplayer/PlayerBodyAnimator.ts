@@ -1,14 +1,14 @@
-import * as PIXI from 'pixi.js'
 import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Events } from '../../utils/Constants'
-import { IClientPlayer, PlayerBodyState, PlayerLegsState } from './ClientPlayer'
+import { IClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { IPlayerBody } from './PlayerBody'
 
 export interface IPlayerBodyAnimator extends IUpdatable {
-    walkingSprite: PIXI.AnimatedSprite
-    jumpingSprite: PIXI.AnimatedSprite
+    walkingSprite: AnimatedSprite
+    jumpingSprite: AnimatedSprite
+    dyingSprite: AnimatedSprite
 }
 
 export interface PlayerBodyAnimatorOptions {
@@ -19,8 +19,9 @@ export interface PlayerBodyAnimatorOptions {
 export class PlayerBodyAnimator implements IPlayerBodyAnimator {
     playerBody: IPlayerBody
     player: IClientPlayer
-    walkingSprite: PIXI.AnimatedSprite
-    jumpingSprite: PIXI.AnimatedSprite
+    walkingSprite: AnimatedSprite
+    jumpingSprite: AnimatedSprite
+    dyingSprite: AnimatedSprite
     _emittedLoopEvent: boolean = false
 
     constructor(options: PlayerBodyAnimatorOptions) {
@@ -33,11 +34,17 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
     update() {
         const bodyState = this.player.bodyState
         const legsState = this.player.legsState
+        const consciousnessState = this.player.consciousnessState
 
-        if (legsState === PlayerLegsState.Jumping) {
+        if (consciousnessState === PlayerConsciousnessState.Dead) {
+            
+            if (this.playerBody.currentShown !== this.playerBody.animator.dyingSprite) {
+                this.playerBody.showDyingSprite()
+            }
+
+        } else if (legsState === PlayerLegsState.Jumping) {
 
             if (this.playerBody.currentShown !== this.playerBody.animator.jumpingSprite) {
-                console.log('Show jupming sprite')
                 this.playerBody.showJumpingSprite()
             }
 
@@ -60,6 +67,7 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
     buildAnimatedSprites() {
         const walkingSheet = Spritesheets.get(SpritesheetUrls.PLAYER_BODY_WALKING)
         const jumpingSheet = Spritesheets.get(SpritesheetUrls.PLAYER_BODY_JUMPING)
+        const dyingSheet = Spritesheets.get(SpritesheetUrls.PLAYER_BODY_DYING)
         
         // Walking animation
         this.walkingSprite = new AnimatedSprite({
@@ -84,5 +92,13 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
             loop: false
         })
         this.jumpingSprite.anchor.set(0.5, 0.5)
+
+        // Dying animation
+        this.dyingSprite = new AnimatedSprite({
+            sheet: dyingSheet.animations['tile'],
+            animationSpeed: 0.2,
+            loop: false
+        })
+        this.dyingSprite.anchor.set(0.5, 0.5)
     }
 }

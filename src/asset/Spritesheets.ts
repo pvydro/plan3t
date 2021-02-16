@@ -6,6 +6,7 @@ export class SpritesheetUrls {
 
     public static PLAYER_BODY_WALKING = 'assets/image/player/body/body_walking.json'
     public static PLAYER_BODY_JUMPING = 'assets/image/player/body/body_jumping.json'
+    public static PLAYER_BODY_DYING = 'assets/image/player/body/body_dying.json'
 }
 
 export class Spritesheets {

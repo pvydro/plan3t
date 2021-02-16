@@ -8,6 +8,7 @@ import { IVector2, Vector2 } from '../../engine/math/Vector2'
 
 export interface IPlayerController {
     update(): void
+    forceTriggerJump(): void
 }
 
 export interface PlayerControllerOptions {
@@ -129,6 +130,11 @@ export class PlayerController implements IPlayerController {
 
         this.player.onGround = false
         this.player.yVel = -this.playerJumpingHeight
+    }
+
+    forceTriggerJump() {
+        this.player._onGround = true
+        this.triggerJump()
     }
 
     changeDirectionBasedOnMouse() {

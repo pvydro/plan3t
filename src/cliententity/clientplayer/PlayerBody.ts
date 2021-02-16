@@ -7,6 +7,7 @@ import { IPlayerBodyAnimator, PlayerBodyAnimator } from './PlayerBodyAnimator'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
 import { Direction } from '../../engine/math/Direction'
+import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 
 export interface IPlayerBody extends IContainer, IUpdatable {
     sprite: PIXI.Sprite
@@ -15,6 +16,7 @@ export interface IPlayerBody extends IContainer, IUpdatable {
     showRunningSprite(): void
     showJumpingSprite(): void
     showIdleSprite(): void
+    showDyingSprite(): void
 }
 
 export interface PlayerBodyOptions {
@@ -22,15 +24,19 @@ export interface PlayerBodyOptions {
 }
 
 export class PlayerBody extends Container implements IPlayerBody {
-    animator: IPlayerBodyAnimator
     _sprite: Sprite
-    _walkingSprite: PIXI.AnimatedSprite
-    _jumpingSprite: PIXI.AnimatedSprite
-    currentShown?: PIXI.AnimatedSprite | Sprite
+    _walkingSprite: AnimatedSprite
+    _jumpingSprite: AnimatedSprite
+    _dyingSprite: AnimatedSprite
+    player: IClientPlayer
+    animator: IPlayerBodyAnimator
+    currentShown?: AnimatedSprite | Sprite
     currentDirection: Direction = Direction.Right
 
     constructor(options: PlayerBodyOptions) {
         super()
+
+        this.player = options.player
 
         this.animator = new PlayerBodyAnimator({
             player: options.player,
@@ -43,10 +49,12 @@ export class PlayerBody extends Container implements IPlayerBody {
 
         this._walkingSprite = this.animator.walkingSprite
         this._jumpingSprite = this.animator.jumpingSprite
+        this._dyingSprite = this.animator.dyingSprite
         
         this.addChild(this.sprite)
         this.addChild(this._walkingSprite)
         this.addChild(this._jumpingSprite)
+        this.addChild(this._dyingSprite)
     }
 
     update() {
@@ -59,9 +67,7 @@ export class PlayerBody extends Container implements IPlayerBody {
             this.currentShown = this._walkingSprite
         }
 
-        this._sprite.alpha = 0
-        this._jumpingSprite.alpha = 0
-        this._walkingSprite.alpha = 1
+        this.hideAllExcept(this._walkingSprite)
         this._walkingSprite.play()
     }
 
@@ -70,10 +76,7 @@ export class PlayerBody extends Container implements IPlayerBody {
             this.currentShown = this._sprite
         }
 
-        this._sprite.alpha = 1
-        this._walkingSprite.alpha = 0
-        this._jumpingSprite.alpha = 0
-        this._walkingSprite.stop()
+        this.hideAllExcept(this._sprite)
     }
 
     showJumpingSprite() {
@@ -84,9 +87,35 @@ export class PlayerBody extends Container implements IPlayerBody {
             return
         }
 
-        this._sprite.alpha = 0
-        this._walkingSprite.alpha = 0
-        this._jumpingSprite.alpha = 1
+        this.hideAllExcept(this._jumpingSprite)
+    }
+
+    showDyingSprite() {
+        if (this.currentShown !== this._dyingSprite) {
+            this.player.controller.forceTriggerJump()
+            this._dyingSprite.gotoAndPlay(0)
+            this.currentShown = this._dyingSprite
+        } else {
+            return
+        }
+
+        this.hideAllExcept(this._dyingSprite)
+    }
+
+    hideAllExcept(shownSprite: any) {
+        const hideable = [
+            this._sprite, this._walkingSprite, this._dyingSprite, this._jumpingSprite
+        ]
+
+        for (var i in hideable) {
+            const hideElement = hideable[i]
+
+            if (hideElement !== shownSprite) {
+                hideElement.alpha = 0
+            }
+        }
+
+        shownSprite.alpha = 1
     }
 
     get sprite() {
