@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
+import { IParticleManager, ParticleManager } from '../manager/ParticleManager'
 import { IRoomManager } from '../manager/roommanager/RoomManager'
 import { Flogger } from '../service/Flogger'
 
@@ -20,6 +21,7 @@ export class GameLoop implements IGameLoop {
     _initialized: boolean = false
     _shouldLoop: boolean = true
     clientManager?: IClientManager = undefined
+    particleManager?: ParticleManager = undefined
     entityManager?: IEntityManager = undefined
     gravityManager: IGravityManager = undefined
     roomManager?: IRoomManager = undefined
@@ -28,6 +30,7 @@ export class GameLoop implements IGameLoop {
         this.assignOptions(options)
 
         this.gravityManager = GravityManager.getInstance()
+        this.particleManager = ParticleManager.getInstance()
     }
 
     startGameLoop(options?: GameLoopOptions) {
@@ -72,6 +75,7 @@ export class GameLoop implements IGameLoop {
 
         // Update current state
         this.clientManager.update()
+        this.particleManager.update()
 
         if (this._shouldLoop) {
             requestAnimationFrame(this.gameLoop.bind(this))

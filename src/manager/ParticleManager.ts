@@ -12,11 +12,11 @@ export interface ParticleManagerOptions {
 
 }
 
-export class ParticleManager {
+export class ParticleManager implements IParticleManager {
     private static INSTANCE: ParticleManager
     container: Container
     overlayContainer: Container
-    particles: IParticle[]
+    particles: Set<IParticle>
 
     public static getInstance() {
         if (ParticleManager.INSTANCE === undefined) {
@@ -29,24 +29,33 @@ export class ParticleManager {
     private constructor() {
         this.container = new Container()
         this.overlayContainer = new Container()
+        this.particles = new Set()
+    }
+
+    update() {
+        for (var p of this.particles.values()) {
+            p.update()
+        }
     }
 
     addTextParticle(options: TextParticleOptions) {
         const textParticle = new TextParticle(options)
         this.overlayContainer.addChild(textParticle)
 
-        // this.particles.push(textParticle)
+        this.particles.add(textParticle)
     }
 
     addParticle(particle: Particle, container?: Container) {
         const cont = container ?? this.container
         cont.addChild(particle)
 
-        // this.particles.push(particle) // TODO Make this a Set
+        this.particles.add(particle)
     }
 
     removeParticle(particle: Particle, container?: Container) {
         const cont = container ?? this.container
         cont.removeChild(particle)
+
+        this.particles.delete(particle)
     }
 }

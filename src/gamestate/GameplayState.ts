@@ -75,33 +75,6 @@ export class GameplayState extends GameState implements IGameplayState {
             this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
-
-
-            // const data = this.gameMapManager.gameMap.currentSpherical.data
-            // const dataPoints = []
-
-            // Construct message-able point array
-            // data.points.forEach((point: ISphericalPoint) => {
-            //     dataPoints.push({
-            //         x: point.x, y: point.y,
-            //         tileValue: {
-            //             r: point.tileValue.r,
-            //             g: point.tileValue.g,
-            //             b: point.tileValue.b,
-            //             a: point.tileValue.a
-            //         },
-            //         tileSolidity: point.tileSolidity
-            //     })
-            // })
-
-            // this.roomManager.currentRoom.send('newPlanet', {
-            //     biome: data.biome,
-            //     points: dataPoints,
-            //     dimension: {
-            //         width: data.dimension.width,
-            //         height: data.dimension.height,
-            //     }
-            // })
         })
     }
 
