@@ -66,7 +66,10 @@ export class PlanetGameState extends Schema {
   createPlayer(sessionId: string) {
     Flogger.log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
-    this.players.set(sessionId, new Player())
+    this.players.set(sessionId, new Player().assign({
+      x: 0,
+      y: 0
+    }))
   }
 
   createProjectile(projectile: Projectile) {

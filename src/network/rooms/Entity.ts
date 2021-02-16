@@ -2,15 +2,15 @@ import { Schema, type } from '@colyseus/schema'
 
 export class Entity extends Schema {
     @type('float64')
-    x: number = 0
+    x!: number 
     @type('float64')
-    y: number = 0
+    y!: number
     @type('float64')
-    xVel: number = 0
+    xVel!: number
     @type('float64')
-    yVel: number = 0
+    yVel!: number
     @type('float32')
-    weight: number = 0
+    weight!: number
 
     dead: boolean = false
 
