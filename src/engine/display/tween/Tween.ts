@@ -22,12 +22,12 @@ export interface TweenOptions {
 
 export class Tween {
     static to(target: any, options: TweenOptions): gsap.core.Tween {
-        options = Tween.applyOptionsDefaults(options)
+        options = Tween.applyDefaultsToOptions(options)
 
         return gsap.to(target, options)
     }
 
-    private static applyOptionsDefaults(options: TweenOptions): TweenOptions {
+    private static applyDefaultsToOptions(options: TweenOptions): TweenOptions {
         const autoplay = options.autoplay !== undefined ? options.autoplay : false
 
         options.duration = options.duration ?? 0.5
