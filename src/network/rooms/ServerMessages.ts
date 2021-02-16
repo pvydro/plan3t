@@ -5,6 +5,7 @@ export enum RoomMessage {
     GetPlanet = 'eGetPlanet',
     PlayerBodyStateChanged = 'ePlayerBodyStateChanged',
     PlayerLegsStateChanged = 'ePlayerLegsStateChanged',
+    PlayerConciousnessStateChanged = 'ePlayerConciousnessStateChanged',
     PlayerDirectionChanged = 'ePlayerDirectionChanged',
     PlayerLandedOnGround = 'ePlayerLandedOnGround',
     PlayerLookAngleChanged = 'ePlayerLookAngleChanged',

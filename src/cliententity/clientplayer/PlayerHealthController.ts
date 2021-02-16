@@ -2,7 +2,7 @@ import { Key } from "ts-keycode-enum";
 import { InputProcessor } from "../../input/InputProcessor";
 import { ParticleManager } from "../../manager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
-import { IClientPlayer } from "./ClientPlayer";
+import { IClientPlayer, PlayerConsciousnessState } from "./ClientPlayer";
 
 export interface IPlayerHealthController {
     totalHealth: number
@@ -24,7 +24,7 @@ export class PlayerHealthController implements IPlayerHealthController {
     constructor(options: PlayerHealthControllerOptions) {
         this.player = options.player
 
-        this.addTestKeyListeners()
+        if (this.player.isClientPlayer) this.addTestKeyListeners()
     }
 
     addTestKeyListeners() {
@@ -32,6 +32,9 @@ export class PlayerHealthController implements IPlayerHealthController {
             switch (ev.which) {
                 case Key.P:
                     this.takeDamage(10)
+                    break
+                case Key.K:
+                    this.suicide()
                     break
             }
         })
@@ -49,8 +52,7 @@ export class PlayerHealthController implements IPlayerHealthController {
     suicide(): void {
         Flogger.log('PlayerHealthController', 'suicide')
 
-        this.currentHealth -= this.totalHealth
-        this.checkDeath()
+        this.takeDamage(this.totalHealth)
     }
 
     private checkDeath() {
@@ -80,5 +82,7 @@ export class PlayerHealthController implements IPlayerHealthController {
 
     private die() {
         Flogger.log('PlayerHealthController', 'die')
+
+        this.player.consciousnessState = PlayerConsciousnessState.Dead
     }
 }

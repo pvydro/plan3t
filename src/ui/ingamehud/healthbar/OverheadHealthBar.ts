@@ -1,12 +1,14 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
-import { IClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
+import { IClientPlayer, PlayerConsciousnessState } from '../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../engine/display/Sprite'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { UIComponent } from '../../UIComponent'
+import { ICanDie } from '../../../interface/ICanDie'
+import { Flogger } from '../../../service/Flogger'
 
-export interface IOverheadHealthBar extends IUpdatable {
+export interface IOverheadHealthBar extends IUpdatable, ICanDie {
 
 }
 
@@ -22,9 +24,16 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     targetFillPercentage: number = 1
     fillPercentage: number = this.targetFillPercentage
     fillDivisor: number = 2
+    dead: boolean = false
+
+    deadDisappearAnimation: TweenLite
+    shineAnimation: TweenLite
+    shakeAnimation: TweenLite
+    shakeAnimationAmount: number = 2
 
     constructor(options: OverheadHealthBarOptions) {
         super()
+        const ogX = this.x
 
         this.player = options.player
 
@@ -49,9 +58,43 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
         this.addChild(this.fillSprite)
 
         this.position.y = -32
+
+        // Dead disappear animation
+        this.deadDisappearAnimation = Tween.to(this.backgroundSprite, {
+            y: this.backgroundSprite.y - 12,
+            alpha: 0,
+            duration: 1,
+            ease: Easing.Power4EaseOut
+        })
+
+        // Hit shine animation
+        this.shineAnimation = Tween.to(this.fillSprite.overlayGraphic, {
+            duration: 0.5,
+            ease: Easing.EaseOutCubic,
+            alpha: 0
+        })
+
+        // Hit shake animation
+        this.shakeAnimation = Tween.to(this, {
+            repeat: 4,
+            duration: .05,
+            x: this.shakeAnimationAmount,
+            yoyo: true,
+            ease: Easing.EaseInOutQuad,
+            onComplete() {
+                Tween.to(this, {
+                    x: ogX,
+                    duration: 0.5 * 2,
+                }).play()
+            }
+        }).play()
     }
 
     update() {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+            this.triggerDeadAnimation()
+        }
+
         if (this.targetFillPercentage !== this.player.healthPercentage) {
             this.triggerHealthDrop()
         }
@@ -74,37 +117,21 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     }
 
     private triggerShineAnimation() {
-        const shineAnimationTarget = this.fillSprite.overlayGraphic
-        shineAnimationTarget.alpha = 0.75
+        this.fillSprite.overlayGraphic.alpha = 0.75
 
-        const shineAnimation = Tween.to(shineAnimationTarget, {
-            duration: 0.5,
-            ease: Easing.EaseOutCubic,
-            alpha: 0
-        })
-
-        shineAnimation.play()
+        this.shineAnimation.restart()
+        this.shineAnimation.play()
     }
 
     triggerShakeAnimation() {
-        const target = this
-        const ogX = this.x
-        const shakeAmt = 2
-        const duration = .05
-
-        Tween.to(target, {
-            repeat: 4,
-            duration: duration,
-            x: shakeAmt,
-            yoyo: true,
-            ease: Easing.EaseInOutQuad,
-            onComplete() {
-                Tween.to(target, {
-                    x: ogX,
-                    duration: duration * 2,
-                }).play()
-            }
-        }).play()
-
+        this.shakeAnimation.restart()
+        this.shakeAnimation.play()
+    }
+    
+    triggerDeadAnimation() {
+        if (!this.dead) {
+            this.dead = true
+            this.deadDisappearAnimation.play()
+        }
     }
 }

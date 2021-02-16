@@ -25,6 +25,7 @@ export interface IClientPlayer extends IGravityEntity {
     messenger: IPlayerMessenger
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
+    consciousnessState: PlayerConsciousnessState
     hand: IPlayerHand
     emitter: Emitter
     direction: Direction
@@ -33,6 +34,11 @@ export interface IClientPlayer extends IGravityEntity {
     totalHealth: number
     healthPercentage: number
     equipWeapon(weapon: Weapon): void
+}
+
+export enum PlayerConsciousnessState {
+    Alive = 0,
+    Dead = 1
 }
 
 export enum PlayerBodyState {
@@ -54,10 +60,16 @@ export interface ClientPlayerOptions {
 }
 
 export class ClientPlayer extends GravityEntity {
-    sessionId: string = ''
-
     private static INSTANCE: ClientPlayer
+    
     _entityManager?: IEntityManager
+    _clientControl: boolean = false
+    _direction: Direction = Direction.Right
+    _walkingDirection: Direction = Direction.Right
+    _bodyState: PlayerBodyState = PlayerBodyState.Idle
+    _legsState: PlayerLegsState = PlayerLegsState.Standing
+    _consciousnessState: PlayerConsciousnessState = PlayerConsciousnessState.Alive
+    sessionId: string = ''
     messenger: IPlayerMessenger
     head: PlayerHead
     body: PlayerBody
@@ -68,11 +80,6 @@ export class ClientPlayer extends GravityEntity {
     controller: IPlayerController
     healthController: IPlayerHealthController
     overheadHealthBar: OverheadHealthBar
-    _clientControl: boolean = false
-    _direction: Direction = Direction.Right
-    _walkingDirection: Direction = Direction.Right
-    _bodyState: PlayerBodyState = PlayerBodyState.Idle
-    _legsState: PlayerLegsState = PlayerLegsState.Standing
     emitter: Emitter = new Emitter()
 
     static getInstance(options?: ClientPlayerOptions): ClientPlayer | undefined {
@@ -164,18 +171,6 @@ export class ClientPlayer extends GravityEntity {
         })
     }
 
-    set bodyState(value: PlayerBodyState) {
-        const shouldSendMessage = (this._bodyState !== value)
-
-        this._bodyState = value
-
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
-    }
-
-    set legsState(value: PlayerLegsState) {
-        this._legsState = value
-    }
-
     set direction(value: Direction) {
         const shouldSendMessage = (this._direction !== value)
 
@@ -205,12 +200,36 @@ export class ClientPlayer extends GravityEntity {
         })
     }
 
+    set consciousnessState(value: PlayerConsciousnessState) {
+        const shouldSendMessage = (this._consciousnessState !== value)
+
+        this._consciousnessState = value
+        
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerConciousnessStateChanged)
+    }
+
+    set bodyState(value: PlayerBodyState) {
+        const shouldSendMessage = (this._bodyState !== value)
+
+        this._bodyState = value
+
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
+    }
+
+    set legsState(value: PlayerLegsState) {
+        this._legsState = value
+    }
+
     get bodyState() {
         return this._bodyState
     }
 
     get legsState() {
         return this._legsState
+    }
+
+    get consciousnessState() {
+        return this._consciousnessState
     }
 
     get direction() {
