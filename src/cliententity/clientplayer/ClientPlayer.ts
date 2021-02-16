@@ -18,6 +18,7 @@ import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
+import { IPlayerHealthController, PlayerHealthController } from './PlayerHealthController'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
@@ -28,6 +29,9 @@ export interface IClientPlayer extends IGravityEntity {
     emitter: Emitter
     direction: Direction
     isClientPlayer: boolean
+    currentHealth: number
+    totalHealth: number
+    healthPercentage: number
     equipWeapon(weapon: Weapon): void
 }
 
@@ -60,9 +64,10 @@ export class ClientPlayer extends GravityEntity {
     hand: PlayerHand
     holster: PlayerWeaponHolster
     light: PlayerLight
-    overheadHealthBar: OverheadHealthBar
     collision: PlayerCollision
     controller: IPlayerController
+    healthController: IPlayerHealthController
+    overheadHealthBar: OverheadHealthBar
     _clientControl: boolean = false
     _direction: Direction = Direction.Right
     _walkingDirection: Direction = Direction.Right
@@ -98,6 +103,7 @@ export class ClientPlayer extends GravityEntity {
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
+        this.healthController = new PlayerHealthController({ player })
         this.overheadHealthBar = new OverheadHealthBar({ player })
         this.messenger = new PlayerMessenger({ player })
         this.collision = new PlayerCollision({ player })
@@ -107,12 +113,12 @@ export class ClientPlayer extends GravityEntity {
             this.messenger.startSendingWeaponStatus()
         }
         
+        this.addChild(this.overheadHealthBar)
         if (this.isClientPlayer) this.addChild(this.light)
         this.addChild(this.body)
         this.addChild(this.head)
         this.addChild(this.hand)
         this.addChild(this.collision)
-        this.addChild(this.overheadHealthBar)
         
         this.controller = new PlayerController({ player })
 
@@ -221,5 +227,17 @@ export class ClientPlayer extends GravityEntity {
 
     get entityManager() {
         return this._entityManager
+    }
+
+    get currentHealth() {
+        return this.healthController.currentHealth
+    }
+
+    get totalHealth() {
+        return this.healthController.totalHealth
+    }
+
+    get healthPercentage() {
+        return this.currentHealth / this.totalHealth
     }
 }

@@ -16,8 +16,12 @@ export interface OverheadHealthBarOptions {
 
 export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar {
     backgroundSprite: Sprite
-    fillSprite: Sprite
     player: IClientPlayer
+    fillSprite: Sprite
+    fillSpriteWidth: number
+    targetFillPercentage: number = 1
+    fillPercentage: number = this.targetFillPercentage
+    fillDivisor: number = 5
 
     constructor(options: OverheadHealthBarOptions) {
         super()
@@ -32,6 +36,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
         this.fillSprite = new Sprite({ texture: fillTexture })
         this.fillSprite.anchor.set(0, 0.5)
         this.fillSprite.x = -this.backgroundSprite.halfWidth + 3
+        this.fillSpriteWidth = this.fillSprite.width
 
         this.addChild(this.backgroundSprite)
         this.addChild(this.fillSprite)
@@ -40,6 +45,17 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     }
 
     update() {
+        if (this.targetFillPercentage !== this.player.healthPercentage) {
+            this.targetFillPercentage = this.player.healthPercentage
+        }
 
+        if (this.fillPercentage !== this.targetFillPercentage) {
+            this.fillPercentage += (this.targetFillPercentage - this.fillPercentage) / this.fillDivisor
+    
+            // Cap outat 0.01 breakpoint
+            if (this.fillPercentage < this.targetFillPercentage + 0.01) this.fillPercentage = this.targetFillPercentage
+
+            this.fillSprite.width = this.fillSpriteWidth * this.fillPercentage
+        }
     }
 }
