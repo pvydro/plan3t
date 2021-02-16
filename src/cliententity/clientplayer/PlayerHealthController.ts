@@ -1,5 +1,6 @@
 import { Key } from "ts-keycode-enum";
 import { InputProcessor } from "../../input/InputProcessor";
+import { ParticleManager } from "../../manager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
 import { IClientPlayer } from "./ClientPlayer";
 
@@ -42,6 +43,7 @@ export class PlayerHealthController implements IPlayerHealthController {
         this.currentHealth -= damageAmount
 
         this.checkDeath()
+        this.displayDamageEffects(damageAmount)
     }
 
     suicide(): void {
@@ -57,6 +59,20 @@ export class PlayerHealthController implements IPlayerHealthController {
 
             this.die()
         }
+    }
+
+    private displayDamageEffects(damageAmount: number) {
+        if (!this.player.isClientPlayer) return
+
+        const damageString = '-' + damageAmount
+
+        ParticleManager.getInstance().addTextParticle({
+            text: damageString,
+            position: {
+                x: this.player.x,
+                y: this.player.y
+            }
+        })
     }
 
     private die() {
