@@ -159,6 +159,7 @@ export class AssetUrls {
     static HEALTH_BAR_FILL = 'assets/image/ui/ingamehud/healthbarfill'
     static AMMO_STATUS_BG = 'assets/image/ui/ingamehud/ammostatusbg'
     static OVERHEAD_HEALTHB_BAR_BG = 'assets/image/ui/ingamehud/overheadhealthbar'
+    static OVERHEAD_HEALTHB_BAR_FILL = 'assets/image/ui/ingamehud/overheadhealthbarfill'
 
     // Tile decoration
 }

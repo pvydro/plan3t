@@ -16,6 +16,7 @@ export interface OverheadHealthBarOptions {
 
 export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar {
     backgroundSprite: Sprite
+    fillSprite: Sprite
     player: IClientPlayer
 
     constructor(options: OverheadHealthBarOptions) {
@@ -27,7 +28,13 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
         this.backgroundSprite = new Sprite({ texture: backgroundTexture })
         this.backgroundSprite.anchor.set(0.5, 0.5)
 
+        const fillTexture = PIXI.Texture.from(Assets.get(AssetUrls.OVERHEAD_HEALTHB_BAR_FILL))
+        this.fillSprite = new Sprite({ texture: fillTexture })
+        this.fillSprite.anchor.set(0, 0.5)
+        this.fillSprite.x = -this.backgroundSprite.halfWidth + 3
+
         this.addChild(this.backgroundSprite)
+        this.addChild(this.fillSprite)
 
         this.position.y = -32
     }
