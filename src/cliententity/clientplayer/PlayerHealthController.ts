@@ -71,6 +71,9 @@ export class PlayerHealthController implements IPlayerHealthController {
             position: {
                 x: this.player.x,
                 y: this.player.y
+            },
+            positionRandomization: {
+                randomizationRange: 32
             }
         })
     }
