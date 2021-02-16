@@ -4,6 +4,7 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Entity } from '../../network/rooms/Entity'
 import { Flogger } from '../../service/Flogger'
+import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
@@ -32,12 +33,15 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', options.sessionId, 'isClientPlayer', options.isClientPlayer)
 
         const player = this.getPlayer(options)
+        const hud = InGameHUD.getInstance()
 
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
         this.entityManager.registerEntity(options.sessionId, {
             clientEntity: player,
             serverEntity: options.entity
         })
+
+        hud.registerOverheadHealthBar(player)
         
         // Client player camera follow
         if (options.isClientPlayer === true) {
@@ -47,11 +51,6 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             
             this.markPlayerAsSpawned(options.sessionId)
         }
-
-        // options.entity.onChange = (changes: any) => {
-        //     console.log('entity onchange')
-        //     console.log(changes)
-        // }
 
         return player
     }

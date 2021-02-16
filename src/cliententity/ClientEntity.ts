@@ -3,6 +3,7 @@ import { Sprite } from '../engine/display/Sprite'
 import { IContainer, Container } from '../engine/display/Container'
 import { IDimension } from '../engine/math/Dimension'
 import { IUpdatable } from '../interface/IUpdatable'
+import { IVector2 } from '../engine/math/Vector2'
 
 export interface IClientEntity extends IContainer, IUpdatable {
     x: number
@@ -12,6 +13,7 @@ export interface IClientEntity extends IContainer, IUpdatable {
     xVel: number
     yVel: number
     type: string
+    position: IVector2
 }
 
 export enum EntityType {

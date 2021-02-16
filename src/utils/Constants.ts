@@ -19,8 +19,8 @@ export const ShowCameraProjectionDebug: boolean = false
 export const ShowPlayerSynchDebug: boolean = false
 
 export class DebugConstants {
-    static DisableFoliage: boolean = true//false
-    static DisableDepthShadows: boolean = true//false
+    static DisableFoliage: boolean = false
+    static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false
 }
 
