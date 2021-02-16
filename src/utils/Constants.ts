@@ -1,4 +1,5 @@
 import { IDimension } from '../engine/math/Dimension'
+import { TweenAnimationEasing } from '../engine/display/TweenAnimationEasing'
 
 export const WindowSize: IDimension = {
     width: window.innerWidth,
@@ -36,6 +37,11 @@ export class GravityConstants {
 export class Defaults {
     static BulletVelocity: number = 5
     static ShouldLightsJitter: boolean = false
+
+    static AnimationDelay: number = 0
+    static AnimationLoop: boolean = false
+    static AnimationEasing: any = TweenAnimationEasing.EaseOutCubic
+    static AnimationAutoplay: boolean = false
 
     private constructor() {}
 }

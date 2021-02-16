@@ -21,7 +21,7 @@ export class TextParticle extends Particle implements ITextParticle {
 
     update() {
         super.update()
-
+        
         this.y -= 0.5
     }
 }

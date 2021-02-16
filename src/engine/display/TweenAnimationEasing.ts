@@ -1,0 +1,31 @@
+import { Sine, Bounce, Cubic, Expo, Circ, Quad, Quart, Quint, Elastic, Power0 } from 'gsap'
+
+export const TweenAnimationEasing = {
+    Linear: Power0.easeNone,
+    EaseInQuad: Quad.easeIn,
+    EaseInCubic: Cubic.easeIn,
+    EaseInQuart: Quart.easeIn,
+    EaseInQuint: Quint.easeIn,
+    EaseInSine: Sine.easeIn,
+    EaseInExpo: Expo.easeIn,
+    EaseInCirc: Circ.easeIn,
+    EaseInElastic: Elastic.easeIn,
+    EaseInBounce: Bounce.easeOut,
+    EaseOutQuad: Quad.easeOut,
+    EaseOutCubic: Cubic.easeOut,
+    EaseOutQuart: Quart.easeOut,
+    EaseOutQuint: Quint.easeOut,
+    EaseOutSine: Sine.easeOut,
+    EaseOutExpo: Expo.easeOut,
+    EaseOutCirc: Circ.easeOut,
+    EaseOutElastic: Elastic.easeOut,
+    EaseOutBounce: Bounce.easeOut,
+    EaseInOutQuad: Quad.easeInOut,
+    EaseInOutCubic: Cubic.easeInOut,
+    EaseInOutQuart: Quart.easeInOut,
+    EaseInOutSine: Sine.easeInOut,
+    EaseInOutExpo: Expo.easeInOut,
+    EaseInOutCirc: Circ.easeInOut,
+    EaseInOutElastic: Elastic.easeInOut,
+    EaseInOutBounce: Bounce.easeInOut
+}
