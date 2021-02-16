@@ -1,10 +1,9 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
-import { Camera } from '../../../camera/Camera'
 import { IClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../engine/display/Sprite'
 import { Tween } from '../../../engine/display/tween/Tween'
+import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { IUpdatable } from '../../../interface/IUpdatable'
-import { UIConstants } from '../../../utils/Constants'
 import { UIComponent } from '../../UIComponent'
 
 export interface IOverheadHealthBar extends IUpdatable {
@@ -70,14 +69,42 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     private triggerHealthDrop() {
         this.targetFillPercentage = this.player.healthPercentage
 
+        this.triggerShineAnimation()
+        this.triggerShakeAnimation()
+    }
+
+    private triggerShineAnimation() {
         const shineAnimationTarget = this.fillSprite.overlayGraphic
-        shineAnimationTarget.alpha = 1
+        shineAnimationTarget.alpha = 0.75
 
         const shineAnimation = Tween.to(shineAnimationTarget, {
-            duration: 1,
+            duration: 0.5,
+            ease: Easing.EaseOutCubic,
             alpha: 0
         })
 
         shineAnimation.play()
+    }
+
+    triggerShakeAnimation() {
+        const target = this
+        const ogX = this.x
+        const shakeAmt = 2
+        const duration = .05
+
+        Tween.to(target, {
+            repeat: 4,
+            duration: duration,
+            x: shakeAmt,
+            yoyo: true,
+            ease: Easing.EaseInOutQuad,
+            onComplete() {
+                Tween.to(target, {
+                    x: ogX,
+                    duration: duration * 2,
+                }).play()
+            }
+        }).play()
+
     }
 }
