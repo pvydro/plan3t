@@ -1,24 +1,24 @@
-import { Flogger } from "../../service/Flogger";
-import { RoomManager } from "./RoomManager";
+import { Flogger } from '../../service/Flogger'
+import { RoomManager } from './RoomManager'
 
-export interface IRoomMessager {
+export interface IRoomMessenger {
 
 }
 
-export class RoomMessager implements IRoomMessager {
+export class RoomMessenger implements IRoomMessenger {
     static _isOnline: boolean = false
 
     private constructor() {}
 
     static send(endpoint: string | number, message: any) {
-        Flogger.log('RoomMessager', 'send',
+        Flogger.log('RoomMessenger', 'send',
             'endpoint', endpoint,
             'message', message,
-            'isOnline', RoomMessager.isOnline)
+            'isOnline', RoomMessenger.isOnline)
 
         const roomManager = RoomManager.getInstance()
 
-        if (roomManager === undefined || !RoomMessager.isOnline) {
+        if (roomManager === undefined || !RoomMessenger.isOnline) {
             Flogger.error('Tried to send message but RoomManager not initialized', 'endpoint', endpoint, 'message', message)
 
             return
@@ -28,6 +28,6 @@ export class RoomMessager implements IRoomMessager {
     }
 
     static get isOnline() {
-        return RoomMessager._isOnline
+        return RoomMessenger._isOnline
     }
 }

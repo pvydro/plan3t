@@ -6,6 +6,7 @@ import { Emitter } from '../../utils/Emitter'
 import { IWeapon, Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
 import { ClientPlayer } from './ClientPlayer'
+import { IPlayerMessenger } from './PlayerMessenger'
 
 export enum CurrentWeaponStatus {
     Primary, Secondary, None
@@ -29,6 +30,7 @@ export interface PlayerWeaponHolsterOptions {
 
 export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     player: ClientPlayer
+    messenger: IPlayerMessenger
     currentLoadout: WeaponHolsterLoadout
     primaryWeapon: Weapon = new Weapon({ holster: this })
     secondaryWeapon: Weapon = new Weapon({ holster: this })
@@ -37,6 +39,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
 
     constructor(options: PlayerWeaponHolsterOptions) {
         this.player = options.player
+        this.messenger = this.player.messenger
 
         if (this.player.isClientPlayer) {
             this.applyListeners()

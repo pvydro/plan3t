@@ -1,5 +1,5 @@
 import { IUpdatable } from '../../interface/IUpdatable'
-import { RoomMessager } from '../../manager/roommanager/RoomMessager'
+import { RoomMessenger } from '../../manager/roommanager/RoomMessenger'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { Flogger } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
@@ -7,23 +7,23 @@ import { ClientPlayer } from './ClientPlayer'
 import { PlayerPackRules, PlayerStateFormatter } from './state/PlayerStateFormatter'
 import { WeaponStatePack } from './state/WeaponStatePack'
 
-export interface IPlayerMessager extends IUpdatable {
+export interface IPlayerMessenger extends IUpdatable {
     startSendingWeaponStatus(): void
     send(endpoint: string, rules?: PlayerPackRules): void
 }
 
-export interface PlayerMessagerOptions {
+export interface PlayerMessengerOptions {
     player: ClientPlayer
 }
 
-export class PlayerMessager implements IPlayerMessager {
+export class PlayerMessenger implements IPlayerMessenger {
     _lastSentWeaponRotation: number = 0
     _isRefreshingWeapon: boolean = false
     weaponRefreshRate: number = 25
     weaponRefreshInterval: number = this.weaponRefreshRate
     player: ClientPlayer
 
-    constructor(options: PlayerMessagerOptions) {
+    constructor(options: PlayerMessengerOptions) {
         this.player = options.player
     }
 
@@ -39,11 +39,11 @@ export class PlayerMessager implements IPlayerMessager {
     }
 
     send(endpoint: string, rules?: PlayerPackRules) {
-        if (DebugConstants.ShowPlayerMessagerLogs) Flogger.log('PlayerMessager', 'endpoint', endpoint)
+        if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'endpoint', endpoint)
 
         if (!this.player.isClientPlayer) return
 
-        RoomMessager.send(endpoint, this.getPlayerPayload(rules))
+        RoomMessenger.send(endpoint, this.getPlayerPayload(rules))
     }
 
     getPlayerPayload(rules?: PlayerPackRules) {
@@ -57,13 +57,13 @@ export class PlayerMessager implements IPlayerMessager {
     }
 
     private sendWeaponStatus() {
-        if (DebugConstants.ShowPlayerMessagerLogs) Flogger.log('PlayerMessager', 'sendWeaponStatus')
+        if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendWeaponStatus')
 
         const rotation = this.player.hand.rotation
         const pack: WeaponStatePack = { rotation }
 
         if (rotation !== this._lastSentWeaponRotation) {
-            RoomMessager.send(RoomMessage.PlayerLookAngleChanged, pack)
+            RoomMessenger.send(RoomMessage.PlayerLookAngleChanged, pack)
 
             this._lastSentWeaponRotation = rotation
         }

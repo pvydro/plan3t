@@ -1,7 +1,6 @@
 import { Room } from 'colyseus.js'
 import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetGameState'
 import { Entity } from '../../network/rooms/Entity'
-import { IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
 import { Flogger } from '../../service/Flogger'
@@ -10,8 +9,7 @@ import { SphericalBiome, SphericalData } from '../../gamemap/spherical/Spherical
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Dimension } from '../../engine/math/Dimension'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
-import { RoomMessager } from './RoomMessager'
-import { Player } from '../../network/rooms/Player'
+import { RoomMessenger } from './RoomMessenger'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -61,7 +59,7 @@ export class RoomManager implements IRoomManager {
         
         this.initializeCurrentRoomEntities()
 
-        RoomMessager._isOnline = true
+        RoomMessenger._isOnline = true
 
         return new Promise((resolve) => {
             // First state change

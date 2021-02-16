@@ -21,7 +21,7 @@ export const ShowPlayerSynchDebug: boolean = false
 export class DebugConstants {
     static DisableFoliage: boolean = true//false
     static DisableDepthShadows: boolean = true//false
-    static ShowPlayerMessagerLogs: boolean = false
+    static ShowPlayerMessengerLogs: boolean = false
 }
 
 export class Constants {

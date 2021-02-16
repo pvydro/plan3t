@@ -14,20 +14,18 @@ import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
-import { PlayerMessager } from './PlayerMessager'
+import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
-import { TextSprite } from '../../engine/display/TextSprite'
-import { Fonts } from '../../asset/Fonts'
 import { ParticleManager } from '../../manager/ParticleManager'
-import { HighlightSpanKind } from 'typescript'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
-    direction: Direction
+    messenger: IPlayerMessenger
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
     hand: IPlayerHand
     emitter: Emitter
+    direction: Direction
     isClientPlayer: boolean
     equipWeapon(weapon: Weapon): void
 }
@@ -55,7 +53,7 @@ export class ClientPlayer extends GravityEntity {
 
     private static INSTANCE: ClientPlayer
     _entityManager?: IEntityManager
-    messager: PlayerMessager
+    messenger: IPlayerMessenger
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
@@ -98,12 +96,12 @@ export class ClientPlayer extends GravityEntity {
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
-        this.messager = new PlayerMessager({ player })
+        this.messenger = new PlayerMessenger({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
         if (this.isClientPlayer) {
             this.light = new PlayerLight({ player })
-            this.messager.startSendingWeaponStatus()
+            this.messenger.startSendingWeaponStatus()
         }
         
         if (this.isClientPlayer) this.addChild(this.light)
@@ -138,7 +136,7 @@ export class ClientPlayer extends GravityEntity {
         if (this.light) this.light.update()
         if (this.isClientPlayer) {
             this.hand.update()
-            this.messager.update()
+            this.messenger.update()
         }
         
         this.collision.update()
@@ -153,9 +151,11 @@ export class ClientPlayer extends GravityEntity {
 
         // Weapon-name particle
         const particlePosition = { x: this.position.x, y: this.position.y - 24 }
+
         ParticleManager.getInstance().addTextParticle({
             text: weapon.name.toUpperCase(),
-            position: particlePosition
+            position: particlePosition,
+            startAlpha: 0.75
         })
     }
 
@@ -164,7 +164,7 @@ export class ClientPlayer extends GravityEntity {
 
         this._bodyState = value
 
-        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
     }
 
     set legsState(value: PlayerLegsState) {
@@ -179,7 +179,7 @@ export class ClientPlayer extends GravityEntity {
         this.head.direction = value
         this.hand.direction = value
 
-        // if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
+        // if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
     }
 
     set walkingDirection(value: Direction) {
@@ -187,7 +187,7 @@ export class ClientPlayer extends GravityEntity {
 
         this._walkingDirection = value
 
-        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerDirectionChanged)
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
     }
 
     set onGround(value: boolean) {
@@ -195,7 +195,7 @@ export class ClientPlayer extends GravityEntity {
 
         this._onGround = value
 
-        if (shouldSendMessage) this.messager.send(RoomMessage.PlayerLandedOnGround, {
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerLandedOnGround, {
             includePosition: true
         })
     }

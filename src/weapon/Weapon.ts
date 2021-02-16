@@ -115,6 +115,7 @@ export class Weapon extends Container implements IWeapon {
                 this.fireBullet()
                 this.applyRecoil()
                 this.applyScreenEffects()
+
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -234,6 +235,12 @@ export class Weapon extends Container implements IWeapon {
         }
     }
 
+    sendServerShootMessage() {
+        Flogger.log('Weapon', 'sendServerShootMessage')
+
+        // .send
+    }
+
     configureStats(stats: WeaponStats) {
         this.damage = stats.damage
         this.fireRate = stats.fireRate
@@ -285,5 +292,9 @@ export class Weapon extends Container implements IWeapon {
             x: this._currentRecoilOffset.x + this.offset.x,
             y: this._currentRecoilOffset.y + this.offset.y
         }
+    }
+
+    get messenger() {
+        return this.playerHolster.player.messenger
     }
 }

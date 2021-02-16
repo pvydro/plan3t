@@ -12,6 +12,8 @@ export interface TextParticleOptions extends ParticleOptions, TweenOptions {
     text: string
     fadeUpAmount?: number
     fadeOutBreakpoint?: number
+    fadeOutDivisor?: number
+    startAlpha?: number
 }
 
 export class TextParticle extends Particle implements ITextParticle {
@@ -28,11 +30,12 @@ export class TextParticle extends Particle implements ITextParticle {
         super(options)
         
         this.fadeUpAmount = options.fadeUpAmount ?? -8
-        this.fadeOutDivisor = 5
+        this.fadeOutDivisor = options.fadeOutDivisor ?? 10
+        this.alpha = options.startAlpha ?? 1
 
         const self = this
         const int = { interpolation: 0 }
-        const fadeOutBreakpoint = options.fadeOutBreakpoint ?? 0.5
+        const fadeOutBreakpoint = options.fadeOutBreakpoint ?? 0.75
 
         this.exitAnimation = Tween.to(int, {
             interpolation: 1,
