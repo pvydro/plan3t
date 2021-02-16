@@ -42,6 +42,7 @@ export class Defaults {
     static AnimationLoop: boolean = false
     static AnimationEasing: any = TweenAnimationEasing.EaseOutCubic
     static AnimationAutoplay: boolean = false
+    static AnimationDuration: number = 500
 
     private constructor() {}
 }
