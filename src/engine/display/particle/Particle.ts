@@ -48,6 +48,7 @@ export class Particle extends Container implements IParticle {
     
     demolish(): void {
         ParticleManager.getInstance().removeParticle(this)
+        this.sprite.destroy()
         delete this.sprite
     }
 }

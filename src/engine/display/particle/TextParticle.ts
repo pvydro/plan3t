@@ -1,6 +1,7 @@
 import gsap, { TweenLite } from 'gsap/all'
 import { TextSprite } from '../TextSprite'
 import { Tween } from '../tween/Tween'
+import { Easing } from '../tween/TweenEasing'
 import { IParticle, Particle, ParticleOptions } from './Particle'
 
 export interface ITextParticle extends IParticle {
@@ -22,16 +23,19 @@ export class TextParticle extends Particle implements ITextParticle {
         })
         super(options)
         
-        this.fadeUpAmount = options.fadeUpAmount ?? 16
+        this.fadeUpAmount = options.fadeUpAmount ?? -16
 
         const self = this
         const int = { interpolation: 0 }
 
         this.exitAnimation = Tween.to(int, {
-            duration: 0.5,
             interpolation: 1,
+            ease: Easing.EaseOutExpo,
             onUpdate() {
                 self.sprite.y = self.fadeUpAmount * int.interpolation
+            },
+            onComplete() {
+                self.demolish()
             }
         })
 

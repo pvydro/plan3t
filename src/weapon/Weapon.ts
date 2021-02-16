@@ -176,6 +176,7 @@ export class Weapon extends Container implements IWeapon {
                 recoilOffset.y = -recoilY * int.interpolation
             }
         })
+        this.recoilAnimation.play()
 
         this._currentRecoilOffset = recoilOffset
     }
