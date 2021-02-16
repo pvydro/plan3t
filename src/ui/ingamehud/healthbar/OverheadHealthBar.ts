@@ -2,6 +2,7 @@ import { Assets, AssetUrls } from '../../../asset/Assets'
 import { Camera } from '../../../camera/Camera'
 import { IClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../engine/display/Sprite'
+import { Tween } from '../../../engine/display/tween/Tween'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { UIConstants } from '../../../utils/Constants'
 import { UIComponent } from '../../UIComponent'
@@ -21,7 +22,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     fillSpriteWidth: number
     targetFillPercentage: number = 1
     fillPercentage: number = this.targetFillPercentage
-    fillDivisor: number = 5
+    fillDivisor: number = 2
 
     constructor(options: OverheadHealthBarOptions) {
         super()
@@ -29,11 +30,19 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
         this.player = options.player
 
         const backgroundTexture = PIXI.Texture.from(Assets.get(AssetUrls.OVERHEAD_HEALTHB_BAR_BG))
-        this.backgroundSprite = new Sprite({ texture: backgroundTexture })
+        this.backgroundSprite = new Sprite({
+            texture: backgroundTexture
+        })
         this.backgroundSprite.anchor.set(0.5, 0.5)
 
         const fillTexture = PIXI.Texture.from(Assets.get(AssetUrls.OVERHEAD_HEALTHB_BAR_FILL))
-        this.fillSprite = new Sprite({ texture: fillTexture })
+        this.fillSprite = new Sprite({
+            texture: fillTexture,
+            includeOverlay: {
+                color: 0xFFFFFF,
+                showByDefault: true
+            }
+        })
         this.fillSprite.anchor.set(0, 0.5)
         this.fillSprite.x = -this.backgroundSprite.halfWidth + 3
         this.fillSpriteWidth = this.fillSprite.width
@@ -46,7 +55,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
 
     update() {
         if (this.targetFillPercentage !== this.player.healthPercentage) {
-            this.targetFillPercentage = this.player.healthPercentage
+            this.triggerHealthDrop()
         }
 
         if (this.fillPercentage !== this.targetFillPercentage) {
@@ -57,5 +66,9 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
 
             this.fillSprite.width = this.fillSpriteWidth * this.fillPercentage
         }
+    }
+
+    private triggerHealthDrop() {
+        this.targetFillPercentage = this.player.healthPercentage
     }
 }
