@@ -21,7 +21,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
     ammoStatus: AmmoStatusComponent
     healthBar: HealthBar
     queuedHealthBars: OverheadHealthBar[] = []
-    overheadHealthBars: Map<string, OverheadHealthBar>
 
     static getInstance() {
         if (!this.INSTANCE) {
@@ -39,7 +38,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
-        this.overheadHealthBars = new Map()
     }
 
     async initializeHUD(): Promise<void> {
@@ -49,11 +47,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
             this.addChild(this.healthBar)
             this.addChild(this.ammoStatus)
             this.addChild(this.crosshair)
-
-            // Health bars that were initialized before parent initialization
-            for (var i in this.queuedHealthBars) {
-                this.addChild(this.queuedHealthBars[i])
-            }
 
             this.queuedHealthBars = []
             this.applyScale()
@@ -73,37 +66,10 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         super.update()
 
         this.crosshair.update()
-        this.overheadHealthBars.forEach((healthBar) => {
-            healthBar.update()
-        })
-    }
-
-    registerOverheadHealthBar(player: IClientPlayer) {
-        Flogger.log('InGameHUD', 'registerOverheadHealthBar', 'sessionId', player.sessionId)
-
-        const overheadHealthBar = new OverheadHealthBar({ player })
-
-        this.overheadHealthBars.set(player.sessionId, overheadHealthBar)
-
-        if (this._initialized) {
-            this.hudContainer.addChild(overheadHealthBar)
-        } else {
-            this.queuedHealthBars.push(overheadHealthBar)
-        }
-    }
-
-    removeOverheadHealthBar(player: IClientPlayer) {
-        Flogger.log('InGameHUD', 'removeOverheadHealthBar', 'sessionId', player.sessionId)
-
-        this.overheadHealthBars.delete(player.sessionId)
     }
 
     private applyScale() {
         const toScale: UIComponent[] = [ this.healthBar, this.ammoStatus ]
-
-        this.overheadHealthBars.forEach((healthBar) => {
-            toScale.push(healthBar)
-        })
 
         for (let i in toScale) {
             const scaledComponent = toScale[i]

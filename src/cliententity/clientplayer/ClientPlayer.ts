@@ -17,6 +17,7 @@ import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/ParticleManager'
+import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
@@ -59,6 +60,7 @@ export class ClientPlayer extends GravityEntity {
     hand: PlayerHand
     holster: PlayerWeaponHolster
     light: PlayerLight
+    overheadHealthBar: OverheadHealthBar
     collision: PlayerCollision
     controller: IPlayerController
     _clientControl: boolean = false
@@ -96,6 +98,7 @@ export class ClientPlayer extends GravityEntity {
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
+        this.overheadHealthBar = new OverheadHealthBar({ player })
         this.messenger = new PlayerMessenger({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
@@ -109,12 +112,7 @@ export class ClientPlayer extends GravityEntity {
         this.addChild(this.head)
         this.addChild(this.hand)
         this.addChild(this.collision)
-
-        // const testText = new TextSprite({
-        //     text: 'This is a test',
-        //     fontFamily: Fonts.FontStrong.fontFamily
-        // })
-        // this.addChild(testText)
+        this.addChild(this.overheadHealthBar)
         
         this.controller = new PlayerController({ player })
 
@@ -133,6 +131,7 @@ export class ClientPlayer extends GravityEntity {
         
         this.body.update()
         this.head.update()
+        this.overheadHealthBar.update()
         if (this.light) this.light.update()
         if (this.isClientPlayer) {
             this.hand.update()
