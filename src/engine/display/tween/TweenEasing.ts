@@ -1,6 +1,6 @@
-import { Sine, Bounce, Cubic, Expo, Circ, Quad, Quart, Quint, Elastic, Power0 } from 'gsap'
+import { Sine, Bounce, Cubic, Expo, Circ, Quad, Quart, Quint, Elastic, Power0, Power4 } from 'gsap'
 
-export const TweenAnimationEasing = {
+export const Easing = {
     Linear: Power0.easeNone,
     EaseInQuad: Quad.easeIn,
     EaseInCubic: Cubic.easeIn,
@@ -27,5 +27,6 @@ export const TweenAnimationEasing = {
     EaseInOutExpo: Expo.easeInOut,
     EaseInOutCirc: Circ.easeInOut,
     EaseInOutElastic: Elastic.easeInOut,
-    EaseInOutBounce: Bounce.easeInOut
+    EaseInOutBounce: Bounce.easeInOut,
+    Power4EaseOut: Power4.easeOut
 }

@@ -2,6 +2,7 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { RoomMessager } from '../../manager/roommanager/RoomMessager'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { Flogger } from '../../service/Flogger'
+import { DebugConstants } from '../../utils/Constants'
 import { ClientPlayer } from './ClientPlayer'
 import { PlayerPackRules, PlayerStateFormatter } from './state/PlayerStateFormatter'
 import { WeaponStatePack } from './state/WeaponStatePack'
@@ -38,7 +39,7 @@ export class PlayerMessager implements IPlayerMessager {
     }
 
     send(endpoint: string, rules?: PlayerPackRules) {
-        Flogger.log('PlayerMessager', 'endpoint', endpoint)
+        if (DebugConstants.ShowPlayerMessagerLogs) Flogger.log('PlayerMessager', 'endpoint', endpoint)
 
         if (!this.player.isClientPlayer) return
 
@@ -56,12 +57,10 @@ export class PlayerMessager implements IPlayerMessager {
     }
 
     private sendWeaponStatus() {
-        Flogger.log('PlayerMessager', 'sendWeaponStatus')
+        if (DebugConstants.ShowPlayerMessagerLogs) Flogger.log('PlayerMessager', 'sendWeaponStatus')
 
         const rotation = this.player.hand.rotation
         const pack: WeaponStatePack = { rotation }
-
-        Flogger.log('PlayerMessager', 'sendWeaponStatus', 'rotation', rotation)
 
         if (rotation !== this._lastSentWeaponRotation) {
             RoomMessager.send(RoomMessage.PlayerLookAngleChanged, pack)

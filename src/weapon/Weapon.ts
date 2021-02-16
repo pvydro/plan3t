@@ -6,6 +6,8 @@ import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHo
 import { Container } from '../engine/display/Container'
 import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Sprite } from '../engine/display/Sprite'
+import { Tween } from '../engine/display/tween/Tween'
+import { Easing } from '../engine/display/tween/TweenEasing'
 import { Direction } from '../engine/math/Direction'
 import { Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
@@ -165,10 +167,16 @@ export class Weapon extends Container implements IWeapon {
         this.recoilRandomizer = Math.random() + this.recoilRandomizerMinimum
         if (this.recoilRandomizer > this.recoilRandomizerMaximum) this.recoilRandomizer = this.recoilRandomizerMaximum
         
-        this.recoilAnimation = gsap.to(int, { interpolation: 1, duration: 0.125, ease: 'power4', onUpdate() {
-            recoilOffset.x = -recoilX * int.interpolation
-            recoilOffset.y = -recoilY * int.interpolation
-        }})
+        this.recoilAnimation = Tween.to(int, {
+            interpolation: 1,
+            duration: 0.125,
+            ease: Easing.Power4EaseOut,
+            onUpdate() {
+                recoilOffset.x = -recoilX * int.interpolation
+                recoilOffset.y = -recoilY * int.interpolation
+            }
+        })
+
         this._currentRecoilOffset = recoilOffset
     }
 

@@ -1,5 +1,4 @@
 import { IDimension } from '../engine/math/Dimension'
-import { TweenAnimationEasing } from '../engine/display/TweenAnimationEasing'
 
 export const WindowSize: IDimension = {
     width: window.innerWidth,
@@ -20,8 +19,9 @@ export const ShowCameraProjectionDebug: boolean = false
 export const ShowPlayerSynchDebug: boolean = false
 
 export class DebugConstants {
-    static DisableFoliage: boolean = false
-    static DisableDepthShadows: boolean = false
+    static DisableFoliage: boolean = true//false
+    static DisableDepthShadows: boolean = true//false
+    static ShowPlayerMessagerLogs: boolean = false
 }
 
 export class Constants {
@@ -37,12 +37,6 @@ export class GravityConstants {
 export class Defaults {
     static BulletVelocity: number = 5
     static ShouldLightsJitter: boolean = false
-
-    static AnimationDelay: number = 0
-    static AnimationLoop: boolean = false
-    static AnimationEasing: any = TweenAnimationEasing.EaseOutCubic
-    static AnimationAutoplay: boolean = false
-    static AnimationDuration: number = 500
 
     private constructor() {}
 }
