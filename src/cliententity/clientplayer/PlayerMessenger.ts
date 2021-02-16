@@ -71,7 +71,8 @@ export class PlayerMessenger implements IPlayerMessenger {
         if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendWeaponStatus')
 
         const rotation = this.player.hand.rotation
-        const pack: WeaponStatePack = { rotation }
+        const direction = this.player.direction
+        const pack: WeaponStatePack = { rotation, direction }
 
         if (rotation !== this._lastSentWeaponRotation) {
             RoomMessenger.send(RoomMessage.PlayerLookAngleChanged, pack)

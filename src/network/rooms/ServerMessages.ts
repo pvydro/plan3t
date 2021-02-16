@@ -29,9 +29,11 @@ export interface PlayerPayload extends EntityPayload {
 }
 
 export interface WeaponStatusPayload {
+    direction: Direction
     rotation: number
     bulletX?: number
     bulletY?: number
+    bulletVelocity?: number
 }
 
 export interface EntityPayload {
