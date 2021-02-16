@@ -19,6 +19,7 @@ import { exists } from '../../utils/Utils'
 import { TextSprite } from '../../engine/display/TextSprite'
 import { Fonts } from '../../asset/Fonts'
 import { ParticleManager } from '../../manager/ParticleManager'
+import { HighlightSpanKind } from 'typescript'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
@@ -150,12 +151,11 @@ export class ClientPlayer extends GravityEntity {
             this.hand.setWeapon(weapon)
         }
 
+        // Weapon-name particle
+        const particlePosition = { x: this.position.x, y: this.position.y - 24 }
         ParticleManager.getInstance().addTextParticle({
             text: weapon.name.toUpperCase(),
-            position: {
-                x: this.position.x,
-                y: this.position.y
-            }
+            position: particlePosition
         })
     }
 
