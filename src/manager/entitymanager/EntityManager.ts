@@ -90,7 +90,8 @@ export class EntityManager implements IEntityManager {
     }
 
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
-        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity)
+        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity,
+            'x', x, 'y', y, 'rotation', rotation)
 
         this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
     }

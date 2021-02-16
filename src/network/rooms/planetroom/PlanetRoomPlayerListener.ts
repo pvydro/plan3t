@@ -128,8 +128,10 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
     triggerWeaponShot(sessionId: string, payload: WeaponStatusPayload) {
         this.room.state.createProjectile(new Projectile({
-            x: payload.bulletX ?? 0,
-            y: payload.bulletY ?? 0
+            x: payload.bulletX,
+            y: payload.bulletY,
+            rotation: payload.rotation,
+            velocity: 3
         }))
     }
 

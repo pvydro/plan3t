@@ -9,7 +9,10 @@ import { SphericalBiome, SphericalData } from '../../gamemap/spherical/Spherical
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Dimension } from '../../engine/math/Dimension'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
+import { Projectile } from '../../network/schema/planetgamestate/PlanetGameState'
 import { RoomMessenger } from './RoomMessenger'
+import { Player } from '../../network/rooms/Player'
+import { ProjectileType } from '../../weapon/projectile/Bullet'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -93,11 +96,15 @@ export class RoomManager implements IRoomManager {
     }
 
     initializeCurrentRoomEntities() {
-        this.currentRoom.state.players.onAdd = (entity, sessionId: string) => {
-            this.addEntity(entity, sessionId)
+        this.currentRoom.state.players.onAdd = (player: Player, sessionId: string) => {
+            this.addPlayer(player, sessionId)
         }
-        this.currentRoom.state.players.onRemove = (entity, sessionId: string) => {
-            this.removeEntity(sessionId)
+        this.currentRoom.state.players.onRemove = (player: Player, sessionId: string) => {
+            this.removePlayer(sessionId)
+        }
+
+        this.currentRoom.state.projectiles.onAdd = (projectile: Projectile, key: number) => {
+            this.addProjectile(projectile)
         }
     }
 
@@ -136,7 +143,7 @@ export class RoomManager implements IRoomManager {
         this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
     }
 
-    addEntity(entity: Entity, sessionId: string) {
+    addPlayer(entity: Entity, sessionId: string) {
         if (RoomManager.isSessionALocalPlayer(sessionId)) {
             this.entityManager.createClientPlayer(entity, sessionId)
         } else {
@@ -148,8 +155,13 @@ export class RoomManager implements IRoomManager {
         }
     }
 
-    removeEntity(sessionId: string) {
+    removePlayer(sessionId: string) {
         this.entityManager.removeEntity(sessionId)
+    }
+
+    addProjectile(projectile: Projectile) {
+        this.entityManager.createProjectile(ProjectileType.Bullet,
+            projectile.x, projectile.y, projectile.rotation, projectile.velocity)
     }
 
     static isSessionALocalPlayer(sessionId: string) {

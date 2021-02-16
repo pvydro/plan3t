@@ -5,6 +5,7 @@ import { Flogger } from '../../../service/Flogger'
 import { DimensionSchema } from '../DimensionSchema'
 import { IPGSPlayerController, PGSPlayerController } from './PGSPlayerController'
 import { IPGSGravityController, PGSGravityController } from './PGSGravityController'
+import { Entity } from '../../rooms/Entity'
 
 export class PlanetSphericalTileData extends Schema {
   @type('number')
@@ -37,13 +38,11 @@ export class PlanetSphericalSchema extends Schema {
   points!: ArraySchema<PlanetSphericalTile>
 }
 
-export class Projectile extends Schema {
+export class Projectile extends Entity {
   @type('number')
-  x!: number
+  rotation!: number
   @type('number')
-  y!: number
-  @type('number')
-  angle!: number
+  velocity!: number
 }
 
 export class PlanetGameState extends Schema {
@@ -71,7 +70,12 @@ export class PlanetGameState extends Schema {
   }
 
   createProjectile(projectile: Projectile) {
-    this.projectiles.add(projectile)
+    this.projectiles.add(new Projectile().assign({
+      x: projectile.x,
+      y: projectile.y,
+      rotation: projectile.rotation,
+      velocity: projectile.velocity
+    }))
   }
 
   update() {
