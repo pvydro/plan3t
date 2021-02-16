@@ -30,6 +30,8 @@ export interface PlayerPayload extends EntityPayload {
 
 export interface WeaponStatusPayload {
     rotation: number
+    bulletX?: number
+    bulletY?: number
 }
 
 export interface EntityPayload {

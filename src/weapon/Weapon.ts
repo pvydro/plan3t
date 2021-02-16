@@ -268,8 +268,8 @@ export class Weapon extends Container implements IWeapon {
         this.sprite = new Sprite({ texture })
         this.offset.x = stats.handleOffsetX
         this.offset.y = baseYOffset + stats.handleOffsetY
-        this.sprite.x = this.offset.x// + this._currentRecoilOffset.x
-        this.sprite.y = this.offset.y// + this._currentRecoilOffset.y
+        this.sprite.x = this.offset.x
+        this.sprite.y = this.offset.y
 
         this.addChild(this.sprite)
 

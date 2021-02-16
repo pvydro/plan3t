@@ -1,4 +1,4 @@
-import { Schema, MapSchema, ArraySchema, type } from '@colyseus/schema'
+import { Schema, SetSchema, MapSchema, ArraySchema, type } from '@colyseus/schema'
 
 import { Player } from '../../rooms/Player'
 import { Flogger } from '../../../service/Flogger'
@@ -37,6 +37,15 @@ export class PlanetSphericalSchema extends Schema {
   points!: ArraySchema<PlanetSphericalTile>
 }
 
+export class Projectile extends Schema {
+  @type('number')
+  x!: number
+  @type('number')
+  y!: number
+  @type('number')
+  angle!: number
+}
+
 export class PlanetGameState extends Schema {
   @type({ map: Player })
   players = new MapSchema<Player>()
@@ -44,6 +53,8 @@ export class PlanetGameState extends Schema {
   planetSpherical?: PlanetSphericalSchema
   @type('boolean')
   planetHasBeenSet: boolean = false
+  @type({ set: Projectile })
+  projectiles = new SetSchema<Projectile>()
 
   playerController!: IPGSPlayerController
   gravityController!: IPGSGravityController
@@ -57,6 +68,10 @@ export class PlanetGameState extends Schema {
     Flogger.log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
     this.players.set(sessionId, new Player())
+  }
+
+  createProjectile(projectile: Projectile) {
+    this.projectiles.add(projectile)
   }
 
   update() {
