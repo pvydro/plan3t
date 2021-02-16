@@ -68,7 +68,7 @@ export class WeaponHint extends Container implements IWeaponHint {
                 // outlineFilter
             ]
 
-            sprite.scale.set(0.5, 0.5)
+            // sprite.scale.set(0.5, 0.5)
         }
     }
 }

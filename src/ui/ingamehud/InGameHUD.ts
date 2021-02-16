@@ -44,7 +44,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         Flogger.log('InGameHUD', 'initializeHUD')
 
         return new Promise((resolve, reject) => {
-            this.addChild(this.healthBar)
+            // this.addChild(this.healthBar)
             this.addChild(this.ammoStatus)
             this.addChild(this.crosshair)
 

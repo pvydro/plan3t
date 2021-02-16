@@ -1,5 +1,5 @@
 import { Flogger } from '../../service/Flogger'
-import { ClientPlayer, PlayerBodyState, PlayerLegsState } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { Camera } from '../../camera/Camera'
@@ -35,6 +35,10 @@ export class PlayerController implements IPlayerController {
     }
 
     update() {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+            return
+        }
+
         if (this.player.isClientPlayer) {
             if (this.leftKeyDown && this.rightKeyDown
             || !this.leftKeyDown && !this.rightKeyDown) {

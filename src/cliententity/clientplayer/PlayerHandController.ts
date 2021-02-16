@@ -2,7 +2,7 @@ import { Camera } from '../../camera/Camera'
 import { Direction } from '../../engine/math/Direction'
 import { PlayerHand } from './PlayerHand'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { PlayerLegsState } from './ClientPlayer'
+import { PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 
 export interface IPlayerHandController {
     update(clientControl: boolean)
@@ -26,6 +26,10 @@ export class PlayerHandController implements IPlayerHandController {
     }
 
     update(clientControl: boolean) {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+            return
+        }
+
         if (clientControl) {
             this.followMouse()
         
@@ -75,5 +79,9 @@ export class PlayerHandController implements IPlayerHandController {
         this.playerHand.rotation = direction === Direction.Right ? angle : angle - halfACircleInRadians
 
         this.playerHand.rotation += recoilRotation
+    }
+    
+    get player() {
+        return this.playerHand.player
     }
 }
