@@ -3,7 +3,7 @@ import { IDimension } from '../math/Dimension'
 import { Graphix } from './Graphix'
 
 export interface ISprite {
-
+    overlayGraphic?: Graphix
 }
 
 export interface SpriteOverlayOptions {

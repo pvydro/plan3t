@@ -39,8 +39,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
         this.fillSprite = new Sprite({
             texture: fillTexture,
             includeOverlay: {
-                color: 0xFFFFFF,
-                showByDefault: true
+                color: 0xFFFFFF
             }
         })
         this.fillSprite.anchor.set(0, 0.5)
@@ -70,5 +69,15 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
 
     private triggerHealthDrop() {
         this.targetFillPercentage = this.player.healthPercentage
+
+        const shineAnimationTarget = this.fillSprite.overlayGraphic
+        shineAnimationTarget.alpha = 1
+
+        const shineAnimation = Tween.to(shineAnimationTarget, {
+            duration: 1,
+            alpha: 0
+        })
+
+        shineAnimation.play()
     }
 }
