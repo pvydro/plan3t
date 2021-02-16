@@ -3,6 +3,7 @@ import { TweenLite } from 'gsap/all'
 import { Camera } from '../camera/Camera'
 import { PlayerHand } from '../cliententity/clientplayer/PlayerHand'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
+import { WeaponStateFormatter } from '../cliententity/clientplayer/state/WeaponStateFormatter'
 import { Container } from '../engine/display/Container'
 import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Sprite } from '../engine/display/Sprite'
@@ -12,6 +13,7 @@ import { Direction } from '../engine/math/Direction'
 import { Vector2 } from '../engine/math/Vector2'
 import { InputProcessor } from '../input/InputProcessor'
 import { ParticleManager } from '../manager/ParticleManager'
+import { RoomMessage } from '../network/rooms/ServerMessages'
 import { Flogger } from '../service/Flogger'
 import { Defaults, GlobalScale } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
@@ -115,7 +117,7 @@ export class Weapon extends Container implements IWeapon {
                 this.fireBullet()
                 this.applyRecoil()
                 this.applyScreenEffects()
-
+                this.sendServerShootMessage()
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -238,7 +240,7 @@ export class Weapon extends Container implements IWeapon {
     sendServerShootMessage() {
         Flogger.log('Weapon', 'sendServerShootMessage')
 
-        // .send
+        this.messenger.sendShoot(this)
     }
 
     configureStats(stats: WeaponStats) {

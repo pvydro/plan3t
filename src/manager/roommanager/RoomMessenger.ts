@@ -1,4 +1,5 @@
 import { Flogger } from '../../service/Flogger'
+import { DebugConstants } from '../../utils/Constants'
 import { RoomManager } from './RoomManager'
 
 export interface IRoomMessenger {
@@ -11,6 +12,7 @@ export class RoomMessenger implements IRoomMessenger {
     private constructor() {}
 
     static send(endpoint: string | number, message: any) {
+        if (DebugConstants.ShowPlayerMessengerLogs)
         Flogger.log('RoomMessenger', 'send',
             'endpoint', endpoint,
             'message', message,

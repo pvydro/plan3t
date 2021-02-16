@@ -3,13 +3,16 @@ import { RoomMessenger } from '../../manager/roommanager/RoomMessenger'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { Flogger } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
+import { Weapon } from '../../weapon/Weapon'
 import { ClientPlayer } from './ClientPlayer'
 import { PlayerPackRules, PlayerStateFormatter } from './state/PlayerStateFormatter'
+import { WeaponStateFormatter } from './state/WeaponStateFormatter'
 import { WeaponStatePack } from './state/WeaponStatePack'
 
 export interface IPlayerMessenger extends IUpdatable {
     startSendingWeaponStatus(): void
     send(endpoint: string, rules?: PlayerPackRules): void
+    sendShoot(weapon: Weapon): void
 }
 
 export interface PlayerMessengerOptions {
@@ -54,6 +57,14 @@ export class PlayerMessenger implements IPlayerMessenger {
         if (this._isRefreshingWeapon) return
 
         this._isRefreshingWeapon = true
+    }
+
+    sendShoot(weapon: Weapon) {
+        const pack = WeaponStateFormatter.convertWeaponToPack(weapon)
+        
+        if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendShoot', 'RoomMessage.PlayerShoot', 'pack', pack)
+
+        RoomMessenger.send(RoomMessage.PlayerShoot, pack)
     }
 
     private sendWeaponStatus() {
