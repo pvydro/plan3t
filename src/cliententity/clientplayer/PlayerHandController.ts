@@ -37,6 +37,7 @@ export class PlayerHandController implements IPlayerHandController {
             this.mousePos.x = projectedPos.x
             this.mousePos.y = projectedPos.y
         }
+
         this.followState()
     }
 

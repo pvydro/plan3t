@@ -5,6 +5,8 @@ import { IVector2 } from '../math/Vector2'
 
 export interface IAnimatedSprite {
     anchor: IVector2
+    flipX(): void
+    flipY(): void
 }
 
 export interface AnimationOptions {
@@ -32,6 +34,14 @@ export class AnimatedSprite extends PIXI.AnimatedSprite implements IAnimatedSpri
         if (options.dimension !== undefined) this.dimension = options.dimension
         if (options.animationSpeed !== undefined) this.animationSpeed = options.animationSpeed
         if (options.loop !== undefined) this.loop = options.loop
+    }
+
+    flipX() {
+        this.scale.x *= -1
+    }
+
+    flipY() {
+        this.scale.y *= -1
     }
 
     set dimension(value: IDimension) {

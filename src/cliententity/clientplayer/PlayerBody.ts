@@ -134,8 +134,9 @@ export class PlayerBody extends Container implements IPlayerBody {
     }
 
     flipAllSprites() {
-        this._sprite.scale.x *= -1
-        this._walkingSprite.scale.x *= -1
-        this._jumpingSprite.scale.x *= -1
+        this._sprite.flipX()
+        this._walkingSprite.flipX()
+        this._jumpingSprite.flipX()
+        this._dyingSprite.flipX()
     }
 }

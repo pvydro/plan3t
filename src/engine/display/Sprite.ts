@@ -4,6 +4,8 @@ import { Graphix } from './Graphix'
 
 export interface ISprite {
     overlayGraphic?: Graphix
+    flipX(): void
+    flipY(): void
 }
 
 export interface SpriteOverlayOptions {
@@ -51,6 +53,14 @@ export class Sprite extends PIXI.Sprite implements ISprite {
         this.overlayGraphic.height = this.height
         this.overlayGraphic.x = 0
         this.overlayGraphic.y = -this.overlayGraphic.height / 2
+    }
+
+    flipX() {
+        this.scale.x *= -1
+    }
+
+    flipY() {
+        this.scale.y *= -1
     }
 
     set dimension(value: IDimension) {
