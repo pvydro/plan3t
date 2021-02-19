@@ -29,7 +29,7 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
         sprite.anchor.set(0, 0.5)
         sprite.play()
         sprite.onComplete = () => {
-            this.animationComplete()
+            this.demolish()
         }
 
         const op = (options as ParticleOptions)
@@ -38,10 +38,6 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
         super(op)
 
         this.scale.set(GlobalScale, GlobalScale)
-    }
-
-    animationComplete() {
-        this.demolish()
     }
 
     static get randomAnimation(): string[] {

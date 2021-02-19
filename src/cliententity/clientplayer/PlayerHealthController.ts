@@ -1,4 +1,5 @@
 import { Key } from "ts-keycode-enum";
+import { SmallBlastParticle } from "../../engine/display/particle/SmallBlastParticle";
 import { InputProcessor } from "../../input/InputProcessor";
 import { ParticleManager } from "../../manager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
@@ -63,26 +64,29 @@ export class PlayerHealthController implements IPlayerHealthController {
         }
     }
 
-    private displayDamageEffects(damageAmount: number) {
-        if (!this.player.isClientPlayer) return
-
-        const damageString = '-' + damageAmount
-
-        ParticleManager.getInstance().addTextParticle({
-            text: damageString,
-            position: {
-                x: this.player.x,
-                y: this.player.y
-            },
-            positionRandomization: {
-                randomizationRange: 32
-            }
-        })
-    }
-
     private die() {
         Flogger.log('PlayerHealthController', 'die')
 
         this.player.consciousnessState = PlayerConsciousnessState.Dead
+        this.displayDeathEffects()
+    }
+
+    private displayDamageEffects(damageAmount: number) {
+        const particleManager = ParticleManager.getInstance()
+        const damageString = '-' + damageAmount
+        
+        particleManager.addTextParticle({
+            text: damageString,
+            position: { x: this.player.x, y: this.player.y },
+            positionRandomization: { randomizationRange: 32 }
+        })
+    }
+
+    private displayDeathEffects() {
+        const particleManager = ParticleManager.getInstance()
+
+        particleManager.addParticle(new SmallBlastParticle({
+            position: { x: this.player.x, y: this.player.y }
+        }))
     }
 }

@@ -147,6 +147,11 @@ export class AssetUrls {
     static MUZZLE_FLASH_D_2 = 'assets/image/particles/muzzleflash/d/2'
     static MUZZLE_FLASH_D_3 = 'assets/image/particles/muzzleflash/d/3'
 
+    static SMALL_BLAST_0 = 'assets/image/particles/smallblast/smallblast_0'
+    static SMALL_BLAST_1 = 'assets/image/particles/smallblast/smallblast_1'
+    static SMALL_BLAST_2 = 'assets/image/particles/smallblast/smallblast_2'
+    static SMALL_BLAST_3 = 'assets/image/particles/smallblast/smallblast_3'
+
     // Lights
     static LIGHT_HARD_LG = 'assets/image/lights/lighthardlg'
 

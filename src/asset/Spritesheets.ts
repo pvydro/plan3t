@@ -4,9 +4,9 @@ import { Flogger } from '../service/Flogger'
 export class SpritesheetUrls {
     private constructor() {}
 
-    public static PLAYER_BODY_WALKING = 'assets/image/player/body/body_walking.json'
-    public static PLAYER_BODY_JUMPING = 'assets/image/player/body/body_jumping.json'
-    public static PLAYER_BODY_DYING = 'assets/image/player/body/body_dying.json'
+    static PLAYER_BODY_WALKING = 'assets/image/player/body/body_walking.json'
+    static PLAYER_BODY_JUMPING = 'assets/image/player/body/body_jumping.json'
+    static PLAYER_BODY_DYING = 'assets/image/player/body/body_dying.json'
 }
 
 export class Spritesheets {
@@ -15,7 +15,7 @@ export class Spritesheets {
 
     private constructor() {}
 
-    public static async loadSpritesheets() {
+    static async loadSpritesheets() {
         Flogger.log('Spritesheets', 'loadSpritesheets')
 
         return new Promise((resolve, reject) => {
