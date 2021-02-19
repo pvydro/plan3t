@@ -2,7 +2,7 @@ import { Camera } from '../../camera/Camera'
 import { InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
-import { ClientPlayer, PlayerBodyState } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState } from './ClientPlayer'
 import { PlayerHead } from './PlayerHead'
 import { Vector2 } from '../../engine/math/Vector2'
 
@@ -18,7 +18,7 @@ export interface PlayerHeadControllerOptions {
 export class PlayerHeadController implements IPlayerHeadController {
     _shouldRotateHeadWithMouseMove: boolean = true
     playerHead: PlayerHead
-    playerHeadRotationDamping: number = 10
+    _playerHeadRotationDamping: number = 10
     player: ClientPlayer
     mousePos: Vector2 = Vector2.Zero
 
@@ -37,24 +37,24 @@ export class PlayerHeadController implements IPlayerHeadController {
 
     update() {
         const direction = this.player.direction
+        let headBobRotation = ((this.playerHead.headBobOffset + 2) / 20)
 
-        if (this.player.bodyState === PlayerBodyState.Walking) {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+            this.rotateWithDeath()
+            headBobRotation = 1
+        } else if (this.player.bodyState === PlayerBodyState.Walking) {
             this.targetRotation = direction === Direction.Right ? 0.1 : -0.1
         } else {
             if (this._shouldRotateHeadWithMouseMove) {
                 this.rotateHeadWithMouseMove()
             }
         }
-        
-        let headBobRotation = ((this.playerHead.headBobOffset + 2) / 20)//30
 
         if (this.player.direction === Direction.Left) {
             headBobRotation *= -1
         }
 
         this.targetRotation += headBobRotation
-
-        // this.playerHead.rotation = this.targetRotation
         this.playerHead.rotation += (this.targetRotation - this.playerHead.rotation) / this.playerHeadRotationDamping
     }
 
@@ -64,22 +64,27 @@ export class PlayerHeadController implements IPlayerHeadController {
             const direction = this.player.direction
             const baseRotation = direction === Direction.Right
                 ? -0.15 : 0.15
-    
+
             const lookAtMouseDamping = 35
             const originY = this.player.y
             let distanceFromMouseY = direction === Direction.Right
                 ? this.mousePos.y - originY : originY - this.mousePos.y
             const rotDistanceY = (distanceFromMouseY / lookAtMouseDamping)
-    
-            let rotationY = rotDistanceY//direction === Direction.Right ? rotDistanceY : -rotDistanceY
+            let rotationY = rotDistanceY
     
             rotationY *= 0.01
     
             this.targetRotation = (rotationY + baseRotation)
         } else {
+            this.targetRotation = 0            
+        }
+    }
 
-            this.targetRotation = 0
-            
+    rotateWithDeath() {
+        if (this.player.yVel < 0) {
+            this.targetRotation = -1.5
+        } else {
+            this.targetRotation = 1
         }
     }
 
@@ -88,5 +93,20 @@ export class PlayerHeadController implements IPlayerHeadController {
             this.mousePos.x = event.clientX
             this.mousePos.y = event.clientY
         })
+    }
+
+    get playerHeadRotationDamping() {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+            // return 100
+            if (this.player.yVel < 0) {
+                // this.targetRotation = -2
+                return 15
+            } else {
+                return 80
+                // this.targetRotation = 1
+            }
+        } else {
+            return this._playerHeadRotationDamping
+        }
     }
 }

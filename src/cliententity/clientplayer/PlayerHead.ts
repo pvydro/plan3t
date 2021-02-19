@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { ClientPlayer, PlayerBodyState, PlayerLegsState } from './ClientPlayer'
+import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { Events } from '../../utils/Constants'
@@ -51,20 +51,19 @@ export class PlayerHead extends Container {
     }
 
     update() {
-        this.bobHead()
+        if (this.player.consciousnessState === PlayerConsciousnessState.Alive) {
+            this.bobHead()
 
-        const targetOffset = this.targetHeadBobOffset
-        const crouchEaseAmt = 2
+            const targetOffset = this.targetHeadBobOffset
+            const crouchEaseAmt = 2
 
-        this._headBobOffset += (targetOffset - this.headBobOffset) / this.headBobEaseAmount
-        this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
+            this._headBobOffset += (targetOffset - this.headBobOffset) / this.headBobEaseAmount
+            this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
 
-        this.position.y = -3 + this.headBobOffset + this._crouchedOffset
-
-        if (this.player.isClientPlayer) {
-            this.controller.update()
+            this.position.y = -3 + this.headBobOffset + this._crouchedOffset
         }
 
+        this.controller.update()
     }
 
     bobHead() {

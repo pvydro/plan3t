@@ -36,10 +36,8 @@ export class PlayerController implements IPlayerController {
 
     update() {
         if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
-            return
-        }
-
-        if (this.player.isClientPlayer) {
+            this.comeToStop()
+        } else if (this.player.isClientPlayer) {
             if (this.leftKeyDown && this.rightKeyDown
             || !this.leftKeyDown && !this.rightKeyDown) {
                 this.comeToStop()
@@ -48,11 +46,13 @@ export class PlayerController implements IPlayerController {
             } else if (this.rightKeyDown) {
                 this.moveRight()
             }
+
             if (this.downKeyDown) {
                 this.crouch()
             } else if (this.player.legsState === PlayerLegsState.Crouched) {
                 this.standUp()
             }
+
             if (this.spaceKeyPressed) {
                 this.spaceKeyPressed = false
                 this.jump()

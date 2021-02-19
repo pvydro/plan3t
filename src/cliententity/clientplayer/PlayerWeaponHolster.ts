@@ -5,7 +5,7 @@ import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { Emitter } from '../../utils/Emitter'
 import { IWeapon, Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
-import { ClientPlayer } from './ClientPlayer'
+import { ClientPlayer, PlayerConsciousnessState } from './ClientPlayer'
 import { IPlayerMessenger } from './PlayerMessenger'
 
 export enum CurrentWeaponStatus {
@@ -122,6 +122,10 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     private mouseDown() {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+            return
+        }
+
         if (this.currentWeapon
         && this.currentWeapon.triggerDown !== undefined) {
             this.currentWeapon.triggerDown = true
