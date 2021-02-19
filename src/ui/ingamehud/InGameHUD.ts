@@ -4,6 +4,7 @@ import { Flogger } from '../../service/Flogger'
 import { UIConstants, WindowSize } from '../../utils/Constants'
 import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
+import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
 import { AmmoStatusComponent } from './ammostatus/AmmoStatusComponent'
 import { Crosshair } from './Crosshair'
 import { HealthBar } from './healthbar/HealthBar'
@@ -11,6 +12,7 @@ import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 
 export interface IInGameHUD extends IUpdatable {
     initializeHUD(): Promise<void>
+    showRespawnScreen(): Promise<void>
 }
 
 export class InGameHUD extends UIContainer implements IInGameHUD {
@@ -21,6 +23,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
     ammoStatus: AmmoStatusComponent
     healthBar: HealthBar
     queuedHealthBars: OverheadHealthBar[] = []
+    respawnScreen: RespawnScreen
 
     static getInstance() {
         if (!this.INSTANCE) {
@@ -35,6 +38,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
             shouldFillWindow: true 
         })
 
+        this.respawnScreen = new RespawnScreen()
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
@@ -46,6 +50,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         return new Promise((resolve, reject) => {
             // this.addChild(this.healthBar)
             this.addChild(this.ammoStatus)
+            this.addChild(this.respawnScreen)
             this.addChild(this.crosshair)
 
             this.queuedHealthBars = []
@@ -68,6 +73,12 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         this.crosshair.update()
     }
 
+    showRespawnScreen(): Promise<void> {
+        return new Promise((resolve) => {
+
+        })
+    }
+
     private applyScale() {
         const toScale: UIComponent[] = [ this.healthBar, this.ammoStatus ]
 
@@ -81,7 +92,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
     private applyPosition() {
         // Health bar
         this.healthBar.position.x = WindowSize.width - UIConstants.HUDPadding
-        //UIConstants.HUDPadding
         this.healthBar.position.y = WindowSize.height - UIConstants.HUDPadding
         - (this.healthBar.backgroundSprite.height * UIConstants.HUDScale)
 

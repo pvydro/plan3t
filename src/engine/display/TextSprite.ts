@@ -30,8 +30,9 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         const fontSize = options.fontSize ?? 12
         const fill = options.fill ?? 0xFFFFFF
         const align = (options.align as string) ?? 'center'
+        const wordWrap = false
 
-        const style = new PIXI.TextStyle({ fontFamily, fontSize, fill, align })
+        const style = new PIXI.TextStyle({ fontFamily, fontSize, fill, align, wordWrap })
         
         super(options.text, style)
         
