@@ -80,8 +80,9 @@ export class SphericalTileHelper {
 
         coords = SphericalTileCoordinator.checkLeftAndRight(point, coords)
         coords = SphericalTileCoordinator.checkTopAndBottom(point, coords)
-        coords = SphericalTileCoordinator.checkTopCorners(point as SphericalPoint, coords)
-        coords = SphericalTileCoordinator.checkBottomCorners(point as SphericalPoint, coords)
+        // TODO: Uncomment this
+        // coords = SphericalTileCoordinator.checkTopCorners(point as SphericalPoint, coords)
+        // coords = SphericalTileCoordinator.checkBottomCorners(point as SphericalPoint, coords)
 
         return coords
     }

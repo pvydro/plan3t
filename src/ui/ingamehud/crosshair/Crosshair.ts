@@ -76,7 +76,10 @@ export class Crosshair extends UIComponent implements ICrosshair {
             this.targetGrowthOffset = 0
         }
 
-        this.x = this.mousePos.x
+        const posOffsetX = this.state === CrosshairState.Cursor
+            ? -5 : 0
+
+        this.x = this.mousePos.x + posOffsetX
         this.y = this.mousePos.y
         this.growthOffset += (this.targetGrowthOffset - this.growthOffset) / this.growthDamping
 
@@ -127,17 +130,13 @@ export class Crosshair extends UIComponent implements ICrosshair {
     }
 
     styleNodes() {
-        switch (this._state) {
-            case CrosshairState.Gameplay:
-                this.nodeTwo.x = -this.nodeDistance
-                this.nodeTwo.y = -2
-                this.nodeTwo.height = 5
+        this.nodeTwo.x = -this.nodeDistance
+        this.nodeTwo.y = -2
+        this.nodeTwo.height = 5
 
-                this.nodeThree.x = this.nodeDistance
-                this.nodeThree.y = -2
-                this.nodeThree.height = 5
-                break
-        }
+        this.nodeThree.x = this.nodeDistance
+        this.nodeThree.y = -2
+        this.nodeThree.height = 5
 
         this.scale.set(5, 5)
     }

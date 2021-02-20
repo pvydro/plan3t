@@ -15,16 +15,14 @@ export class CrosshairCursor implements ICrosshairCursor {
         magnetizeDivisor: 5,
         rotationDivisor: 10,
         nodeOne: {
-            x: 4, y: 5,
-            rotation: -5 * (Math.PI / 180)
+            x: 3.65, y: 4, rotation: -25 * (Math.PI / 180)
         },
         nodeTwo: {
-            x: 0,
-            rotation: -5 * (Math.PI / 180)
+            x: 0, rotation: -5 * (Math.PI / 180)
         },
         nodeThree: {
-            x: 0,
-            rotation: -45 * (Math.PI / 180)
+            x: 0, rotation: -65 * (Math.PI / 180),
+            height: 5.5, skewX: -0.2
         }
     }
     _nodesMagnetized: boolean = false
@@ -48,6 +46,8 @@ export class CrosshairCursor implements ICrosshairCursor {
             this.nodeOne.y += (nodeOneTarget.y - this.nodeOne.y) / magnetizeDivisor
             this.nodeTwo.x += (nodeTwoTarget.x - this.nodeTwo.x) / magnetizeDivisor
             this.nodeThree.x += (nodeThreeTarget.x - this.nodeThree.x) / magnetizeDivisor
+            this.nodeThree.height += (nodeThreeTarget.height - this.nodeThree.height) / magnetizeDivisor
+            this.nodeThree.skew.x += (nodeThreeTarget.skewX - this.nodeThree.skew.x) / magnetizeDivisor
 
             // Rotation
             this.nodeOne.rotation += (nodeOneTarget.rotation - this.nodeOne.rotation) / rotationDivisor
