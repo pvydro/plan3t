@@ -34,7 +34,7 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
         this.button.extendedOnHover = () => { this.onHover() }        
         this.button.extendedOnHold = () => { this.onHold() }
         this.button.extendedOnMouseOut = () => { this.onMouseOut() }
-        this.button.extendedOnRelease = () => { this.onMouseOut() }
+        this.button.extendedOnRelease = () => { this.onRelease() }
     }
 
     onHover() {
