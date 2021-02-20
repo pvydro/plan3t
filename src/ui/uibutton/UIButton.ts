@@ -1,5 +1,6 @@
 import { Assets } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
+import { TextSprite, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent } from '../UIComponent'
@@ -21,16 +22,20 @@ export interface IUIButton extends IUIComponent {
     release(): Promise<any>
 }
 
-export interface UIButtonBackground {
+export interface UIButtonBackgroundOptions {
     idle: string
     hovered?: string
     triggered?: string
 }
 
+export interface UIButtonTextOptions extends TextSpriteOptions {
+    alpha?: number
+}
+
 export interface UIButtonOptions {
     type: UIButtonType
-    text?: string
-    background?: UIButtonBackground
+    text?: UIButtonTextOptions
+    background?: UIButtonBackgroundOptions
     addClickListeners?: boolean
     anchor?: IVector2
     darkenerPluginOptions?: UIButtonDarkenerPluginOptions
@@ -46,8 +51,8 @@ export class UIButton extends UIComponent implements IUIButton {
     _backgroundSpriteHovered?: Sprite
     _backgroundSpriteTriggered?: Sprite
     _state: UIButtonState
+    _textSprite?: TextSprite
     type: UIButtonType
-    text?: string
     isPushed: boolean = false
     listenersAdded: boolean = false
     plugins: any[] = []
@@ -62,7 +67,6 @@ export class UIButton extends UIComponent implements IUIButton {
         super()
 
         this.type = options.type
-        this.text = options.text
         this.extendedOnHold = options.onHold
         this.extendedOnTrigger = options.onTrigger
         this.extendedOnHover = options.onHover
@@ -75,6 +79,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
         this.applyMouseListeners(options.addClickListeners)
         this.applyBackgroundTexture(options)
+        this.applyText(options)
     }
 
     async hover() {
@@ -153,7 +158,6 @@ export class UIButton extends UIComponent implements IUIButton {
         })
 
         if (addClickListeners) {
-            // TODO
             this.on('pointerdown', () => {
                 this.pressDown()
             })
@@ -162,9 +166,28 @@ export class UIButton extends UIComponent implements IUIButton {
             })
         }
     }
+    
+    applyText(options: UIButtonOptions) {
+        const textOptions = options.text
 
-    applyBackgroundTexture(options?: UIButtonOptions) {
-        const background: UIButtonBackground = options ? options.background : undefined
+        if (this._textSprite !== undefined) {
+            this._textSprite.demolish()
+        }
+
+        if (textOptions !== undefined) {
+            const textSprite = new TextSprite(textOptions)
+            textSprite.position.set(-this.backgroundWidth, -this.backgroundHeight)
+
+            textSprite.x += this.halfWidth - (textSprite.textWidth / 2)
+            textSprite.y += this.halfHeight - (textSprite.textHeight / 2)
+            
+            this._textSprite = textSprite
+            this.addChild(this._textSprite)
+        }
+    }
+
+    applyBackgroundTexture(options: UIButtonOptions) {
+        const background: UIButtonBackgroundOptions = options.background
         const anchor = options.anchor
         
         if (background !== undefined) {
@@ -221,5 +244,25 @@ export class UIButton extends UIComponent implements IUIButton {
 
     get backgroundSprite() {
         return this._backgroundSprite
+    }
+
+    get textSprite() {
+        return this._textSprite
+    }
+
+    get backgroundWidth() {
+        return this.backgroundSprite.width
+    }
+
+    get backgroundHeight() {
+        return this.backgroundSprite.height
+    }
+
+    get halfWidth() {
+        return this.backgroundSprite.halfWidth
+    }
+
+    get halfHeight() {
+        return this.backgroundSprite.halfHeight
     }
 }

@@ -1,5 +1,6 @@
 import { AssetUrls } from '../../../asset/Assets'
-import { Flogger } from '../../../service/Flogger'
+import { Fonts } from '../../../asset/Fonts'
+import { TextSpriteAlign } from '../../../engine/display/TextSprite'
 import { UIConstants, WindowSize } from '../../../utils/Constants'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
@@ -11,8 +12,16 @@ export class RespawnButton extends UIButton implements IRespawnButton {
     constructor() {
         super({
             type: UIButtonType.Tap,
-            anchor: { x: 1, y: 0 },
             addClickListeners: true,
+            anchor: {
+                x: 1, y: 1
+            },
+            text: {
+                text: 'RESPAWN',
+                fontFamily: Fonts.Font.family,
+                fontSize: 18,
+                color: 0x000000,
+            },
             background: {
                 idle: AssetUrls.MID_BUTTON_METAL
             },
@@ -28,6 +37,6 @@ export class RespawnButton extends UIButton implements IRespawnButton {
         const padding = UIConstants.HUDPadding
 
         this.x = WindowSize.width - padding
-        this.y = 20
+        this.y = WindowSize.height - padding
     }
 }

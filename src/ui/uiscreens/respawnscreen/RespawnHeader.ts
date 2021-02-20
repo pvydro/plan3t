@@ -14,7 +14,7 @@ export class RespawnHeader extends TextSprite implements IRespawnHeader {
         super({
             text: 'YOU DIED',
             fontFamily: Fonts.Font.family,
-            fontSize: 32,
+            fontSize: 64,
         })
 
         this.anchor.set(0, 0)
