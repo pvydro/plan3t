@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js'
 import { Darkener } from '../../../engine/display/lighting/Darkener'
-import { UIScreen } from '../UIScreen'
+import { IUIScreen, UIScreen } from '../UIScreen'
 import { RespawnHeader } from './RespawnHeader'
 
-export interface IRespawnScreen {
+export interface IRespawnScreen extends IUIScreen {
 
 }
 

@@ -3,6 +3,7 @@ import { SmallBlastParticle } from "../../engine/display/particle/SmallBlastPart
 import { InputProcessor } from "../../input/InputProcessor";
 import { ParticleManager } from "../../manager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
+import { InGameHUD } from "../../ui/ingamehud/InGameHUD";
 import { IClientPlayer, PlayerConsciousnessState } from "./ClientPlayer";
 
 export interface IPlayerHealthController {
@@ -84,9 +85,12 @@ export class PlayerHealthController implements IPlayerHealthController {
 
     private displayDeathEffects() {
         const particleManager = ParticleManager.getInstance()
+        const hud = InGameHUD.getInstance()
 
         particleManager.addParticle(new SmallBlastParticle({
             position: { x: this.player.x, y: this.player.y }
         }))
+
+        hud.requestRespawnScreen()
     }
 }

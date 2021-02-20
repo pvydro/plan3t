@@ -12,7 +12,7 @@ import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 
 export interface IInGameHUD extends IUpdatable {
     initializeHUD(): Promise<void>
-    showRespawnScreen(): Promise<void>
+    requestRespawnScreen(): Promise<void>
 }
 
 export class InGameHUD extends UIContainer implements IInGameHUD {
@@ -74,10 +74,20 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         this.crosshair.update()
     }
 
-    showRespawnScreen(): Promise<void> {
-        return new Promise((resolve) => {
+    async requestRespawnScreen() {
+        Flogger.color('white')
+        Flogger.log('InGameHUD', 'requestRespawnScreen')
+        
+        await this.hideHUDComponents()
+        await this.showRespawnScreen()
+    }
 
-        })
+    private async showRespawnScreen() {
+        await this.respawnScreen.show()
+    }
+
+    private async hideHUDComponents() {
+        await this.ammoStatus.hide()
     }
 
     private applyScale() {

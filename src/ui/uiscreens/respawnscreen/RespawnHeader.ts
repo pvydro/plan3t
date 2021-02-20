@@ -22,4 +22,12 @@ export class RespawnHeader extends TextSprite implements IRespawnHeader {
     forceHide() {
         this.alpha = 0
     }
+
+    async show() {
+
+    }
+    
+    async hide() {
+        
+    }
 }
