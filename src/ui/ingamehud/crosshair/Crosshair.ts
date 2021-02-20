@@ -121,6 +121,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
         graphics.beginFill(0xffffff)
         graphics.drawRect(0, 0, 1, 1)
         graphics.endFill()
+        graphics.pivot.set(0, 0)
 
         return graphics
     }
