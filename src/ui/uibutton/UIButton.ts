@@ -1,7 +1,7 @@
-import { Assets, AssetUrls } from '../asset/Assets'
-import { Sprite } from '../engine/display/Sprite'
-import { InputProcessor } from '../input/InputProcessor'
-import { IUIComponent, UIComponent } from './UIComponent'
+import { Assets } from '../../asset/Assets'
+import { Sprite } from '../../engine/display/Sprite'
+import { functionExists } from '../../utils/Utils'
+import { IUIComponent, UIComponent } from '../UIComponent'
 
 export enum UIButtonState {
     Idle, Hovered, Triggered
@@ -30,7 +30,11 @@ export interface UIButtonOptions {
     text?: string
     background?: UIButtonBackground
     addClickListeners?: boolean
+    onHold?: () => void
     onTrigger?: () => void
+    onHover?: () => void
+    onMouseOut?: () => void
+    onRelease?: () => void
 }
 
 export class UIButton extends UIComponent implements IUIButton {
@@ -43,13 +47,23 @@ export class UIButton extends UIComponent implements IUIButton {
 
     isPushed: boolean = false
     listenersAdded: boolean = false
-    extendedTrigger?: Function
+
+    extendedOnHold?: Function
+    extendedOnTrigger?: Function
+    extendedOnHover?: Function
+    extendedOnMouseOut?: Function
+    extendedOnRelease?: Function
 
     constructor(options: UIButtonOptions) {
         super()
 
         this.type = options.type
-        this.text = options.text ?? undefined
+        this.text = options.text
+        this.extendedOnHold = options.onHold
+        this.extendedOnTrigger = options.onTrigger
+        this.extendedOnHover = options.onHover
+        this.extendedOnMouseOut = options.onMouseOut
+        this.extendedOnRelease = options.onRelease
 
         this.applyMouseListeners(options.addClickListeners)
         this.applyBackgroundTexture(options.background)
@@ -57,14 +71,24 @@ export class UIButton extends UIComponent implements IUIButton {
 
     async hover() {
         if (this.state === UIButtonState.Hovered) return
-
+        
         this.state = UIButtonState.Hovered
+
+        // Execute passed through hover
+        if (functionExists(this.extendedOnHover)) {
+            this.extendedOnHover()
+        }
     }
 
     async unhover() {
         if (this.state !== UIButtonState.Hovered) return
 
         this.state = UIButtonState.Idle
+
+        // Execute passed through hover
+        if (functionExists(this.extendedOnMouseOut)) {
+            this.extendedOnMouseOut()
+        }
     }
 
     async pressDown() {
@@ -89,6 +113,11 @@ export class UIButton extends UIComponent implements IUIButton {
         }
 
         this.state = UIButtonState.Idle
+
+        // Execute passed through release
+        if (functionExists(this.extendedOnRelease)) {
+            this.extendedOnRelease()
+        }
     }
 
     trigger() {
@@ -100,9 +129,8 @@ export class UIButton extends UIComponent implements IUIButton {
         this.state = UIButtonState.Triggered
         
         // Execute passed through trigger
-        if (this.extendedTrigger !== undefined
-        && typeof this.extendedTrigger === 'function') {
-            this.extendedTrigger()
+        if (functionExists(this.extendedOnTrigger)) {
+            this.extendedOnTrigger()
         }
     }
 

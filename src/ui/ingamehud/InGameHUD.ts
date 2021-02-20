@@ -3,7 +3,7 @@ import { IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { UIConstants, WindowSize } from '../../utils/Constants'
-import { UIButton, UIButtonType } from '../UIButton'
+import { UIButton, UIButtonType } from '../uibutton/UIButton'
 import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
 import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
@@ -46,13 +46,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
-
-        this.testBtn = new UIButton({
-            type: UIButtonType.Tap,
-            background: {
-                idle: AssetUrls.MID_BUTTON_METAL
-            }
-        })
     }
 
     async initializeHUD(): Promise<void> {
