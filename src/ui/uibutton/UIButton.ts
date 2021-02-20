@@ -30,6 +30,7 @@ export interface UIButtonBackgroundOptions {
 
 export interface UIButtonTextOptions extends TextSpriteOptions {
     alpha?: number
+    offsetY?: number
 }
 
 export interface UIButtonOptions {
@@ -179,7 +180,8 @@ export class UIButton extends UIComponent implements IUIButton {
             textSprite.position.set(-this.backgroundWidth, -this.backgroundHeight)
 
             textSprite.x += this.halfWidth - (textSprite.textWidth / 2)
-            textSprite.y += this.halfHeight - (textSprite.textHeight / 2)
+            textSprite.y += this.halfHeight - (textSprite.textHeight / 2) + textOptions.offsetY
+            textSprite.alpha = textOptions.alpha ?? 1
             
             this._textSprite = textSprite
             this.addChild(this._textSprite)
