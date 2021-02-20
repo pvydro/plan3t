@@ -18,11 +18,10 @@ export class AmmoStatusAnimator implements IAmmoStatusAnimator {
     constructor(options: AmmoStatusAnimatorOptions) {
         this.ammoStatus = options.ammoStatus
 
-        this.hideAnim = Tween.to(this.ammoStatus, {
-            alpha: 0
-        })
-
         this.showAnim = Tween.to(this.ammoStatus, {
+            alpha: 1
+        })
+        this.hideAnim = Tween.to(this.ammoStatus, {
             alpha: 0
         })
     }

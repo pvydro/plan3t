@@ -1,7 +1,10 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { Fonts } from '../../../asset/Fonts'
 import { TextSpriteAlign } from '../../../engine/display/TextSprite'
+import { RoomManager } from '../../../manager/roommanager/RoomManager'
+import { Flogger } from '../../../service/Flogger'
 import { UIConstants, WindowSize } from '../../../utils/Constants'
+import { InGameHUD } from '../../ingamehud/InGameHUD'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
 export interface IRespawnButton extends IUIButton {
@@ -32,7 +35,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
                 clickTint: 0x969696
             },
             onTrigger: () => {
-                console.log('Respawn!')
+                this.triggerRespawn()
             }
         })
 
@@ -40,5 +43,15 @@ export class RespawnButton extends UIButton implements IRespawnButton {
 
         this.x = WindowSize.width - padding
         this.y = WindowSize.height - padding
+    }
+
+    triggerRespawn() {
+        Flogger.log('RespawnButton', 'triggerRespawn')
+
+        const hud = InGameHUD.getInstance()
+        const roomManager = RoomManager.getInstance()
+
+        hud.closeRespawnScreen()
+        roomManager.requestClientPlayerRespawn()
     }
 }

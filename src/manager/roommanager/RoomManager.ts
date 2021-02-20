@@ -53,16 +53,14 @@ export class RoomManager implements IRoomManager {
 
     async initializeRoom(): Promise<Room> {
         Flogger.log('RoomManager', 'initializeRoom')
-
         const client = this.clientManager.client
 
         this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
 
         RoomManager.clientSessionId = this.currentRoom.sessionId
+        RoomMessenger._isOnline = true
         
         this.initializeCurrentRoomEntities()
-
-        RoomMessenger._isOnline = true
 
         return new Promise((resolve) => {
             // First state change
@@ -83,15 +81,6 @@ export class RoomManager implements IRoomManager {
                     })
                 }
             })
-
-            // All state changes
-            // this.currentRoom.onStateChange((state: PlanetGameState) => {
-            //     // TODO this
-            //     // console.log('changes')
-            //     // state.players.forEach((p: Player, sessionId: string) => {
-            //     //     console.log(p.x)
-            //     // })
-            // })
         })
     }
 
@@ -164,6 +153,10 @@ export class RoomManager implements IRoomManager {
     addProjectile(projectile: Projectile) {
         this.entityManager.createProjectile(ProjectileType.Bullet,
             projectile.x, projectile.y, projectile.rotation, projectile.velocity)
+    }
+
+    requestClientPlayerRespawn() {
+        
     }
 
     static isSessionALocalPlayer(sessionId: string) {

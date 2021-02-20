@@ -1,9 +1,6 @@
-import { AssetUrls } from '../../asset/Assets'
-import { IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { UIConstants, WindowSize } from '../../utils/Constants'
-import { UIButton, UIButtonType } from '../uibutton/UIButton'
 import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
 import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
@@ -15,6 +12,7 @@ import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 export interface IInGameHUD extends IUpdatable {
     initializeHUD(): Promise<void>
     requestRespawnScreen(): Promise<void>
+    closeRespawnScreen(): Promise<void>
 }
 
 export class InGameHUD extends UIContainer implements IInGameHUD {
@@ -50,7 +48,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         Flogger.log('InGameHUD', 'initializeHUD')
 
         return new Promise((resolve, reject) => {
-            // this.addChild(this.healthBar)
             this.addChild(this.ammoStatus)
             this.addChild(this.respawnScreen)
             this.addChild(this.crosshair)
@@ -77,20 +74,29 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
     }
 
     async requestRespawnScreen() {
-        Flogger.color('white')
         Flogger.log('InGameHUD', 'requestRespawnScreen')
         
-        this.crosshair.state = CrosshairState.Cursor
         await this.hideHUDComponents()
-        await this.showRespawnScreen()
+        await this.respawnScreen.show()
+
+        setTimeout(() => {
+            this.crosshair.state = CrosshairState.Cursor
+        }, 250)
     }
 
-    private async showRespawnScreen() {
-        await this.respawnScreen.show()
+    async closeRespawnScreen() {
+        Flogger.log('InGameHUD', 'closeRespawnScreen')
+
+        await this.respawnScreen.hide()
+        await this.showHUDComponents()
     }
 
     private async hideHUDComponents() {
         await this.ammoStatus.hide()
+    }
+
+    private async showHUDComponents() {
+        await this.ammoStatus.show()
     }
 
     private applyScale() {
