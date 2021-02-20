@@ -4,6 +4,7 @@ import { Darkener } from '../../../engine/display/lighting/Darkener'
 import { UIConstants, WindowSize } from '../../../utils/Constants'
 import { UIButton, UIButtonType } from '../../uibutton/UIButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
+import { RespawnButton } from './RespawnButton'
 import { RespawnHeader } from './RespawnHeader'
 import { IRespawnScreenAnimator, RespawnScreenAnimator } from './RespawnScreenAnimator'
 
@@ -20,32 +21,11 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
     constructor() {
         super({})
 
-        const padding = UIConstants.HUDPadding
 
         this.animator = new RespawnScreenAnimator({ screen: this })
         this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })
         this.respawnHeader = new RespawnHeader()
-        this.respawnButton = new UIButton({
-            type: UIButtonType.Tap,
-            anchor: { x: 1, y: 0 },
-            background: {
-                idle: AssetUrls.MID_BUTTON_METAL
-            },
-            onTrigger: () => {
-                console.log('Respawn!')
-            },
-            onHover: () => {
-                console.log('Hover...')
-            },
-            onMouseOut: () => {
-                console.log('Mouse out!')
-            },
-            onRelease: () => {
-                console.log('release.')
-            }
-        })
-        this.respawnButton.x = WindowSize.width - padding
-        this.respawnButton.y = 20
+        this.respawnButton = new RespawnButton()
         
         this.addChild(this.darkener)
         this.addChild(this.respawnHeader)

@@ -94,9 +94,12 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
     }
 
     private applyScale() {
-        const toScale: UIComponent[] = [ this.healthBar, this.ammoStatus ]
+        const toScale: UIComponent[] = [
+            this.healthBar, this.ammoStatus,
+            this.respawnScreen.respawnButton
+        ]
 
-        for (let i in toScale) {
+        for (var i in toScale) {
             const scaledComponent = toScale[i]
 
             scaledComponent.scale.set(UIConstants.HUDScale, UIConstants.HUDScale)
