@@ -1,5 +1,6 @@
 import { Assets } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
+import { IVector2 } from '../../engine/math/Vector2'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent } from '../UIComponent'
 
@@ -30,6 +31,7 @@ export interface UIButtonOptions {
     text?: string
     background?: UIButtonBackground
     addClickListeners?: boolean
+    anchor?: IVector2
     onHold?: () => void
     onTrigger?: () => void
     onHover?: () => void
@@ -66,7 +68,7 @@ export class UIButton extends UIComponent implements IUIButton {
         this.extendedOnRelease = options.onRelease
 
         this.applyMouseListeners(options.addClickListeners)
-        this.applyBackgroundTexture(options.background)
+        this.applyBackgroundTexture(options)
     }
 
     async hover() {
@@ -92,6 +94,7 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     async pressDown() {
+        console.log('Press down!')
         this.isPushed = true
 
         // Trigger if hold-action
@@ -137,37 +140,45 @@ export class UIButton extends UIComponent implements IUIButton {
     applyMouseListeners(addClickListeners?: boolean) {
         this.interactive = true
 
-        this.on('mouseover', () => {
+        this.on('pointerover', () => {
             this.hover()
         })
-        this.on('mouseout', () => {
+        this.on('pointerout', () => {
             this.unhover()
         })
 
         if (addClickListeners) {
             // TODO
-            this.on('mousedown', () => {
+            this.on('pointerdown', () => {
                 this.pressDown()
             })
-            this.on('mouseup', () => {
+            this.on('pointerup', () => {
                 this.release()
             })
         }
     }
 
-    applyBackgroundTexture(background?: UIButtonBackground) {
+    applyBackgroundTexture(options?: UIButtonOptions) {
+        const background: UIButtonBackground = options ? options.background : undefined
+        const anchor = options.anchor
+        
         if (background !== undefined) {
             const idle = PIXI.Texture.from(Assets.get(background.idle))
             const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : idle
             const triggered = background.triggered ? PIXI.Texture.from(Assets.get(background.triggered)) : hovered
 
             this.backgroundSprite = new Sprite({ texture: idle })
-
             if (hovered !== idle) {
                 this.backgroundSpriteHovered = new Sprite({ texture: hovered })
             }
             if (triggered !== hovered) {
                 this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
+            }
+
+            if (anchor !== undefined) {
+                this._backgroundSprite.anchor.set(anchor.x, anchor.y)
+                if (this._backgroundSpriteHovered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
+                if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
             }
         }
     }

@@ -27,8 +27,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
     queuedHealthBars: OverheadHealthBar[] = []
     respawnScreen: RespawnScreen
 
-    testBtn: UIButton
-
     static getInstance() {
         if (!this.INSTANCE) {
             this.INSTANCE = new InGameHUD()
@@ -56,7 +54,6 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
             this.addChild(this.ammoStatus)
             this.addChild(this.respawnScreen)
             this.addChild(this.crosshair)
-            this.addChild(this.testBtn)
 
             this.queuedHealthBars = []
             this.respawnScreen.forceHide()

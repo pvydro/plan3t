@@ -5,7 +5,7 @@ import { RespawnScreen } from './RespawnScreen'
 const AnimTimes = require('../../../json/AnimTimes.json')
 
 export interface IRespawnScreenAnimator extends IAnimator, IShowHide {
-
+    forceHide(): void
 }
 
 export interface RespawnScreenAnimatorOptions {
@@ -39,10 +39,19 @@ export class RespawnScreenAnimator extends Animator implements IRespawnScreenAni
         this.play()
     }
 
+    forceHide() {
+        for (var i in this.alphaTargets) {
+            const alphaTarget = this.alphaTargets[i]
+
+            alphaTarget.alpha = 0
+        }
+    }
+
     get alphaTargets() {
         return [
             this.screen.darkener,
-            this.screen.respawnHeader
+            this.screen.respawnHeader,
+            this.screen.respawnButton
         ]
     }
 }
