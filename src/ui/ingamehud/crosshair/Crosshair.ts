@@ -1,23 +1,30 @@
-import { Camera } from '../../camera/Camera'
-import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { Container } from '../../engine/display/Container'
-import { Graphix } from '../../engine/display/Graphix'
-import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { InputProcessor } from '../../input/InputProcessor'
-import { IUpdatable } from '../../interface/IUpdatable'
+import { Camera } from '../../../camera/Camera'
+import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
+import { Container } from '../../../engine/display/Container'
+import { Graphix } from '../../../engine/display/Graphix'
+import { IVector2, Vector2 } from '../../../engine/math/Vector2'
+import { InputProcessor } from '../../../input/InputProcessor'
+import { IUpdatable } from '../../../interface/IUpdatable'
+import { UIComponent } from '../../UIComponent'
+import { CrosshairCursor, ICrosshairCursor } from './CrosshairCursor'
 
 export interface ICrosshair extends IUpdatable {
-
+    nodeOne: Graphix
+    nodeTwo: Graphix
+    nodeThree: Graphix
+    nodes: Graphix[]
+    state: CrosshairState
 }
 
 export enum CrosshairState {
-    Gameplay
+    Gameplay, Cursor
 }
 
-export class Crosshair extends Container implements ICrosshair {
+export class Crosshair extends UIComponent implements ICrosshair {
     private static INSTANCE: Crosshair
     
-    state: CrosshairState = CrosshairState.Gameplay
+    _state: CrosshairState = CrosshairState.Gameplay
+    pointerCursor: ICrosshairCursor
 
     mousePos: IVector2 = Vector2.Zero
     mouseDistance: IVector2 = Vector2.Zero
@@ -43,6 +50,8 @@ export class Crosshair extends Container implements ICrosshair {
     private constructor() {
         super()
 
+        this.pointerCursor = new CrosshairCursor({ crosshair: this })
+
         for (let i in this.nodes) {
             const node = this.nodes[i]
             this.addChild(node)
@@ -60,14 +69,19 @@ export class Crosshair extends Container implements ICrosshair {
     }
 
     update() {
-        this.growWithMouseDistance()
+        if (this._state === CrosshairState.Gameplay) {
+            this.growWithMouseDistance()
+            this.applyGrowthOffsetToNodes()
+        } else {
+            this.targetGrowthOffset = 0
+        }
 
         this.x = this.mousePos.x
         this.y = this.mousePos.y
-
         this.growthOffset += (this.targetGrowthOffset - this.growthOffset) / this.growthDamping
 
-        this.applyGrowthOffsetToNodes()
+        this.applyStateToNodes()
+        this.pointerCursor.update()
     }
     
     growWithMouseDistance() {
@@ -93,6 +107,14 @@ export class Crosshair extends Container implements ICrosshair {
         this.nodeThree.x = this.nodeDistance + this.growthOffset
     }
 
+    applyStateToNodes() {
+        if (this._state === CrosshairState.Cursor) {
+            this.pointerCursor.magnetizeNodes()
+        } else {
+            this.pointerCursor.demagnetizeNodes()
+        }
+    }
+
     constructNode(): Graphix {
         const graphics = new Graphix()
 
@@ -104,9 +126,8 @@ export class Crosshair extends Container implements ICrosshair {
     }
 
     styleNodes() {
-        switch (this.state) {
+        switch (this._state) {
             case CrosshairState.Gameplay:
-
                 this.nodeTwo.x = -this.nodeDistance
                 this.nodeTwo.y = -2
                 this.nodeTwo.height = 5
@@ -114,10 +135,21 @@ export class Crosshair extends Container implements ICrosshair {
                 this.nodeThree.x = this.nodeDistance
                 this.nodeThree.y = -2
                 this.nodeThree.height = 5
-
                 break
         }
 
         this.scale.set(5, 5)
+    }
+
+    forceHide() {
+        this.alpha = 0
+    }
+
+    set state(value: CrosshairState) {
+        this._state = value
+    }
+
+    get state() {
+        return this._state
     }
 }

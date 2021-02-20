@@ -3,7 +3,7 @@ import { Assets, AssetUrls } from '../../asset/Assets'
 import { Camera } from '../../camera/Camera'
 import { ILight, Light } from '../../engine/display/lighting/Light'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { Crosshair } from '../../ui/ingamehud/Crosshair'
+import { Crosshair } from '../../ui/ingamehud/crosshair/Crosshair'
 import { WindowSize } from '../../utils/Constants'
 import { ClientPlayer } from './ClientPlayer'
 

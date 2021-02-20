@@ -6,7 +6,7 @@ import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
 import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
 import { AmmoStatusComponent } from './ammostatus/AmmoStatusComponent'
-import { Crosshair } from './Crosshair'
+import { Crosshair, CrosshairState } from './crosshair/Crosshair'
 import { HealthBar } from './healthbar/HealthBar'
 import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 
@@ -78,6 +78,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         Flogger.color('white')
         Flogger.log('InGameHUD', 'requestRespawnScreen')
         
+        this.crosshair.state = CrosshairState.Cursor
         await this.hideHUDComponents()
         await this.showRespawnScreen()
     }
