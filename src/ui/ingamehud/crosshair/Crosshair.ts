@@ -28,6 +28,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
 
     mousePos: IVector2 = Vector2.Zero
     mouseDistance: IVector2 = Vector2.Zero
+    positionOffset: IVector2 = Vector2.Zero
     growthOffset: number = 0
     targetGrowthOffset: number = 0
     mouseDistanceGrowthDivisor: number = 25
@@ -76,18 +77,28 @@ export class Crosshair extends UIComponent implements ICrosshair {
             this.targetGrowthOffset = 0
         }
 
-        const posOffsetX = this.state === CrosshairState.Cursor
-            ? -5 : 0
+        this.updatePositionOffset()
+        this.applyStateToNodes()
 
-        this.x = this.mousePos.x + posOffsetX
-        this.y = this.mousePos.y
+        this.x = this.mousePos.x + this.positionOffset.x
+        this.y = this.mousePos.y + this.positionOffset.y
         this.growthOffset += (this.targetGrowthOffset - this.growthOffset) / this.growthDamping
 
-        this.applyStateToNodes()
         this.pointerCursor.update()
     }
+
+    private updatePositionOffset() {
+        const positionOffsetDivisor = 50
+        const posOffset = {
+            x: this.state === CrosshairState.Cursor ? -3 : 0,
+            y: this.state === CrosshairState.Cursor ? 12 : 0
+        }
+
+        this.positionOffset.x += (posOffset.x - this.positionOffset.x) / positionOffsetDivisor
+        this.positionOffset.y += (posOffset.y - this.positionOffset.y) / positionOffsetDivisor
+    }
     
-    growWithMouseDistance() {
+    private growWithMouseDistance() {
         const mousePos = Camera.Mouse
         const player = ClientPlayer.getInstance()
         
