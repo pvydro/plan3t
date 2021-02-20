@@ -3,6 +3,7 @@ import { Sprite } from '../../engine/display/Sprite'
 import { IVector2 } from '../../engine/math/Vector2'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent } from '../UIComponent'
+import { UIButtonDarkenerPlugin, UIButtonDarkenPluginOptions as UIButtonDarkenerPluginOptions } from './UIButtonDarkenPlugin'
 
 export enum UIButtonState {
     Idle, Hovered, Triggered
@@ -32,6 +33,7 @@ export interface UIButtonOptions {
     background?: UIButtonBackground
     addClickListeners?: boolean
     anchor?: IVector2
+    darkenerPluginOptions?: UIButtonDarkenerPluginOptions
     onHold?: () => void
     onTrigger?: () => void
     onHover?: () => void
@@ -46,9 +48,9 @@ export class UIButton extends UIComponent implements IUIButton {
     _state: UIButtonState
     type: UIButtonType
     text?: string
-
     isPushed: boolean = false
     listenersAdded: boolean = false
+    plugins: any[] = []
 
     extendedOnHold?: Function
     extendedOnTrigger?: Function
@@ -67,6 +69,10 @@ export class UIButton extends UIComponent implements IUIButton {
         this.extendedOnMouseOut = options.onMouseOut
         this.extendedOnRelease = options.onRelease
 
+        if (options.darkenerPluginOptions) {
+            this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerPluginOptions))
+        }
+
         this.applyMouseListeners(options.addClickListeners)
         this.applyBackgroundTexture(options)
     }
@@ -83,8 +89,6 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     async unhover() {
-        if (this.state !== UIButtonState.Hovered) return
-
         this.state = UIButtonState.Idle
 
         // Execute passed through hover
@@ -94,13 +98,14 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     async pressDown() {
-        console.log('Press down!')
         this.isPushed = true
 
         // Trigger if hold-action
         if (this.type === UIButtonType.Hold) {
             this.trigger()
         }
+
+        this.extendedOnHold()
     }
 
     async release() {
@@ -212,5 +217,9 @@ export class UIButton extends UIComponent implements IUIButton {
 
         this._backgroundSpriteTriggered = value
         this.addChild(this._backgroundSpriteTriggered)
+    }
+
+    get backgroundSprite() {
+        return this._backgroundSprite
     }
 }

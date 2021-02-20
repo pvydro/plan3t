@@ -7,6 +7,7 @@ import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
 import { ShowCameraProjectionDebug } from '../utils/Constants'
+import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -98,6 +99,11 @@ export class Camera implements ICamera {
     }
 
     updateMouseFollowOffset(mouseX: number, mouseY: number) {
+        if (this.target instanceof ClientPlayer
+        && (this.target as ClientPlayer).consciousnessState === PlayerConsciousnessState.Dead) {
+            return
+        }
+
         const viewportMiddleX = this.width / 2
         const viewportMiddleY = this.height / 2
         const offsetX = (mouseX - viewportMiddleX) / 20
