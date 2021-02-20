@@ -15,14 +15,14 @@ export class CrosshairCursor implements ICrosshairCursor {
         magnetizeDivisor: 5,
         rotationDivisor: 10,
         nodeOne: {
-            x: 3.65, y: 4, rotation: -25 * (Math.PI / 180)
+            x: 3.7, y: 4, rotation: -25 * (Math.PI / 180)
         },
         nodeTwo: {
             x: 0, rotation: -5 * (Math.PI / 180)
         },
         nodeThree: {
-            x: 0, rotation: -65 * (Math.PI / 180),
-            height: 5.5, skewX: -0.2
+            x: 0, rotation: -60 * (Math.PI / 180),
+            height: 5.55, skewX: -0.1
         }
     }
     _nodesMagnetized: boolean = false

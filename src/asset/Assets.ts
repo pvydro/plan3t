@@ -166,5 +166,6 @@ export class AssetUrls {
     static OVERHEAD_HEALTHB_BAR_BG = 'assets/image/ui/ingamehud/overheadhealthbar'
     static OVERHEAD_HEALTHB_BAR_FILL = 'assets/image/ui/ingamehud/overheadhealthbarfill'
 
-    // Tile decoration
+    // UI
+    static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'
 }

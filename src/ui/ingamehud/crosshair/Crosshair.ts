@@ -88,7 +88,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
     }
 
     private updatePositionOffset() {
-        const positionOffsetDivisor = 50
+        const positionOffsetDivisor = 20
         const posOffset = {
             x: this.state === CrosshairState.Cursor ? -3 : 0,
             y: this.state === CrosshairState.Cursor ? 12 : 0
