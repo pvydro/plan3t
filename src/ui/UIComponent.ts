@@ -1,10 +1,23 @@
 import { Container } from "pixi.js";
-import { UIContainer, UIContainerOptions } from "./UIContainer";
+import { IShowHide } from '../interface/IShowHide'
+import { UIContainer, UIContainerOptions } from './UIContainer'
 
-export interface IUIComponent {
-    show(): Promise<any>
-    hide(): Promise<any>
+export interface IUIComponent extends IShowHide {
+    name: string 
+    accessible: boolean
+    accessibleChildren: boolean
+    alpha: number
+    angle: number
+    buttonMode: boolean
+    cacheAsBitmap: boolean
+    rotation: number
+    x: number
+    y: number
+    width: number
+    height: number
+    isShown: boolean
     forceHide(): void
+    demolish(): void
 }
 
 export interface UIComponentOptions extends UIContainerOptions {
@@ -32,5 +45,9 @@ export class UIComponent extends UIContainer implements IUIComponent {
 
     get isShown() {
         return this._isShown
+    }
+
+    demolish(): void {
+        this.destroy()
     }
 }

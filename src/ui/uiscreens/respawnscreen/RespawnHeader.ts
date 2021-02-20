@@ -8,6 +8,8 @@ export interface IRespawnHeader extends IUIComponent {
 }
 
 export class RespawnHeader extends TextSprite implements IRespawnHeader {
+    _isShown: boolean
+
     constructor() {
         super({
             text: 'YOU DIED',
@@ -24,10 +26,18 @@ export class RespawnHeader extends TextSprite implements IRespawnHeader {
     }
 
     async show() {
-
+        this._isShown = true
     }
     
     async hide() {
-        
+        this._isShown = false
+    }
+
+    get isShown() {
+        return this._isShown
+    }
+
+    demolish() {
+        this.destroy()
     }
 }
