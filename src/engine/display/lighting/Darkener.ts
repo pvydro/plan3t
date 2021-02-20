@@ -1,4 +1,5 @@
 import { Container } from 'pixi.js'
+import { UIComponent } from '../../../ui/UIComponent'
 import { WindowSize } from '../../../utils/Constants'
 import { Graphix } from '../Graphix'
 
@@ -14,7 +15,7 @@ export interface DarkenerOptions {
     blendMode?: any
 }
 
-export class Darkener extends Container implements IDarkener {
+export class Darkener extends UIComponent implements IDarkener {
     constructor(options?: DarkenerOptions) {
         super()
 
@@ -41,5 +42,11 @@ export class Darkener extends Container implements IDarkener {
         this.addChild(graphics)
 
         this.alpha = options.alpha
+    }
+
+    forceHide() {
+        this.alpha = 0
+
+        super.forceHide()
     }
 }

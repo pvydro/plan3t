@@ -31,8 +31,6 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
         return new Promise((resolve) => {
             this.darkener.alpha = 0.9
 
-
-
             resolve()
         })
     }
@@ -40,7 +38,13 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
     outro(): Promise<void> {
         return new Promise((resolve) => {
             this.darkener.alpha = 0
+
             resolve()
         })
+    }
+
+    forceHide() {
+        this.respawnHeader.forceHide()
+        this.darkener.forceHide()
     }
 }

@@ -10,19 +10,25 @@ export interface UIScreenOptions extends UIComponentOptions {
 }
 
 export class UIScreen extends UIComponent implements IUIScreen {
+    _isShown: boolean
+
     constructor(options: UIScreenOptions) {
         super(options)
     }
 
     intro(): Promise<void> {
         return new Promise((resolve) => {
-            
+            this._isShown = true
         })
     }
 
     outro(): Promise<void> {
         return new Promise((resolve) => {
-            
+            this._isShown = false
         })
+    }
+
+    get isShown() {
+        return this._isShown
     }
 }

@@ -54,6 +54,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
             this.addChild(this.crosshair)
 
             this.queuedHealthBars = []
+            this.respawnScreen.forceHide()
             this.applyScale()
             this.applyPosition()
 

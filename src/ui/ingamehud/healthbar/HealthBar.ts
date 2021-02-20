@@ -31,4 +31,8 @@ export class HealthBar extends UIComponent implements IHealthBar {
         
         this.orientationContainer.scale.x = -1
     }
+
+    forceHide() {
+        this.alpha = 0
+    }
 }
