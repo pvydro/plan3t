@@ -22,7 +22,7 @@ export class CrosshairCursor implements ICrosshairCursor {
         },
         nodeThree: {
             x: 0, rotation: -60 * (Math.PI / 180),
-            height: 5.55, skewX: -0.1
+            baseHeight: 5, height: 5.55, skewX: -0.1
         }
     }
     _nodesMagnetized: boolean = false
@@ -33,10 +33,11 @@ export class CrosshairCursor implements ICrosshairCursor {
     }
 
     update() {
+        const values = this.manipulationValues
+        const magnetizeDivisor = values.magnetizeDivisor
+        const rotationDivisor = values.rotationDivisor
+
         if (this._nodesMagnetized) {
-            const values = this.manipulationValues
-            const magnetizeDivisor = values.magnetizeDivisor
-            const rotationDivisor = values.rotationDivisor
             const nodeOneTarget = values.nodeOne
             const nodeTwoTarget = values.nodeTwo
             const nodeThreeTarget = values.nodeThree
@@ -47,12 +48,23 @@ export class CrosshairCursor implements ICrosshairCursor {
             this.nodeTwo.x += (nodeTwoTarget.x - this.nodeTwo.x) / magnetizeDivisor
             this.nodeThree.x += (nodeThreeTarget.x - this.nodeThree.x) / magnetizeDivisor
             this.nodeThree.height += (nodeThreeTarget.height - this.nodeThree.height) / magnetizeDivisor
-            this.nodeThree.skew.x += (nodeThreeTarget.skewX - this.nodeThree.skew.x) / magnetizeDivisor
-
+            
             // Rotation
             this.nodeOne.rotation += (nodeOneTarget.rotation - this.nodeOne.rotation) / rotationDivisor
             this.nodeTwo.rotation += (nodeTwoTarget.rotation - this.nodeTwo.rotation) / rotationDivisor
             this.nodeThree.rotation += (nodeThreeTarget.rotation - this.nodeThree.rotation) / rotationDivisor
+            this.nodeThree.skew.x += (nodeThreeTarget.skewX - this.nodeThree.skew.x) / magnetizeDivisor
+        } else {
+            // Position
+            this.nodeOne.x += (0 - this.nodeOne.x) / magnetizeDivisor
+            this.nodeOne.y += (0 - this.nodeOne.y) / magnetizeDivisor
+            this.nodeThree.height += (values.nodeThree.baseHeight - this.nodeThree.height) / magnetizeDivisor
+
+            // Rotation
+            this.nodeOne.rotation += (0 - this.nodeOne.rotation) / magnetizeDivisor
+            this.nodeTwo.rotation += (0 - this.nodeTwo.rotation) / magnetizeDivisor
+            this.nodeThree.rotation += (0 - this.nodeThree.rotation) / magnetizeDivisor
+            this.nodeThree.skew.x += (0 - this.nodeThree.skew.x) / magnetizeDivisor
         }
     }
 

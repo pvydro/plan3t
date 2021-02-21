@@ -13,6 +13,7 @@ import { Projectile } from '../../network/schema/planetgamestate/PlanetGameState
 import { RoomMessenger } from './RoomMessenger'
 import { Player } from '../../network/rooms/Player'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
+import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -156,7 +157,9 @@ export class RoomManager implements IRoomManager {
     }
 
     requestClientPlayerRespawn() {
-        
+        const clientPlayer = ClientPlayer.getInstance()
+
+        clientPlayer.requestRespawn()
     }
 
     static isSessionALocalPlayer(sessionId: string) {

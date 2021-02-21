@@ -172,6 +172,14 @@ export class ClientPlayer extends GravityEntity {
         })
     }
 
+    requestRespawn() {
+        if (this.consciousnessState !== PlayerConsciousnessState.Dead) {
+            return
+        }
+
+        this.consciousnessState = PlayerConsciousnessState.Alive
+    }
+
     set direction(value: Direction) {
         const shouldSendMessage = (this._direction !== value)
 

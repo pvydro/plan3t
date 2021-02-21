@@ -88,6 +88,7 @@ export class InGameHUD extends UIContainer implements IInGameHUD {
         Flogger.log('InGameHUD', 'closeRespawnScreen')
 
         await this.respawnScreen.hide()
+        this.crosshair.state = CrosshairState.Gameplay
         await this.showHUDComponents()
     }
 
