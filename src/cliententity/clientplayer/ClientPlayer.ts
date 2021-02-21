@@ -178,6 +178,7 @@ export class ClientPlayer extends GravityEntity {
         }
 
         this.consciousnessState = PlayerConsciousnessState.Alive
+        this.healthController.resetHealth()
     }
 
     set direction(value: Direction) {

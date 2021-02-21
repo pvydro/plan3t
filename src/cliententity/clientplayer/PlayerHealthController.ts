@@ -11,6 +11,7 @@ export interface IPlayerHealthController {
     currentHealth: number
     takeDamage(damageAmount: number): void
     suicide(): void
+    resetHealth(): void
 }
 
 export interface PlayerHealthControllerOptions {
@@ -55,6 +56,10 @@ export class PlayerHealthController implements IPlayerHealthController {
         Flogger.log('PlayerHealthController', 'suicide')
 
         this.takeDamage(this.totalHealth)
+    }
+
+    resetHealth(): void {
+        this.currentHealth = this.totalHealth
     }
 
     private checkDeath() {

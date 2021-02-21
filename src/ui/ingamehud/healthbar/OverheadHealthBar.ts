@@ -93,6 +93,8 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     update() {
         if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
             this.triggerDeadAnimation()
+        } else {
+            this.resetDeadAnimation()
         }
 
         if (this.targetFillPercentage !== this.player.healthPercentage) {
@@ -133,5 +135,14 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
             this.dead = true
             this.deadDisappearAnimation.play()
         }
+    }
+
+    resetDeadAnimation() {
+        if (!this.dead) return
+
+        this.dead = false
+
+        this.deadDisappearAnimation.restart()
+        this.deadDisappearAnimation.pause()
     }
 }
