@@ -27,10 +27,12 @@ export class AmmoStatusAnimator implements IAmmoStatusAnimator {
     }
 
     async show() {
+        this.showAnim.restart()
         await this.showAnim.play()
     }
 
     async hide() {
+        this.hideAnim.restart()
         await this.hideAnim.play()
     }
 }

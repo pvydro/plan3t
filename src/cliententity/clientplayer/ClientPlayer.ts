@@ -133,8 +133,8 @@ export class ClientPlayer extends GravityEntity {
         this.scale.set(GlobalScale, GlobalScale)
 
         this.holster.setLoadout({
-            primaryWeaponName: WeaponName.Tachyon,
-            secondaryWeaponName: WeaponName.P3
+            primaryWeaponName: WeaponName.P3,
+            secondaryWeaponName: WeaponName.Komplimenter
         })
     }
     
