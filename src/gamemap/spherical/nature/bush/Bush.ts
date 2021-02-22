@@ -1,6 +1,6 @@
 import { Sprite } from '../../../../engine/display/Sprite'
 import { BushHelper } from './BushHelper'
-import { INature, Nature, NatureOptions } from './Nature'
+import { INature, Nature, NatureOptions } from '../Nature'
 
 export enum BushType {
     TicBerry
@@ -23,5 +23,7 @@ export class Bush extends Nature implements IBush {
         const texture = BushHelper.getTextureForBushType(options.type)
 
         this.sprite = new Sprite({ texture })
+
+        this.addChild(this.sprite)
     }
 }

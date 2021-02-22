@@ -16,7 +16,7 @@ export class WeaponHint extends Container implements IWeaponHint {
 
     constructor() {
         super()
-
+        
         this.weaponContainer = new Container()
         this.addChild(this.weaponContainer)
     }
@@ -60,7 +60,7 @@ export class WeaponHint extends Container implements IWeaponHint {
             const outlineColor = 0x000000
             const adjustmentFilter = new AdjustmentFilter({
                 brightness: 5,
-                contrast: 0
+                contrast: 0,
             })
 
             sprite.filters = [ 

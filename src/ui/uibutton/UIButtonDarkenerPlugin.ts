@@ -1,11 +1,11 @@
-import { functionExists } from "../../utils/Utils";
-import { IUIButton, UIButton } from "./UIButton";
+import { functionExists } from '../../utils/Utils'
+import { IUIButton, UIButton } from './UIButton'
 
 export interface IUIButtonDarkenerPlugin {
 
 }
 
-export interface UIButtonDarkenPluginOptions {
+export interface UIButtonDarkenerPluginOptions {
     hoverTint: number
     clickTint: number
 }
@@ -20,7 +20,7 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
     hoverTint: number
     clickTint: number
 
-    constructor(button: UIButton, options: UIButtonDarkenPluginOptions) {
+    constructor(button: UIButton, options: UIButtonDarkenerPluginOptions) {
         this.button = button
 
         this.hoverTint = options.hoverTint

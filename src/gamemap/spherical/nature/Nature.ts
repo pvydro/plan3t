@@ -1,5 +1,5 @@
-import { Container } from '../../../../engine/display/Container'
-import { UIContainerOptions } from '../../../../ui/UIContainer'
+import { Container } from '../../../engine/display/Container'
+import { UIContainerOptions } from '../../../ui/UIContainer'
 
 export interface INature {
 

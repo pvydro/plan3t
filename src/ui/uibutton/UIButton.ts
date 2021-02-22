@@ -4,7 +4,7 @@ import { TextSprite, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent } from '../UIComponent'
-import { UIButtonDarkenerPlugin, UIButtonDarkenPluginOptions as UIButtonDarkenerPluginOptions } from './UIButtonDarkenPlugin'
+import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './UIButtonDarkenerPlugin'
 
 export enum UIButtonState {
     Idle, Hovered, Triggered
