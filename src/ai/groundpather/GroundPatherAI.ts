@@ -51,10 +51,22 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         if (this._currentGroundRect !== this.gravityEntity.currentGroundRect) {
             this.currentGroundRect = this.gravityEntity.currentGroundRect
         }
+
+        if (this.currentState === GroundPatherState.Wandering
+        && this.currentNode === undefined) {
+            this.currentState = GroundPatherState.Idle
+        }
+         else if (this.currentState === GroundPatherState.Idle
+        && this.currentNode === undefined && this.currentGroundRect !== undefined) {
+            // this.findNewPoint()
+            this.decideIfContinueOrStop()
+        }
     }
 
     findPointOnCurrentGround() {
         Flogger.log('GroundPatherAI', 'findPointOnCurrentGround')
+
+        if (this.currentGroundRect === undefined) return
 
         const direction = this.gravityEntity.direction
         const currentGroundY = this.currentGroundRect.y
@@ -62,6 +74,11 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         const maximumDistance = (direction == Direction.Left)
             ? this.gravityEntity.x - this.currentGroundRect.x
             : this.currentGroundRightEdgeX - this.gravityEntity.x
+
+        if (maximumDistance < 5) {
+            this.gravityEntity.direction = this.gravityEntity.direction === Direction.Left ? Direction.Right : Direction.Left
+            return this.findPointOnCurrentGround()
+        }
         const calculatedDistance = (Math.random() * maximumDistance) * direction
 
         this._currentMaximumDistanceToEdge = maximumDistance
@@ -125,15 +142,21 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     stopForSomeTime() {
         Flogger.log('GroundPatherAI', 'stopForSomeTime')
+        
+        if (this.currentState === GroundPatherState.Stopped) return
 
         this.currentState = GroundPatherState.Stopped
 
         const randomStopTime = Math.random() * this.idleTimeRange
 
+        if (this.idleTimeout) {
+            window.clearTimeout(this.idleTimeout)
+        }
+
         this.idleTimeout = window.setTimeout(() => {
-            this.decideIfContinueOrStop()
             this.idleTimeout = undefined
-        }, randomStopTime)  
+            this.currentState = GroundPatherState.Idle
+        }, this.idleTimeRange + randomStopTime)  
     }
 
     set currentGroundRect(value: Rect) {
@@ -156,10 +179,12 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         // When destination reached, continue walking, or stop
         if (this.currentState !== value
         && value === GroundPatherState.Idle) {
+            this._currentState = value
             this.decideIfContinueOrStop()
+        } else {
+            this._currentState = value
         }
-        
-        this._currentState = value
+
     }
 
     get currentNode() {
