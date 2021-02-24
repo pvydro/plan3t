@@ -22,7 +22,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
             curvature: 2,
             noise: 0.01,
             lineWidth: 2,
-            lineContrast: 0.01
+            lineContrast: 0.05
         })
 
         this.camera.stage.filters = [ crtFilter ]

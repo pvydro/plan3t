@@ -23,6 +23,6 @@ export class TravelkinMovementController implements ITravelkinMovementController
     }
 
     update() {
-
+        this.ai.update()
     }
 }

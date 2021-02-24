@@ -1,6 +1,7 @@
 import { IClientEntity } from "../cliententity/ClientEntity";
 
 export interface IAI {
+    clientEntity: IClientEntity
     initialize(): void
 }
 
@@ -9,13 +10,17 @@ export interface AIOptions {
 }
 
 export abstract class AI implements IAI {
-    clientEntity: IClientEntity
+    _clientEntity: IClientEntity
 
     constructor(options: AIOptions) {
-        this.clientEntity = options.clientEntity
+        this._clientEntity = options.clientEntity
     }
 
     initialize() {
 
+    }
+
+    get clientEntity() {
+        return this._clientEntity
     }
 }
