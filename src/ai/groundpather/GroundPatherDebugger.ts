@@ -71,8 +71,11 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
 
             // Node inidicator
             if (exists(currentNode)) {
+                this.currentNodeGraphics.alpha = 1
                 this.currentNodeGraphics.x = currentNode.x
                 this.currentNodeGraphics.y = currentNode.y
+            } else {
+                this.currentNodeGraphics.alpha = 0
             }
         }
     }

@@ -34,7 +34,6 @@ export class TravelkinMovementController implements ITravelkinMovementController
                 break
             case TravelkinMovementState.Idle:
 
-                console.log('cometostop')
                 this.travelkin.comeToStop()
             
                 break

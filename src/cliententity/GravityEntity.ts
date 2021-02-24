@@ -68,7 +68,11 @@ export class GravityEntity extends ClientEntity {
     }
 
     comeToStop() {
-        const xVel = this.xVel + (0 - this.xVel) / this.horizontalFriction
+        let xVel = this.xVel + (0 - this.xVel) / this.horizontalFriction
+
+        if (xVel < 0.01 && xVel > -0.01) {
+            xVel = 0
+        }
 
         this.xVel = xVel
     }
