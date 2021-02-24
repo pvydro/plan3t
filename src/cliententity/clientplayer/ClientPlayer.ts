@@ -151,8 +151,6 @@ export class ClientPlayer extends GravityEntity {
             this.hand.update()
             this.messenger.update()
         }
-        
-        this.collision.update()
     }
 
     equipWeapon(weapon: Weapon | null) {

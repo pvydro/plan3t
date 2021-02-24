@@ -3,6 +3,7 @@ import { IRect, Rect } from '../math/Rect'
 import { Graphix } from '../display/Graphix'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Flogger } from '../../service/Flogger'
+import { ShowCollisionDebug } from '../../utils/Constants'
 
 export interface ICollisionDebugger extends IContainer, IDemolishable {
     initializeAndShowGraphics(): void
@@ -10,13 +11,13 @@ export interface ICollisionDebugger extends IContainer, IDemolishable {
 }
 
 export interface CollisionDebuggerOptions {
-    collisionRects?: Rect[]
+    collisionRects?: IRect[]
     color?: number
     lineWidth?: number
 }
 
 export class CollisionDebugger extends Container implements ICollisionDebugger {
-    collisionRects?: Rect[]
+    collisionRects?: IRect[]
     color: number = 0x60b5b2
     lineWidth: number = 1
     
@@ -28,6 +29,10 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
             this.lineWidth = options.lineWidth ?? this.lineWidth
             this.collisionRects = options.collisionRects ?? undefined
         }
+
+        if (ShowCollisionDebug) {
+            this.initializeAndShowGraphics()
+        }
     }
 
     initializeAndShowGraphics() {
@@ -36,7 +41,7 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
         this.addChild(graphics)
     }
 
-    createDebugGraphics(rectangles?: Rect[]): Graphix {
+    createDebugGraphics(rectangles?: IRect[]): Graphix {
         rectangles = rectangles ? rectangles : this.collisionRects
 
         Flogger.log('CollisionDebugger', 'createDebugGraphics', 'rectangles', rectangles)
@@ -46,7 +51,7 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
         rectangleGraphics.lineStyle(this.lineWidth, this.color)
 
         if (rectangles !== undefined) {
-            rectangles.forEach((rect: Rect) => {
+            rectangles.forEach((rect: IRect) => {
                 rectangleGraphics.drawIRect(rect)
             })
         }

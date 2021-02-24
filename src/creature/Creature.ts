@@ -15,7 +15,13 @@ export interface CreatureOptions extends GravityEntityOptions {
 export abstract class Creature extends GravityEntity implements ICreature {
     constructor(options: CreatureOptions) {
         super({
-            sprite: options.idleSprite
+            sprite: options.idleSprite,
+            addDebugRectangle: true,
+            boundingBox: {
+                x: 0, y: 0, 
+                width: options.idleSprite.width,
+                height: options.idleSprite.height
+            }
         })
     }
 

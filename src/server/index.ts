@@ -1,5 +1,3 @@
-console.log('%cTHIS IS IN USE', 'background-color: red; font-size: 300%;')
-
 /*
  * embed webpack-dev-server
  */

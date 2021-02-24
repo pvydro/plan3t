@@ -23,5 +23,7 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
 
     update() {
         this.movementController.update()
+        
+        super.update()
     }
 }

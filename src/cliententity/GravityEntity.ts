@@ -1,3 +1,5 @@
+import { Koini } from '../creature/koini/Koini'
+import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
 import { IRect, Rect } from '../engine/math/Rect'
 import { GameLoop } from '../gameloop/GameLoop'
 import { GravityConstants } from '../utils/Constants'
@@ -13,6 +15,7 @@ export interface GravityEntityOptions extends ClientEntityOptions {
     horizontalFriction?: number
     boundingBox?: IRect
     weight?: number
+    addDebugRectangle?: boolean
 }
 
 export class GravityEntity extends ClientEntity {
@@ -21,13 +24,24 @@ export class GravityEntity extends ClientEntity {
     horizontalFriction: number
     boundingBox: IRect
     weight: number
+    debugger?: CollisionDebugger
 
     constructor(options?: GravityEntityOptions) {
         super(options)
 
         this.horizontalFriction = (options && options.horizontalFriction) ?? 5
-        this.boundingBox = (options && options.boundingBox) ?? new Rect(0, 0, this.width, this.height)
+        this.boundingBox = (options && options.boundingBox) ?? { x: 0, y: 0, width: this.width, height: this.height }
         this.weight = (options && options.weight) ?? 0
+
+        if (options && options.addDebugRectangle === true) {
+            console.log('addDebugRectangle', this.boundingBox)
+
+            this.debugger = new CollisionDebugger({
+                collisionRects: [ this.boundingBox ]
+            })
+
+            this.addChild(this.debugger)
+        }
     }
 
     update() {

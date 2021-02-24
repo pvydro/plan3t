@@ -1,11 +1,10 @@
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
 import { Container } from '../../engine/display/Container'
 import { Rect } from '../../engine/math/Rect'
-import { IUpdatable } from '../../interface/IUpdatable'
 import { ShowCollisionDebug } from '../../utils/Constants'
 import { ClientPlayer } from './ClientPlayer'
 
-export interface IPlayerCollision extends IUpdatable {
+export interface IPlayerCollision {
     boundingBox: Rect
 }
 
@@ -27,13 +26,8 @@ export class PlayerCollision extends Container implements IPlayerCollision {
                 collisionRects: [ this.boundingBox ]
             })
 
-            this.debugger.initializeAndShowGraphics()
-
             this.addChild(this.debugger)
         }
-    }
-
-    update() {
     }
 
     get boundingBox() {
