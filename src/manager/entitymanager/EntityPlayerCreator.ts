@@ -61,6 +61,8 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                 entityManager: this.entityManager,
                 sessionId: options.sessionId
             })
+            player.x = 512
+            player.y = -64
         } else {
             player = new ClientPlayer({ entity: options.entity })
         }

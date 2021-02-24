@@ -28,6 +28,9 @@ export interface ClientEntityOptions {
 }
 
 export class ClientEntity extends Container implements IClientEntity {
+    static CurrentIDIteration: number
+
+    entityId: string
     sprite: Sprite
     entity?: Entity
     x: number
@@ -51,6 +54,8 @@ export class ClientEntity extends Container implements IClientEntity {
         if (this.sprite !== undefined) {
             this.addChild(this.sprite)
         }
+
+        this.entityId = (ClientEntity.CurrentIDIteration++).toString()
     }
 
     update() {

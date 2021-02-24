@@ -1,22 +1,28 @@
+import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { ITravelkinPassiveCreature } from './TravelKinPassiveCreature'
+import { ITravelkinCreature } from './TravelkinCreature'
 
 export interface ITravelkinMovementController extends IUpdatable {
 
 }
 
 export interface TravelkinMovementControllerOptions {
-    travelkin: ITravelkinPassiveCreature
+    travelkin: ITravelkinCreature
 }
 
 export class TravelkinMovementController implements ITravelkinMovementController {
-    travelkin: ITravelkinPassiveCreature
+    travelkin: ITravelkinCreature
+    ai: IGroundPatherAI
 
     constructor(options: TravelkinMovementControllerOptions) {
         this.travelkin = options.travelkin
+
+        this.ai = new GroundPatherAI({
+            clientEntity: this.travelkin
+        })
     }
 
     update() {
-        
+
     }
 }

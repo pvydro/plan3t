@@ -74,6 +74,10 @@ export class EntityManager implements IEntityManager {
         this.synchronizer.updateEntity(entity, sessionId, changes)
     }
 
+    createPassiveCreature() {
+        
+    }
+
     createClientPlayer(entity: Entity, sessionId: string) {
         Flogger.color('green')
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)

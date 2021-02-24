@@ -1,13 +1,13 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Camera } from '../../camera/Camera'
 import { Sprite } from '../../engine/display/Sprite'
-import { IPassiveCreature, PassiveCreature } from '../PassiveCreature'
+import { ICreature, Creature } from '../Creature'
 
-export interface IPassiveHornet extends IPassiveCreature {
+export interface IPassiveHornet extends ICreature {
 
 }
 
-export class PassiveHornet extends PassiveCreature implements IPassiveHornet {
+export class PassiveHornet extends Creature implements IPassiveHornet {
     hornetSprite: Sprite
     flyCoolDown: number = 100
     maxFlyCoolDown: number = 200
