@@ -19,9 +19,10 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         Flogger.log('CameraOverlayEffectsPlugin', 'initializeOverlayGraphics')
 
         const crtFilter = new CRTFilter({
-            curvature: 5,
-            lineWidth: 5,
-            lineContrast: 0.1
+            curvature: 2,
+            noise: 0.01,
+            lineWidth: 2,
+            lineContrast: 0.01
         })
 
         this.camera.stage.filters = [ crtFilter ]

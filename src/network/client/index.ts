@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Key } from 'ts-keycode-enum'
-import { InputEvents, InputProcessor } from '../../input/InputProcessor'
+import { InputProcessor } from '../../input/InputProcessor'
 import { IGame, Game } from '../../main/Game'
 import { WindowSize } from '../../utils/Constants'
 
@@ -24,7 +24,7 @@ game.bootstrap().then(() => {
 
     game.view.style.cursor = 'none'
 
-    InputProcessor.on(InputEvents.KeyPress, (event: KeyboardEvent) => {
+    InputProcessor.on('keydown', (event: KeyboardEvent) => {
         switch (event.which) {
             case Key.F:
                 if (isFullscreen)
