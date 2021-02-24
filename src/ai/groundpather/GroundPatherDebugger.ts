@@ -6,6 +6,7 @@ import { Graphix } from '../../engine/display/Graphix'
 import { Direction } from '../../engine/math/Direction'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
+import { AIDebugConstants } from '../../utils/Constants'
 import { exists } from '../../utils/Utils'
 import { IGroundPatherAI } from './GroundPatherAI'
 
@@ -87,10 +88,20 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         this.currentRangeGraphics = new Graphix()
         this.currentNodeGraphics = new Graphix()
 
-        const graphix = [
-            this.currentTargetGraphics, this.currentGroundGraphics,
-            this.currentRangeGraphics, this.currentNodeGraphics
-        ]
+        // const graphix = [
+        //     this.currentTargetGraphics, this.currentGroundGraphics,
+        //     this.currentRangeGraphics, this.currentNodeGraphics
+        // ]
+        const graphix = []
+
+        if (AIDebugConstants.ShowCurrentGroundIndicator)
+            graphix.push(this.currentGroundGraphics)
+        if (AIDebugConstants.ShowCurrentGroundRange)
+            graphix.push(this.currentRangeGraphics)
+        if (AIDebugConstants.ShowAIBadge)
+            graphix.push(this.currentTargetGraphics)
+        if (AIDebugConstants.ShowCurrentNode)
+            graphix.push(this.currentNodeGraphics)
 
         for (var i in graphix) {
             const g = graphix[i]
@@ -106,6 +117,8 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         this.currentTargetGraphics.rotation = 45 * (Math.PI / 180)
         this.currentGroundGraphics.height = this.debugValues.groundIndicatorHeight
         this.currentRangeGraphics.height = this.debugValues.groundIndicatorHeight
+        this.currentNodeGraphics.width = 2
+        this.currentNodeGraphics.height = 2
 
         camera.stage.addChildAtLayer(this.debugContainer, CameraLayer.DebugOverlay)
     }

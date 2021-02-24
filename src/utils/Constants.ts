@@ -24,6 +24,13 @@ export class DebugConstants {
     static ShowPlayerMessengerLogs: boolean = false
 }
 
+export class AIDebugConstants {
+    static ShowCurrentNode: boolean = true
+    static ShowCurrentGroundIndicator: boolean = false
+    static ShowCurrentGroundRange: boolean = true
+    static ShowAIBadge: boolean = true
+}
+
 export class Constants {
     private constructor() {}
 }

@@ -54,11 +54,11 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         const maximumDistance = (direction == Direction.Left)
             ? this.gravityEntity.x - this.currentGroundRect.x
             : this.currentGroundRightEdgeX - this.gravityEntity.x
-        const randomDistance = (Math.random() * maximumDistance)
+        const calculatedDistance = (Math.random() * maximumDistance) * direction
 
         this._currentMaximumDistanceToEdge = maximumDistance
         this.currentNode = {
-            x: baseX + randomDistance,
+            x: baseX + calculatedDistance,
             y: currentGroundY
         } 
     }
