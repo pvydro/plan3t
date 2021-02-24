@@ -13,16 +13,21 @@ export interface CreatureOptions extends GravityEntityOptions {
 }
 
 export abstract class Creature extends GravityEntity implements ICreature {
+    static CreatureIdIteration: number = 0
+    entityId: string
+
     constructor(options: CreatureOptions) {
-        super({
-            sprite: options.idleSprite,
-            addDebugRectangle: true,
-            boundingBox: {
-                x: 0, y: 0, 
-                width: options.idleSprite.width,
-                height: options.idleSprite.height
-            }
-        })
+        options.sprite = options.idleSprite
+        options.addDebugRectangle = true
+        options.boundingBox = {
+            x: 0, y: 0, 
+            width: options.idleSprite.width,
+            height: options.idleSprite.height
+        }
+
+        super(options)
+
+        this.entityId = 'Creature' + Creature.CreatureIdIteration++
     }
 
     update() {
