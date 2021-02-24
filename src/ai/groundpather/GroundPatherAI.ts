@@ -1,4 +1,3 @@
-import { random } from 'gsap/all'
 import { Direction } from '../../engine/math/Direction'
 import { Rect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
@@ -184,7 +183,6 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         } else {
             this._currentState = value
         }
-
     }
 
     get currentNode() {
