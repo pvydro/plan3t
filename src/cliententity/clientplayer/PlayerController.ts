@@ -1,7 +1,7 @@
 import { Flogger } from '../../service/Flogger'
 import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
-import { InputProcessor } from '../../input/InputProcessor'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Camera } from '../../camera/Camera'
 import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
@@ -158,7 +158,7 @@ export class PlayerController implements IPlayerController {
         Flogger.log('PlayerController', 'addKeyListeners')
 
         // KeyDown
-        InputProcessor.on('keydown', (e: KeyboardEvent) => {
+        InputProcessor.on(InputEvents.KeyDown, (e: KeyboardEvent) => {
             switch (e.which) {
                 case Key.A:
                     this.leftKeyDown = true
@@ -173,7 +173,7 @@ export class PlayerController implements IPlayerController {
         })
 
         // KeyUp
-        InputProcessor.on('keyup', (e: KeyboardEvent) => {
+        InputProcessor.on(InputEvents.KeyUp, (e: KeyboardEvent) => {
             switch(e.which) {
                 case Key.A:
                     this.leftKeyDown = false
@@ -188,7 +188,7 @@ export class PlayerController implements IPlayerController {
         })
 
         // KeyPress
-        InputProcessor.on('keypress', (e: KeyboardEvent) => {
+        InputProcessor.on(InputEvents.KeyPress, (e: KeyboardEvent) => {
             switch(e.which) {
                 case Key.Space:
                     this.spaceKeyPressed = true
@@ -197,7 +197,7 @@ export class PlayerController implements IPlayerController {
         })
 
         // Mouse
-        InputProcessor.on('mousemove', (e: MouseEvent) => {
+        InputProcessor.on(InputEvents.MouseMove, (e: MouseEvent) => {
             this.mousePos.x = e.clientX
             this.mousePos.y = e.clientY
         })

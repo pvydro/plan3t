@@ -1,15 +1,11 @@
-import { Creature, CreatureOptions } from '../PassiveCreature'
+import { Creature, CreatureOptions } from '../Creature'
 
 export interface IKoini {
 
 }
 
-export interface KoiniOptions extends CreatureOptions {
-
-}
-
 export class Koini extends Creature implements IKoini {
-    constructor(options: KoiniOptions) {
-        super(options)
+    constructor() {
+        super({})
     }
 }

@@ -3,7 +3,7 @@ import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { Container } from '../../../engine/display/Container'
 import { Graphix } from '../../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
-import { InputProcessor } from '../../../input/InputProcessor'
+import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { UIComponent } from '../../UIComponent'
 import { CrosshairCursor, ICrosshairCursor } from './CrosshairCursor'
@@ -63,7 +63,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
     }
 
     followMouse() {
-        InputProcessor.on('mousemove', (ev) => {
+        InputProcessor.on(InputEvents.MouseMove, (ev) => {
             this.mousePos.x = ev.clientX
             this.mousePos.y = ev.clientY
         })

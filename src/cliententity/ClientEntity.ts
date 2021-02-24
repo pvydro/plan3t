@@ -14,6 +14,7 @@ export interface IClientEntity extends IContainer, IUpdatable {
     yVel: number
     type: string
     position: IVector2
+    entityId: string
 }
 
 export enum EntityType {
@@ -29,7 +30,6 @@ export interface ClientEntityOptions {
 
 export class ClientEntity extends Container implements IClientEntity {
     static CurrentIDIteration: number
-
     entityId: string
     sprite: Sprite
     entity?: Entity

@@ -1,7 +1,7 @@
 import { Container } from 'pixi.js'
 import { Graphix } from '../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { InputProcessor } from '../../input/InputProcessor'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Flogger } from '../../service/Flogger'
 import { ShowCameraProjectionDebug } from '../../utils/Constants'
 import { ICamera } from '../Camera'
@@ -53,7 +53,7 @@ export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPl
     applyMouseListener() {
         Flogger.log('CameraDebuggerPlugin', 'applyMouseListener')
 
-        InputProcessor.on('mousemove', (ev) => {
+        InputProcessor.on(InputEvents.MouseMove, (ev: MouseEvent) => {
             this.update(ev.x - 2.5, ev.y - 2.5)
         })
     }

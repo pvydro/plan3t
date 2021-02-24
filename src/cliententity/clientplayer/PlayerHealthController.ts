@@ -1,6 +1,6 @@
 import { Key } from "ts-keycode-enum";
 import { SmallBlastParticle } from "../../engine/display/particle/SmallBlastParticle";
-import { InputProcessor } from "../../input/InputProcessor";
+import { InputEvents, InputProcessor } from "../../input/InputProcessor";
 import { ParticleManager } from "../../manager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
 import { InGameHUD } from "../../ui/ingamehud/InGameHUD";
@@ -31,7 +31,7 @@ export class PlayerHealthController implements IPlayerHealthController {
     }
 
     addTestKeyListeners() {
-        InputProcessor.on('keydown', (ev: KeyboardEvent) => {
+        InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             switch (ev.which) {
                 case Key.P:
                     this.takeDamage(10)

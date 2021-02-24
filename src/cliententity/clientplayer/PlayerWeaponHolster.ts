@@ -1,5 +1,5 @@
 import { Key } from 'ts-keycode-enum'
-import { InputProcessor } from '../../input/InputProcessor'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Flogger } from '../../service/Flogger'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { Emitter } from '../../utils/Emitter'
@@ -47,9 +47,9 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     applyListeners() {
-        InputProcessor.on('mousedown', () => { this.mouseDown() })
-        InputProcessor.on('mouseup', () => { this.mouseUp() })
-        InputProcessor.on('keydown', (e: KeyboardEvent) => {
+        InputProcessor.on(InputEvents.MouseDown, () => { this.mouseDown() })
+        InputProcessor.on(InputEvents.MouseUp, () => { this.mouseUp() })
+        InputProcessor.on(InputEvents.KeyDown, (e: KeyboardEvent) => {
             switch (e.which) {
                 case Key.Q:
                 case Key.E:

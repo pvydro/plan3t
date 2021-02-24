@@ -4,14 +4,21 @@ export interface IInputProcessor {
     
 }
 
+export enum InputEvents {
+    MouseMove = 'mousemove',
+    MouseDown = 'mousedown',
+    MouseUp = 'mouseup',
+    KeyDown = 'keydown',
+    KeyUp = 'keyup',
+    KeyPress = 'keypress'
+}
+
 export class InputProcessor {
     private static INSTANCE = new InputProcessor()
     private static Emitter = new Emitter()
 
     private constructor() {
-        const clonedEvents = [
-            'mousemove', 'mousedown', 'mouseup', 'keydown', 'keyup', 'keypress'
-        ]
+        const clonedEvents = Object.values(InputEvents)
 
         clonedEvents.forEach((eventString: string) => {
             window.addEventListener(eventString, (event: any) => {

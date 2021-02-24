@@ -9,11 +9,12 @@ export const CameraLayer = {
     Bullet: 3,
     Particle: 4,
     Players: 5,
-    Lighting: 6,
-    GameMapOverlay: 7,
-    Overlay: 8,
-    OverlayParticle: 9,
-    DebugOverlay: 10
+    Creatures: 6,
+    Lighting: 7,
+    GameMapOverlay: 8,
+    Overlay: 9,
+    OverlayParticle: 10,
+    DebugOverlay: 11
 }
 
 export interface ICameraStage {

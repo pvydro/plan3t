@@ -75,13 +75,6 @@ export class Game implements IGame {
         this.gameLoop.startGameLoop()
     }
 
-    // initializeMouseMovement() {
-    //     // this.cameraViewport.on('mousemove', (e) => {
-    //     //     const point = this.cameraViewport.toLocal(e.data.global)
-    //     //     this.room.send('mouse', { x: point.x, y: point.y })
-    //     // })
-    // }
-
     get gameMap() {
         return this.clientManager.gameMap
     }

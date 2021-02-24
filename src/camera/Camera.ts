@@ -1,12 +1,11 @@
 import { Key } from 'ts-keycode-enum'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
-import { InputProcessor } from '../input/InputProcessor'
+import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
 import { CameraDebuggerPlugin } from './plugin/CameraDebuggerPlugin'
 import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
-import { ShowCameraProjectionDebug } from '../utils/Constants'
 import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
 
 export interface ICamera extends IUpdatable {
@@ -182,14 +181,14 @@ export class Camera implements ICamera {
     }
 
     trackMousePosition() {
-        InputProcessor.on('mousemove', (event: MouseEvent) => {
+        InputProcessor.on(InputEvents.MouseMove, (event: MouseEvent) => {
             this._mouseX = event.clientX
             this._mouseY = event.clientY
 
             this.updateMouseFollowOffset(this._mouseX, this._mouseY)
         })
 
-        InputProcessor.on('keydown', (event: KeyboardEvent) => {
+        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
             if (event.which === Key.DownArrow) {
                 this.setZoom(this.zoom - 0.1)
             } else if (event.which === Key.UpArrow) {

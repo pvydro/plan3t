@@ -1,5 +1,5 @@
 import { Camera } from '../../camera/Camera'
-import { InputProcessor } from '../../input/InputProcessor'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState } from './ClientPlayer'
@@ -89,7 +89,7 @@ export class PlayerHeadController implements IPlayerHeadController {
     }
 
     trackMousePosition() {
-        InputProcessor.on('mousemove', (event: MouseEvent) => {
+        InputProcessor.on(InputEvents.MouseMove, (event: MouseEvent) => {
             this.mousePos.x = event.clientX
             this.mousePos.y = event.clientY
         })
