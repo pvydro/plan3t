@@ -1,5 +1,6 @@
 import { Koini } from '../creature/koini/Koini'
 import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
+import { Direction } from '../engine/math/Direction'
 import { IRect, Rect } from '../engine/math/Rect'
 import { GameLoop } from '../gameloop/GameLoop'
 import { GravityConstants } from '../utils/Constants'
@@ -8,6 +9,7 @@ import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity
 export interface IGravityEntity extends IClientEntity {
     isOnGround: boolean
     currentGroundRect: Rect
+    direction: Direction
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
 }
@@ -22,6 +24,7 @@ export interface GravityEntityOptions extends ClientEntityOptions {
 export class GravityEntity extends ClientEntity {
     _currentGroundRect?: Rect
     _onGround: boolean = false
+    _direction: Direction = Direction.Right
     horizontalFriction: number
     boundingBox: IRect
     weight: number
@@ -86,5 +89,13 @@ export class GravityEntity extends ClientEntity {
 
     get currentGroundRect(): Rect {
         return this._currentGroundRect
+    }
+
+    set direction(value: Direction) {
+        this._direction = value
+    }
+
+    get direction() {
+        return this._direction
     }
 }

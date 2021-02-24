@@ -1,8 +1,8 @@
+import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
 import { ICreature, Creature, CreatureOptions } from '../Creature'
-import { ITravelkinMovementController, TravelkinMovementController } from './TravelkinMovementController'
 
 export interface ITravelkinCreature extends ICreature {
-
+    ai: IGroundPatherAI
 }
 
 export interface TravelkinCreatureOptions extends CreatureOptions {
@@ -11,18 +11,19 @@ export interface TravelkinCreatureOptions extends CreatureOptions {
 
 export class TravelkinCreature extends Creature implements ITravelkinCreature {
     walkSpeed: number
-    movementController: ITravelkinMovementController
+    ai: IGroundPatherAI
 
     constructor(options: TravelkinCreatureOptions) {
         super(options)
-        const travelkin = this
 
         this.walkSpeed = options.walkSpeed
-        this.movementController = new TravelkinMovementController({ travelkin })
+        this.ai = new GroundPatherAI({
+            gravityEntity: this
+        })
     }
 
     update() {
-        this.movementController.update()
+        this.ai.update()
         
         super.update()
     }

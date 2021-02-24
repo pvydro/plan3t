@@ -1,5 +1,6 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
+import { Direction } from '../../engine/math/Direction'
 import { CreatureType } from '../Creature'
 import { ITravelkinCreature, TravelkinCreature } from '../travelkin/TravelkinCreature'
 
@@ -16,6 +17,8 @@ export class Koini extends TravelkinCreature implements IKoini {
             weight: 0.5,
             idleSprite: new Sprite({ texture: idleTexture })
         })
+        
+        this._direction = Direction.Left
     }
 
     update() {

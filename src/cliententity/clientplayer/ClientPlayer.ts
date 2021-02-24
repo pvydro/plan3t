@@ -29,7 +29,7 @@ export interface IClientPlayer extends IGravityEntity {
     controller: IPlayerController
     hand: IPlayerHand
     emitter: Emitter
-    direction: Direction
+    // direction: Direction
     isClientPlayer: boolean
     currentHealth: number
     totalHealth: number
