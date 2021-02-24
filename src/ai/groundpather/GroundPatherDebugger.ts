@@ -81,6 +81,7 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         Flogger.log('GroundPatherDebugger', 'createDebugGraphics')
         const camera = Camera.getInstance()
         const targetDotSize = this.debugValues.targetDotSize
+        const graphix = []
 
         this.debugContainer = new Container()
         this.currentTargetGraphics = new Graphix({ alpha: 0.5 })
@@ -88,12 +89,7 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         this.currentRangeGraphics = new Graphix()
         this.currentNodeGraphics = new Graphix()
 
-        // const graphix = [
-        //     this.currentTargetGraphics, this.currentGroundGraphics,
-        //     this.currentRangeGraphics, this.currentNodeGraphics
-        // ]
-        const graphix = []
-
+        // Configured graphics
         if (AIDebugConstants.ShowCurrentGroundIndicator)
             graphix.push(this.currentGroundGraphics)
         if (AIDebugConstants.ShowCurrentGroundRange)
@@ -103,10 +99,12 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         if (AIDebugConstants.ShowCurrentNode)
             graphix.push(this.currentNodeGraphics)
 
+        // Graphic drawing
         for (var i in graphix) {
             const g = graphix[i]
             const isCurrentNode = (g === this.currentNodeGraphics)
 
+            if (isCurrentNode) g.lineStyle({ width: 1, color: this.aiColor })
             g.beginFill(isCurrentNode ? 0xFFFFFF : this.aiColor)
             g.drawRect(0, 0, targetDotSize, targetDotSize)
             g.blendMode = PIXI.BLEND_MODES.COLOR_BURN
@@ -114,11 +112,12 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
             this.debugContainer.addChild(g)
         }
 
+        // Graphic initial modification
         this.currentTargetGraphics.rotation = 45 * (Math.PI / 180)
         this.currentGroundGraphics.height = this.debugValues.groundIndicatorHeight
         this.currentRangeGraphics.height = this.debugValues.groundIndicatorHeight
-        this.currentNodeGraphics.width = 2
-        this.currentNodeGraphics.height = 2
+        this.currentNodeGraphics.width = 3
+        this.currentNodeGraphics.height = 3
 
         camera.stage.addChildAtLayer(this.debugContainer, CameraLayer.DebugOverlay)
     }

@@ -19,7 +19,7 @@ export abstract class Creature extends GravityEntity implements ICreature {
 
     constructor(options: CreatureOptions) {
         options.sprite = options.idleSprite
-        options.addDebugRectangle = true
+        options.addDebugRectangle = options.addDebugRectangle ?? true
         options.boundingBox = {
             x: 0, y: 0, 
             width: options.idleSprite.width,

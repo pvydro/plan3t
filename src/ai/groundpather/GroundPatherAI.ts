@@ -29,6 +29,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     _currentGroundRect: Rect
     _currentMaximumDistanceToEdge: number = 0
     _currentNode?: AINode = undefined
+    _currentState: GroundPatherState = GroundPatherState.Wandering
     debugger: IGroundPatherDebugger
 
     constructor(options: GroundPatherOptions) {
