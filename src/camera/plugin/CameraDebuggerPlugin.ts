@@ -10,10 +10,6 @@ export interface ICameraDebuggerPlugin {
 
 }
 
-export interface CameraDebuggerOptions {
-    camera: ICamera
-}
-
 export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPlugin {
     camera: ICamera
     debugGraphics: Graphix
@@ -21,9 +17,9 @@ export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPl
     lineWidth: number = 1
     debugPosition: IVector2 = Vector2.Zero
 
-    constructor(options: CameraDebuggerOptions) {
+    constructor(camera: ICamera) {
         super()
-        this.camera = options.camera
+        this.camera = camera
 
         if (ShowCameraProjectionDebug) {
             this.createDebugGraphics()

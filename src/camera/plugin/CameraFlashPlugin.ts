@@ -15,19 +15,15 @@ export interface ICameraFlashPlugin extends IUpdatable {
     flash(options: CameraFlashOptions): void
 }
 
-export interface CameraFlashPluginOptions {
-    camera: ICamera
-}
-
 export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
     camera: ICamera
     flashGraphic: Graphix
     fadeToBaseDivisor: number = 2
 
-    constructor(options: CameraFlashPluginOptions) {
+    constructor(camera: ICamera) {
         super()
 
-        this.camera = options.camera
+        this.camera = camera
 
         this.initializeFlashGraphics()
     }
@@ -37,7 +33,7 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
         this.fadeFlashGraphicsToBase()
     }
 
-    flash(options: CameraFlashOptions) {
+    flash(options?: CameraFlashOptions) {
         Flogger.log('CameraFlashPlugin', 'flash')
 
         const shouldRandomize = options.randomize !== undefined ? options.randomize : true

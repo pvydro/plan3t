@@ -7,6 +7,7 @@ import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
 import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
+import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugin/CameraOverlayEffectsPlugin'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -51,6 +52,7 @@ export class Camera implements ICamera {
 
     cameraDebuggerPlugin: CameraDebuggerPlugin
     cameraFlashPlugin: CameraFlashPlugin
+    cameraOverlayEffectsPlugin: ICameraOverlayEffectsPlugin
 
     public static getInstance() {
         if (Camera.INSTANCE === undefined) {
@@ -65,8 +67,10 @@ export class Camera implements ICamera {
 
         this._viewport = new Viewport()
         this._stage = new CameraStage({ camera })
-        this.cameraFlashPlugin = new CameraFlashPlugin({ camera })
-        this.cameraDebuggerPlugin = new CameraDebuggerPlugin({ camera })
+        
+        this.cameraFlashPlugin = new CameraFlashPlugin(this)
+        this.cameraDebuggerPlugin = new CameraDebuggerPlugin(this)
+        this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this)
 
         this._stage.width = 1080
         this._stage.height = 720
