@@ -23,7 +23,7 @@ export class GravityEntity extends ClientEntity {
     weight: number
 
     constructor(options?: GravityEntityOptions) {
-        super()
+        super(options)
 
         this.horizontalFriction = (options && options.horizontalFriction) ?? 5
         this.boundingBox = (options && options.boundingBox) ?? new Rect(0, 0, this.width, this.height)

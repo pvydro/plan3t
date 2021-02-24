@@ -1,3 +1,4 @@
+import { create } from 'colyseus/lib/MatchMaker'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Creature, CreatureType } from '../../creature/Creature'
@@ -32,6 +33,9 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
         this.cameraStage.addChildAtLayer(creature, CameraLayer.Creatures)
         this.entityManager.registerEntity(creature.entityId, { clientEntity: creature })
         this.creatures.set(creature.entityId, creature)
+        
+        // creature.x = 512
+        // creature.y = -64
 
         return creature
     }

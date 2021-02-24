@@ -13,6 +13,7 @@ export class Koini extends TravelkinCreature implements IKoini {
         super({
             type: CreatureType.Koini,
             walkSpeed: 4,
+            weight: 0.5,
             idleSprite: new Sprite({ texture: idleTexture })
         })
     }
