@@ -6,6 +6,7 @@ import { GroundPatherDebugger, IGroundPatherDebugger } from './GroundPatherDebug
 
 export interface IGroundPatherAI extends IAI, IUpdatable {
     currentGroundRect: Rect
+    currentDistanceFromEdge: number
     findPointOnCurrentGround(): void
     findNewGround(): void
 }
@@ -67,5 +68,9 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     get currentGroundRect() {
         return this._currentGroundRect
+    }
+
+    get currentDistanceFromEdge() {
+        return this._currentMaximumDistanceToEdge
     }
 }

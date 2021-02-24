@@ -3,6 +3,7 @@ import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
+import { Direction } from '../../engine/math/Direction'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { IGroundPatherAI } from './GroundPatherAI'
@@ -38,11 +39,12 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
 
     update() {
         const currentGroundRect = this.gravityEntity.currentGroundRect
+        const currentDistanceFromEdge = this.groundPather.currentDistanceFromEdge
         const groundIndicatorDistance = this.debugValues.groundIndicatorDistance
         const groundIndicatorBleedAmount = this.debugValues.groundIndicatorBleedAmount
-        const groundIndicatorHeight = this.debugValues.groundIndicatorHeight
         const targetDotDistance = this.debugValues.targetDotDistance
         const targetDotSize = this.debugValues.targetDotSize
+        const targetDirection = this.gravityEntity.direction
 
         // Target dot
         this.currentTargetGraphics.x = this.gravityEntity.x + (targetDotSize / 2)
@@ -52,7 +54,13 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
             this.currentGroundGraphics.x = currentGroundRect.x - (groundIndicatorBleedAmount / 2)
             this.currentGroundGraphics.y = currentGroundRect.y + groundIndicatorDistance
             this.currentGroundGraphics.width = currentGroundRect.width + groundIndicatorBleedAmount
-            this.currentGroundGraphics.height = groundIndicatorHeight
+
+            this.currentRangeGraphics.x = this.gravityEntity.x
+            this.currentRangeGraphics.y = currentGroundRect.y + (groundIndicatorDistance * 2)
+            this.currentRangeGraphics.width = currentDistanceFromEdge
+            if (targetDirection === Direction.Left) {
+                this.currentRangeGraphics.x -= currentDistanceFromEdge
+            }
         }
     }
 
@@ -62,7 +70,7 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         const targetDotSize = this.debugValues.targetDotSize
 
         this.debugContainer = new Container()
-        this.currentTargetGraphics = new Graphix()
+        this.currentTargetGraphics = new Graphix({ alpha: 0.5 })
         this.currentGroundGraphics = new Graphix()
         this.currentRangeGraphics = new Graphix()
 
@@ -81,7 +89,8 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         }
 
         this.currentTargetGraphics.rotation = 45 * (Math.PI / 180)
-        this.debugContainer.alpha = 0.5
+        this.currentGroundGraphics.height = this.debugValues.groundIndicatorHeight
+        this.currentRangeGraphics.height = this.debugValues.groundIndicatorHeight
 
         camera.stage.addChildAtLayer(this.debugContainer, CameraLayer.DebugOverlay)
     }
