@@ -1,4 +1,9 @@
 import { IGravityEntity } from '../cliententity/GravityEntity'
+import { IVector2 } from '../engine/math/Vector2'
+
+export interface AINode extends IVector2 {
+
+}
 
 export interface IAI {
     gravityEntity: IGravityEntity
