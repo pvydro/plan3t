@@ -1,7 +1,7 @@
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Creature, CreatureType } from '../../creature/Creature'
-import { ICreatureFactory } from '../../creature/CreatureFactory'
+import { CreatureFactory, ICreatureFactory } from '../../creature/CreatureFactory'
 import { IEntityManager } from './EntityManager'
 
 export interface IEntityCreatureCreator {
@@ -23,6 +23,7 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
 
     constructor(options: EntityCreatureCreatorOptions) {
         this.entityManager = options.entityManager
+        this.creatureFactory = new CreatureFactory()
     }
 
     createCreature(options: CreatureCreationOptions) {

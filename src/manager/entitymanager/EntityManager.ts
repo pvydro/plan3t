@@ -11,7 +11,7 @@ import { EntityPlayerCreator, IEntityPlayerCreator } from './EntityPlayerCreator
 import { EntitySynchronizer, IEntitySynchronizer } from '../../synchronizer/EntitySynchronizer'
 import { EntityProjectileCreator, IEntityProjectileCreator } from './EntityProjectileCreator'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { IEntityCreatureCreator } from './EntityCreatureCreator'
+import { EntityCreatureCreator, IEntityCreatureCreator } from './EntityCreatureCreator'
 import { CreatureType } from '../../creature/Creature'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
@@ -55,6 +55,7 @@ export class EntityManager implements IEntityManager {
         this.gravityManager = GravityManager.getInstance()
 
         this.playerCreator = new EntityPlayerCreator({ entityManager })
+        this.creatureCreator = new EntityCreatureCreator({ entityManager })
         this.projectileCreator = new EntityProjectileCreator({ entityManager })
         this.synchronizer = new EntitySynchronizer({ entityManager })
 
@@ -88,7 +89,6 @@ export class EntityManager implements IEntityManager {
 
     createPassiveCreature() {
         Flogger.log('EntityManager', 'createPassiveCreature')
-        // const creature = 
         this.creatureCreator.createCreature({ type: CreatureType.Koini })
     }
 

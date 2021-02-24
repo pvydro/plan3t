@@ -1,11 +1,19 @@
-import { Creature, CreatureOptions } from '../Creature'
+import { Assets, AssetUrls } from '../../asset/Assets'
+import { Sprite } from '../../engine/display/Sprite'
+import { CreatureType } from '../Creature'
+import { ITravelkinCreature, TravelkinCreature } from '../travelkin/TravelkinCreature'
 
-export interface IKoini {
+export interface IKoini extends ITravelkinCreature {
 
 }
 
-export class Koini extends Creature implements IKoini {
+export class Koini extends TravelkinCreature implements IKoini {
     constructor() {
-        super({})
+        const idleTexture = PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_KOINI))
+        super({
+            type: CreatureType.Koini,
+            walkSpeed: 4,
+            idleSprite: new Sprite({ texture: idleTexture })
+        })
     }
 }

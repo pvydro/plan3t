@@ -1,4 +1,5 @@
 import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
+import { Sprite } from '../engine/display/Sprite'
 
 export interface ICreature extends IClientEntity {
     interact(): void
@@ -6,12 +7,15 @@ export interface ICreature extends IClientEntity {
 }
 
 export interface CreatureOptions {
-
+    type: CreatureType
+    idleSprite: Sprite
 }
 
 export abstract class Creature extends ClientEntity implements ICreature {
     constructor(options: CreatureOptions) {
-        super()
+        super({
+            sprite: options.idleSprite
+        })
     }
 
     interact(): void {
@@ -24,5 +28,6 @@ export abstract class Creature extends ClientEntity implements ICreature {
 }
 
 export enum CreatureType {
-    Koini = 'Koini'
+    Koini = 'Koini',
+    PassiveHornet = 'PassiveHornet'
 }

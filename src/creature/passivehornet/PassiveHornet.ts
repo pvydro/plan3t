@@ -1,7 +1,7 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Camera } from '../../camera/Camera'
 import { Sprite } from '../../engine/display/Sprite'
-import { ICreature, Creature } from '../Creature'
+import { ICreature, Creature, CreatureType } from '../Creature'
 
 export interface IPassiveHornet extends ICreature {
 
@@ -17,12 +17,10 @@ export class PassiveHornet extends Creature implements IPassiveHornet {
     hornetTargetYMax: number = 100
 
     constructor() {
-        super({})
-
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_HORNET))
-        this.hornetSprite = new Sprite({ texture })
-
-        this.addChild(this.hornetSprite)
+        super({
+            type: CreatureType.PassiveHornet,
+            idleSprite: new Sprite({ texture: PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_HORNET)) })
+        })
     }
     
     findNewPosition() {

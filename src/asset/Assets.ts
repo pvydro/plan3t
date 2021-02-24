@@ -157,10 +157,11 @@ export class AssetUrls {
 
     // Lights
     static LIGHT_HARD_LG = 'assets/image/lights/lighthardlg'
+    static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
 
     // Passive Creatures
-    static PASSIVE_CREATURE_HORNET = 'assets/image/creature/passive/swamphornet/swamphornet'
-    static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
+    static PASSIVE_CREATURE_HORNET = 'assets/image/creature/swamphornet/swamphornet'
+    static PASSIVE_CREATURE_KOINI = 'assets/image/creature/koini/koini_idle'
 
     // InGameHUD
     static HEALTH_BAR_BG = 'assets/image/ui/ingamehud/healthbarbg'
