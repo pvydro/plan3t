@@ -9,9 +9,10 @@ import { GroundPatherDebugger, IGroundPatherDebugger } from './GroundPatherDebug
 export interface IGroundPatherAI extends IAI, IUpdatable {
     currentGroundRect: Rect
     currentDistanceFromEdge: number
-    currentNode: AINode
+    currentNode: AINode | undefined
     findPointOnCurrentGround(): void
     findNewGround(): void
+    checkIfReachedNode(): boolean
 }
 
 export enum GroundPatherState {
@@ -68,6 +69,20 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         Flogger.log('GroundPatherAI', 'findNewGround')
     }
 
+    checkIfReachedNode(): boolean {
+        if (this.currentNode === undefined) return true
+
+        let hasReached = false
+        const distance = this.gravityEntity.x - this.currentNode.x
+
+        if (Math.abs(distance) < 1) {
+            this.currentNode = undefined
+            hasReached = true
+        }
+
+        return hasReached
+    }
+
     set currentGroundRect(value: Rect) {
         if (this._currentGroundRect !== value) {
             this._currentGroundRect = value
@@ -76,13 +91,8 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         }
     }
 
-    set currentNode(value: AINode) {
-        if (exists(this._currentNode)) {
-            this._currentNode.x = value.x
-            this._currentNode.y = value.y
-        } else {
-            this._currentNode = value
-        }
+    set currentNode(value: AINode | undefined) {
+        this._currentNode = value
     }
 
     get currentNode() {

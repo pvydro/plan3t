@@ -18,16 +18,8 @@ export class TravelkinMovementController implements ITravelkinMovementController
     }
     
     update() {
-        if (this.currentNode !== undefined) {
+        if (this.travelkin.ai.currentNode !== undefined) {
             this.goToCurrentNode()
-        }
-    }
-
-    goToCurrentNode() {
-        if (this.currentNode.x > this.travelkin.x) {
-            this.moveRight()
-        } else if (this.currentNode.x < this.travelkin.x) {
-            this.moveLeft()
         }
 
         const movementState = this.travelkin.movementState
@@ -36,15 +28,30 @@ export class TravelkinMovementController implements ITravelkinMovementController
 
         switch (movementState) {
             case TravelkinMovementState.Walking:
-                
+
                 this.travelkin.xVel = targetXVel
 
                 break
             case TravelkinMovementState.Idle:
 
+                console.log('cometostop')
                 this.travelkin.comeToStop()
             
                 break
+        }
+
+        if (this.travelkin.ai.checkIfReachedNode()) {
+            this.travelkin.movementState = TravelkinMovementState.Idle
+        }
+    }
+
+    goToCurrentNode() {
+        const currentNode = this.travelkin.ai.currentNode
+
+        if (currentNode.x > this.travelkin.x) {
+            this.moveRight()
+        } else if (currentNode.x < this.travelkin.x) {
+            this.moveLeft()
         }
     }
 
@@ -56,9 +63,5 @@ export class TravelkinMovementController implements ITravelkinMovementController
     moveRight() {
         this.travelkin.direction = Direction.Right
         this.travelkin.movementState = TravelkinMovementState.Walking
-    }
-
-    get currentNode() {
-        return this.travelkin.ai.currentNode
     }
 }
