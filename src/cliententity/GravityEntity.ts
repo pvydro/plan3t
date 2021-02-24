@@ -34,8 +34,6 @@ export class GravityEntity extends ClientEntity {
         this.weight = (options && options.weight) ?? 0
 
         if (options && options.addDebugRectangle === true) {
-            console.log('addDebugRectangle', this.boundingBox)
-
             this.debugger = new CollisionDebugger({
                 collisionRects: [ this.boundingBox ]
             })
