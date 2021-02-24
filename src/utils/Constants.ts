@@ -27,7 +27,7 @@ export class DebugConstants {
 export class AIDebugConstants {
     static ShowCurrentNode: boolean = true
     static ShowCurrentGroundIndicator: boolean = false
-    static ShowCurrentGroundRange: boolean = true
+    static ShowCurrentGroundRange: boolean = false
     static ShowAIBadge: boolean = true
 }
 

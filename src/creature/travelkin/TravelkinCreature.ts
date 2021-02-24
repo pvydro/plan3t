@@ -9,6 +9,8 @@ export enum TravelkinMovementState {
 
 export interface ITravelkinCreature extends ICreature {
     ai: IGroundPatherAI
+    movementState: TravelkinMovementState
+    walkSpeed: number
 }
 
 export interface TravelkinCreatureOptions extends CreatureOptions {
@@ -16,10 +18,10 @@ export interface TravelkinCreatureOptions extends CreatureOptions {
 }
 
 export class TravelkinCreature extends Creature implements ITravelkinCreature {
+    _movementState: TravelkinMovementState = TravelkinMovementState.Idle
     walkSpeed: number
     ai: IGroundPatherAI
     movementController: ITravelkinMovementController
-    movementState: TravelkinMovementState = TravelkinMovementState.Idle
 
     constructor(options: TravelkinCreatureOptions) {
         super(options)
@@ -33,7 +35,16 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
 
     update() {
         this.ai.update()
+        this.movementController.update()
         
         super.update()
+    }
+
+    get movementState() {
+        return this._movementState
+    }
+
+    set movementState(value: TravelkinMovementState) {
+        this._movementState = value
     }
 }

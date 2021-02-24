@@ -65,15 +65,18 @@ export class PlayerController implements IPlayerController {
         const bodyState = this.player.bodyState
         const legsState = this.player.legsState
         const walkingDirection = this.player.walkingDirection
+        const targetXVel = (this.playerWalkingSpeed * walkingDirection) / this.walkDivisor
 
         switch (bodyState) {
             case PlayerBodyState.Walking:
 
-                if (walkingDirection === Direction.Left) {
-                    this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
-                } else if (walkingDirection === Direction.Right) {
-                    this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
-                }
+
+                // if (walkingDirection === Direction.Left) {
+                //     this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
+                // } else if (walkingDirection === Direction.Right) {
+                //     this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
+                // }
+                this.player.xVel = targetXVel
                 
                 break
             case PlayerBodyState.Idle:
