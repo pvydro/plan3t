@@ -1,26 +1,26 @@
-import { IClientEntity } from "../cliententity/ClientEntity";
+import { IGravityEntity } from '../cliententity/GravityEntity'
 
 export interface IAI {
-    clientEntity: IClientEntity
+    gravityEntity: IGravityEntity
     initialize(): void
 }
 
 export interface AIOptions {
-    clientEntity: IClientEntity
+    gravityEntity: IGravityEntity
 }
 
 export abstract class AI implements IAI {
-    _clientEntity: IClientEntity
+    _gravityEntity: IGravityEntity
 
     constructor(options: AIOptions) {
-        this._clientEntity = options.clientEntity
+        this._gravityEntity = options.gravityEntity
     }
 
     initialize() {
 
     }
 
-    get clientEntity() {
-        return this._clientEntity
+    get gravityEntity() {
+        return this._gravityEntity
     }
 }

@@ -18,7 +18,7 @@ export class TravelkinMovementController implements ITravelkinMovementController
         this.travelkin = options.travelkin
 
         this.ai = new GroundPatherAI({
-            clientEntity: this.travelkin
+            gravityEntity: this.travelkin
         })
     }
 

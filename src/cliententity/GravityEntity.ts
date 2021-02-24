@@ -7,6 +7,7 @@ import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity
 
 export interface IGravityEntity extends IClientEntity {
     isOnGround: boolean
+    currentGroundRect: Rect
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
 }
@@ -81,5 +82,9 @@ export class GravityEntity extends ClientEntity {
 
     set onGround(value: boolean) {
         this._onGround = value
+    }
+
+    get currentGroundRect(): Rect {
+        return this._currentGroundRect
     }
 }
