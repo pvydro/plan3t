@@ -17,7 +17,7 @@ export class PassiveHornet extends PassiveCreature implements IPassiveHornet {
     hornetTargetYMax: number = 100
 
     constructor() {
-        super()
+        super({})
 
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_HORNET))
         this.hornetSprite = new Sprite({ texture })

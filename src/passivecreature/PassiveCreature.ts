@@ -1,13 +1,16 @@
-import { ClientEntity } from '../cliententity/ClientEntity'
-import { IUpdatable } from '../interface/IUpdatable'
+import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 
-export interface IPassiveCreature extends IUpdatable {
+export interface IPassiveCreature extends IClientEntity {
     interact(): void
     die(): void
 }
 
+export interface PassiveCreatureOptions {
+
+}
+
 export abstract class PassiveCreature extends ClientEntity implements IPassiveCreature {
-    constructor() {
+    constructor(options: PassiveCreatureOptions) {
         super()
     }
 
