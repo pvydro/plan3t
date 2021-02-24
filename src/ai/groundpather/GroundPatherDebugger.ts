@@ -59,7 +59,8 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
             this.currentRangeGraphics.y = currentGroundRect.y + (groundIndicatorDistance * 2)
             this.currentRangeGraphics.width = currentDistanceFromEdge
             if (targetDirection === Direction.Left) {
-                this.currentRangeGraphics.x -= currentDistanceFromEdge
+                console.log('%cLeft', 'color:red')
+                this.currentRangeGraphics.x -= this.currentRangeGraphics.width
             }
         }
     }
@@ -71,7 +72,7 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
 
         this.debugContainer = new Container()
         this.currentTargetGraphics = new Graphix({ alpha: 0.5 })
-        this.currentGroundGraphics = new Graphix()
+        this.currentGroundGraphics = new Graphix({ alpha: 0.25 })
         this.currentRangeGraphics = new Graphix()
 
         const graphix = [

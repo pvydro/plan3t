@@ -1,3 +1,4 @@
+import { Direction } from '../../engine/math/Direction'
 import { Rect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
@@ -33,10 +34,6 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         this.debugger = new GroundPatherDebugger({ groundPather: this })
     }
 
-    initialize() {
-
-    }
-
     update() {
         this.debugger.update()
 
@@ -48,7 +45,12 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     findPointOnCurrentGround() {
         Flogger.log('GroundPatherAI', 'findPointOnCurrentGround')
 
-        const maximumDistance = this.gravityEntity.x - this.currentGroundRect.x
+        const direction = this.gravityEntity.direction
+
+        console.log('direction', direction)
+        const maximumDistance = (direction == Direction.Left)
+            ? this.gravityEntity.x - this.currentGroundRect.x
+            : this.currentGroundRightEdgeX - this.gravityEntity.x
 
         this._currentMaximumDistanceToEdge = maximumDistance
         // const newTargetX = Math.random() * maximumDistance
@@ -68,6 +70,10 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     get currentGroundRect() {
         return this._currentGroundRect
+    }
+
+    get currentGroundRightEdgeX() {
+        return this._currentGroundRect.x + this.currentGroundRect.width
     }
 
     get currentDistanceFromEdge() {

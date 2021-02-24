@@ -19,6 +19,10 @@ export class Koini extends TravelkinCreature implements IKoini {
         })
         
         this._direction = Direction.Left
+
+        if (Math.random() > 0.5) {
+            this.direction = Direction.Right
+        }
     }
 
     update() {
