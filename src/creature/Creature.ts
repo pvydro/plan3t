@@ -19,6 +19,10 @@ export abstract class Creature extends GravityEntity implements ICreature {
         })
     }
 
+    update() {
+        super.update()
+    }
+
     interact(): void {
 
     }

@@ -34,8 +34,8 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
         this.entityManager.registerEntity(creature.entityId, { clientEntity: creature })
         this.creatures.set(creature.entityId, creature)
         
-        // creature.x = 512
-        // creature.y = -64
+        creature.x = 512 + (Math.random() * 128)
+        creature.y = -64
 
         return creature
     }

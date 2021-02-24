@@ -29,7 +29,7 @@ export interface ClientEntityOptions {
 }
 
 export class ClientEntity extends Container implements IClientEntity {
-    static CurrentIDIteration: number
+    static CurrentIDIteration: number = 0
     entityId: string
     sprite: Sprite
     entity?: Entity

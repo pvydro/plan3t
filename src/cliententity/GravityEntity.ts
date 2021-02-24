@@ -47,6 +47,8 @@ export class GravityEntity extends ClientEntity {
         } else {
             this.yVel = 0
         }
+
+        super.update()
     }
 
     comeToStop() {

@@ -17,4 +17,8 @@ export class Koini extends TravelkinCreature implements IKoini {
             idleSprite: new Sprite({ texture: idleTexture })
         })
     }
+
+    update() {
+        super.update()
+    }
 }
