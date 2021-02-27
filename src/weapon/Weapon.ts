@@ -23,6 +23,7 @@ export interface IWeapon extends WeaponStats {
 }
 
 export interface WeaponStats {
+    name: string
     damage: number
     fireRate?: number
     weightPounds?: number
@@ -277,6 +278,7 @@ export class Weapon extends Container implements IWeapon {
         this.sprite.y = 0
         this.clearChildren()
         this.configureStats({
+            name: '',
             damage: 0,
             handDropAmount: 0,
             handPushAmount: 0,
