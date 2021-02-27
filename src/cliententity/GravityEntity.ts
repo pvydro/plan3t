@@ -2,6 +2,7 @@ import { Koini } from '../creature/koini/Koini'
 import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
 import { Direction } from '../engine/math/Direction'
 import { IRect, Rect } from '../engine/math/Rect'
+import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { GameLoop } from '../gameloop/GameLoop'
 import { GravityConstants } from '../utils/Constants'
 import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity'
@@ -17,6 +18,7 @@ export interface IGravityEntity extends IClientEntity {
 export interface GravityEntityOptions extends ClientEntityOptions {
     horizontalFriction?: number
     boundingBox?: IRect
+    boundingBoxAnchor?: IVector2
     weight?: number
     addDebugRectangle?: boolean
 }
@@ -34,8 +36,8 @@ export class GravityEntity extends ClientEntity {
         super(options)
 
         this.horizontalFriction = (options && options.horizontalFriction) ?? 5
-        this.boundingBox = (options && options.boundingBox) ?? { x: 0, y: 0, width: this.width, height: this.height }
         this.weight = (options && options.weight) ?? 0
+        this.boundingBox = this.createBoundingBox(options)//(options && options.boundingBox) ?? { x: 0, y: 0, width: this.width, height: this.height }
 
         if (options && options.addDebugRectangle === true) {
             this.debugger = new CollisionDebugger({
@@ -81,6 +83,25 @@ export class GravityEntity extends ClientEntity {
         this.onGround = true
 
         this._currentGroundRect = groundRect
+    }
+
+    private createBoundingBox(options?: GravityEntityOptions): IRect {
+        const boundingBoxAnchor: IVector2 = (options && options.boundingBoxAnchor) ?? Vector2.Zero
+        const anchorXOffset = -this.width * boundingBoxAnchor.x
+        const anchorYOffset = -this.height * boundingBoxAnchor.y
+        const boundingBox: IRect = (options && options.boundingBox) ?? {
+            x: 0,
+            y: 0,
+            width: this.width,
+            height: this.height 
+        }
+
+
+        boundingBox.x += anchorXOffset
+        boundingBox.y += anchorYOffset
+
+        return boundingBox
+        // return { width: 0, height: 0, x: 0, y: 0 }
     }
 
     get isOnGround() {

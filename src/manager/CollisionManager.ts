@@ -1,10 +1,12 @@
-import { GravityEntity } from "../cliententity/GravityEntity";
-import { Rect } from "../engine/math/Rect";
-import { GameMap } from "../gamemap/GameMap";
-import { GlobalScale } from "../utils/Constants";
+import { GravityEntity } from '../cliententity/GravityEntity'
+import { Rect } from '../engine/math/Rect'
+import { GameMap } from '../gamemap/GameMap'
+import { GlobalScale } from '../utils/Constants'
+import { Bullet } from '../weapon/projectile/Bullet'
 
 export interface ICollisionManager {
     checkEntityCollision(entity: GravityEntity): GravityEntity
+    checkBulletCollision(bullet: Bullet): Bullet
 }
 
 export interface CollisionManagerOptions {
@@ -24,6 +26,12 @@ export class CollisionManager implements ICollisionManager {
         return entity
     }
 
+    checkBulletCollision(bullet: Bullet): Bullet {
+        
+
+        return bullet
+    }
+    
     private checkEntityCollisionAgainstMap(entity: GravityEntity): GravityEntity {
         this.gameMapCollidableRects.forEach((rect: Rect, i) => {
             entity = this.checkGroundCollision(entity, rect)

@@ -20,7 +20,8 @@ export interface IClientEntity extends IContainer, IUpdatable {
 export enum EntityType {
     ClientPlayer = 'ClientPlayer',
     EnemyPlayer = 'EnemyPlayer',
-    EnemyBall = 'EnemyBall'
+    EnemyBall = 'EnemyBall',
+    Bullet = 'Bullet'
 }
 
 export interface ClientEntityOptions {

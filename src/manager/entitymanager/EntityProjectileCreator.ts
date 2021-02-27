@@ -1,4 +1,5 @@
 import { Camera } from '../../camera/Camera'
+import { CameraLayer } from '../../camera/CameraStage'
 import { Flogger } from '../../service/Flogger'
 import { Bullet, ProjectileType } from '../../weapon/projectile/Bullet'
 import { IEntityManager } from './EntityManager'
@@ -21,16 +22,15 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): Bullet {
         Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity)
         
-        const maximumIndex = this.cameraStage.children.length - 1
         const bullet = new Bullet({
-            rotation, velocity
+            rotation, velocity,
+            entityManager: this.entityManager
         })
         bullet.sprite.anchor.set(0.5, 0.5)
         bullet.x = x
         bullet.y = y
 
-        this.cameraStage.addChildAt(bullet, maximumIndex)
-
+        this.cameraStage.addChildAtLayer(bullet, CameraLayer.Bullet)
         this.entityManager.registerEntity(bullet.id.toString(), {
             clientEntity: bullet
         })

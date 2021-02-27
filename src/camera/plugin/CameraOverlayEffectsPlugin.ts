@@ -21,7 +21,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         const crtFilter = new CRTFilter({
             curvature: 2,
             noise: 0.01,
-            lineWidth: 2,
+            lineWidth: 3,
             lineContrast: 0.05
         })
 
