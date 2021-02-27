@@ -1,7 +1,10 @@
 import { Weapon } from "./Weapon";
 
 export interface IWeaponAmmunition {
-
+    numberOfClips: number
+    bulletsPerClip: number
+    currentTotalBullets: number
+    release(): void
 }
 
 export interface WeaponAmmunitionOptions {
@@ -12,6 +15,7 @@ export interface WeaponAmmunitionOptions {
 export class WeaponAmmunition implements IWeaponAmmunition {
     _numberOfClips: number
     _bulletsPerClip: number
+    _currentTotalBullets: number
     weapon: Weapon
 
     constructor(weapon: Weapon) {
@@ -21,6 +25,11 @@ export class WeaponAmmunition implements IWeaponAmmunition {
     configure(options: WeaponAmmunitionOptions) {
         this._numberOfClips = options.numberOfClips ?? 1
         this._bulletsPerClip = options.bulletsPerClip ?? 1
+        this._currentTotalBullets = this._bulletsPerClip
+    }
+
+    release() {
+        this._currentTotalBullets--
     }
     
     get numberOfClips() {
@@ -29,5 +38,9 @@ export class WeaponAmmunition implements IWeaponAmmunition {
 
     get bulletsPerClip() {
         return this._bulletsPerClip
+    }
+
+    get currentTotalBullets() {
+        return this._currentTotalBullets
     }
 }

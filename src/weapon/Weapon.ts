@@ -18,6 +18,7 @@ import { WeaponName } from './WeaponName'
 
 export interface IWeapon extends WeaponStats {
     triggerDown: boolean
+    currentTotalBullets: number
     configureByName(name: WeaponName): void
     reset(): void
 }
@@ -116,6 +117,8 @@ export class Weapon extends Container implements IWeapon {
                 this.applyRecoil()
                 this.applyScreenEffects()
                 this.sendServerShootMessage()
+
+                this.ammunition.release()
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -304,5 +307,9 @@ export class Weapon extends Container implements IWeapon {
 
     get bulletsPerClip() {
         return this.ammunition.bulletsPerClip
+    }
+
+    get currentTotalBullets() {
+        return this.ammunition.currentTotalBullets
     }
 }

@@ -1,5 +1,7 @@
 import { Container } from '../../../engine/display/Container'
 import { Graphix } from '../../../engine/display/Graphix'
+import { Tween } from '../../../engine/display/tween/Tween'
+import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { IWeapon } from '../../../weapon/Weapon'
 import { UIComponent } from '../../UIComponent'
 import { AmmoStatusComponent, IAmmoStatusComponent } from './AmmoStatusComponent'
@@ -14,10 +16,11 @@ export interface AmmoStatusCounterComponentOptions {
 
 export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStatusCounterComponent {
     statusComponent: AmmoStatusComponent
-    currentWeapon: IWeapon
+    currentWeapon?: IWeapon
     counterHeight: number = 4
     counterContainer: Container
     totalCounters: number
+    aliveCounters: number
     counters: Graphix[]
 
     constructor(options: AmmoStatusCounterComponentOptions) {
@@ -31,13 +34,28 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
     }
 
     update() {
+        if (this.currentWeapon !== undefined
+        && this.currentWeapon.currentTotalBullets < this.aliveCounters) {
+            this.aliveCounters--
+            const finalCounter = this.counters[this.aliveCounters]
 
+            finalCounter.alpha = 0.75
+
+            const counterFadeAnim = Tween.to(finalCounter, {
+                alpha: 0,
+                duration: 0.3,
+                ease: Easing.EaseInCubic
+            })
+            counterFadeAnim.play()
+        }
     }
 
     setWeapon(weapon: IWeapon) {
-        this.currentWeapon = weapon
-
-        this.reconfigureCounters()
+        if (this.currentWeapon !== weapon) {
+            this.currentWeapon = weapon
+    
+            this.reconfigureCounters()
+        }
     }
 
     reconfigureCounters() {
@@ -45,6 +63,7 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
         let alphaIncrement = 0
 
         this.totalCounters = this.currentWeapon.bulletsPerClip
+        this.aliveCounters = this.totalCounters
 
         // Kill current counters
         for (var c in this.counters) {
@@ -60,7 +79,7 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
         // Create new counters
         for (var i = 0; i < this.totalCounters; i++) {
             const counter = new Graphix()
-            const counterAlphaBreakpoint = 5
+            const counterAlphaBreakpoint = 8
 
             counter.beginFill(0xFFFFFF)
             counter.drawRect(0, 0, 1, this.counterHeight)
@@ -75,13 +94,14 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
 
             this.counterContainer.addChild(counter)
             this.counters.push(counter)
+
         }
     }
 
     reposition(addListeners: boolean) {
         super.reposition(addListeners)
 
-        const leftPadding = 8
+        const leftPadding = 5
 
         this.counterContainer.x = leftPadding
         this.counterContainer.y = (this.statusComponent.backgroundSprite.height / 2)
