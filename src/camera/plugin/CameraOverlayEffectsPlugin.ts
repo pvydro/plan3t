@@ -20,7 +20,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
 
         const colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
         const crtFilter = new CRTFilter({
-            curvature: 2,
+            curvature: 2.5,
             noise: 0.01,
             lineWidth: 3,
             lineContrast: 0.05
@@ -29,7 +29,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         colorMatrixFilter.polaroid(true)
         
         this.camera.stage.filters = [
-            // crtFilter,
+            crtFilter,
             colorMatrixFilter
         ]
     }
