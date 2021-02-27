@@ -1,17 +1,18 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { CameraLayer } from '../../camera/CameraStage'
-import { ClientEntity, EntityType, IClientEntity } from '../../cliententity/ClientEntity'
-import { GravityEntity } from '../../cliententity/GravityEntity'
+import { EntityType } from '../../cliententity/ClientEntity'
+import { GravityEntity, IGravityEntity } from '../../cliententity/GravityEntity'
 import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
+import { Flogger } from '../../service/Flogger'
 import { Defaults, GlobalScale } from '../../utils/Constants'
 
 export enum ProjectileType {
     Bullet = 'Bullet'
 }
 
-export interface IBullet extends IClientEntity {
-
+export interface IBullet extends IGravityEntity {
+    demolish(): void
 }
 
 export interface BulletOptions {
@@ -29,6 +30,7 @@ export class Bullet extends GravityEntity implements IBullet {
     constructor(options?: BulletOptions) {
         const assetUrl = Assets.get(AssetUrls.PROJECTILE_BULLET)
         const sprite = new Sprite({ texture: PIXI.Texture.from(assetUrl) })
+        sprite.anchor.set(0.5, 0.5)
         super({
             sprite,
             addDebugRectangle: true,
@@ -52,9 +54,11 @@ export class Bullet extends GravityEntity implements IBullet {
         return this._id
     }
 
-    // landedOnGround() {
-    //     if (this.entityManager !== undefined) {
-    //         this.entityManager.removeEntity(this.id.toString(), CameraLayer.Bullet)
-    //     }
-    // }
+    demolish() {
+        Flogger.log('Bullet', 'demolish')
+        
+        if (this.entityManager !== undefined) {
+            this.entityManager.removeEntity(this.id.toString(), CameraLayer.Bullet)
+        }
+    }
 }

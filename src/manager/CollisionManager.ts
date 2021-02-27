@@ -27,16 +27,22 @@ export class CollisionManager implements ICollisionManager {
     }
 
     checkBulletCollision(bullet: Bullet): Bullet {
-        
+        for (var i in this.gameMapCollidableRects) {
+            const rect = this.gameMapCollidableRects[i]
+            
+            if (rect.contains(bullet.x, bullet.y)) {
+                bullet.demolish()
+            }
+        }
 
         return bullet
     }
     
     private checkEntityCollisionAgainstMap(entity: GravityEntity): GravityEntity {
-        this.gameMapCollidableRects.forEach((rect: Rect, i) => {
+        for (var i in this.gameMapCollidableRects) {
+            const rect = this.gameMapCollidableRects[i]
             entity = this.checkGroundCollision(entity, rect)
-            // entity = this.checkSideCollision(entity, rect)
-        })
+        }
 
         return entity
     }
