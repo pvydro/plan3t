@@ -15,9 +15,6 @@ game.bootstrap().then(() => {
     const gameCanvas = document.getElementById('game-canvas')
 
     window.addEventListener('resize', () => {
-        WindowSize.width = window.innerWidth
-        WindowSize.height = window.innerHeight
-
         game.camera.resize(window.innerWidth, window.innerHeight)
         game.renderer.resize(window.innerWidth, window.innerHeight)
     })

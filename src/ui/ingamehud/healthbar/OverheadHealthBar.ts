@@ -92,7 +92,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
 
     update() {
         if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
-            this.triggerDeadAnimation()
+            this.die()
         } else {
             this.resetDeadAnimation()
         }
@@ -130,7 +130,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
         this.shakeAnimation.play()
     }
     
-    triggerDeadAnimation() {
+    die() {
         if (!this.dead) {
             this.dead = true
             this.deadDisappearAnimation.play()

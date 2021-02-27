@@ -1,8 +1,13 @@
 import { IDimension } from '../engine/math/Dimension'
 
-export const WindowSize: IDimension = {
-    width: window.innerWidth,
-    height: window.innerHeight
+export class WindowSize {
+    static get width() {
+        return window.innerWidth
+    }
+
+    static get height() {
+        return window.innerHeight
+    }
 }
 
 export const WorldSize: IDimension = {

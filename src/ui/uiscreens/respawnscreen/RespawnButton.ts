@@ -1,13 +1,13 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { Fonts } from '../../../asset/Fonts'
-import { TextSpriteAlign } from '../../../engine/display/TextSprite'
+import { IReposition } from '../../../interface/IReposition'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { Flogger } from '../../../service/Flogger'
 import { UIConstants, WindowSize } from '../../../utils/Constants'
 import { InGameHUD } from '../../ingamehud/InGameHUD'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
-export interface IRespawnButton extends IUIButton {
+export interface IRespawnButton extends IUIButton, IReposition {
 
 }
 
@@ -39,10 +39,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
             }
         })
 
-        const padding = UIConstants.HUDPadding
-
-        this.x = WindowSize.width - padding
-        this.y = WindowSize.height - padding
+        this.reposition(true)
     }
 
     triggerRespawn() {
@@ -53,5 +50,12 @@ export class RespawnButton extends UIButton implements IRespawnButton {
 
         hud.closeRespawnScreen()
         roomManager.requestClientPlayerRespawn()
+    }
+
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
+
+        this.x = WindowSize.width - UIConstants.HUDPadding
+        this.y = WindowSize.height - UIConstants.HUDPadding
     }
 }

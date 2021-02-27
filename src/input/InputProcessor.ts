@@ -10,7 +10,8 @@ export enum InputEvents {
     MouseUp = 'mouseup',
     KeyDown = 'keydown',
     KeyUp = 'keyup',
-    KeyPress = 'keypress'
+    KeyPress = 'keypress',
+    Resize = 'resize'
 }
 
 export class InputProcessor {

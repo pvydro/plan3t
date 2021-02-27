@@ -18,6 +18,10 @@ export class RespawnHeader extends TextSprite implements IRespawnHeader {
         })
 
         this.anchor.set(0, 0)
+        this.reposition(true)
+    }
+
+    reposition(addListener?: boolean) {
         this.position.set(UIConstants.HUDPadding, UIConstants.HUDPadding)
     }
 

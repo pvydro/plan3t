@@ -1,8 +1,10 @@
 import { Container } from "pixi.js";
+import { InputEvents, InputProcessor } from "../input/InputProcessor";
+import { IReposition } from "../interface/IReposition";
 import { IShowHide } from '../interface/IShowHide'
 import { UIContainer, UIContainerOptions } from './UIContainer'
 
-export interface IUIComponent extends IShowHide {
+export interface IUIComponent extends IShowHide, IReposition {
     name: string 
     accessible: boolean
     accessibleChildren: boolean
@@ -35,6 +37,18 @@ export class UIComponent extends UIContainer implements IUIComponent {
         this._isShown = false
     }
 
+    reposition(addListener?: boolean) {
+        if (addListener === true) {
+            InputProcessor.on(InputEvents.Resize, () => {
+                this.reposition(false)
+            })
+        }
+    }
+
+    demolish(): void {
+        this.destroy()
+    }
+    
     async show() {
         this._isShown = true
     }
@@ -45,9 +59,5 @@ export class UIComponent extends UIContainer implements IUIComponent {
 
     get isShown() {
         return this._isShown
-    }
-
-    demolish(): void {
-        this.destroy()
     }
 }

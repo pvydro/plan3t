@@ -3,13 +3,14 @@ import { ICanDie } from '../../../interface/ICanDie'
 import { IRect } from '../../math/Rect'
 import { Graphix } from '../Graphix'
 import { GravityParticle, IGravityParticle } from './GravityParticle'
-import { IParticle, Particle, ParticleOptions } from './Particle'
+import { ParticleOptions } from './Particle'
 
 export interface IDustParticle extends IGravityParticle, ICanDie {
+
 }
 
 export interface DustParticleOptions extends ParticleOptions {
-    
+    color?: number
 }
 
 export class DustParticle extends GravityParticle implements IDustParticle {
@@ -23,7 +24,7 @@ export class DustParticle extends GravityParticle implements IDustParticle {
     lifespanCountdown: number
 
     constructor(options: DustParticleOptions) {
-        const genericColor = 0xb8b8b8
+        const genericColor = options.color ?? 0xb8b8b8
         const negative = (Math.random() > 0.5) === true
         const dustSize = 2
         const dustSquare = new Graphix()
