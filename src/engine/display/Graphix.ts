@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js'
+import { IDemolishable } from '../../interface/IDemolishable'
 import { exists } from '../../utils/Utils'
 import { IRect } from '../math/Rect'
 
-export interface IGraphix {
+export interface IGraphix extends IDemolishable {
 
 }
 
@@ -29,6 +30,10 @@ export class Graphix extends PIXI.Graphics implements IGraphix {
 
     drawIRect(rect: IRect) {
         return this.drawRect(rect.x, rect.y, rect.width, rect.height)
+    }
+
+    demolish() {
+        this.destroy()
     }
 }
 

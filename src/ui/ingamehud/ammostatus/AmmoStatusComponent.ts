@@ -37,12 +37,14 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
             if (this.currentWeapon !== currentWeapon
             && currentWeapon !== undefined) {
                 this.currentWeapon = currentWeapon
+                this.counterComponent.setWeapon(currentWeapon)
             }
         }
 
         if (this.weaponHint) {
             this.weaponHint.update()
         }
+        this.counterComponent.update()
     }
 
     refreshClientLoadout() {
@@ -72,7 +74,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     }
 
     set currentWeapon(value: IWeapon) {
-        this.counterComponent.tempTextSprite.text = value.name
+        // this.counterComponent.tempTextSprite.text = value.name
         this._currentWeapon = value
     }
 }
