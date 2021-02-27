@@ -6,6 +6,7 @@ import { ParticleManager } from '../../../manager/ParticleManager'
 import { IVector2, Vector2 } from '../../math/Vector2'
 import { AnimatedSprite, AnimationOptions } from '../AnimatedSprite'
 import { Container } from '../Container'
+import { Graphix } from '../Graphix'
 import { Sprite } from '../Sprite'
 import { TextSprite } from '../TextSprite'
 
@@ -14,7 +15,7 @@ export interface IParticle extends IUpdatable, IDemolishable {
 }
 
 export interface ParticleOptions extends AnimationOptions, ParticlePositioningOptions {
-    sprite?: Sprite | AnimatedSprite | TextSprite
+    sprite?: Sprite | AnimatedSprite | TextSprite | Graphix
 }
 
 export interface ParticlePositioningOptions {
@@ -23,7 +24,7 @@ export interface ParticlePositioningOptions {
 }
 
 export class Particle extends Container implements IParticle {
-    sprite: Sprite | AnimatedSprite | TextSprite
+    sprite?: Sprite | AnimatedSprite | TextSprite | Graphix
 
     constructor(options: ParticleOptions) {
         super()
@@ -39,7 +40,9 @@ export class Particle extends Container implements IParticle {
             this.position.y = options.position.y ?? 0
         }
         
-        this.addChild(this.sprite)
+        if (this.sprite) {
+            this.addChild(this.sprite)
+        }
     }
     
     update() {
@@ -48,7 +51,9 @@ export class Particle extends Container implements IParticle {
     
     demolish(): void {
         ParticleManager.getInstance().removeParticle(this)
-        this.sprite.destroy()
-        delete this.sprite
+        if (this.sprite) {
+            this.sprite.destroy()
+            delete this.sprite
+        }
     }
 }

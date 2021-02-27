@@ -4,6 +4,7 @@ import { EntityType } from '../../cliententity/ClientEntity'
 import { GravityEntity, IGravityEntity } from '../../cliententity/GravityEntity'
 import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
+import { ParticleManager } from '../../manager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
 import { Defaults, GlobalScale } from '../../utils/Constants'
 
@@ -13,6 +14,7 @@ export enum ProjectileType {
 
 export interface IBullet extends IGravityEntity {
     demolish(): void
+    emitGroundHitParticles(): void
 }
 
 export interface BulletOptions {
@@ -54,11 +56,24 @@ export class Bullet extends GravityEntity implements IBullet {
         return this._id
     }
 
+    emitGroundHitParticles() {
+        const particleManager = ParticleManager.getInstance()
+
+        particleManager.addDustParticles({
+            position: { x: this.x, y: this.y }
+        })
+    }
+
     demolish() {
         Flogger.log('Bullet', 'demolish')
-        
+
         if (this.entityManager !== undefined) {
             this.entityManager.removeEntity(this.id.toString(), CameraLayer.Bullet)
         }
+    }
+
+    demolishWithStyle() {
+        this.emitGroundHitParticles()
+        this.demolish()
     }
 }

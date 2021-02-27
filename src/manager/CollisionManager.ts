@@ -31,7 +31,7 @@ export class CollisionManager implements ICollisionManager {
             const rect = this.gameMapCollidableRects[i]
             
             if (rect.contains(bullet.x, bullet.y)) {
-                bullet.demolish()
+                bullet.demolishWithStyle()
             }
         }
 

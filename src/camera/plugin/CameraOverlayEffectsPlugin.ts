@@ -28,6 +28,9 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         
         colorMatrixFilter.polaroid(true)
         
-        this.camera.stage.filters = [ crtFilter, colorMatrixFilter ]
+        this.camera.stage.filters = [
+            // crtFilter,
+            colorMatrixFilter
+        ]
     }
 }

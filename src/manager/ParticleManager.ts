@@ -1,4 +1,5 @@
 import { Container } from 'pixi.js'
+import { DustParticle, DustParticleOptions } from '../engine/display/particle/DustParticle'
 import { IParticle, Particle } from '../engine/display/particle/Particle'
 import { TextParticle } from '../engine/display/particle/TextParticle'
 import { TextParticleOptions } from '../engine/display/particle/TextParticle'
@@ -43,6 +44,13 @@ export class ParticleManager implements IParticleManager {
         this.overlayContainer.addChild(textParticle)
 
         this.particles.add(textParticle)
+    }
+
+    addDustParticles(options: DustParticleOptions) {
+        const dustParticle = new DustParticle(options)
+        this.container.addChild(dustParticle)
+
+        this.particles.add(dustParticle)
     }
 
     addParticle(particle: Particle, container?: Container) {
