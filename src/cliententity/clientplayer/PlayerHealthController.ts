@@ -1,7 +1,7 @@
 import { Key } from "ts-keycode-enum";
 import { SmallBlastParticle } from "../../engine/display/particle/SmallBlastParticle";
 import { InputEvents, InputProcessor } from "../../input/InputProcessor";
-import { ParticleManager } from "../../manager/ParticleManager";
+import { ParticleManager } from "../../manager/particlemanager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
 import { InGameHUD } from "../../ui/ingamehud/InGameHUD";
 import { IClientPlayer, PlayerConsciousnessState } from "./ClientPlayer";

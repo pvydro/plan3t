@@ -16,7 +16,7 @@ import { PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
-import { ParticleManager } from '../../manager/ParticleManager'
+import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { IPlayerHealthController, PlayerHealthController } from './PlayerHealthController'
 

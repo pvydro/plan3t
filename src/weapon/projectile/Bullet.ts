@@ -4,7 +4,7 @@ import { EntityType } from '../../cliententity/ClientEntity'
 import { GravityEntity, IGravityEntity } from '../../cliententity/GravityEntity'
 import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
-import { ParticleManager } from '../../manager/ParticleManager'
+import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
 import { Defaults, GlobalScale } from '../../utils/Constants'
 

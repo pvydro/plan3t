@@ -7,7 +7,7 @@ import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { Assets } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
-import { ParticleManager } from '../manager/ParticleManager'
+import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Viewport } from '../camera/Viewport'
 import { Fonts } from '../asset/Fonts'
 

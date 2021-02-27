@@ -18,7 +18,7 @@ export class DustParticle extends Particle implements IDustParticle {
 
     constructor(options: DustParticleOptions) {
         const genericColor = 0xb8b8b8
-        const dustSize = 1
+        const dustSize = 2
         const dustSquare = new Graphix()
 
         dustSquare.beginFill(genericColor)
@@ -29,8 +29,8 @@ export class DustParticle extends Particle implements IDustParticle {
 
         super(options)
 
-        this.xSpreadRange = 2
-        this.ySpreadRange = 4
+        this.xSpreadRange = 1
+        this.ySpreadRange = 3
         this.onGround = false
 
         this.xVel = Math.random() * this.xSpreadRange
@@ -43,7 +43,7 @@ export class DustParticle extends Particle implements IDustParticle {
 
         this.xVel += (0 - this.xVel) / 10
         if (this.onGround === false) {
-            this.yVel += 0.1
+            this.yVel += 0.2
         }
     }
 }

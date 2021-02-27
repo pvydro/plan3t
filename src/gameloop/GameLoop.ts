@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
-import { IParticleManager, ParticleManager } from '../manager/ParticleManager'
+import { IParticleManager, ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { IRoomManager } from '../manager/roommanager/RoomManager'
 import { Flogger } from '../service/Flogger'
 
