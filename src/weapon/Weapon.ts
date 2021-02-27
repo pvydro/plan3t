@@ -1,9 +1,6 @@
-import gsap from 'gsap/all'
 import { TweenLite } from 'gsap/all'
 import { Camera } from '../camera/Camera'
-import { PlayerHand } from '../cliententity/clientplayer/PlayerHand'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
-import { WeaponStateFormatter } from '../cliententity/clientplayer/state/WeaponStateFormatter'
 import { Container } from '../engine/display/Container'
 import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Sprite } from '../engine/display/Sprite'
@@ -11,12 +8,11 @@ import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { Direction } from '../engine/math/Direction'
 import { Vector2 } from '../engine/math/Vector2'
-import { InputProcessor } from '../input/InputProcessor'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
-import { RoomMessage } from '../network/rooms/ServerMessages'
 import { Flogger } from '../service/Flogger'
 import { Defaults, GlobalScale } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
+import { WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
 
@@ -51,11 +47,10 @@ export class Weapon extends Container implements IWeapon {
     playerHolster?: PlayerWeaponHolster
 
     name: WeaponName
+    ammunition: WeaponAmmunition
     damage: number
     fireRate?: number
     weightPounds?: number
-    bulletsPerClip?: number
-    numberOfClips?: number
     handDropAmount?: number = 0
     handPushAmount?: number = 0
     recoilX: number = 0
@@ -84,6 +79,8 @@ export class Weapon extends Container implements IWeapon {
 
     constructor(options?: WeaponOptions) {
         super()
+
+        this.ammunition = new WeaponAmmunition(this)
 
         if (options) {
             if (options.name) {
@@ -247,12 +244,11 @@ export class Weapon extends Container implements IWeapon {
         this.damage = stats.damage
         this.fireRate = stats.fireRate
         this.weightPounds = stats.weightPounds
-        this.bulletsPerClip = stats.bulletsPerClip
-        this.numberOfClips = 3
         this.handDropAmount = stats.handDropAmount ?? 0
         this.handPushAmount = stats.handPushAmount ?? 0
         this.recoilX = stats.recoilX ?? 0
         this.recoilY = stats.recoilY ?? 0
+        this.ammunition.configure(stats as WeaponAmmunitionOptions)
     }
 
     configureByName(name: WeaponName) {
@@ -298,5 +294,13 @@ export class Weapon extends Container implements IWeapon {
 
     get messenger() {
         return this.playerHolster.player.messenger
+    }
+    
+    get numberOfClips() {
+        return this.ammunition.numberOfClips
+    }
+
+    get bulletsPerClip() {
+        return this.ammunition.bulletsPerClip
     }
 }
