@@ -40,7 +40,9 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
 
         if (maximumSlots !== undefined) {
             for (var i = 0; i < maximumSlots; i++) {
-                const slot = new HUDInventoryHotbarSlot()
+                const slot = new HUDInventoryHotbarSlot({
+                    hotbarKey: i + 1
+                })
 
                 this.hotbarSlots.push(slot)
                 this.slotContainer.addChild(slot)

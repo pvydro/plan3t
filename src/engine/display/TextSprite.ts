@@ -20,11 +20,13 @@ export interface TextSpriteOptions {
     fontSize?: number
     color?: number
     align?: TextSpriteAlign
+    rescale?: number
 }
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
     style: PIXI.TextStyle
     _textDimensions: IDimension
+    rescale: number
 
     constructor(options: TextSpriteOptions) {
         const fontFamily = options.fontFamily ?? Fonts.Font.family
@@ -32,23 +34,24 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         const fill = options.color ?? 0xFFFFFF
         const align = (options.align as string) ?? 'center'
         const wordWrap = false
-
+        const rescale = options.rescale ?? 0.5
         const style = new PIXI.TextStyle({ fontFamily, fontSize, fill, align, wordWrap })
         
         super(options.text, style)
         
         this.style = style
+        this.rescale = rescale
         this._textDimensions = PIXI.TextMetrics.measureText(options.text, style)
 
-        this.scale.set(0.5, 0.5)        
+        this.scale.set(rescale, rescale)        
     }
     
     get textWidth() {
-        return this._textDimensions.width * 0.5
+        return this._textDimensions.width * this.rescale
     }
     
     get textHeight() {
-        return this._textDimensions.height * 0.5
+        return this._textDimensions.height * this.rescale
     }
 
     get textDimensions() {
