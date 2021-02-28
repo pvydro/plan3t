@@ -111,6 +111,8 @@ export class Weapon extends Container implements IWeapon {
             return this.currentShootPromise
         } else {
             this.currentShootPromise = new Promise((resolve) => {
+                if (!this.ammunition.checkAmmunition()) return
+
                 // Recoil & shoot logic
                 this.addMuzzleFlash()
                 this.fireBullet()

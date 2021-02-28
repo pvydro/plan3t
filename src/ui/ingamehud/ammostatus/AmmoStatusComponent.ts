@@ -1,11 +1,12 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../engine/display/Sprite'
-import { IWeapon } from '../../../weapon/Weapon'
+import { IWeapon, Weapon } from '../../../weapon/Weapon'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { AmmoStatusAnimator, IAmmoStatusAnimator } from './AmmoStatusAnimator'
 import { AmmoStatusCounterComponent } from './AmmoStatusCounterComponent'
 import { WeaponHint } from './WeaponHint'
+import { WeaponLabel } from './WeaponLabel'
 
 export interface IAmmoStatusComponent extends IUIComponent {
     
@@ -13,10 +14,12 @@ export interface IAmmoStatusComponent extends IUIComponent {
 
 export class AmmoStatusComponent extends UIComponent implements IAmmoStatusComponent {
     _currentWeapon: IWeapon
+    counterComponent: AmmoStatusCounterComponent
+    weaponLabel: WeaponLabel
+    weaponHint: WeaponHint
+
     animator: IAmmoStatusAnimator
     backgroundSprite: Sprite
-    counterComponent: AmmoStatusCounterComponent
-    weaponHint: WeaponHint
     player: ClientPlayer
 
     constructor() {
@@ -26,9 +29,11 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
         this.backgroundSprite = new Sprite({ texture: backgroundTexture })
         this.animator = new AmmoStatusAnimator({ ammoStatus: this })
         this.counterComponent = new AmmoStatusCounterComponent({ parent: this })
+        this.weaponLabel = new WeaponLabel({ ammoStatus: this })
 
         this.addChild(this.backgroundSprite)
         this.addChild(this.counterComponent)
+        this.addChild(this.weaponLabel)
     }
 
     update() {
@@ -38,6 +43,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
             && currentWeapon !== undefined) {
                 this.currentWeapon = currentWeapon
                 this.counterComponent.setWeapon(currentWeapon)
+                this.weaponLabel.setWeapon(currentWeapon)
             }
         }
 

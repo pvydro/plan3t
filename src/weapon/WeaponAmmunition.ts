@@ -5,6 +5,7 @@ export interface IWeaponAmmunition {
     bulletsPerClip: number
     currentTotalBullets: number
     release(): void
+    checkAmmunition(): boolean
 }
 
 export interface WeaponAmmunitionOptions {
@@ -30,6 +31,13 @@ export class WeaponAmmunition implements IWeaponAmmunition {
 
     release() {
         this._currentTotalBullets--
+    }
+
+    checkAmmunition() {
+        let hasAmmo: boolean = true
+
+        return hasAmmo
+
     }
     
     get numberOfClips() {

@@ -4,10 +4,10 @@ import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { IWeapon } from '../../../weapon/Weapon'
 import { UIComponent } from '../../UIComponent'
-import { AmmoStatusComponent, IAmmoStatusComponent } from './AmmoStatusComponent'
+import { AmmoStatusComponent } from './AmmoStatusComponent'
 
 export interface IAmmoStatusCounterComponent {
-
+    
 }
 
 export interface AmmoStatusCounterComponentOptions {
@@ -38,6 +38,8 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
         && this.currentWeapon.currentTotalBullets < this.aliveCounters) {
             this.aliveCounters--
             const finalCounter = this.counters[this.aliveCounters]
+
+            if (!finalCounter) return
 
             finalCounter.alpha = 0.75
 

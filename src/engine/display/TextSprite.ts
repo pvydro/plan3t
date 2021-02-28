@@ -24,7 +24,7 @@ export interface TextSpriteOptions {
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
     style: PIXI.TextStyle
-    textDimensions: IDimension
+    _textDimensions: IDimension
 
     constructor(options: TextSpriteOptions) {
         const fontFamily = options.fontFamily ?? Fonts.Font.family
@@ -38,17 +38,21 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         super(options.text, style)
         
         this.style = style
-        this.textDimensions = PIXI.TextMetrics.measureText(options.text, style)
+        this._textDimensions = PIXI.TextMetrics.measureText(options.text, style)
 
         this.scale.set(0.5, 0.5)        
     }
     
     get textWidth() {
-        return this.textDimensions.width * 0.5
+        return this._textDimensions.width * 0.5
     }
     
     get textHeight() {
-        return this.textDimensions.height * 0.5
+        return this._textDimensions.height * 0.5
+    }
+
+    get textDimensions() {
+        throw new Error('Dont get textDimensions directly, doesnt have scale applied')
     }
 
     get halfTextWidth() {
