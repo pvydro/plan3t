@@ -9,6 +9,7 @@ import { AmmoStatusComponent } from './ammostatus/AmmoStatusComponent'
 import { Crosshair, CrosshairState } from './crosshair/Crosshair'
 import { HealthBar } from './healthbar/HealthBar'
 import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
+import { HUDInventoryHotbar } from './inventoryhotbar/HUDInventoryHotbar'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     initializeHUD(): Promise<void>
@@ -22,6 +23,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
     hudContainer: UIContainer
     crosshair: Crosshair
     ammoStatus: AmmoStatusComponent
+    hotbar: HUDInventoryHotbar
     healthBar: HealthBar
     queuedHealthBars: OverheadHealthBar[] = []
     respawnScreen: RespawnScreen
@@ -43,6 +45,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
+        this.hotbar = new HUDInventoryHotbar()
     }
 
     async initializeHUD(): Promise<void> {
@@ -50,6 +53,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
 
         return new Promise((resolve, reject) => {
             this.addChild(this.ammoStatus)
+            this.addChild(this.hotbar)
             this.addChild(this.respawnScreen)
             this.addChild(this.crosshair)
 
@@ -68,6 +72,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
 
         this.crosshair.update()
         this.ammoStatus.update()
+        this.hotbar.update()
     }
 
     reposition(addListeners?: boolean) {
@@ -114,7 +119,8 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
     private applyScale() {
         const toScale: UIComponent[] = [
             this.healthBar, this.ammoStatus,
-            this.respawnScreen.respawnButton
+            this.respawnScreen.respawnButton,
+            this.hotbar
         ]
 
         for (var i in toScale) {

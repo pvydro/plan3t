@@ -1,24 +1,28 @@
 import { IGameItem, GameItem } from './GameItem'
 
 export interface IInventory {
-    maximumWeight: number
+    maximumWeight?: number
+    maximumSlots?: number
     getItemById(id: number): IGameItem
     transferToInventory(slotId: number, targetSlotId: number, targetInventory: IInventory): void
     addToInventory(slotId: number, item: IGameItem)
 }
 
 export interface InventoryOptions {
-    maximumWeight: number
+    maximumWeight?: number
+    maximumSlots?: number
 }
 
 export class Inventory implements IInventory {
-    _maximumWeight: number
+    _maximumWeight?: number = undefined
+    _maximumSlots?: number = undefined
     items: Map<number, IGameItem> = new Map()
 
     constructor(options: InventoryOptions) {
         // this._totalSlots = options.totalSlots
         // this._maxItemsPerSlot = options.maxItemsPerSlot ?? 99
-        this._maximumWeight = options.maximumWeight ?? 64
+        this._maximumWeight = options.maximumWeight ?? undefined
+        this._maximumSlots = options.maximumSlots ?? undefined
     }
 
     transferToInventory(slotId: number, targetSlotId: number, targetInventory: IInventory) {

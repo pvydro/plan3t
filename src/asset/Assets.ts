@@ -169,6 +169,7 @@ export class AssetUrls {
     static AMMO_STATUS_BG = 'assets/image/ui/ingamehud/ammostatusbg'
     static OVERHEAD_HEALTHB_BAR_BG = 'assets/image/ui/ingamehud/overheadhealthbar'
     static OVERHEAD_HEALTHB_BAR_FILL = 'assets/image/ui/ingamehud/overheadhealthbarfill'
+    static HOTBAR_BG = 'assets/image/ui/ingamehud/hotbar/hotbarbg'
 
     // UI
     static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'
