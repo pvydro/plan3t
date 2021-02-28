@@ -37,12 +37,6 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
 
         this.addChild(this.textSprite)
         this.reposition(false)
-
-        InputProcessor.on(InputEvents.KeyDown, (ev) => {
-            if (ev.which === Key.L) {
-                this.triggerNoAmmoAnim()
-            }
-        })
     }
 
     setWeapon(weapon: IWeapon) {

@@ -1,13 +1,11 @@
-import { IInventory, Inventory } from './Inventory'
+import { IPlayerInventory, PlayerInventory } from './PlayerInventory'
 
-export interface IClientPlayerInventory extends IInventory {
+export interface IClientPlayerInventory extends IPlayerInventory {
 
 }
 
-export class ClientPlayerInventory extends Inventory implements IClientPlayerInventory {
+export class ClientPlayerInventory extends PlayerInventory implements IClientPlayerInventory {
     private static INSTANCE: ClientPlayerInventory
-    
-    hotbarInventory: IInventory
 
     static getInstance() {
         if (ClientPlayerInventory.INSTANCE === undefined) {
