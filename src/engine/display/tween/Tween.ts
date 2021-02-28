@@ -1,4 +1,6 @@
+import * as PIXI from 'pixi.js'
 import gsap from 'gsap/all'
+import { PixiPlugin } from 'gsap/PixiPlugin'
 import { Easing } from './TweenEasing'
 
 export enum TweenDirection {
@@ -21,6 +23,12 @@ export interface TweenOptions {
 }
 
 export class Tween {
+    static async initializePlugins() {
+        gsap.registerPlugin(PixiPlugin)
+
+        PixiPlugin.registerPIXI(PIXI)
+    }
+
     static to(target: any, options: TweenOptions): gsap.core.Tween {
         options = Tween.applyDefaultsToOptions(options)
 

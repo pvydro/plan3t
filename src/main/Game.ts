@@ -10,6 +10,7 @@ import { Camera } from '../camera/Camera'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Viewport } from '../camera/Viewport'
 import { Fonts } from '../asset/Fonts'
+import { Tween } from '../engine/display/tween/Tween'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -44,6 +45,7 @@ export class Game implements IGame {
         await Assets.loadImages()
         await Fonts.loadFonts()
         await Spritesheets.loadSpritesheets()
+        await Tween.initializePlugins()
         
         await this.clientManager.initialize()
         this.clientManager.gameStateManager.initialize()
