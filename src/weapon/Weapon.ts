@@ -107,9 +107,7 @@ export class Weapon extends Container implements IWeapon {
     }
 
     async shoot(): Promise<void> {
-        if (this.currentShootPromise) {
-            return this.currentShootPromise
-        } else {
+        if (!this.currentShootPromise) {
             this.currentShootPromise = new Promise((resolve) => {
                 if (!this.ammunition.checkAmmunition()) return
 
@@ -121,6 +119,7 @@ export class Weapon extends Container implements IWeapon {
                 this.sendServerShootMessage()
 
                 this.ammunition.release()
+                this.emit('Shoot')
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -130,7 +129,6 @@ export class Weapon extends Container implements IWeapon {
                 } else {
                     resolve()
                 }
-
             })
             this.currentShootPromise.then(() => {
                 this.currentShootPromise = undefined

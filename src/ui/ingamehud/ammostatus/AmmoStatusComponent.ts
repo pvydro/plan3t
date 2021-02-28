@@ -13,7 +13,7 @@ export interface IAmmoStatusComponent extends IUIComponent {
 }
 
 export class AmmoStatusComponent extends UIComponent implements IAmmoStatusComponent {
-    _currentWeapon: IWeapon
+    _currentWeapon?: IWeapon
     counterComponent: AmmoStatusCounterComponent
     weaponLabel: WeaponLabel
     weaponHint: WeaponHint
@@ -39,14 +39,23 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     update() {
         if (this.player !== undefined) {
             const currentWeapon = this.player.holster.currentWeapon
+
+            // Automatically get current weapon from player
             if (this.currentWeapon !== currentWeapon
             && currentWeapon !== undefined) {
                 this.currentWeapon = currentWeapon
                 this.counterComponent.setWeapon(currentWeapon)
                 this.weaponLabel.setWeapon(currentWeapon)
             }
+            
+            // Check current weapon status
+            if (currentWeapon !== undefined
+            && currentWeapon.triggerDown
+            && currentWeapon.currentTotalBullets <= 0) {
+                this.weaponLabel.triggerNoAmmoAnim()
+            }
         }
-
+                    
         if (this.weaponHint) {
             this.weaponHint.update()
         }

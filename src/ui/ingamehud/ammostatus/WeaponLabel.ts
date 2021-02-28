@@ -64,10 +64,7 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         this.y = topMargin
     }
 
-    triggerNoAmmoAnim() {
-        Flogger.color('red')
-        Flogger.log('no ammo')
-        
+    triggerNoAmmoAnim() {        
         if (this.tintAnimation === undefined) {
             this.textSprite.tint = this.noAmmoTint
 
