@@ -56,6 +56,7 @@ export class Defaults {
 export class UIConstants {
     static HUDScale: number = 5
     static HUDPadding: number = 42
+    static SwipeAnimationDistance: number = 4
 }
 
 export enum Events {

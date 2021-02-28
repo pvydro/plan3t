@@ -36,19 +36,27 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
     update() {
         if (this.currentWeapon !== undefined
         && this.currentWeapon.currentTotalBullets < this.aliveCounters) {
+            const distance = this.aliveCounters - this.currentWeapon.currentTotalBullets
+
             this.aliveCounters--
             const finalCounter = this.counters[this.aliveCounters]
 
             if (!finalCounter) return
 
-            finalCounter.alpha = 0.75
+            finalCounter.alpha = 0
 
-            const counterFadeAnim = Tween.to(finalCounter, {
-                alpha: 0,
-                duration: 0.3,
-                ease: Easing.EaseInCubic
-            })
-            counterFadeAnim.play()
+            if (distance == 1) {
+                finalCounter.alpha = 0.75
+
+                const counterFadeAnim = Tween.to(finalCounter, {
+                    alpha: 0,
+                    duration: 0.3,
+                    ease: Easing.EaseInCubic
+                })
+
+                counterFadeAnim.play()
+            }
+
         }
     }
 
