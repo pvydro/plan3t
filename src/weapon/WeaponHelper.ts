@@ -10,13 +10,22 @@ export class WeaponHelper {
 
     }
 
-    public static getWeaponTextureByName(name: WeaponName) {
+    public static getWeaponTextureByName(name: WeaponName, suffix?: string) {
         Flogger.log('WeaponHelper', 'getWeaponTextureByName', name)
 
         const details: any = WeaponHelper.getWeaponDetailsByName(name)
 
-        const url = Assets.BASE_IMAGE_DIR + '/weapons/' + details.dir + '/' + name.toLowerCase()
+        const suff = suffix ?? ''
+        const url = Assets.BASE_IMAGE_DIR + '/weapons/' + details.dir + '/' + name.toLowerCase() + suff
         const texture = PIXI.Texture.from(Assets.get(url))
+
+        return texture
+    }
+
+    public static getWeaponUnloadedTextureByName(name: WeaponName) {
+        Flogger.log('WeaponHelper', 'getWeaponUnloadedTextureByName', name)
+
+        const texture = WeaponHelper.getWeaponTextureByName(name, '_un')
 
         return texture
     }
