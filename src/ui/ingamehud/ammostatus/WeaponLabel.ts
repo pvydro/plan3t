@@ -1,4 +1,5 @@
 import { Key } from 'ts-keycode-enum'
+import { Camera } from '../../../camera/Camera'
 import { TextSprite } from '../../../engine/display/TextSprite'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
@@ -66,6 +67,8 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
 
     triggerNoAmmoAnim() {        
         if (this.tintAnimation === undefined) {
+            const camera = Camera.getInstance()
+            
             this.textSprite.tint = this.noAmmoTint
 
             this.tintAnimation = Tween.to(this.textSprite, {
@@ -81,6 +84,7 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
                 }
             })
 
+            camera.shake(2)
         }
     }
 

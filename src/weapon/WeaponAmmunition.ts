@@ -1,9 +1,10 @@
-import { Weapon } from "./Weapon";
+import { Weapon } from './Weapon'
 
 export interface IWeaponAmmunition {
     numberOfClips: number
     bulletsPerClip: number
     currentTotalBullets: number
+    configure(options: WeaponAmmunitionOptions): void
     release(): void
     checkAmmunition(): boolean
 }
@@ -36,8 +37,11 @@ export class WeaponAmmunition implements IWeaponAmmunition {
     checkAmmunition() {
         let hasAmmo: boolean = true
 
-        return hasAmmo
+        if (this._currentTotalBullets <= 0) {
+            hasAmmo = false
+        }
 
+        return hasAmmo
     }
     
     get numberOfClips() {

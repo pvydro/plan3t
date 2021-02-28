@@ -12,7 +12,8 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Flogger } from '../service/Flogger'
 import { Defaults, GlobalScale } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
-import { WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
+import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
+import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
 
@@ -49,7 +50,8 @@ export class Weapon extends Container implements IWeapon {
     playerHolster?: PlayerWeaponHolster
 
     name: WeaponName
-    ammunition: WeaponAmmunition
+    ammunition: IWeaponAmmunition
+    effects: IWeaponEffects
     damage: number
     fireRate?: number
     weightPounds?: number
@@ -83,6 +85,7 @@ export class Weapon extends Container implements IWeapon {
         super()
 
         this.ammunition = new WeaponAmmunition(this)
+        this.effects = new WeaponEffects({ weapon: this })
 
         if (options) {
             if (options.name) {
@@ -109,17 +112,18 @@ export class Weapon extends Container implements IWeapon {
     async shoot(): Promise<void> {
         if (!this.currentShootPromise) {
             this.currentShootPromise = new Promise((resolve) => {
-                if (!this.ammunition.checkAmmunition()) return
+                if (!this.ammunition.checkAmmunition()) {
+                    return
+                }
 
                 // Recoil & shoot logic
-                this.addMuzzleFlash()
+                this.effects.addMuzzleFlash()
                 this.fireBullet()
                 this.applyRecoil()
-                this.applyScreenEffects()
+                this.effects.applyScreenEffects()
                 this.sendServerShootMessage()
 
                 this.ammunition.release()
-                this.emit('Shoot')
     
                 // FireRate process
                 if (this.fireRate > 0) {
@@ -183,59 +187,6 @@ export class Weapon extends Container implements IWeapon {
         this.recoilAnimation.play()
 
         this._currentRecoilOffset = recoilOffset
-    }
-
-    applyScreenEffects() {
-        const camera = Camera.getInstance()
-
-        camera.shake(1)
-        camera.flash({
-            minimumBrightness: 0.15,
-            maximumBrightness: 0.3
-        })
-    }
-
-    addMuzzleFlash() {
-        const player = this.playerHolster ? this.playerHolster.player : undefined
-        const playerHand = player ? player.hand : undefined
-        const handRotation = playerHand ? playerHand.rotation : undefined
-        let rotation = handRotation ? handRotation : this.rotation
-
-        if (player && this.sprite) {
-            rotation *= player.direction
-
-            const referenceX = player.x + this.x
-            const referenceY = player.y + (this.y * GlobalScale)
-            const handRotationX = playerHand ? playerHand.rotationContainer.x : 0
-            const halfWidth = (this.sprite.halfWidth * GlobalScale) + (handRotationX * GlobalScale)
-            const halfHeight = (-this.sprite.halfHeight * GlobalScale)
-                + (this.barrelOffsetY * GlobalScale)
-
-            const handSpriteX = playerHand.handSprite.x * GlobalScale
-            const handX = handSpriteX * player.direction
-
-            let distanceX = (halfWidth * Math.cos(rotation)) - (halfHeight * Math.sin(rotation))
-            let distanceY = (halfWidth * Math.sin(rotation)) + (halfHeight * Math.cos(rotation))
-            let translatedX = referenceX + (distanceX * player.direction) + handX
-            let translatedY = referenceY + (distanceY * 1.1)
-            translatedX += (this.handPushAmount * GlobalScale) * player.direction
-            translatedY += (this.handDropAmount * GlobalScale)
-            
-            this._currentRotatedBarrelPoint = {
-                x: translatedX, y: translatedY
-            }
-            
-            const particle = new MuzzleFlashParticle({
-                position: new Vector2(translatedX, translatedY),
-                rotation: rotation * player.direction
-            })
-
-            if (player.direction === Direction.Left) {
-                particle.scale.x = (particle.scale.x * -1)
-            }
-
-            ParticleManager.getInstance().addParticle(particle)
-        }
     }
 
     sendServerShootMessage() {
