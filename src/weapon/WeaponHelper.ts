@@ -40,6 +40,7 @@ export class WeaponHelper {
 
     public static getWeaponStatsByName(name: WeaponName): WeaponStats {
         const data = WeaponHelper.getWeaponDetailsByName(name)
+        
         return data as WeaponStats
     }
 }
