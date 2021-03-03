@@ -75,7 +75,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     reloadWeapon() {
         Flogger.log('PlayerWeaponHolster', 'reloadWeapon')
 
-        
+        this.currentWeapon.requestReload()
     }
 
     setWeaponStatus(status: CurrentWeaponStatus) {

@@ -10,7 +10,8 @@
         "handDropAmount": 2,
         "recoilX": 0.8,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     },
     "P3": {
         "dir": "smgs",
@@ -25,7 +26,8 @@
         "secondHandY": -1.5,
         "recoilX": 0.25,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     },
     "Tachyon": {
         "dir": "smgs",
@@ -40,7 +42,8 @@
         "secondHandY": -2,
         "recoilX": 0.25,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     },
 
     "Bully": {
@@ -57,7 +60,8 @@
         "secondHandY": -2,
         "recoilX": 0.45,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     },
     "Komplimenter": {
         "dir": "assault-rifles",
@@ -73,7 +77,8 @@
         "secondHandY": -7.5,
         "recoilX": 0.25,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     },
     "Kortni": {
         "dir": "assault-rifles",
@@ -87,7 +92,8 @@
         "handPushAmount": -1,
         "recoilX": 0.25,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     },
     "Raze": {
         "dir": "snipers",
@@ -103,6 +109,7 @@
         "secondHandY": -1.5,
         "recoilX": 0.85,
         "recoilY": 1.25,
-        "barrelOffsetY": -3
+        "barrelOffsetY": -3,
+        "reloadTime": 0.5
     }
 }

@@ -34,29 +34,23 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
     }
 
     update() {
-        if (this.currentWeapon !== undefined
-        && this.currentWeapon.currentTotalBullets < this.aliveCounters) {
-            const distance = this.aliveCounters - this.currentWeapon.currentTotalBullets
+        if (this.currentWeapon !== undefined) {
+            if (this.currentWeapon.currentClipBullets < this.aliveCounters) {
+                const distance = this.aliveCounters - this.currentWeapon.currentClipBullets
 
-            this.aliveCounters--
-            const finalCounter = this.counters[this.aliveCounters]
+                this.aliveCounters--
+                const finalCounter = this.counters[this.aliveCounters]
 
-            if (!finalCounter) return
+                if (!finalCounter) return
 
-            finalCounter.alpha = 0
+                finalCounter.alpha = 0
 
-            if (distance == 1) {
-                finalCounter.alpha = 0.75
-
-                const counterFadeAnim = Tween.to(finalCounter, {
-                    alpha: 0,
-                    duration: 0.3,
-                    ease: Easing.EaseInCubic
-                })
-
-                counterFadeAnim.play()
+                if (distance == 1) {
+                    this.highlightCounter(finalCounter)
+                }
+            } else if (this.currentWeapon.currentClipBullets > this.aliveCounters) {
+                this.reconfigureCounters(true)
             }
-
         }
     }
 
@@ -68,7 +62,7 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
         }
     }
 
-    reconfigureCounters() {
+    reconfigureCounters(showVisual?: boolean) {
         const counterSpacing = 1
         let alphaIncrement = 0
 
@@ -104,8 +98,26 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
 
             this.counterContainer.addChild(counter)
             this.counters.push(counter)
-
         }
+
+        // Visual feedback
+        if (showVisual) {
+            const finalCounter = this.counters[this.counters.length - 1]
+
+            this.highlightCounter(finalCounter)
+        }
+    }
+
+    highlightCounter(counter: Graphix) {
+        counter.alpha = 0.75
+
+        const counterFadeAnim = Tween.to(counter, {
+            alpha: 0,
+            duration: 0.3,
+            ease: Easing.EaseInCubic
+        })
+
+        counterFadeAnim.play()
     }
 
     reposition(addListeners: boolean) {

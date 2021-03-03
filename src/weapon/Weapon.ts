@@ -16,8 +16,9 @@ import { WeaponName } from './WeaponName'
 
 export interface IWeapon extends WeaponStats {
     triggerDown: boolean
-    currentTotalBullets: number
+    currentClipBullets: number
     configureByName(name: WeaponName): void
+    requestReload(): Promise<void>
     reset(): void
 }
 
@@ -36,6 +37,7 @@ export interface WeaponStats {
     secondHandY?: number
     recoilX: number
     recoilY: number
+    reloadTime: number
 }
 
 export interface WeaponOptions {
@@ -63,6 +65,7 @@ export class Weapon extends Container implements IWeapon {
     handPushAmount?: number = 0
     recoilX: number = 0
     recoilY: number = 0
+    reloadTime: number = 0
     bulletVelocity: number = Defaults.BulletVelocity
 
     sprite: Sprite
@@ -115,7 +118,8 @@ export class Weapon extends Container implements IWeapon {
     }
 
     async shoot(): Promise<void> {
-        if (!this.currentShootPromise) {
+        if (this.state === WeaponState.Loaded
+        && !this.currentShootPromise) {
             this.currentShootPromise = new Promise((resolve) => {
                 if (!this.ammunition.checkAmmunition()) {
                     return
@@ -149,6 +153,8 @@ export class Weapon extends Container implements IWeapon {
 
     fireBullet() {
         Flogger.log('Weapon', 'fireBullet')
+
+        if (this.state !== WeaponState.Loaded) return
         
         const playerHand = this.playerHolster ? this.playerHolster.player.hand : undefined
 
@@ -170,12 +176,7 @@ export class Weapon extends Container implements IWeapon {
     requestReload() {
         Flogger.log('Weapon', 'requestReload')
 
-        if (this.ammunition.currentClipBullets === this.ammunition.bulletsPerClip
-        || this.state === WeaponState.Reloading) {
-            return
-        }
-
-
+        return this.ammunition.requestReload()
     }
 
     applyRecoil() {
@@ -220,6 +221,7 @@ export class Weapon extends Container implements IWeapon {
         this.handPushAmount = stats.handPushAmount ?? 0
         this.recoilX = stats.recoilX ?? 0
         this.recoilY = stats.recoilY ?? 0
+        this.reloadTime = stats.reloadTime
         this.ammunition.configure(stats as WeaponAmmunitionOptions)
     }
 
@@ -257,7 +259,8 @@ export class Weapon extends Container implements IWeapon {
             handDropAmount: 0,
             handPushAmount: 0,
             recoilX: 0,
-            recoilY: 0
+            recoilY: 0,
+            reloadTime: 0
         })
     }
 
@@ -266,10 +269,13 @@ export class Weapon extends Container implements IWeapon {
             return
         }
 
+        this.state = state
+
         switch (state) {
             case WeaponState.Loaded:
                 this.showLoadedSprite()
                 break
+            case WeaponState.Reloading:
             case WeaponState.Unloaded:
                 this.showUnloadedSprite()
                 break
@@ -320,7 +326,7 @@ export class Weapon extends Container implements IWeapon {
         return this.ammunition.bulletsPerClip
     }
 
-    get currentTotalBullets() {
+    get currentClipBullets() {
         return this.ammunition.currentClipBullets
     }
 }

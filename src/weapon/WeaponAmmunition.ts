@@ -1,3 +1,4 @@
+import { Flogger } from '../service/Flogger'
 import { Weapon, WeaponState } from './Weapon'
 
 export interface IWeaponAmmunition {
@@ -7,6 +8,7 @@ export interface IWeaponAmmunition {
     configure(options: WeaponAmmunitionOptions): void
     release(): void
     checkAmmunition(): boolean
+    requestReload(): Promise<void>
 }
 
 export interface WeaponAmmunitionOptions {
@@ -19,6 +21,7 @@ export class WeaponAmmunition implements IWeaponAmmunition {
     _bulletsPerClip: number
     _currentClipBullets: number
     weapon: Weapon
+    currentReloadPromise: Promise<void>
 
     constructor(weapon: Weapon) {
         this.weapon = weapon
@@ -43,6 +46,41 @@ export class WeaponAmmunition implements IWeaponAmmunition {
         }
 
         return hasAmmo
+    }
+
+    requestReload() {
+        if (this.currentReloadPromise !== undefined) {
+            return this.currentReloadPromise
+        }
+
+        if (this.currentClipBullets === this.bulletsPerClip
+        || this.weapon.state === WeaponState.Reloading) {
+            return
+        }
+        
+        this.currentReloadPromise = new Promise((resolve) => {
+            Flogger.log('WeaponAmmunition', 'Begin reload', 'reloadTime', this.weapon.reloadTime)
+
+            const calculatedReloadTime = 1000 * this.weapon.reloadTime
+
+            this.weapon.setWeaponState(WeaponState.Reloading)
+
+            window.setTimeout(() => {
+                Flogger.log('WeaponAmmunition', 'Reload complete')
+
+                this.currentReloadPromise = undefined
+                this.weapon.setWeaponState(WeaponState.Loaded)
+                this.insertClip()
+
+                resolve()
+            }, calculatedReloadTime)
+        })
+
+        return this.currentReloadPromise
+    }
+
+    insertClip() {
+        this._currentClipBullets = this.bulletsPerClip
     }
     
     get numberOfClips() {

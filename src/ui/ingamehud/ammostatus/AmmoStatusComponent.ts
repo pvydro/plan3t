@@ -51,7 +51,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
             // Check current weapon status
             if (currentWeapon !== undefined
             && currentWeapon.triggerDown
-            && currentWeapon.currentTotalBullets <= 0) {
+            && currentWeapon.currentClipBullets <= 0) {
                 this.weaponLabel.triggerNoAmmoAnim()
             }
         }
