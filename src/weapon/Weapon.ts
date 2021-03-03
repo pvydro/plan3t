@@ -1,9 +1,11 @@
 import { TweenLite } from 'gsap/all'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
+import { WeaponStateFormatter } from '../cliententity/clientplayer/state/WeaponStateFormatter'
 import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
+import { IVector2 } from '../engine/math/Vector2'
 import { Flogger } from '../service/Flogger'
 import { Defaults } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
@@ -41,10 +43,17 @@ export interface WeaponOptions {
     holster?: PlayerWeaponHolster
 }
 
+export enum WeaponState {
+    Loaded = 'Loaded',
+    Unloaded = 'Unloaded',
+    Reloading = 'Reloading'
+}
+
 export class Weapon extends Container implements IWeapon {
     playerHolster?: PlayerWeaponHolster
 
     name: WeaponName
+    state: WeaponState
     ammunition: IWeaponAmmunition
     effects: IWeaponEffects
     damage: number
@@ -57,6 +66,7 @@ export class Weapon extends Container implements IWeapon {
     bulletVelocity: number = Defaults.BulletVelocity
 
     sprite: Sprite
+    unloadedSprite: Sprite
 
     triggerDown: boolean = false
     currentShootPromise: Promise<void>
@@ -157,6 +167,17 @@ export class Weapon extends Container implements IWeapon {
         }
     }
 
+    requestReload() {
+        Flogger.log('Weapon', 'requestReload')
+
+        if (this.ammunition.currentClipBullets === this.ammunition.bulletsPerClip
+        || this.state === WeaponState.Reloading) {
+            return
+        }
+
+
+    }
+
     applyRecoil() {
         let int = { interpolation: 0 }
         let recoilOffset: any = { x: 0, y: 0 }
@@ -191,6 +212,7 @@ export class Weapon extends Container implements IWeapon {
     }
 
     configureStats(stats: WeaponStats) {
+        this.state = WeaponState.Loaded
         this.damage = stats.damage
         this.fireRate = stats.fireRate
         this.weightPounds = stats.weightPounds
@@ -209,23 +231,26 @@ export class Weapon extends Container implements IWeapon {
 
         const baseYOffset = -8
         const texture = WeaponHelper.getWeaponTextureByName(name)
+        const unloadedTexture = WeaponHelper.getWeaponUnloadedTextureByName(name)
         const stats = WeaponHelper.getWeaponStatsByName(name)
 
         this.sprite = new Sprite({ texture })
+        this.unloadedSprite = new Sprite({ texture: unloadedTexture })
+        this.unloadedSprite.alpha = 0
         this.offset.x = stats.handleOffsetX
         this.offset.y = baseYOffset + stats.handleOffsetY
-        this.sprite.x = this.offset.x
-        this.sprite.y = this.offset.y
 
+        this.setSpritesPosition(this.offset)
         this.addChild(this.sprite)
-
+        this.addChild(this.unloadedSprite)
         this.configureStats(stats)
     }
 
     reset() {
-        this.sprite.x = 0
-        this.sprite.y = 0
         this.clearChildren()
+        this.setSpritesPosition({
+            x: 0, y: 0
+        })
         this.configureStats({
             name: '',
             damage: 0,
@@ -234,6 +259,46 @@ export class Weapon extends Container implements IWeapon {
             recoilX: 0,
             recoilY: 0
         })
+    }
+
+    setWeaponState(state: WeaponState) {
+        if (state === this.state) {
+            return
+        }
+
+        switch (state) {
+            case WeaponState.Loaded:
+                this.showLoadedSprite()
+                break
+            case WeaponState.Unloaded:
+                this.showUnloadedSprite()
+                break
+        }
+    }
+
+    setSpritesPosition(newPosition: IVector2) {
+        for (var i in this.sprites) {
+            const spr = this.sprites[i]
+
+            spr.x = newPosition.x
+            spr.y = newPosition.y
+        }
+    }
+
+    showLoadedSprite() {
+        this.sprite.alpha = 1
+        this.unloadedSprite.alpha = 0
+    }
+
+    showUnloadedSprite() {
+        this.sprite.alpha = 0
+        this.unloadedSprite.alpha = 1
+    }
+
+    get sprites() {
+        return [
+            this.sprite, this.unloadedSprite
+        ]
     }
 
     get currentRecoilOffset() {
@@ -256,6 +321,6 @@ export class Weapon extends Container implements IWeapon {
     }
 
     get currentTotalBullets() {
-        return this.ammunition.currentTotalBullets
+        return this.ammunition.currentClipBullets
     }
 }

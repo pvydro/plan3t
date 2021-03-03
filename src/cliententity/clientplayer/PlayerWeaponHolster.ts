@@ -55,6 +55,9 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
                 case Key.E:
                     this.swapWeapon()
                     break
+                case Key.R:
+                    this.reloadWeapon()
+                    break
             }
 
         })
@@ -67,6 +70,12 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
             ? CurrentWeaponStatus.Secondary : CurrentWeaponStatus.Primary
 
         this.setWeaponStatus(weaponStatus)
+    }
+
+    reloadWeapon() {
+        Flogger.log('PlayerWeaponHolster', 'reloadWeapon')
+
+        
     }
 
     setWeaponStatus(status: CurrentWeaponStatus) {

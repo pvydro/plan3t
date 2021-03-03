@@ -19,5 +19,8 @@ export class PlayerInventory extends Inventory implements IPlayerInventory {
         this.hotbarInventory = new Inventory({
             maximumSlots: 8
         })
+        this.bulletInventory = new Inventory({
+            maximumWeight: 64
+        })
     }
 }

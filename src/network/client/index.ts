@@ -19,7 +19,7 @@ game.bootstrap().then(() => {
         game.renderer.resize(window.innerWidth, window.innerHeight)
     })
 
-    game.view.style.cursor = 'none'
+    // game.view.style.cursor = 'none'
 
     InputProcessor.on('keydown', (event: KeyboardEvent) => {
         switch (event.which) {

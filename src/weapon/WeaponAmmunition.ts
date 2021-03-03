@@ -1,9 +1,9 @@
-import { Weapon } from './Weapon'
+import { Weapon, WeaponState } from './Weapon'
 
 export interface IWeaponAmmunition {
     numberOfClips: number
     bulletsPerClip: number
-    currentTotalBullets: number
+    currentClipBullets: number
     configure(options: WeaponAmmunitionOptions): void
     release(): void
     checkAmmunition(): boolean
@@ -17,7 +17,7 @@ export interface WeaponAmmunitionOptions {
 export class WeaponAmmunition implements IWeaponAmmunition {
     _numberOfClips: number
     _bulletsPerClip: number
-    _currentTotalBullets: number
+    _currentClipBullets: number
     weapon: Weapon
 
     constructor(weapon: Weapon) {
@@ -27,18 +27,19 @@ export class WeaponAmmunition implements IWeaponAmmunition {
     configure(options: WeaponAmmunitionOptions) {
         this._numberOfClips = options.numberOfClips ?? 1
         this._bulletsPerClip = options.bulletsPerClip ?? 1
-        this._currentTotalBullets = this._bulletsPerClip
+        this._currentClipBullets = this._bulletsPerClip
     }
 
     release() {
-        this._currentTotalBullets--
+        this._currentClipBullets--
     }
 
     checkAmmunition() {
         let hasAmmo: boolean = true
 
-        if (this._currentTotalBullets <= 0) {
+        if (this._currentClipBullets <= 0) {
             hasAmmo = false
+            this.weapon.setWeaponState(WeaponState.Unloaded)
         }
 
         return hasAmmo
@@ -52,7 +53,7 @@ export class WeaponAmmunition implements IWeaponAmmunition {
         return this._bulletsPerClip
     }
 
-    get currentTotalBullets() {
-        return this._currentTotalBullets
+    get currentClipBullets() {
+        return this._currentClipBullets
     }
 }
