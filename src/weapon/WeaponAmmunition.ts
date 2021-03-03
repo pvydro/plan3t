@@ -69,7 +69,6 @@ export class WeaponAmmunition implements IWeaponAmmunition {
                 Flogger.log('WeaponAmmunition', 'Reload complete')
 
                 this.currentReloadPromise = undefined
-                this.weapon.setWeaponState(WeaponState.Loaded)
                 this.insertClip()
 
                 resolve()
@@ -81,6 +80,8 @@ export class WeaponAmmunition implements IWeaponAmmunition {
 
     insertClip() {
         this._currentClipBullets = this.bulletsPerClip
+        this.weapon.setWeaponState(WeaponState.Loaded)
+        this.weapon.currentShootPromise = undefined
     }
     
     get numberOfClips() {

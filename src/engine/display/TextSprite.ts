@@ -55,7 +55,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     }
 
     get textDimensions() {
-        throw new Error('Dont get textDimensions directly, doesnt have scale applied')
+        throw new Error('Don\'t get textDimensions directly, doesn\'t have scale applied')
     }
 
     get halfTextWidth() {

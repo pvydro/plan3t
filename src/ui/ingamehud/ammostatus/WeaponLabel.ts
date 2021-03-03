@@ -1,12 +1,9 @@
-import { Key } from 'ts-keycode-enum'
 import { Camera } from '../../../camera/Camera'
 import { TextSprite } from '../../../engine/display/TextSprite'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
-import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
-import { Flogger } from '../../../service/Flogger'
 import { UIConstants } from '../../../utils/Constants'
-import { IWeapon } from '../../../weapon/Weapon'
+import { IWeapon, WeaponState } from '../../../weapon/Weapon'
 import { UIComponent } from '../../UIComponent'
 import { AmmoStatusComponent } from './AmmoStatusComponent'
 
@@ -18,13 +15,20 @@ export interface WeaponLabelOptions {
     ammoStatus: AmmoStatusComponent
 }
 
+export enum WeaponLabelState {
+    WeaponName, Reloading
+}
+
 export class WeaponLabel extends UIComponent implements IWeaponLabel {
+    state: WeaponLabelState = undefined
     originalX: number
     textSprite: TextSprite
     ammoStatus: AmmoStatusComponent
     noAmmoTint: number = 0xde3333
     tintAnimation: TweenLite
+    swipeAnimation: TweenLite
     currentWeapon?: IWeapon
+    targetName: string
 
     constructor(options: WeaponLabelOptions) {
         super()
@@ -39,11 +43,36 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         this.reposition(false)
     }
 
+    update() {
+        // if (this.currentWeapon !== this.ammoStatus.currentWeapon) {
+        //     this.currentWeapon = this.ammoStatus.currentWeapon
+
+        //     this.reconfigureLabel(WeaponLabelState.WeaponName)
+        // } else if (this.currentWeapon !== undefined) {
+        if (this.currentWeapon !== undefined) {
+            if (this.currentWeapon.state === WeaponState.Reloading
+            && this.state !== WeaponLabelState.Reloading) {
+                this.reconfigureLabel(WeaponLabelState.Reloading)
+            } else if (this.currentWeapon.state === WeaponState.Loaded
+            && this.state !== WeaponLabelState.WeaponName) {
+                this.reconfigureLabel(WeaponLabelState.WeaponName)
+            }
+            
+            // else if (this.currentWeapon.state === WeaponState.Reloading
+            // && this.state !== WeaponLabelState.Reloading) {
+            //     this.reconfigureLabel(WeaponLabelState.Reloading)
+            // }
+        }
+    }
+
     setWeapon(weapon: IWeapon) {
-        if (this.currentWeapon !== weapon) {
+        if (this.currentWeapon !== weapon
+        || this.currentWeapon.state) {
             this.currentWeapon = weapon
-    
-            this.reconfigureName()
+            this.reconfigureLabel(WeaponLabelState.WeaponName)
+        } else if (this.currentWeapon.state === WeaponState.Reloading
+        && this.state !== WeaponLabelState.Reloading) {
+            this.reconfigureLabel(WeaponLabelState.Reloading)
         }
     }
 
@@ -82,25 +111,44 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         }
     }
 
-    async reconfigureName() {
-        const newName = this.currentWeapon.name.toUpperCase()
+    async reconfigureLabel(state: WeaponLabelState) {
+        
+        const newName = state === WeaponLabelState.Reloading
+            ? 'RELOADING' : this.currentWeapon.name.toUpperCase()
+
+        this.targetName = newName
+        
+        if (state === this.state
+        && this.textSprite.text == newName) {
+            return
+        }
+        this.state = state
         
         if (this.textSprite.text != '') {
-            await Tween.to(this.textSprite, {
-                x: this.originalX + UIConstants.SwipeAnimationDistance,
-                alpha: 0,
-                duration: 0.5,
-                autoplay: true
-            })
+            if (this.swipeAnimation == undefined) {
+                this.swipeAnimation = Tween.to(this.textSprite, {
+                    x: this.originalX + UIConstants.SwipeAnimationDistance,
+                    alpha: 0,
+                    duration: state === WeaponLabelState.Reloading ? 0.1 : 0.5,
+                    onComplete: () => {
+                        this.swipeAnimation = undefined
+                    }
+                })
+            }
+
+            await this.swipeAnimation.play()
         }
 
-        this.textSprite.text = newName
+        this.textSprite.text = this.targetName
 
-        await Tween.to(this.textSprite, {
+        this.swipeAnimation = Tween.to(this.textSprite, {
             x: this.originalX,
             alpha: 1,
             duration: 0.5,
-            autoplay: true
+            onComplete: () => {
+                this.swipeAnimation = undefined
+            }
         })
+        await this.swipeAnimation.play()
     }
 }

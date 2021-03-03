@@ -27,7 +27,7 @@
         "recoilX": 0.25,
         "recoilY": 1.25,
         "barrelOffsetY": -3,
-        "reloadTime": 0.5
+        "reloadTime": 1
     },
     "Tachyon": {
         "dir": "smgs",

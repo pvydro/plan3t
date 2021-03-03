@@ -63,9 +63,6 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
     }
 
     reconfigureCounters(showVisual?: boolean) {
-        const counterSpacing = 1
-        let alphaIncrement = 0
-
         this.totalCounters = this.currentWeapon.bulletsPerClip
         this.aliveCounters = this.totalCounters
 
@@ -78,6 +75,19 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
             delete this.counters[c]
         }
 
+        this.instantiateAllCounters()
+
+        // Visual feedback
+        if (showVisual) {
+            const finalCounter = this.counters[this.counters.length - 1]
+
+            this.highlightCounter(finalCounter)
+        }
+    }
+
+    private instantiateAllCounters() {
+        const counterSpacing = 1
+        let alphaIncrement = 0
         this.counters = []
 
         // Create new counters
@@ -98,13 +108,6 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
 
             this.counterContainer.addChild(counter)
             this.counters.push(counter)
-        }
-
-        // Visual feedback
-        if (showVisual) {
-            const finalCounter = this.counters[this.counters.length - 1]
-
-            this.highlightCounter(finalCounter)
         }
     }
 

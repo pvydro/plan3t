@@ -17,6 +17,7 @@ import { WeaponName } from './WeaponName'
 export interface IWeapon extends WeaponStats {
     triggerDown: boolean
     currentClipBullets: number
+    state: WeaponState
     configureByName(name: WeaponName): void
     requestReload(): Promise<void>
     reset(): void
@@ -260,7 +261,7 @@ export class Weapon extends Container implements IWeapon {
             handPushAmount: 0,
             recoilX: 0,
             recoilY: 0,
-            reloadTime: 0
+            reloadTime: 0.5
         })
     }
 

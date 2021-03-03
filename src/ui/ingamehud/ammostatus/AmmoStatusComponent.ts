@@ -59,6 +59,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
         if (this.weaponHint) {
             this.weaponHint.update()
         }
+        this.weaponLabel.update()
         this.counterComponent.update()
     }
 
