@@ -26,8 +26,8 @@ export class Spherical extends Container implements ISpherical {
     constructor(data: SphericalData) {
         super()
 
-        this.data = data
         this.builder = new SphericalBuilder()
+        this.data = data
         this.biome = data.biome
         this.dimension = data.dimension    
     }

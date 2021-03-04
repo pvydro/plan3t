@@ -50,6 +50,14 @@ export class GameMapHelper implements IGameMapHelper {
             }
         })
     }
+
+    getSpaceshipSphericalData(): Promise<SphericalData> {
+        Flogger.log('GameMapHelper', 'getSpaceshipSphericalData')
+
+        return new Promise(async (resolve, reject) => {
+
+        })
+    }
     
     private static convertPixelDataToSphericalData(pixelData: PixelData[], canvas: HTMLCanvasElement): SphericalData {
         const points: SphericalPoint[] = []

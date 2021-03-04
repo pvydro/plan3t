@@ -17,6 +17,7 @@ export interface GameStateManagerOptions {
 export enum GameStateID {
     StartMenu = 'startmenu',
     Gameplay = 'gameplay',
+    Spaceship = 'spaceship',
     Empty = 'empty'
 }
 

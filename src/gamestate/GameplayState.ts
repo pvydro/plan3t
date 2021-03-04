@@ -23,7 +23,6 @@ export class GameplayState extends GameState implements IGameplayState {
     roomManager: IRoomManager
     clientManager: IClientManager
     gameMapManager: IGameMapManager
-    gravityManager: IGravityManager
     ambientLight: GameplayAmbientLight
     inGameHUD: InGameHUD
 
@@ -36,7 +35,6 @@ export class GameplayState extends GameState implements IGameplayState {
         })
 
         this.clientManager = this.game.clientManager
-        this.gravityManager = GravityManager.getInstance()
         this.gameMapManager = new GameMapManager({
             clientManager: this.clientManager
         })
@@ -54,11 +52,6 @@ export class GameplayState extends GameState implements IGameplayState {
     }
     
     async initialize() {
-
-        // TODO - Attempt roomManager.initialize, then pull map from roommanager
-        // If map doesn't exist, create new map on client and send to server
-        // If failed to initialize room, create random map
-
         await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
 

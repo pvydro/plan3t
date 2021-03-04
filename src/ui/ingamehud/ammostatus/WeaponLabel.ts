@@ -44,11 +44,6 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
     }
 
     update() {
-        // if (this.currentWeapon !== this.ammoStatus.currentWeapon) {
-        //     this.currentWeapon = this.ammoStatus.currentWeapon
-
-        //     this.reconfigureLabel(WeaponLabelState.WeaponName)
-        // } else if (this.currentWeapon !== undefined) {
         if (this.currentWeapon !== undefined) {
             if (this.currentWeapon.state === WeaponState.Reloading
             && this.state !== WeaponLabelState.Reloading) {
@@ -57,11 +52,6 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
             && this.state !== WeaponLabelState.WeaponName) {
                 this.reconfigureLabel(WeaponLabelState.WeaponName)
             }
-            
-            // else if (this.currentWeapon.state === WeaponState.Reloading
-            // && this.state !== WeaponLabelState.Reloading) {
-            //     this.reconfigureLabel(WeaponLabelState.Reloading)
-            // }
         }
     }
 

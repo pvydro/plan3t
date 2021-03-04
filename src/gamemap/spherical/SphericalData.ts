@@ -5,7 +5,8 @@ import { ISphericalPoint, SphericalPoint } from './SphericalPoint'
 
 export enum SphericalBiome {
     CloningFacility = 'cloningfacility',
-    Kepler = 'kepler'
+    Kepler = 'kepler',
+    // PersonalSpaceship = 'personalspaceship'
 }
 
 export interface ISphericalData {
