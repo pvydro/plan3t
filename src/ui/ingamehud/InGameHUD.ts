@@ -2,6 +2,7 @@ import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { UIConstants, WindowSize } from '../../utils/Constants'
+import { IInGameInventory, InGameInventory } from '../ingameinventory/InGameInventory'
 import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
 import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
@@ -26,6 +27,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
     hotbar: HUDInventoryHotbar
     healthBar: HealthBar
     queuedHealthBars: OverheadHealthBar[] = []
+    inventory: InGameInventory
     respawnScreen: RespawnScreen
 
     static getInstance() {
@@ -46,6 +48,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
         this.hotbar = new HUDInventoryHotbar()
+        this.inventory = new InGameInventory()
     }
 
     async initializeHUD(): Promise<void> {
@@ -56,6 +59,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
             this.addChild(this.hotbar)
             this.addChild(this.respawnScreen)
             this.addChild(this.crosshair)
+            this.addChild(this.inventory)
 
             this.queuedHealthBars = []
             this.respawnScreen.forceHide()
@@ -73,6 +77,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         this.crosshair.update()
         this.ammoStatus.update()
         this.hotbar.update()
+        this.inventory.update()
     }
 
     reposition(addListeners?: boolean) {
@@ -120,7 +125,8 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         const toScale: UIComponent[] = [
             this.healthBar, this.ammoStatus,
             this.respawnScreen.respawnButton,
-            this.hotbar
+            this.hotbar,
+            this.inventory
         ]
 
         for (var i in toScale) {

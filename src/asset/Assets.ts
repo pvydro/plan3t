@@ -173,4 +173,5 @@ export class AssetUrls {
 
     // UI
     static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'
+    static IGI_TOP = 'assets/image/ui/ingameinventory/container-top'
 }

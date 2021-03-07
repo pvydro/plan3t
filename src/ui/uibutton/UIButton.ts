@@ -1,4 +1,5 @@
 import { Assets } from '../../asset/Assets'
+import { Graphix } from '../../engine/display/Graphix'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
@@ -14,6 +15,7 @@ export enum UIButtonType {
     Hold,
     Tap,
     ToggleTap,
+    HoverOnly
 }
 
 export interface IUIButton extends IUIComponent {
@@ -23,9 +25,10 @@ export interface IUIButton extends IUIComponent {
 }
 
 export interface UIButtonBackgroundOptions {
-    idle: string
+    idle?: string
     hovered?: string
     triggered?: string
+    graphic?: Graphix
 }
 
 export interface UIButtonTextOptions extends TextSpriteOptions {
@@ -48,6 +51,7 @@ export interface UIButtonOptions {
 }
 
 export class UIButton extends UIComponent implements IUIButton {
+    _backgroundGraphic?: Graphix
     _backgroundSprite?: Sprite
     _backgroundSpriteHovered?: Sprite
     _backgroundSpriteTriggered?: Sprite
@@ -193,22 +197,27 @@ export class UIButton extends UIComponent implements IUIButton {
         const anchor = options.anchor
         
         if (background !== undefined) {
-            const idle = PIXI.Texture.from(Assets.get(background.idle))
-            const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : idle
-            const triggered = background.triggered ? PIXI.Texture.from(Assets.get(background.triggered)) : hovered
 
-            this.backgroundSprite = new Sprite({ texture: idle })
-            if (hovered !== idle) {
-                this.backgroundSpriteHovered = new Sprite({ texture: hovered })
-            }
-            if (triggered !== hovered) {
-                this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
-            }
-
-            if (anchor !== undefined) {
-                this._backgroundSprite.anchor.set(anchor.x, anchor.y)
-                if (this._backgroundSpriteHovered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
-                if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
+            if (background.idle !== undefined) {
+                const idle = PIXI.Texture.from(Assets.get(background.idle))
+                const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : idle
+                const triggered = background.triggered ? PIXI.Texture.from(Assets.get(background.triggered)) : hovered
+    
+                this.backgroundSprite = new Sprite({ texture: idle })
+                if (hovered !== idle) {
+                    this.backgroundSpriteHovered = new Sprite({ texture: hovered })
+                }
+                if (triggered !== hovered) {
+                    this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
+                }
+    
+                if (anchor !== undefined) {
+                    this._backgroundSprite.anchor.set(anchor.x, anchor.y)
+                    if (this._backgroundSpriteHovered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
+                    if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
+                }
+            } else if (background.graphic !== undefined) {
+                this._backgroundGraphic = background.graphic
             }
         }
     }
@@ -244,8 +253,21 @@ export class UIButton extends UIComponent implements IUIButton {
         this.addChild(this._backgroundSpriteTriggered)
     }
 
+    set backgroundGraphic(value: Graphix) {
+        if (this._backgroundGraphic !== undefined) {
+            this.removeChild(this._backgroundGraphic)
+        }
+
+        this._backgroundGraphic = value
+        this.addChild(this._backgroundGraphic)
+    }
+
     get backgroundSprite() {
         return this._backgroundSprite
+    }
+
+    get backgroundGraphic() {
+        return this._backgroundGraphic
     }
 
     get textSprite() {
