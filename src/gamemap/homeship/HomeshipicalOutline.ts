@@ -34,7 +34,7 @@ export class HomeshipicalOutline extends Container implements IHomeshipicalOutli
         const rects: RectGradientDefinition[] = [
             { rect: leftRect, direction: FourWayDirection.Left },
             { rect: rightRect, direction: FourWayDirection.Right },
-            { rect: topRect, direction: FourWayDirection.Up }, ]
+            { rect: topRect, direction: FourWayDirection.Down }, ]
 
         for (var i in rects) {
             const rect = rects[i]

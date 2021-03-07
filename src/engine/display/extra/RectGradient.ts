@@ -36,21 +36,21 @@ export class RectGradient extends Container implements IRectGradient {
         this.parentRect = options.definition.rect ?? { x: 0, y: 0, width: 32, height: 16 }
         this.totalGradientRays = options.totalGradientRays ?? 5
 
-        const direction = options.direction ?? FourWayDirection.Down
-        const rayWidth = FourWayDirection.isHorizontal(direction)
-            ? this.parentRect.width / this.totalGradientRays : this.parentRect.width
-        const rayHeight = FourWayDirection.isVertical(direction)
-            ? this.parentRect.height / this.totalGradientRays : this.parentRect.height
+        const direction = options.definition.direction ?? FourWayDirection.Down
+        const isHori = FourWayDirection.isHorizontal(direction)
+        const rayWidth = isHori ? (this.parentRect.width / this.totalGradientRays)
+            : this.parentRect.width
+        const rayHeight = !isHori ? (this.parentRect.height / this.totalGradientRays)
+            : this.parentRect.height
         const rayAlpha = 0.1
         
         for (var i = 0; i < this.totalGradientRays; i++) {
-            // const newHeight = rayHeight * (i + 1)
             const rayGraphic = new Graphix()
-            const calculatedRayHeight = rayHeight * (i + 1)
-            const rayRect = rect(0, 0, rayWidth, calculatedRayHeight)
+            const calculatedRayHeight = isHori ? rayHeight : rayHeight * (i + 1)
+            const calculatedRayWidth = !isHori ? rayWidth : rayWidth * (i + 1)
+            const rayRect = rect(0, 0, calculatedRayWidth, calculatedRayHeight)
             
             rayGraphic.beginFill(0x000000)
-            // rayGraphic.drawIRect({ x: 0, y: 0, width: 16, height: 16 })
             rayGraphic.drawIRect(rayRect)
             rayGraphic.endFill()
             rayGraphic.alpha = rayAlpha

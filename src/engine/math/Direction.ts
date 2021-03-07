@@ -12,10 +12,10 @@ export enum FourWayDirection {
 
 export namespace FourWayDirection {
     export function isHorizontal(direction: FourWayDirection) {
-        return direction === FourWayDirection.Left || direction === FourWayDirection.Right
+        return direction == FourWayDirection.Left || direction == FourWayDirection.Right
     }
 
     export function isVertical(direction: FourWayDirection) {
-        return direction === FourWayDirection.Down || direction === FourWayDirection.Up
+        return direction == FourWayDirection.Down || direction == FourWayDirection.Up
     }
 }
