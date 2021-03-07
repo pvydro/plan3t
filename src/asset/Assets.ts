@@ -176,5 +176,5 @@ export class AssetUrls {
     static IGI_TOP = 'assets/image/ui/ingameinventory/container-top'
 
     // Homeship
-    static HOME_SHIP = 'assets/image/gamemap/homeship/homeship'
+    static HOME_SHIP = 'assets/image/gamemap/homeship/homeship_bg'
 }

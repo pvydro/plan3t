@@ -45,7 +45,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
 
                 this.addChild(this.tileLayer)
                 this.addChild(this.outline)
-                this.outline.initializeOutlineGradients()
+                this.outline.initialize()
 
                 super.initializeMap()
                 
@@ -56,7 +56,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
 
     clearMap() {
         this.removeChild(this.outline)
-        
+
         return super.clearMap()
     }
 }

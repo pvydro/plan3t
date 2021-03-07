@@ -28,8 +28,14 @@ export class Graphix extends PIXI.Graphics implements IGraphix {
         }
     }
 
-    drawIRect(rect: IRect) {
-        return this.drawRect(rect.x, rect.y, rect.width, rect.height)
+    drawIRect(rect: IRect, end?: boolean) {
+        const result = this.drawRect(rect.x, rect.y, rect.width, rect.height)
+
+        if (end) {
+            this.endFill()
+        }
+
+        return result
     }
 
     demolish() {
