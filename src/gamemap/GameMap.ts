@@ -71,12 +71,12 @@ export class GameMap extends Container implements IGameMap {
         await this.applyGameMapContainer(spherical)
     }
 
-    private applyGameMapContainer(container: GameMapContainer): Promise<void> {
+    private applyGameMapContainer(mapContainer: GameMapContainer): Promise<void> {
         this.clearCurrentMap()
 
         return new Promise((resolve, reject) => {
-            container.initializeMap().then(() => {
-                this.currentMap = container
+            mapContainer.initializeMap().then(() => {
+                this.currentMap = mapContainer
 
                 this.addChild(this.currentMap)
 

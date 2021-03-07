@@ -19,6 +19,7 @@ export class PlayerLight extends Container implements IPlayerLight {
     player: ClientPlayer
     totalLights: number = 4
     lights: Light[] = []
+    hardLights: Light[] = []
 
     targetLightXVel: number = 0
     lightXVel: number = 0
@@ -90,9 +91,22 @@ export class PlayerLight extends Container implements IPlayerLight {
             light.alpha = 0.175//125
 
             this.lights.push(light)
+            this.hardLights.push(light)
             this.addChild(light)
         }
 
         this.addChild(ambientLight)
+    }
+
+    disableHardLights() {
+        for (var i in this.hardLights) {
+            const hardLight = this.hardLights[i]
+            
+            this.removeChild(hardLight)
+            
+            hardLight.demolish()
+
+            delete this.hardLights[i]
+        }
     }
 }

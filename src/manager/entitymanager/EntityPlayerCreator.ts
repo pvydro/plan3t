@@ -14,6 +14,7 @@ export interface PlayerCreationOptions {
     entity?: Entity
     sessionId?: string
     isClientPlayer?: boolean
+    isOfflinePlayer?: boolean
 }
 
 export interface EntityPlayerCreatorOptions {
@@ -58,6 +59,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         if (options.isClientPlayer === true) {
             player = ClientPlayer.getInstance({
                 clientControl: true,
+                offlineControl: options.isOfflinePlayer ?? false,
                 entity: options.entity,
                 entityManager: this.entityManager,
                 sessionId: options.sessionId
@@ -76,7 +78,14 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         
         setTimeout(() => {
             Flogger.log('EntityPlayerCreator', 'markPlayerAsSpawned', 'sessionId', sessionId)
-            this.roomState.players.get(sessionId).hasSpawned = true
+
+            if (this.roomState !== undefined) {
+                const fetchedPlayer = this.roomState.players.get(sessionId)
+    
+                if (fetchedPlayer !== undefined) {
+                    fetchedPlayer.hasSpawned = true
+                }
+            }
         }, 1000)
     }
 

@@ -42,9 +42,8 @@ export class PlayerMessenger implements IPlayerMessenger {
     }
 
     send(endpoint: string, rules?: PlayerPackRules) {
+        if (!this.player.isClientPlayer || this.player.isOfflinePlayer) return
         if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'endpoint', endpoint)
-
-        if (!this.player.isClientPlayer) return
 
         RoomMessenger.send(endpoint, this.getPlayerPayload(rules))
     }
@@ -60,14 +59,16 @@ export class PlayerMessenger implements IPlayerMessenger {
     }
 
     sendShoot(weapon: Weapon) {
+        if (!this.player.isClientPlayer || this.player.isOfflinePlayer) return
         const pack = WeaponStateFormatter.convertWeaponToPack(weapon)
-        
         if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendShoot', 'RoomMessage.PlayerShoot', 'pack', pack)
+        
 
         RoomMessenger.send(RoomMessage.PlayerShoot, pack)
     }
 
     private sendWeaponStatus() {
+        if (!this.player.isClientPlayer || this.player.isOfflinePlayer) return
         if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendWeaponStatus')
 
         const rotation = this.player.hand.rotation

@@ -15,6 +15,7 @@ import { EntityCreatureCreator, IEntityCreatureCreator } from './EntityCreatureC
 import { CreatureType } from '../../creature/Creature'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
+import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 
 export interface LocalEntity {
     serverEntity?: Entity
@@ -25,8 +26,9 @@ export interface IEntityManager extends IUpdatable {
     clientEntities: Map<string, LocalEntity>
     camera: Camera
     roomState: PlanetGameState
-    createClientPlayer(entity: Entity, sessionId: string): void
-    createEnemyPlayer(entity: Entity, sessionId: string): void
+    createClientPlayer(entity: Entity, sessionId: string): ClientPlayer
+    createEnemyPlayer(entity: Entity, sessionId: string): ClientPlayer
+    createOfflinePlayer(): ClientPlayer
     updateEntity(entity: Entity, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number, entity?: Entity): void
     registerEntity(sessionId: string, localEntity: LocalEntity): void
@@ -89,27 +91,43 @@ export class EntityManager implements IEntityManager {
 
     createPassiveCreature() {
         Flogger.log('EntityManager', 'createPassiveCreature')
-        this.creatureCreator.createCreature({ type: CreatureType.Koini })
+
+        this.creatureCreator.createCreature({
+            type: CreatureType.Koini
+        })
     }
 
     createOfflinePlayer() {
         Flogger.log('EntityManager', 'createOfflinePlayer')
 
-        this.playerCreator.createPlayer({ isClientPlayer: true })
+        const player = this.playerCreator.createPlayer({
+            isClientPlayer: true,
+            isOfflinePlayer: true
+        })
+        player.x = 32
+
+        return player
     }
 
     createClientPlayer(entity: Entity, sessionId: string) {
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer({ entity, sessionId, isClientPlayer: true })
+        const player = this.playerCreator.createPlayer({
+            entity, sessionId,
+            isClientPlayer: true
+        })
 
         this.synchronizer.assertionService.clientPlayer = player
+
+        return player
     }
 
     createEnemyPlayer(entity: Entity, sessionId: string) {
         Flogger.log('EntityManager', 'createEntity', 'sessionId', sessionId)
 
-        this.playerCreator.createPlayer({ entity, sessionId })
+        const player = this.playerCreator.createPlayer({ entity, sessionId })
+
+        return player
     }
 
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {

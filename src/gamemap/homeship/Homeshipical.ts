@@ -1,5 +1,3 @@
-import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
-import { ShowCollisionDebug } from '../../utils/Constants'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'

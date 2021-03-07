@@ -29,8 +29,8 @@ export interface IClientPlayer extends IGravityEntity {
     controller: IPlayerController
     hand: IPlayerHand
     emitter: Emitter
-    // direction: Direction
     isClientPlayer: boolean
+    isOfflinePlayer: boolean
     currentHealth: number
     totalHealth: number
     healthPercentage: number
@@ -56,6 +56,7 @@ export enum PlayerLegsState {
 export interface ClientPlayerOptions {
     entity: Entity
     clientControl?: boolean
+    offlineControl?: boolean
     entityManager?: IEntityManager
     sessionId?: string
 }
@@ -65,6 +66,7 @@ export class ClientPlayer extends GravityEntity {
     
     _entityManager?: IEntityManager
     _clientControl: boolean = false
+    _offlineControl: boolean = false
     _direction: Direction = Direction.Right
     _walkingDirection: Direction = Direction.Right
     _bodyState: PlayerBodyState = PlayerBodyState.Idle
@@ -105,6 +107,7 @@ export class ClientPlayer extends GravityEntity {
         if (options.entityManager) this._entityManager = options.entityManager
         if (exists(options.sessionId)) this.sessionId = options.sessionId
         if (options.clientControl) this._clientControl = true
+        if (options.offlineControl) this._offlineControl = true
         
 
         this.head = new PlayerHead({ player })
@@ -250,6 +253,10 @@ export class ClientPlayer extends GravityEntity {
 
     get isClientPlayer() {
         return this._clientControl
+    }
+
+    get isOfflinePlayer() {
+        return this._offlineControl
     }
 
     get entityManager() {

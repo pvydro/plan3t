@@ -19,7 +19,7 @@ export const BasicLerp = (pointA: number, pointB: number, time: number) => {
     return (pointB - pointA) * time + pointA
 }
 export const GlobalScale: number = 1
-export const ShowCollisionDebug: boolean = true
+export const ShowCollisionDebug: boolean = false
 export const ShowCameraProjectionDebug: boolean = false
 export const ShowPlayerSynchDebug: boolean = false
 

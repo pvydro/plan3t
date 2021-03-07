@@ -140,7 +140,7 @@ export class RoomManager implements IRoomManager {
         }
     }
 
-    addPlayer(entity: Entity, sessionId: string) {
+    addPlayer(entity?: Entity, sessionId?: string) {
         if (RoomManager.isSessionALocalPlayer(sessionId)) {
             this.entityManager.createClientPlayer(entity, sessionId)
         } else {
