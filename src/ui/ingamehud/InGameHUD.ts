@@ -59,7 +59,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
             this.addChild(this.hotbar)
             this.addChild(this.respawnScreen)
             this.addChild(this.crosshair)
-            this.addChild(this.inventory)
+            // this.addChild(this.inventory)
 
             this.queuedHealthBars = []
             this.respawnScreen.forceHide()

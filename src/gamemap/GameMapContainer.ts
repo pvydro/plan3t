@@ -6,6 +6,7 @@ import { ShowCollisionDebug } from '../utils/Constants'
 
 export interface IGameMapContainer extends IContainer {
     initializeMap(): Promise<void>
+    clearMap(): void
 }
 
 export class GameMapContainer extends Container implements IGameMapContainer {
@@ -30,7 +31,7 @@ export class GameMapContainer extends Container implements IGameMapContainer {
         }
     }
 
-    async clearMap() {
+    clearMap() {
         if (this.tileLayer !== undefined) {
             this.tileLayer.demolish()
             this.removeChild(this.tileLayer)

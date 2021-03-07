@@ -164,6 +164,6 @@ export class EntityManager implements IEntityManager {
     }
 
     get roomState() {
-        return RoomManager._room.state
+        return RoomManager._room ? RoomManager._room.state : undefined
     }
 }

@@ -19,6 +19,8 @@ export class RectGradient extends Container implements IRectGradient {
     constructor(options: RectGradientOptions) {
         super()
 
+        this.rayGraphics = []
+
         this.configure(options)
     }
 
@@ -34,7 +36,8 @@ export class RectGradient extends Container implements IRectGradient {
             const rayGraphic = new Graphix()
 
             rayGraphic.beginFill(0xFFFFFF)
-            rayGraphic.drawIRect({ x: 0, y: 0, width: rayWidth, height: newHeight })
+            rayGraphic.drawIRect({ x: 0, y: 0, width: 16, height: 16 })
+            // rayGraphic.drawIRect({ x: 0, y: 0, width: rayWidth, height: newHeight })
             rayGraphic.endFill()
 
             this.rayGraphics.push(rayGraphic)

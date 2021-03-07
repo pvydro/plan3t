@@ -2,6 +2,18 @@ import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../interface/IDemolishable'
 
 export interface IContainer extends IDemolishable {
+    name: string 
+    accessible: boolean
+    accessibleChildren: boolean
+    alpha: number
+    angle: number
+    buttonMode: boolean
+    cacheAsBitmap: boolean
+    rotation: number
+    x: number
+    y: number
+    width: number
+    height: number
     clearChildren(): void
 }
 

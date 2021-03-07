@@ -1,6 +1,7 @@
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'
+import { HomeshipicalOutline } from './HomeshipicalOutline'
 
 export interface IHomeshipical extends IGameMapContainer {
 
@@ -11,8 +12,9 @@ export interface HomeshipicalRespone extends SphericalResponse {
 }
 
 export class Homeshipical extends GameMapContainer implements IHomeshipical {
-    builder: IHomeshipicalBuilder
     private static INSTANCE: Homeshipical
+    builder: IHomeshipicalBuilder
+    outline: HomeshipicalOutline
 
     static getInstance() {
         if (Homeshipical.INSTANCE === undefined) {
@@ -25,7 +27,10 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
     private constructor() {
         super()
 
+        const homeship = this
+
         this.builder = new HomeshipicalBuilder()
+        this.outline = new HomeshipicalOutline({ homeship })
     }
 
     initializeMap(): Promise<void> {
@@ -39,11 +44,19 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
                 this.collisionRects = response.collisionRects
 
                 this.addChild(this.tileLayer)
+                this.addChild(this.outline)
+                this.outline.initializeOutlineGradients()
 
                 super.initializeMap()
-
+                
                 resolve()
             })
         })
+    }
+
+    clearMap() {
+        this.removeChild(this.outline)
+        
+        return super.clearMap()
     }
 }
