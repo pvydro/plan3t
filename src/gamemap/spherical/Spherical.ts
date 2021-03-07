@@ -1,20 +1,16 @@
 import { Container } from '../../engine/display/Container'
-import { IDemolishable } from '../../interface/IDemolishable'
 import { Dimension } from '../../engine/math/Dimension'
 import { ISphericalBuilder, SphericalBuilder, SphericalResponse } from './SphericalBuilder'
 import { SphericalBiome, SphericalData } from './SphericalData'
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
-import { ShowCollisionDebug } from '../../utils/Constants'
 import { Rect } from '../../engine/math/Rect'
+import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 
-export interface ISpherical extends IDemolishable {
-    collisionRects: Rect[]
-    tileLayer?: Container
-    initializeSpherical(): Promise<void>
-    clearSpherical(): Promise<void>
+export interface ISpherical extends IGameMapContainer {
+
 }
 
-export class Spherical extends Container implements ISpherical {
+export class Spherical extends GameMapContainer implements ISpherical {
     builder: ISphericalBuilder
     collisionRects: Rect[] 
     collisionDebugger: CollisionDebugger
@@ -33,9 +29,9 @@ export class Spherical extends Container implements ISpherical {
         this.dimension = data.dimension    
     }
 
-    async initializeSpherical(): Promise<void> {
+    initializeMap(): Promise<void> {
         if (this.tileLayer !== undefined) {
-            await this.clearSpherical()
+            this.clearMap()
         }
 
         return new Promise((resolve) => {
@@ -44,30 +40,11 @@ export class Spherical extends Container implements ISpherical {
                 this.collisionRects = response.collisionRects
         
                 this.addChild(this.tileLayer)
-                
-                if (ShowCollisionDebug) {
-                    this.collisionDebugger = new CollisionDebugger({
-                        lineWidth: 0.5,
-                        collisionRects: response.collisionRects
-                    })
-                    
-                    this.addChild(this.collisionDebugger)
-                }
+
+                super.initializeMap()
 
                 resolve()
             })
-        })
-    }
-
-    async clearSpherical(): Promise<void> {
-        return new Promise((resolve) => {
-            if (this.tileLayer !== undefined) {
-
-                this.tileLayer.demolish()
-                this.removeChild(this.tileLayer)
-
-                resolve()
-            }
         })
     }
 

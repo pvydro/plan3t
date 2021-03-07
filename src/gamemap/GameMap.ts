@@ -17,8 +17,7 @@ export interface IGameMap extends IDemolishable, IUpdatable {
 
 export class GameMap extends Container implements IGameMap {
     private static INSTANCE?: GameMap
-    currentSpherical?: Spherical
-
+    currentMap?: Spherical
     sky: GameMapSky
     
     static getInstance() {
@@ -32,10 +31,10 @@ export class GameMap extends Container implements IGameMap {
     private constructor() {
         super()
 
+        this.scale.set(GlobalScale, GlobalScale)
+
         this.sky = new GameMapSky()
         this.addChild(this.sky)
-
-        this.scale.set(GlobalScale, GlobalScale)
     }
 
     update() {
@@ -45,7 +44,9 @@ export class GameMap extends Container implements IGameMap {
     async initializeHomeship(): Promise<void> {
         Flogger.log('GameMap', 'initializeHomeship')
 
-        
+
+
+        this.sky.configure({ allBlack: true })
     }
 
     // TODO: Seed
@@ -55,6 +56,7 @@ export class GameMap extends Container implements IGameMap {
         const randomSphericalData = await GameMapHelper.getRandomSphericalData()
         const randomSpherical = new Spherical(randomSphericalData)
 
+        await this.sky.configure()
         await this.applySpherical(randomSpherical)
     }
 
@@ -67,16 +69,13 @@ export class GameMap extends Container implements IGameMap {
     }
 
     private applySpherical(spherical: Spherical): Promise<void> {
-        if (this.currentSpherical !== undefined) {
-            this.currentSpherical.demolish()
-            this.removeChild(this.currentSpherical)
-        }
+        this.clearCurrentMap()
 
         return new Promise((resolve, reject) => {
-            spherical.initializeSpherical().then(() => {
-                this.currentSpherical = spherical
+            spherical.initializeMap().then(() => {
+                this.currentMap = spherical
 
-                this.addChild(this.currentSpherical)
+                this.addChild(this.currentMap)
 
                 resolve()
             }).catch((error) => {
@@ -87,11 +86,18 @@ export class GameMap extends Container implements IGameMap {
         })
     }
 
+    private clearCurrentMap() {
+        if (this.currentMap !== undefined) {
+            this.currentMap.demolish()
+            this.removeChild(this.currentMap)
+        }
+    }
+
     demolish() {
         Flogger.log('GameMap', 'demolish')
     }
 
     get collidableRects() {
-        return (this.currentSpherical && this.currentSpherical.collisionRects) ? this.currentSpherical.collisionRects : []
+        return (this.currentMap && this.currentMap.collisionRects) ? this.currentMap.collisionRects : []
     }
 }

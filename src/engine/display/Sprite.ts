@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js'
+import { IDemolishable } from '../../interface/IDemolishable'
 import { IDimension } from '../math/Dimension'
 import { Graphix } from './Graphix'
 
-export interface ISprite {
+export interface ISprite extends IDemolishable {
     overlayGraphic?: Graphix
     flipX(): void
     flipY(): void
@@ -61,6 +62,10 @@ export class Sprite extends PIXI.Sprite implements ISprite {
 
     flipY() {
         this.scale.y *= -1
+    }
+
+    demolish() {
+        this.destroy()
     }
 
     set dimension(value: IDimension) {

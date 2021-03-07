@@ -1,20 +1,13 @@
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
-import { Container, IContainer } from '../../engine/display/Container'
-import { IRect } from '../../engine/math/Rect'
 import { ShowCollisionDebug } from '../../utils/Constants'
+import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'
 
-export interface IHomeshipical extends IContainer {
-    collisionRects: IRect[]
-    tileLayer?: Container
-    initializeHomeshipical(): Promise<void>
+export interface IHomeshipical extends IGameMapContainer {
 }
 
-export class Homeshipical extends Container implements IHomeshipical {
-    collisionRects: IRect[]
-    collisionDebugger: CollisionDebugger
-    tileLayer?: Container
+export class Homeshipical extends GameMapContainer implements IHomeshipical {
     builder: IHomeshipicalBuilder
     private static INSTANCE: Homeshipical
 
@@ -32,7 +25,11 @@ export class Homeshipical extends Container implements IHomeshipical {
         this.builder = new HomeshipicalBuilder()
     }
 
-    initializeHomeshipical(): Promise<void> {
+    initializeMap(): Promise<void> {
+        if (this.tileLayer !== undefined) {
+            this.clearMap()
+        }
+
         return new Promise((resolve) => {
             this.builder.buildLocalHomeshipical().then((response: SphericalResponse) => {
                 this.tileLayer = response.tileLayer

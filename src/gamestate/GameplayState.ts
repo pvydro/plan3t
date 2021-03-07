@@ -41,9 +41,6 @@ export class GameplayState extends GameState implements IGameplayState {
 
             await this.inGameHUD.initializeHUD()
     
-            // To get the camera, you need the game stage, pass Game through StateManager
-            this.stage.addChild(this.cameraViewport)
-    
             this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)

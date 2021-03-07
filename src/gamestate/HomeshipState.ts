@@ -1,5 +1,6 @@
 import { CameraLayer } from '../camera/CameraStage'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
+import { Homeshipical } from '../gamemap/homeship/Homeshipical'
 import { GameStateID } from '../manager/GameStateManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
@@ -31,9 +32,12 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         // To get the camera, you need the game stage, pass Game through StateManager
         this.stage.addChild(this.cameraViewport)
 
-        this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-        this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
-        this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
+        this.gameMapManager.initializeHomeship().then(() => {
+            
+            this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
+            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
+        })
     }
 
     update() {

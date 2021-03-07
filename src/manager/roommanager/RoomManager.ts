@@ -130,7 +130,7 @@ export class RoomManager implements IRoomManager {
     async createMapAndSendToRoom(): Promise<void> {
         await this.gameMapManager.initializeRandomSpherical()
 
-        const currentData = this.gameMapManager.gameMap.currentSpherical.data
+        const currentData = this.gameMapManager.gameMap.currentMap.data
 
         this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
     }
