@@ -1,18 +1,13 @@
 import { Room } from 'colyseus.js'
-import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
 import { Viewport } from '../camera/Viewport'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
-import { IClientManager } from '../manager/ClientManager'
-import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
-import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
-import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 import { Flogger } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
-import { ShowCameraProjectionDebug, WorldSize } from '../utils/Constants'
+import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 
 export interface IGameplayState extends IGameState {
@@ -20,12 +15,8 @@ export interface IGameplayState extends IGameState {
 }
 
 export class GameplayState extends GameState implements IGameplayState {
-    roomManager: IRoomManager
-    clientManager: IClientManager
-    gameMapManager: IGameMapManager
     ambientLight: GameplayAmbientLight
     inGameHUD: InGameHUD
-
     hornet: PassiveHornet
 
     constructor(options: GameStateOptions) {
@@ -34,19 +25,9 @@ export class GameplayState extends GameState implements IGameplayState {
             id: GameStateID.Gameplay
         })
 
-        this.clientManager = this.game.clientManager
-        this.gameMapManager = new GameMapManager({
-            clientManager: this.clientManager
-        })
-        this.roomManager = RoomManager.getInstance({
-            clientManager: this.clientManager,
-            gameMapManager: this.gameMapManager
-        })
-
         this.ambientLight = new GameplayAmbientLight()
-        this.inGameHUD = InGameHUD.getInstance()
-
         this.hornet = new PassiveHornet()
+        this.inGameHUD = InGameHUD.getInstance()
 
         this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.Players)
     }
@@ -57,8 +38,6 @@ export class GameplayState extends GameState implements IGameplayState {
 
         this.roomManager.initializeRoom().then(async (room: Room) => {
             Flogger.log('GameplayState', 'Room initialized')
-
-            console.log(room.state.planetHasBeenSet)
 
             await this.inGameHUD.initializeHUD()
     
@@ -87,25 +66,5 @@ export class GameplayState extends GameState implements IGameplayState {
         boundaries.beginFill(0x000000)
         boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
         this.camera.stage.addChildAtLayer(boundaries, CameraLayer.Background)
-    }
-
-    get camera() {
-        return this.game.camera
-    }
-
-    get cameraStage() {
-        return this.camera.stage
-    }
-
-    get cameraViewport() {
-        return this.game.cameraViewport
-    }
-
-    get stage() {
-        return this.game.stage
-    }
-
-    get entityManager() {
-        return this.clientManager.entityManager
     }
 }

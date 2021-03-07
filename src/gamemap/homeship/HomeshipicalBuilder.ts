@@ -31,7 +31,7 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
     private buildCollisionRectsFromHomeshipical(homeshipSprite: Sprite): Rect[] {
         const collisionRects = []
         const tileSize = SphericalHelper.getTileSize()
-        const x = tileSize
+        const x = -tileSize // tileSize
         const y = 0
         const width = homeshipSprite.width - (tileSize * 2)
         const height = tileSize
