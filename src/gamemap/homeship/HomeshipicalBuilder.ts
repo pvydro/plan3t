@@ -30,9 +30,10 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
 
     private buildCollisionRectsFromHomeshipical(homeshipSprite: Sprite): Rect[] {
         const collisionRects = []
+        const groundTiles = 3
         const tileSize = SphericalHelper.getTileSize()
-        const x = -tileSize // tileSize
-        const y = 0
+        const x = 0
+        const y = homeshipSprite.height - (tileSize * groundTiles)
         const width = homeshipSprite.width - (tileSize * 2)
         const height = tileSize
         const groundRect = new Rect(x, y, width, height)

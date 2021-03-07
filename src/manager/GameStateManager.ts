@@ -30,7 +30,7 @@ export class GameStateManager implements IGameStateManager {
 
     constructor(options: GameStateManagerOptions) {
         this.game = options.game
-        this._defaultState = options.defaultState ??  GameStateID.Gameplay //GameStateID.Homeship
+        this._defaultState = options.defaultState ?? GameStateID.Homeship // GameStateID.Gameplay
     }
 
     initialize() {

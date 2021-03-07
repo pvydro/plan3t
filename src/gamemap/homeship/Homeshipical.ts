@@ -37,14 +37,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
 
                 this.addChild(this.tileLayer)
 
-                if (ShowCollisionDebug) {
-                    this.collisionDebugger = new CollisionDebugger({
-                        lineWidth: 0.5,
-                        collisionRects: response.collisionRects
-                    })
-
-                    this.collisionDebugger.initializeAndShowGraphics()
-                }
+                super.initializeMap()
 
                 resolve()
             })

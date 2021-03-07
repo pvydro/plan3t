@@ -92,8 +92,13 @@ export class EntityManager implements IEntityManager {
         this.creatureCreator.createCreature({ type: CreatureType.Koini })
     }
 
+    createOfflinePlayer() {
+        Flogger.log('EntityManager', 'createOfflinePlayer')
+
+        this.playerCreator.createPlayer({ isClientPlayer: true })
+    }
+
     createClientPlayer(entity: Entity, sessionId: string) {
-        Flogger.color('green')
         Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({ entity, sessionId, isClientPlayer: true })

@@ -14,6 +14,7 @@ import { RoomMessenger } from './RoomMessenger'
 import { Player } from '../../network/rooms/Player'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { Spherical } from '../../gamemap/spherical/Spherical'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -130,9 +131,13 @@ export class RoomManager implements IRoomManager {
     async createMapAndSendToRoom(): Promise<void> {
         await this.gameMapManager.initializeRandomSpherical()
 
-        const currentData = this.gameMapManager.gameMap.currentMap.data
+        const currentSpherical = this.gameMapManager.gameMap.currentMap as Spherical
 
-        this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+        if (currentSpherical) {
+            const currentData = currentSpherical.data
+
+            this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+        }
     }
 
     addPlayer(entity: Entity, sessionId: string) {

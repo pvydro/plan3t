@@ -8,6 +8,8 @@ import { Rect } from '../engine/math/Rect'
 import { GameMapSky } from './GameMapSky'
 import { IUpdatable } from '../interface/IUpdatable'
 import { SphericalData } from './spherical/SphericalData'
+import { GameMapContainer } from './GameMapContainer'
+import { Homeshipical } from './homeship/Homeshipical'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
@@ -17,7 +19,7 @@ export interface IGameMap extends IDemolishable, IUpdatable {
 
 export class GameMap extends Container implements IGameMap {
     private static INSTANCE?: GameMap
-    currentMap?: Spherical
+    currentMap?: GameMapContainer
     sky: GameMapSky
     
     static getInstance() {
@@ -44,9 +46,10 @@ export class GameMap extends Container implements IGameMap {
     async initializeHomeship(): Promise<void> {
         Flogger.log('GameMap', 'initializeHomeship')
 
+        const homeship = Homeshipical.getInstance()
 
-
-        this.sky.configure({ allBlack: true })
+        await this.sky.configure({ allBlack: true })
+        await this.applyGameMapContainer(homeship)
     }
 
     // TODO: Seed
@@ -57,7 +60,7 @@ export class GameMap extends Container implements IGameMap {
         const randomSpherical = new Spherical(randomSphericalData)
 
         await this.sky.configure()
-        await this.applySpherical(randomSpherical)
+        await this.applyGameMapContainer(randomSpherical)
     }
 
     async initializePremadeSpherical(data: SphericalData) {
@@ -65,21 +68,21 @@ export class GameMap extends Container implements IGameMap {
 
         const spherical = new Spherical(data)
 
-        await this.applySpherical(spherical)
+        await this.applyGameMapContainer(spherical)
     }
 
-    private applySpherical(spherical: Spherical): Promise<void> {
+    private applyGameMapContainer(container: GameMapContainer): Promise<void> {
         this.clearCurrentMap()
 
         return new Promise((resolve, reject) => {
-            spherical.initializeMap().then(() => {
-                this.currentMap = spherical
+            container.initializeMap().then(() => {
+                this.currentMap = container
 
                 this.addChild(this.currentMap)
 
                 resolve()
             }).catch((error) => {
-                Flogger.error('GameMap', 'Error applying Spherical', 'error', error)
+                Flogger.error('GameMap', 'Error applying GameMapContainer', 'error', error)
 
                 reject()
             })

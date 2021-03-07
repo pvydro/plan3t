@@ -11,8 +11,8 @@ export interface IEntityPlayerCreator {
 }
 
 export interface PlayerCreationOptions {
-    entity: Entity
-    sessionId: string
+    entity?: Entity
+    sessionId?: string
     isClientPlayer?: boolean
 }
 
@@ -29,12 +29,13 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
     }
 
     createPlayer(options: PlayerCreationOptions): ClientPlayer {
-        Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', options.sessionId, 'isClientPlayer', options.isClientPlayer)
+        const sessionId = options.sessionId ?? 'localplayer'
+        Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', sessionId, 'isClientPlayer', options.isClientPlayer)
 
         const player = this.getPlayer(options)
 
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
-        this.entityManager.registerEntity(options.sessionId, {
+        this.entityManager.registerEntity(sessionId, {
             clientEntity: player,
             serverEntity: options.entity
         })
@@ -45,7 +46,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             
             this.camera.follow(this.currentPlayer as PIXI.DisplayObject)
             
-            this.markPlayerAsSpawned(options.sessionId)
+            this.markPlayerAsSpawned(sessionId)
         }
 
         return player

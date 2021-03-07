@@ -13,6 +13,7 @@ export interface ISpaceshipState extends IGameState {
 export class HomeshipState extends GameState implements ISpaceshipState {
     ambientLight: GameplayAmbientLight
     inGameHUD: InGameHUD
+    // player: 
 
     constructor(options: GameStateOptions) {
         super({
