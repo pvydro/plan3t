@@ -177,4 +177,5 @@ export class AssetUrls {
 
     // Homeship
     static HOME_SHIP = 'assets/image/gamemap/homeship/homeship_bg'
+    static HSM_BEAM_ME_UP = 'assets/image/gamemap/homeship/modules/beammeup'
 }

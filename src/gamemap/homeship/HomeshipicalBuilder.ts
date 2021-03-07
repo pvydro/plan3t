@@ -2,21 +2,33 @@ import { Assets, AssetUrls } from '../../asset/Assets'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Rect } from '../../engine/math/Rect'
+import { Flogger } from '../../service/Flogger'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { SphericalHelper } from '../spherical/SphericalHelper'
+import { HomeshipicalRespone, IHomeshipical } from './Homeshipical'
+import { HomeshipicalModuleBuilder, IHomeshipicalModuleBuilder } from './HomeshipicalModuleBuilder'
 
 export interface IHomeshipicalBuilder {
     buildLocalHomeshipical(): Promise<SphericalResponse>
 }
 
+export interface HomeshipicalBuilderOptions {
+    homeship: IHomeshipical
+}
+
 export class HomeshipicalBuilder implements IHomeshipicalBuilder {
+    moduleBuilder: IHomeshipicalModuleBuilder
+    
+    constructor(options: HomeshipicalBuilderOptions) {
+        const homeship = options.homeship
+        this.moduleBuilder = new HomeshipicalModuleBuilder({ homeship })
+    }
 
-    constructor() {}
-
-    async buildLocalHomeshipical(): Promise<SphericalResponse> {
+    async buildLocalHomeshipical(): Promise<HomeshipicalRespone> {
         const tileLayer = new Container()
         const homeshipTexture = PIXI.Texture.from(Assets.get(AssetUrls.HOME_SHIP))
         const homeshipSprite = new Sprite({ texture: homeshipTexture })
+        const moduleLayer = this.buildHomeshipModules()
         
         tileLayer.addChild(homeshipSprite)
 
@@ -24,7 +36,8 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
 
         return {
             tileLayer,
-            collisionRects
+            collisionRects,
+            moduleLayer
         }
     }
 
@@ -44,5 +57,11 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
         collisionRects.push(groundRect)
 
         return collisionRects
+    }
+
+    private buildHomeshipModules(): Container {
+        Flogger.log('HomeshipicalBuilder', 'buildHomeshipicalModules')
+        
+        return this.moduleBuilder.buildHomeshipicalModules()
     }
 }
