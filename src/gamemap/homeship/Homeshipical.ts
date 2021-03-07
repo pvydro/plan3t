@@ -3,6 +3,11 @@ import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'
 
 export interface IHomeshipical extends IGameMapContainer {
+
+}
+
+export interface HomeshipicalRespone extends SphericalResponse {
+
 }
 
 export class Homeshipical extends GameMapContainer implements IHomeshipical {
@@ -29,7 +34,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
         }
 
         return new Promise((resolve) => {
-            this.builder.buildLocalHomeshipical().then((response: SphericalResponse) => {
+            this.builder.buildLocalHomeshipical().then((response: HomeshipicalRespone) => {
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
 
