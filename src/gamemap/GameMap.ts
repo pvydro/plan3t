@@ -42,6 +42,12 @@ export class GameMap extends Container implements IGameMap {
         this.sky.update()
     }
 
+    async initializeHomeship(): Promise<void> {
+        Flogger.log('GameMap', 'initializeHomeship')
+
+        
+    }
+
     // TODO: Seed
     async initializeRandomSpherical(): Promise<void> {
         Flogger.log('GameMap', 'initializeRandomSpherical')

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
+import { IDemolishable } from '../../interface/IDemolishable'
 
-export interface IContainer {
+export interface IContainer extends IDemolishable {
     clearChildren(): void
 }
 
@@ -22,5 +23,9 @@ export class Container extends PIXI.Container implements IContainer {
 
     get halfHeight() {
         return this.height / 2
+    }
+
+    demolish(): void {
+
     }
 }

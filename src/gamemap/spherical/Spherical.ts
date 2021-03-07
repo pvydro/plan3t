@@ -9,15 +9,16 @@ import { Rect } from '../../engine/math/Rect'
 
 export interface ISpherical extends IDemolishable {
     collisionRects: Rect[]
-    tileLayer: Container
+    tileLayer?: Container
     initializeSpherical(): Promise<void>
+    clearSpherical(): Promise<void>
 }
 
 export class Spherical extends Container implements ISpherical {
     builder: ISphericalBuilder
     collisionRects: Rect[] 
     collisionDebugger: CollisionDebugger
-    tileLayer: Container
+    tileLayer?: Container
 
     data: SphericalData
     biome: SphericalBiome
@@ -33,6 +34,10 @@ export class Spherical extends Container implements ISpherical {
     }
 
     async initializeSpherical(): Promise<void> {
+        if (this.tileLayer !== undefined) {
+            await this.clearSpherical()
+        }
+
         return new Promise((resolve) => {
             this.builder.buildSphericalFromData(this.data).then((response: SphericalResponse) => {
                 this.tileLayer = response.tileLayer
@@ -46,12 +51,23 @@ export class Spherical extends Container implements ISpherical {
                         collisionRects: response.collisionRects
                     })
                     
-                    this.collisionDebugger.initializeAndShowGraphics()
                     this.addChild(this.collisionDebugger)
                 }
 
                 resolve()
             })
+        })
+    }
+
+    async clearSpherical(): Promise<void> {
+        return new Promise((resolve) => {
+            if (this.tileLayer !== undefined) {
+
+                this.tileLayer.demolish()
+                this.removeChild(this.tileLayer)
+
+                resolve()
+            }
         })
     }
 

@@ -1,5 +1,4 @@
 import { ISphericalData, SphericalData } from './SphericalData'
-import { Sprite } from '../../engine/display/Sprite'
 import { Container } from '../../engine/display/Container'
 import { Flogger } from '../../service/Flogger'
 import { Rect } from '../../engine/math/Rect'
