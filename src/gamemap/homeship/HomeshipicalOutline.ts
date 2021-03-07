@@ -31,10 +31,13 @@ export class HomeshipicalOutline extends Container implements IHomeshipicalOutli
         const leftRect = rect(0, 0, tileSize, sideHeight)
         const rightRect = rect(topWidth - tileSize, 0, tileSize, sideHeight)
         const topRect = rect(0, 0, topWidth, tileSize)
+        const bottomRect = rect(0, this.homeship.height - tileSize, topWidth, tileSize)
         const rects: RectGradientDefinition[] = [
             { rect: leftRect, direction: FourWayDirection.Left },
             { rect: rightRect, direction: FourWayDirection.Right },
-            { rect: topRect, direction: FourWayDirection.Down }, ]
+            { rect: topRect, direction: FourWayDirection.Down },
+            { rect: bottomRect, direction: FourWayDirection.Up }
+        ]
 
         for (var i in rects) {
             const rect = rects[i]

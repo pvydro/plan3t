@@ -49,10 +49,11 @@ export class RectGradient extends Container implements IRectGradient {
             const calculatedRayHeight = isHori ? rayHeight : rayHeight * (i + 1)
             const calculatedRayWidth = !isHori ? rayWidth : rayWidth * (i + 1)
             const offsetX = direction === FourWayDirection.Right ? this.parentRect.width - calculatedRayWidth : 0
+            const offsetY = direction === FourWayDirection.Up ? this.parentRect.height - calculatedRayHeight : 0
             const rayRect = {
                 x: this.parentRect.x + offsetX,
-                y: this.parentRect.y, 
-                width: calculatedRayWidth, 
+                y: this.parentRect.y + offsetY,
+                width: calculatedRayWidth,
                 height: calculatedRayHeight
             }
             
