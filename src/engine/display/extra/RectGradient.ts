@@ -48,7 +48,13 @@ export class RectGradient extends Container implements IRectGradient {
             const rayGraphic = new Graphix()
             const calculatedRayHeight = isHori ? rayHeight : rayHeight * (i + 1)
             const calculatedRayWidth = !isHori ? rayWidth : rayWidth * (i + 1)
-            const rayRect = rect(0, 0, calculatedRayWidth, calculatedRayHeight)
+            const offsetX = direction === FourWayDirection.Right ? this.parentRect.width - calculatedRayWidth : 0
+            const rayRect = {
+                x: this.parentRect.x + offsetX,
+                y: this.parentRect.y, 
+                width: calculatedRayWidth, 
+                height: calculatedRayHeight
+            }
             
             rayGraphic.beginFill(0x000000)
             rayGraphic.drawIRect(rayRect)
