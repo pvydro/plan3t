@@ -34,7 +34,12 @@ export class PlayerCollision extends Container implements IPlayerCollision {
         if (this._boundingBox === undefined) {
             const width = this.player.body.width / 2
             const height = this.player.body.height
-            this._boundingBox = new Rect(-width / 2, -height / 2, width, height)
+            this._boundingBox = new Rect({
+                x: -width / 2,
+                y: -height / 2,
+                width,
+                height
+            })
         }
 
         return this._boundingBox

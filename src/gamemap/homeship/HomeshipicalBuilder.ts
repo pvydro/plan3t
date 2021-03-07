@@ -36,7 +36,10 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
         const y = homeshipSprite.height - (tileSize * groundTiles)
         const width = homeshipSprite.width - (tileSize * 2)
         const height = tileSize
-        const groundRect = new Rect(x, y, width, height)
+        const groundRect = new Rect({
+            x, y,
+            width, height
+        })
 
         collisionRects.push(groundRect)
 

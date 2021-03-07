@@ -9,13 +9,31 @@ export interface IRect {
     height: number
 }
 
+export interface RectOptions {
+    x: number
+    y: number
+    width: number
+    height: number
+}
+
 export class Rect extends PIXI.Rectangle implements IRect {
-    constructor(x: number, y: number, width: number, height: number) {
-        super(x, y, width, height)
+    // constructor(x: number, y: number, width: number, height: number) {
+    constructor(options: RectOptions) {
+        super(
+            options.x,
+            options.y,
+            options.width,
+            options.height
+        )
     }
 
     static get Zero() {
-        return new Rect(0, 0, 0, 0)
+        return new Rect({
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+        })
     }
 
     set position(value: IVector2) {
