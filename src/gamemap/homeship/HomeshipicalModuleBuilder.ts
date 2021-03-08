@@ -30,19 +30,21 @@ export class HomeshipicalModuleBuilder implements IHomeshipicalModuleBuilder {
 
         moduleContainer.addChild(beamMeUp)
 
-        // TODO All not being kalled
-        // if (this.homeship !== undefined && this.homeship.groundRect !== undefined) {
-        //     const groundRect = this.homeship.groundRect
+        // const homeship = this.homeship
+        // const groundRect = homeship ? homeship.collisionRects
 
-        //     if (groundRect !== undefined) {
-        //         console.log('%cgroundrectisdefined','font-size:700%;background-color:navy')
-        //         for (var i in shipModules) {
-        //             const shipModule = shipModules[i]
+        // TODO All not being kalled
+        if (this.homeship !== undefined && this.homeship.groundRect !== undefined) {
+            const groundRect = this.homeship.groundRect
+
+            if (groundRect !== undefined) {
+                for (var i in shipModules) {
+                    const shipModule = shipModules[i]
         
-        //             shipModule.attachToGround(groundRect)
-        //         }
-        //     }
-        // }
+                    shipModule.attachToGround(groundRect)
+                }
+            }
+        }
 
         return moduleContainer
     }

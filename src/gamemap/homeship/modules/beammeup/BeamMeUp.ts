@@ -10,6 +10,9 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
     constructor() {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.HSM_BEAM_ME_UP))
         const sprite = new Sprite({ texture })
-        super({ sprite })
+        super({
+            sprite,
+            xTile: 15
+        })
     }
 }

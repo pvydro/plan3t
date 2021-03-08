@@ -16,6 +16,7 @@ export interface IInGameHUD extends IUpdatable, IReposition {
     initializeHUD(): Promise<void>
     requestRespawnScreen(): Promise<void>
     closeRespawnScreen(): Promise<void>
+    requestCrosshairState(state: CrosshairState): void
 }
 
 export class InGameHUD extends UIComponent implements IInGameHUD {
@@ -92,6 +93,14 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         this.ammoStatus.position.x = UIConstants.HUDPadding
         this.ammoStatus.position.y = WindowSize.height - UIConstants.HUDPadding
         - (this.ammoStatus.backgroundSprite.height * UIConstants.HUDScale)
+    }
+
+    requestCrosshairState(state: CrosshairState) {
+        Flogger.log('InGameHUD', 'requestCrosshairState', 'state', CrosshairState[state])
+
+        if (this.crosshair.state !== state) {
+            this.crosshair.state = state
+        }
     }
 
     async requestRespawnScreen() {

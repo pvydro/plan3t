@@ -5,6 +5,8 @@ import { IDemolishable } from '../interface/IDemolishable'
 import { ShowCollisionDebug } from '../utils/Constants'
 
 export interface IGameMapContainer extends IContainer {
+    collisionRects: Rect[]
+    tileLayer?: Container
     initializeMap(): Promise<void>
     clearMap(): void
 }

@@ -4,6 +4,7 @@ import { Homeshipical } from '../gamemap/homeship/Homeshipical'
 import { GameStateID } from '../manager/GameStateManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Flogger } from '../service/Flogger'
+import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
@@ -41,6 +42,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             player.light.disableHardLights()
 
             await this.inGameHUD.initializeHUD()
+            this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
             
             this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
             this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
@@ -50,6 +52,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
 
     update() {
         this.gameMapManager.update()
+        this.ambientLight.update()
+        this.inGameHUD.update()
     }
 
     demolish() {

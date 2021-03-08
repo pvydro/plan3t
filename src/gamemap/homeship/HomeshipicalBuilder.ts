@@ -3,13 +3,11 @@ import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Rect } from '../../engine/math/Rect'
 import { Flogger } from '../../service/Flogger'
-import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { SphericalHelper } from '../spherical/SphericalHelper'
 import { HomeshipicalRespone, IHomeshipical } from './Homeshipical'
-import { HomeshipicalModuleBuilder, IHomeshipicalModuleBuilder } from './HomeshipicalModuleBuilder'
 
 export interface IHomeshipicalBuilder {
-    buildLocalHomeshipical(): Promise<SphericalResponse>
+    buildLocalHomeshipical(): Promise<HomeshipicalRespone>
 }
 
 export interface HomeshipicalBuilderOptions {
@@ -17,31 +15,30 @@ export interface HomeshipicalBuilderOptions {
 }
 
 export class HomeshipicalBuilder implements IHomeshipicalBuilder {
-    moduleBuilder: IHomeshipicalModuleBuilder
     
     constructor(options: HomeshipicalBuilderOptions) {
         const homeship = options.homeship
-        this.moduleBuilder = new HomeshipicalModuleBuilder({ homeship })
+
     }
 
     async buildLocalHomeshipical(): Promise<HomeshipicalRespone> {
         const tileLayer = new Container()
         const homeshipTexture = PIXI.Texture.from(Assets.get(AssetUrls.HOME_SHIP))
         const homeshipSprite = new Sprite({ texture: homeshipTexture })
-        const moduleLayer = this.buildHomeshipModules()
+        const collisionRects = this.buildCollisionRectsFromHomeshipical(homeshipSprite)
         
         tileLayer.addChild(homeshipSprite)
 
-        const collisionRects = this.buildCollisionRectsFromHomeshipical(homeshipSprite)
 
         return {
             tileLayer,
-            collisionRects,
-            moduleLayer
+            collisionRects
         }
     }
 
     private buildCollisionRectsFromHomeshipical(homeshipSprite: Sprite): Rect[] {
+        Flogger.log('HomeshipicalBuilder', 'buildCollisionRectsFromHomeshipical')
+
         const collisionRects = []
         const groundTiles = 3
         const tileSize = SphericalHelper.getTileSize()
@@ -57,11 +54,5 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
         collisionRects.push(groundRect)
 
         return collisionRects
-    }
-
-    private buildHomeshipModules(): Container {
-        Flogger.log('HomeshipicalBuilder', 'buildHomeshipicalModules')
-        
-        return this.moduleBuilder.buildHomeshipicalModules()
     }
 }
