@@ -39,7 +39,8 @@ export interface IClientPlayer extends IGravityEntity {
 
 export enum PlayerConsciousnessState {
     Alive = 0,
-    Dead = 1
+    Dead = 1,
+    Controlled = 2
 }
 
 export enum PlayerBodyState {

@@ -1,17 +1,19 @@
 import { Key } from 'ts-keycode-enum'
 import { Assets, AssetUrls } from '../../../../asset/Assets'
+import { ClientPlayer, PlayerConsciousnessState } from '../../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../../engine/display/Sprite'
 import { Flogger } from '../../../../service/Flogger'
 import { HomeshipicalModule, IHomeShipicalModule } from '../HomeshipicalModule'
 
-export interface IBeamMeUp extends IHomeShipicalModule {
+export interface IBeamMeUpModule extends IHomeShipicalModule {
 
 }
 
-export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
+export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModule {
     constructor() {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.HSM_BEAM_ME_UP))
         const sprite = new Sprite({ texture })
+
         super({
             sprite,
             xTile: 15,
@@ -20,12 +22,15 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
             shouldAddTooltip: true,
             onInteract() {
                 return new Promise((resolve) => {
-                    Flogger.log('BeamMeUp', 'onInteract')
+                    Flogger.log('BeamMeUpModule', 'onInteract')
+                    const player = ClientPlayer.getInstance()
 
                     this.highlight()
 
+                    player.consciousnessState = PlayerConsciousnessState.Controlled
+
                     window.setTimeout(() => {
-                        Flogger.log('BeamMeUp', 'interaction finished')
+                        Flogger.log('BeamMeUpModule', 'module interaction finished')
 
                         this.unhighlight()
 

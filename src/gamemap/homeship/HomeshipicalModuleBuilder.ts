@@ -1,7 +1,7 @@
 import { Container } from '../../engine/display/Container'
 import { Flogger } from '../../service/Flogger'
 import { IHomeshipical } from './Homeshipical'
-import { BeamMeUp } from './modules/beammeup/BeamMeUp'
+import { BeamMeUpModule } from './modules/beammeup/BeamMeUpModule'
 import { HomeshipicalModule } from './modules/HomeshipicalModule'
 
 export interface IHomeshipicalModuleBuilder {
@@ -28,7 +28,7 @@ export class HomeshipicalModuleBuilder implements IHomeshipicalModuleBuilder {
         Flogger.log('HomeshipicalModuleBuilder', 'buildHomeshipicalModules')
 
         const moduleContainer = new Container()
-        const beamMeUp = new BeamMeUp()
+        const beamMeUp = new BeamMeUpModule()
         const shipModules: HomeshipicalModule[] = [
             beamMeUp
         ]

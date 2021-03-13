@@ -37,7 +37,10 @@ export class PlayerController implements IPlayerController {
     }
 
     update() {
-        if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
+        if (this.player.consciousnessState === PlayerConsciousnessState.Controlled) {
+            this.player.xVel = 0
+            this.player.yVel = 0
+        } else if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
             this.comeToStop()
         } else if (this.player.isClientPlayer) {
             if (this.leftKeyDown && this.rightKeyDown
