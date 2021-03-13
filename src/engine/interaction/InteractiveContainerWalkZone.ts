@@ -1,8 +1,9 @@
 import { Container, IContainer } from '../display/Container'
 import { Graphix } from '../display/Graphix'
 import { IRect } from '../math/Rect'
+import { InteractiveContainerCallbacks } from './InteractiveContainer'
 
-export interface IInteractiveContainerWalkZone extends IContainer {
+export interface IInteractiveContainerWalkZone extends IContainer, InteractiveContainerCallbacks {
 
 }
 
@@ -11,7 +12,7 @@ export interface InteractiveContainerWalkZoneOptions {
     interactiveOffsetX?: number
 }
 
-export class InteractiveContainerWalkZone extends Container {
+export class InteractiveContainerWalkZone extends Container implements IInteractiveContainerWalkZone {
     interactiveBounds: IRect
     interactiveOffsetX: number = 0
     nodeDistance: number = 5
@@ -34,6 +35,14 @@ export class InteractiveContainerWalkZone extends Container {
         }
 
         this.styleNodes()
+    }
+
+    onEnter() {
+        this.alpha = 1
+    }
+
+    onExit() {
+        this.alpha = 0
     }
 
     styleNodes() {

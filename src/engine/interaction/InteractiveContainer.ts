@@ -10,7 +10,7 @@ import { IRect, Rect } from '../math/Rect'
 import { InteractiveContainerDebugger } from './InteractiveContainerDebugger'
 import { InteractiveContainerWalkZone } from './InteractiveContainerWalkZone'
 
-export interface IInteractiveContainer extends IContainer, IUpdatable {
+export interface IInteractiveContainer extends IContainer, IUpdatable, InteractiveContainerCallbacks {
     interactiveBounds: IRect
     interactiveSimuRect: IRect
     interactiveOffsetX: number
@@ -19,14 +19,17 @@ export interface IInteractiveContainer extends IContainer, IUpdatable {
     interact(): Promise<any>
 }
 
-export interface InteractiveContainerOptions {
+export interface InteractiveContainerCallbacks {
+    onInteract?: Function
+    onEnter?: Function
+    onExit?: Function
+}
+
+export interface InteractiveContainerOptions extends InteractiveContainerCallbacks {
     interactKey?: Key
     interactiveBounds?: IDimension
     interactiveOffsetX?: number
     addWalkZone?: boolean
-    onInteract?: Function
-    onEnter?: Function
-    onExit?: Function
 }
 
 export class InteractiveContainer extends Container implements IInteractiveContainer {
@@ -147,13 +150,11 @@ export class InteractiveContainer extends Container implements IInteractiveConta
 
     enteredInteractZone(entered: boolean) {
         if (entered && !this.canInteract) {
-            if (this.onEnter !== undefined) {
-                this.onEnter()
-            }
+            if (this.onEnter !== undefined)     this.onEnter()
+            if (this.walkZone !== undefined)    this.walkZone.onEnter()
         } else if (!entered && this.canInteract) {
-            if (this.onExit !== undefined) {
-                this.onExit()
-            }
+            if (this.onExit !== undefined)      this.onExit()
+            if (this.walkZone !== undefined)    this.walkZone.onExit()
         }
 
         this.canInteract = entered
