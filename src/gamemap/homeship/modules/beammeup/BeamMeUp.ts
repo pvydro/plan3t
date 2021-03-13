@@ -1,5 +1,7 @@
 import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { Sprite } from '../../../../engine/display/Sprite'
+import { TooltipManager } from '../../../../manager/TooltipManager'
+import { TooltipType } from '../../../../ui/ingametooltip/InGameTooltip'
 import { HomeshipicalModule, IHomeShipicalModule } from '../HomeshipicalModule'
 
 export interface IBeamMeUp extends IHomeShipicalModule {
@@ -13,6 +15,12 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
         super({
             sprite,
             xTile: 15
+        })
+
+        TooltipManager.getInstance().addTooltip({
+            type: TooltipType.Key,
+            text: 'E',
+            targetToFollow: this
         })
     }
 }

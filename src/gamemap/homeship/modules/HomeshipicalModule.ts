@@ -5,7 +5,8 @@ import { IUpdatable } from '../../../interface/IUpdatable'
 import { SphericalHelper } from '../../spherical/SphericalHelper'
 
 export interface IHomeShipicalModule extends IContainer, IUpdatable {
-    attachToGround(ground: IRect)
+    attachToGround(ground: IRect): void
+    interact(): void
 }
 
 export interface HomeshipicalModuleOptions {
@@ -29,12 +30,18 @@ export class HomeshipicalModule extends Container implements IHomeShipicalModule
 
             this.xTile = options.xTile ?? 0
         }
+
+        
     }
 
     update() {
 
     }
     
+    interact() {
+
+    }
+
     attachToGround(ground: IRect) {
         const tileSize = SphericalHelper.getTileSize()
         

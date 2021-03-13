@@ -174,6 +174,7 @@ export class AssetUrls {
     // UI
     static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'
     static IGI_TOP = 'assets/image/ui/ingameinventory/container-top'
+    static TOOLTIP_KEY = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
 
     // Homeship
     static HOME_SHIP = 'assets/image/gamemap/homeship/homeship_bg'

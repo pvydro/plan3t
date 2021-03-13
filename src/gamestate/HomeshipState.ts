@@ -1,9 +1,9 @@
+import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
-import { Homeshipical } from '../gamemap/homeship/Homeshipical'
 import { GameStateID } from '../manager/GameStateManager'
+import { TooltipManager } from '../manager/TooltipManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
-import { PlanetRoom } from '../network/rooms/planetroom/PlanetRoom'
 import { Flogger } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
@@ -39,6 +39,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         this.gameMapManager.initializeHomeship().then(async () => {
             Flogger.log('GameplayState', 'Homeship initialized')
             const player = this.entityManager.createOfflinePlayer()
+            const particleManager = ParticleManager.getInstance()
+            const tooltipManager = TooltipManager.getInstance()
 
             player.light.disableHardLights()
             player.holster.holsterWeapon()
@@ -47,8 +49,9 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
             
             this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
-            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
+            this.camera.stage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
+            this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
+            this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
         })
     }
 

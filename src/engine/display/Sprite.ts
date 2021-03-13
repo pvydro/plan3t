@@ -50,10 +50,12 @@ export class Sprite extends PIXI.Sprite implements ISprite {
     }
 
     updateOverlayDimensions() {
-        this.overlayGraphic.width = this.width
-        this.overlayGraphic.height = this.height
-        this.overlayGraphic.x = 0
-        this.overlayGraphic.y = -this.overlayGraphic.height / 2
+        if (this.overlayGraphic !== undefined) {
+            this.overlayGraphic.width = this.width
+            this.overlayGraphic.height = this.height
+            this.overlayGraphic.x = 0
+            this.overlayGraphic.y = -this.overlayGraphic.height / 2
+        }
     }
 
     flipX() {

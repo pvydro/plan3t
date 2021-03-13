@@ -22,7 +22,7 @@ export class ParticleManager implements IParticleManager {
     overlayContainer: Container
     particles: Set<IParticle>
 
-    public static getInstance() {
+    static getInstance() {
         if (ParticleManager.INSTANCE === undefined) {
             ParticleManager.INSTANCE = new ParticleManager()
         }

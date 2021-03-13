@@ -1,10 +1,10 @@
-import { Container } from "pixi.js";
-import { InputEvents, InputProcessor } from "../input/InputProcessor";
-import { IReposition } from "../interface/IReposition";
+import { InputEvents, InputProcessor } from '../input/InputProcessor'
+import { IReposition } from '../interface/IReposition'
 import { IShowHide } from '../interface/IShowHide'
+import { IUpdatable } from '../interface/IUpdatable'
 import { UIContainer, UIContainerOptions } from './UIContainer'
 
-export interface IUIComponent extends IShowHide, IReposition {
+export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
     name: string 
     accessible: boolean
     accessibleChildren: boolean
