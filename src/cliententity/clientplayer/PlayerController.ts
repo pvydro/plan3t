@@ -66,10 +66,10 @@ export class PlayerController implements IPlayerController {
         const bodyState = this.player.bodyState
         const legsState = this.player.legsState
         const walkingDirection = this.player.walkingDirection
-        const sprintMultiplier = this.player.bodyState === PlayerBodyState.Sprinting
+        const walkMultiplier = this.player.bodyState === PlayerBodyState.Sprinting
             ? this.playerSprintMultiplier : 1
         const targetXVel = ((this.playerWalkingSpeed * walkingDirection) / this.walkDivisor)
-            * sprintMultiplier
+            * walkMultiplier
 
         switch (bodyState) {
             case PlayerBodyState.Sprinting:

@@ -8,10 +8,14 @@ import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
 import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
 import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugin/CameraOverlayEffectsPlugin'
+import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
     stage: CameraStage
+    offset: IVector2
+    transformOffset: IVector2
+    offsetEaseDamping: number
     resize(width: number, height: number): void
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
     follow(object: { x: number, y: number, width?: number, height?: number }): void
@@ -34,25 +38,24 @@ export class Camera implements ICamera {
     _viewport: Viewport
     _x: number = 0
     _y: number = 0
-    offsetEaseDamping: number = 10
-    jitterDamping: number = 100
-    jitterXCooldown: number = 10
-    jitterYCooldown: number = 20
-    maximumJitterCooldown: number = 500
-    maximumJitterAmount: number = 20//10
+    offsetEaseDamping: number = 20
     screenShakeDamping: number = 2
     screenShakeRecoveryDamping: number = 5
     maximumShakeAmount: number = 2
-    targetOffset: IVector2 = Vector2.Zero
+    targetMouseOffset: IVector2 = Vector2.Zero
+    mouseOffset: IVector2 = Vector2.Zero
+    mouseFollowDamping: number = 50
     offset: IVector2 = Vector2.Zero
-    _targetJitterOffset: IVector2 = Vector2.Zero
-    _jitterOffset: IVector2 = Vector2.Zero
+    transformOffset: IVector2 = Vector2.Zero
+    // _targetJitterOffset: IVector2 = Vector2.Zero
+    // _jitterOffset: IVector2 = Vector2.Zero
     _targetScreenShakeOffset: IVector2 = Vector2.Zero
     _screenShakeOffset: IVector2 = Vector2.Zero
 
     cameraDebuggerPlugin: CameraDebuggerPlugin
     cameraFlashPlugin: CameraFlashPlugin
     cameraOverlayEffectsPlugin: ICameraOverlayEffectsPlugin
+    cameraSwayPlugin: ICameraSwayPlugin
 
     public static getInstance() {
         if (Camera.INSTANCE === undefined) {
@@ -71,6 +74,7 @@ export class Camera implements ICamera {
         this.cameraFlashPlugin = new CameraFlashPlugin(this)
         this.cameraDebuggerPlugin = new CameraDebuggerPlugin(this)
         this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this)
+        this.cameraSwayPlugin = new CameraSwayPlugin(this)
 
         this._stage.width = 1080
         this._stage.height = 720
@@ -85,16 +89,25 @@ export class Camera implements ICamera {
     }
 
     update() {
-        this.updateCameraSway()
+        // this.updateCameraSway()
+        // this.updateMouseFollowOffset()
         this.updateCameraShake()
+        this.cameraSwayPlugin.update()
         this.cameraFlashPlugin.update()
 
         if (this._target !== undefined) {
-            this.offset.x += (this.targetOffset.x - this.offset.x) / this.offsetEaseDamping
-            this.offset.y += ((this.targetOffset.y + this._jitterOffset.y) - this.offset.y) / this.offsetEaseDamping
-            
-            this.x = this._target.x + this.offset.x + this._jitterOffset.x + this._screenShakeOffset.x
-            this.y = this._target.y + this.offset.y + this._screenShakeOffset.y
+            this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
+            this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
+            this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
+            this.offset.y += ((this.transformOffset.y) // + this._jitterOffset.y)
+                - this.offset.y) / this.offsetEaseDamping
+                
+            this.x = this._target.x + this.offset.x + this.mouseOffset.x
+                //  + this._jitterOffset.x + this._screenShakeOffset.x
+            this.y = this._target.y + this.offset.y + this.mouseOffset.y
+                //  + this._screenShakeOffset.y
+
+            console.log(this.mouseOffset.x)
         }
 
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
@@ -106,33 +119,16 @@ export class Camera implements ICamera {
         && (this.target as ClientPlayer).consciousnessState === PlayerConsciousnessState.Dead) {
             return
         }
-
+        
         const viewportMiddleX = this.width / 2
         const viewportMiddleY = this.height / 2
         const offsetX = (mouseX - viewportMiddleX) / 20
         const offsetY = (mouseY - viewportMiddleY) / 15
-
-        this.targetOffset.x = offsetX
-        this.targetOffset.y = offsetY
-    }
-
-    updateCameraSway() {
-        this._jitterOffset.x += (this._targetJitterOffset.x - this._jitterOffset.x) / this.jitterDamping
-        this._jitterOffset.y += (this._targetJitterOffset.y - this._jitterOffset.y) / this.jitterDamping
-
-        this.jitterXCooldown--
-        this.jitterYCooldown--
-
-        if (this.jitterXCooldown <= 0) {
-            this.jitterXCooldown = Math.random() * this.maximumJitterCooldown
-
-            this._targetJitterOffset.x = Math.random() * (this.maximumJitterAmount)
-        }
-        if (this.jitterYCooldown <= 0) {
-            this.jitterYCooldown = Math.random() * this.maximumJitterCooldown
-
-            this._targetJitterOffset.y = Math.random() * (this.maximumJitterAmount / 2)
-        }
+        
+        console.log(offsetX, offsetY)
+        
+        this.targetMouseOffset.x = offsetX
+        this.targetMouseOffset.y = offsetY
     }
 
     updateCameraShake() {
@@ -176,9 +172,9 @@ export class Camera implements ICamera {
 
     toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {
         const newX = (point.x / this.zoom)
-        - (this.stage.x / this.zoom)
+            - (this.stage.x / this.zoom)
         const newY = (point.y / this.zoom)
-        - (this.stage.y / this.zoom)
+            - (this.stage.y / this.zoom)
         const newVec = new Vector2(newX, newY)
 
         return newVec
