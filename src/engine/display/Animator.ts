@@ -1,4 +1,7 @@
+import { TweenLite } from 'gsap/src/all'
+
 export interface IAnimator {
+    currentAnimation: TweenLite
     play(): Promise<any>
     pause(rules?: PlayRules): Promise<any>
 }
@@ -35,6 +38,7 @@ export class Animator implements IAnimator {
         }
 
         this._currentAnimation = value
+        this._currentAnimation.restart()
     }
 
     get currentAnimation() {

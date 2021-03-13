@@ -24,6 +24,10 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
     tooltip?: InGameTooltip
 
     constructor(options?: HomeshipicalModuleOptions) {
+        options.interactiveBounds = {
+            width: 96,
+            height: options.sprite ? options.sprite.height : 64
+        }
         super(options)
 
         if (options !== undefined) {

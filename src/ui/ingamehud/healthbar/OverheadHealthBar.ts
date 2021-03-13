@@ -7,6 +7,7 @@ import { IUpdatable } from '../../../interface/IUpdatable'
 import { UIComponent } from '../../UIComponent'
 import { ICanDie } from '../../../interface/ICanDie'
 import { Flogger } from '../../../service/Flogger'
+import { PredefinedTweens } from '../../../engine/display/tween/PredefinedTweens'
 
 export interface IOverheadHealthBar extends IUpdatable, ICanDie {
 
@@ -34,6 +35,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     constructor(options: OverheadHealthBarOptions) {
         super()
         const ogX = this.x
+        const swipeUpAnim = PredefinedTweens.SwipeUp
 
         this.player = options.player
 
@@ -61,10 +63,10 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
 
         // Dead disappear animation
         this.deadDisappearAnimation = Tween.to(this.backgroundSprite, {
-            y: this.backgroundSprite.y - 12,
+            duration: swipeUpAnim.duration,
+            ease: swipeUpAnim.ease,
             alpha: 0,
-            duration: 1,
-            ease: Easing.Power4EaseOut
+            y: this.backgroundSprite.y - swipeUpAnim.offsetY
         })
 
         // Hit shine animation

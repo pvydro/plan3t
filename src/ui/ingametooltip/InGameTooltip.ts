@@ -1,4 +1,5 @@
 import { resolveModuleName } from 'typescript'
+import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
@@ -10,7 +11,7 @@ export enum TooltipType {
 }
 
 export interface IInGameTooltip extends IUIComponent {
-
+    tooltipContainer: IContainer
 }
 
 export interface ITargetToFollow {
@@ -38,6 +39,7 @@ export interface InGameTooltipOptions extends UIComponentOptions {
 
 export class InGameTooltip extends UIComponent implements IInGameTooltip {
     targetToFollow?: ITargetToFollow
+    tooltipContainer: Container
     backgroundSprite?: Sprite
     textSprite?: TextSprite
     shouldCenter: boolean
@@ -46,6 +48,9 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
 
     constructor(options: InGameTooltipOptions) {
         super(options)
+
+        this.tooltipContainer = new Container()
+        this.addChild(this.tooltipContainer)
 
         if (options.targetToFollow !== undefined) {
             this.targetToFollow = options.targetToFollow.target
@@ -57,7 +62,7 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
         if (options.backgroundSprite !== undefined) {
             this.backgroundSprite = options.backgroundSprite
 
-            this.addChild(this.backgroundSprite)
+            this.tooltipContainer.addChild(this.backgroundSprite)
         }
 
         if (options.text !== undefined) {
@@ -67,11 +72,11 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
                 this.textSprite.position.x += (this.backgroundWidth / 2) - this.textSprite.halfTextWidth
             }
 
-            this.addChild(this.textSprite)
+            this.tooltipContainer.addChild(this.textSprite)
         }
 
         if (options.hideByDefault === true) {
-            this.alpha = 0
+            this.tooltipContainer.alpha = 0
         }
     }
 
@@ -90,7 +95,7 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
 
     show(): Promise<void> {
         return new Promise((resolve) => {
-            this.alpha = 1
+            this.tooltipContainer.alpha = 1
 
             resolve()
         })
@@ -98,7 +103,7 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
 
     hide(): Promise<void> {
         return new Promise((resolve) => {
-            this.alpha = 0
+            this.tooltipContainer.alpha = 0
 
             resolve()
         })
