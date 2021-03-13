@@ -3,6 +3,7 @@ import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbient
 import { Homeshipical } from '../gamemap/homeship/Homeshipical'
 import { GameStateID } from '../manager/GameStateManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
+import { PlanetRoom } from '../network/rooms/planetroom/PlanetRoom'
 import { Flogger } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
@@ -40,6 +41,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             const player = this.entityManager.createOfflinePlayer()
 
             player.light.disableHardLights()
+            player.holster.holsterWeapon()
 
             await this.inGameHUD.initializeHUD()
             this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)

@@ -35,6 +35,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     primaryWeapon: Weapon = new Weapon({ holster: this })
     secondaryWeapon: Weapon = new Weapon({ holster: this })
     currentWeapon?: IWeapon
+    handsWeapon?: IWeapon
     currentWeaponStatus?: CurrentWeaponStatus = CurrentWeaponStatus.None
 
     constructor(options: PlayerWeaponHolsterOptions) {
@@ -112,9 +113,17 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         }, 100)
     }
 
+    holsterWeapon() {
+        Flogger.log('PlayerWeaponHolster', 'holsterWeapon')
+
+        this.currentWeaponStatus = CurrentWeaponStatus.None
+        this.updateWeaponStatus()
+    }
+
     private updateWeaponStatus() {
         switch (this.currentWeaponStatus) {
             case CurrentWeaponStatus.None:
+                this.currentWeapon = this.handsWeapon
             case CurrentWeaponStatus.Primary:
                 this.currentWeapon = this.primaryWeapon
                 break
