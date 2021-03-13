@@ -1,4 +1,5 @@
 import { Sprite } from '../../engine/display/Sprite'
+import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
 import { UIConstants } from '../../utils/Constants'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
@@ -27,15 +28,17 @@ export interface TooltipFollowOptions {
 
 export interface InGameTooltipOptions extends UIComponentOptions {
     type: TooltipType
-    text?: string
+    text?: TextSpriteOptions
     position?: IVector2
     targetToFollow?: TooltipFollowOptions
     backgroundSprite?: Sprite
+    hideByDefault?: boolean
 }
 
 export class InGameTooltip extends UIComponent implements IInGameTooltip {
     targetToFollow?: ITargetToFollow
     backgroundSprite?: Sprite
+    textSprite?: TextSprite
     shouldCenter: boolean
     xOffset: number = 0
     yOffset: number = 0
@@ -55,17 +58,40 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
 
             this.addChild(this.backgroundSprite)
         }
+
+        if (options.text !== undefined) {
+            this.textSprite = new TextSprite(options.text)
+
+            if (options.text.align === TextSpriteAlign.Center) {
+                this.textSprite.position.x += (this.backgroundWidth / 2) - this.textSprite.halfTextWidth
+            }
+
+            this.addChild(this.textSprite)
+        }
+
+        if (options.hideByDefault === true) {
+            this.alpha = 0
+        }
     }
 
     update() {
         if (this.targetToFollow !== undefined) {
             const targetWidth = this.targetToFollow.width ?? 0
-            const backgroundWidth = this.backgroundSprite ? this.backgroundSprite.width : 0
-            const backgroundHeight = this.backgroundSprite ? this.backgroundSprite.height : 0
-            const newX = this.targetToFollow.x + (this.shouldCenter ? (targetWidth / 2) - (backgroundWidth / 2) : 0) + this.xOffset
-            const newY = this.targetToFollow.y - backgroundHeight - UIConstants.TooltipMargin + this.yOffset
+            const newX = this.targetToFollow.x
+                + (this.shouldCenter ? (targetWidth / 2) - (this.backgroundWidth / 2)
+                : 0) + this.xOffset
+            const newY = this.targetToFollow.y
+                - this.backgroundHeight - UIConstants.TooltipMargin + this.yOffset
 
             this.position.set(newX, newY)
         }
+    }
+
+    get backgroundWidth() {
+        return this.backgroundSprite ? this.backgroundSprite.width : 0
+    }
+
+    get backgroundHeight() {
+        return this.backgroundSprite ? this.backgroundSprite.height : 0
     }
 }

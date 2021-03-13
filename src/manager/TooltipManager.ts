@@ -33,11 +33,13 @@ export class TooltipManager implements ITooltipManager {
         }
     }
 
-    addTooltip(options: InGameTooltipOptions) {
+    addTooltip(options: InGameTooltipOptions): InGameTooltip {
         const tooltip = this.factory.createTooltip(options)
 
         this.container.addChild(tooltip)
         this.tooltips.add(tooltip)
+
+        return tooltip
     }
 
     removeTooltip(tooltip: InGameTooltip) {
