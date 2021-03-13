@@ -5,11 +5,16 @@ import { BeamMeUp } from './modules/beammeup/BeamMeUp'
 import { HomeshipicalModule } from './modules/HomeshipicalModule'
 
 export interface IHomeshipicalModuleBuilder {
-    buildHomeshipicalModules(): Container
+    buildHomeshipicalModules(): HomeshipicalModuleResponse
 }
 
 export interface HomeshipicalModuleBuilderOptions {
     homeship: IHomeshipical
+}
+
+export interface HomeshipicalModuleResponse {
+    moduleContainer: Container
+    modules: HomeshipicalModule[]
 }
 
 export class HomeshipicalModuleBuilder implements IHomeshipicalModuleBuilder {
@@ -19,7 +24,7 @@ export class HomeshipicalModuleBuilder implements IHomeshipicalModuleBuilder {
         this.homeship = options.homeship
     }
 
-    buildHomeshipicalModules(): Container {
+    buildHomeshipicalModules(): HomeshipicalModuleResponse {
         Flogger.log('HomeshipicalModuleBuilder', 'buildHomeshipicalModules')
 
         const moduleContainer = new Container()
@@ -46,6 +51,9 @@ export class HomeshipicalModuleBuilder implements IHomeshipicalModuleBuilder {
             }
         }
 
-        return moduleContainer
+        return {
+            moduleContainer,
+            modules: shipModules
+        }
     }
 }

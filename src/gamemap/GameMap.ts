@@ -41,6 +41,7 @@ export class GameMap extends Container implements IGameMap {
 
     update() {
         this.sky.update()
+        this.currentMap.update()
     }
 
     async initializeHomeship(): Promise<void> {

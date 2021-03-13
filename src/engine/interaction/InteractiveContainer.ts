@@ -8,12 +8,14 @@ import { IRect, Rect } from '../math/Rect'
 import { InteractiveContainerDebugger } from './InteractiveContainerDebugger'
 
 export interface IInteractiveContainer extends IContainer, IUpdatable {
+    interactiveBounds: IRect
     interact(): Promise<any>
 }
 
 export interface InteractiveContainerOptions {
-    interactKey: Key
-    interactiveBounds: IDimension
+    interactKey?: Key
+    interactiveBounds?: IDimension
+    interactiveOffsetX?: number
 }
 
 export class InteractiveContainer extends Container implements IInteractiveContainer {
@@ -21,8 +23,8 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     currentInteractionPromise: Promise<any>
     player?: IClientPlayer
     debugger?: InteractiveContainerDebugger
-    // canInteract: boolean = false
     interactiveBounds: IRect
+    interactiveOffsetX: number = 0
     
     constructor(options?: InteractiveContainerOptions) {
         super()
@@ -35,6 +37,12 @@ export class InteractiveContainer extends Container implements IInteractiveConta
                 width = options.interactiveBounds.width
                 height = options.interactiveBounds.height
             }
+            if (options.interactKey !== undefined) {
+                this.interactKey = options.interactKey
+            }
+            if (options.interactiveOffsetX !== undefined) {
+                this.interactiveOffsetX = options.interactiveOffsetX
+            }
         }
 
         this.player = ClientPlayer.getInstance()
@@ -46,7 +54,7 @@ export class InteractiveContainer extends Container implements IInteractiveConta
         // Debugger
         if (DebugConstants.ShowInteractiveContainerDebug) {
             this.debugger = new InteractiveContainerDebugger({
-                interactiveRect: this.interactiveBounds
+                container: this
             })
 
             this.addChild(this.debugger)
@@ -54,8 +62,11 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     }
 
     update() {
-        this.interactiveBounds.x = this.halfWidth - (this.interactiveBounds.width / 2)
+        this.interactiveBounds.x = this.interactiveOffsetX - (this.interactiveBounds.width / 2)
 
+        if (this.debugger !== undefined) {
+            this.debugger.update()
+        }
     }
 
     interact(): Promise<any> {

@@ -1,5 +1,5 @@
 import { Sprite } from '../../../engine/display/Sprite'
-import { IInteractiveContainer, InteractiveContainer } from '../../../engine/interaction/InteractiveContainer'
+import { IInteractiveContainer, InteractiveContainer, InteractiveContainerOptions } from '../../../engine/interaction/InteractiveContainer'
 import { IRect } from '../../../engine/math/Rect'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { SphericalHelper } from '../../spherical/SphericalHelper'
@@ -8,7 +8,7 @@ export interface IHomeShipicalModule extends IInteractiveContainer, IUpdatable {
     attachToGround(ground: IRect): void
 }
 
-export interface HomeshipicalModuleOptions {
+export interface HomeshipicalModuleOptions extends InteractiveContainerOptions {
     sprite?: Sprite
     xTile?: number
 }
@@ -19,7 +19,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
     xTile: number
 
     constructor(options?: HomeshipicalModuleOptions) {
-        super()
+        super(options)
 
         if (options !== undefined) {
             if (options.sprite !== undefined) {
@@ -32,7 +32,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
     }
 
     update() {
-
+        super.update()
     }
 
     attachToGround(ground: IRect) {

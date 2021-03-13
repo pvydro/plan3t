@@ -1,10 +1,12 @@
 import { Container } from '../../engine/display/Container'
 import { IRect } from '../../engine/math/Rect'
+import { IUpdatable } from '../../interface/IUpdatable'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'
 import { HomeshipicalModuleBuilder, IHomeshipicalModuleBuilder } from './HomeshipicalModuleBuilder'
 import { HomeshipicalOutline } from './HomeshipicalOutline'
+import { HomeshipicalModule } from './modules/HomeshipicalModule'
 
 export interface IHomeshipical extends IGameMapContainer {
     groundRect: IRect
@@ -19,6 +21,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
     moduleBuilder: IHomeshipicalModuleBuilder
     outline: HomeshipicalOutline
     moduleLayer: Container
+    modules: HomeshipicalModule[]
 
     static getInstance() {
         if (Homeshipical.INSTANCE === undefined) {
@@ -38,6 +41,14 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
         this.outline = new HomeshipicalOutline({ homeship })
     }
 
+    update() {
+        for (var i in this.modules) {
+            const m = this.modules[i]
+
+            m.update()
+        }
+    }
+
     initializeMap(): Promise<void> {
         if (this.tileLayer !== undefined) {
             this.clearMap()
@@ -47,7 +58,9 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
             this.builder.buildLocalHomeshipical().then((response: HomeshipicalRespone) => {
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
-                this.moduleLayer = this.moduleBuilder.buildHomeshipicalModules()
+                const moduleResponse = this.moduleBuilder.buildHomeshipicalModules()
+                this.moduleLayer = moduleResponse.moduleContainer
+                this.modules = moduleResponse.modules
 
                 this.addChild(this.tileLayer)
                 this.addChild(this.outline)

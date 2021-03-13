@@ -14,12 +14,12 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
         const sprite = new Sprite({ texture })
         super({
             sprite,
-            xTile: 15
+            xTile: 15,
+            interactiveOffsetX: sprite.halfWidth
         })
 
         TooltipManager.getInstance().addTooltip({
             type: TooltipType.Key,
-            // hideByDefault: true,
             text: { text: 'E' },
             targetToFollow: {
                 target: this,

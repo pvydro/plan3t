@@ -1,9 +1,10 @@
 import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
 import { Container, IContainer } from '../engine/display/Container'
 import { Rect } from '../engine/math/Rect'
+import { IUpdatable } from '../interface/IUpdatable'
 import { DebugConstants } from '../utils/Constants'
 
-export interface IGameMapContainer extends IContainer {
+export interface IGameMapContainer extends IContainer, IUpdatable {
     collisionRects: Rect[]
     tileLayer?: Container
     initializeMap(): Promise<void>
@@ -17,6 +18,10 @@ export class GameMapContainer extends Container implements IGameMapContainer {
 
     constructor() {
         super()
+    }
+
+    update() {
+        
     }
 
     async initializeMap(): Promise<void> {
