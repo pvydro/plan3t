@@ -1,9 +1,7 @@
 import { Key } from 'ts-keycode-enum'
 import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { Sprite } from '../../../../engine/display/Sprite'
-import { TooltipManager } from '../../../../manager/TooltipManager'
 import { Flogger } from '../../../../service/Flogger'
-import { TooltipType } from '../../../../ui/ingametooltip/InGameTooltip'
 import { HomeshipicalModule, IHomeShipicalModule } from '../HomeshipicalModule'
 
 export interface IBeamMeUp extends IHomeShipicalModule {
@@ -19,6 +17,7 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
             xTile: 15,
             interactiveOffsetX: sprite.halfWidth,
             interactKey: Key.E,
+            shouldAddTooltip: true,
             onInteract() {
                 Flogger.log('BeamMeUp', 'onInteract')
                 
@@ -29,17 +28,19 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
                         resolve(true)
                     }, 1000)
                 })
+            },
+            onEnter() {
+                if (this.tooltip !== undefined) {
+                    this.tooltip.show()
+                }
+            },
+            onExit() {
+                if (this.tooltip !== undefined) {
+                    this.tooltip.hide()
+                }
             }
         })
 
-        TooltipManager.getInstance().addTooltip({
-            type: TooltipType.Key,
-            text: { text: 'E' },
-            hideByDefault: true,
-            targetToFollow: {
-                target: this,
-                center: true
-            },
-        })
+        
     }
 }

@@ -20,6 +20,8 @@ export interface InteractiveContainerOptions {
     interactiveBounds?: IDimension
     interactiveOffsetX?: number
     onInteract?: Function
+    onEnter?: Function
+    onExit?: Function
 }
 
 export class InteractiveContainer extends Container implements IInteractiveContainer {
@@ -31,13 +33,15 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     canInteract: boolean = false
     interactiveOffsetX: number = 0
     interactiveSimuRect: Rect
-    onInteract: Function
+    onInteract?: Function
+    onEnter?: Function
+    onExit?: Function
 
     constructor(options?: InteractiveContainerOptions) {
         super()
 
         let width = 72
-        let height = 72
+        let height = 64
 
         if (options !== undefined) {
             if (options.interactiveBounds !== undefined) {
@@ -54,6 +58,12 @@ export class InteractiveContainer extends Container implements IInteractiveConta
             }
             if (options.onInteract !== undefined) {
                 this.onInteract = options.onInteract
+            }
+            if (options.onEnter !== undefined) {
+                this.onEnter = options.onEnter
+            }
+            if (options.onExit !== undefined) {
+                this.onExit = options.onExit
             }
         }
 
@@ -85,9 +95,9 @@ export class InteractiveContainer extends Container implements IInteractiveConta
         // Interactable sensing
         if (this.player !== undefined) {
             if (this.interactiveSimuRect.contains(this.player.x, this.player.y)) {
-                this.canInteract = true
+                this.enteredInteractZone(true)
             } else {
-                this.canInteract = false
+                this.enteredInteractZone(false)
             }
         } else {
             this.player = ClientPlayer.getInstance()
@@ -109,7 +119,9 @@ export class InteractiveContainer extends Container implements IInteractiveConta
 
         if (this.currentInteractionPromise == undefined) {
             this.currentInteractionPromise = new Promise(async (resolve) => {
-                await this.onInteract()
+                if (typeof this.onInteract === 'function') {
+                    await this.onInteract()
+                }
 
                 this.currentInteractionPromise = undefined
                 resolve(true)
@@ -117,6 +129,20 @@ export class InteractiveContainer extends Container implements IInteractiveConta
         }
 
         return this.currentInteractionPromise
+    }
+
+    enteredInteractZone(entered: boolean) {
+        if (entered && !this.canInteract) {
+            if (this.onEnter !== undefined) {
+                this.onEnter()
+            }
+        } else if (!entered && this.canInteract) {
+            if (this.onExit !== undefined) {
+                this.onExit()
+            }
+        }
+
+        this.canInteract = entered
     }
 
     applyKeyListener() {

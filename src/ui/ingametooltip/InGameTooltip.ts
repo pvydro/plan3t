@@ -1,3 +1,4 @@
+import { resolveModuleName } from 'typescript'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
@@ -85,6 +86,22 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
 
             this.position.set(newX, newY)
         }
+    }
+
+    show(): Promise<void> {
+        return new Promise((resolve) => {
+            this.alpha = 1
+
+            resolve()
+        })
+    }
+
+    hide(): Promise<void> {
+        return new Promise((resolve) => {
+            this.alpha = 0
+
+            resolve()
+        })
     }
 
     get backgroundWidth() {
