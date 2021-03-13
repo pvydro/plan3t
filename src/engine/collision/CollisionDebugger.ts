@@ -3,7 +3,7 @@ import { IRect, Rect } from '../math/Rect'
 import { Graphix } from '../display/Graphix'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Flogger } from '../../service/Flogger'
-import { ShowCollisionDebug } from '../../utils/Constants'
+import { DebugConstants } from '../../utils/Constants'
 
 export interface ICollisionDebugger extends IContainer, IDemolishable {
     initializeAndShowGraphics(): void
@@ -30,7 +30,7 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
             this.collisionRects = options.collisionRects ?? undefined
         }
 
-        if (ShowCollisionDebug) {
+        if (DebugConstants.ShowCollisionDebug) {
             this.initializeAndShowGraphics()
         }
     }

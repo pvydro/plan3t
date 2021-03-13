@@ -3,7 +3,7 @@ import { Graphix } from '../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Flogger } from '../../service/Flogger'
-import { ShowCameraProjectionDebug } from '../../utils/Constants'
+import { DebugConstants } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
 export interface ICameraDebuggerPlugin {
@@ -21,7 +21,7 @@ export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPl
         super()
         this.camera = camera
 
-        if (ShowCameraProjectionDebug) {
+        if (DebugConstants.ShowCameraProjectionDebug) {
             this.createDebugGraphics()
             this.applyMouseListener()
         }

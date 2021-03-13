@@ -6,7 +6,7 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
 import { Player } from '../network/rooms/Player'
 import { Flogger } from '../service/Flogger'
-import { ShowPlayerSynchDebug } from '../utils/Constants'
+import { DebugConstants } from '../utils/Constants'
 import { IPlayerSynchronizerAssertionService } from './PlayerSynchronizerAssertionService'
 
 export interface IPlayerSynchronizerAssertionServiceDebugger extends IUpdatable {
@@ -29,7 +29,7 @@ export class PlayerSynchronizerAssertionServiceDebugger extends Container implem
 
         this.assertionService = options.assertionService
 
-        if (ShowPlayerSynchDebug) {
+        if (DebugConstants.ShowPlayerSynchDebug) {
             this.createDebugGraphics()
         }
     }

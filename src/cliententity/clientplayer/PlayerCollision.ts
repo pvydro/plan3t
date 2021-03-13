@@ -1,7 +1,7 @@
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
 import { Container } from '../../engine/display/Container'
 import { Rect } from '../../engine/math/Rect'
-import { ShowCollisionDebug } from '../../utils/Constants'
+import { DebugConstants } from '../../utils/Constants'
 import { ClientPlayer } from './ClientPlayer'
 
 export interface IPlayerCollision {
@@ -21,7 +21,7 @@ export class PlayerCollision extends Container implements IPlayerCollision {
         super()
         this.player = options.player
 
-        if (ShowCollisionDebug) {
+        if (DebugConstants.ShowCollisionDebug) {
             this.debugger = new CollisionDebugger({
                 collisionRects: [ this.boundingBox ]
             })

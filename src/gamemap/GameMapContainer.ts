@@ -1,8 +1,7 @@
 import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
 import { Container, IContainer } from '../engine/display/Container'
 import { Rect } from '../engine/math/Rect'
-import { IDemolishable } from '../interface/IDemolishable'
-import { ShowCollisionDebug } from '../utils/Constants'
+import { DebugConstants } from '../utils/Constants'
 
 export interface IGameMapContainer extends IContainer {
     collisionRects: Rect[]
@@ -22,7 +21,7 @@ export class GameMapContainer extends Container implements IGameMapContainer {
 
     async initializeMap(): Promise<void> {
         if (this.collisionRects !== undefined) {
-            if (ShowCollisionDebug) {
+            if (DebugConstants.ShowCollisionDebug) {
                 this.collisionDebugger = new CollisionDebugger({
                     lineWidth: 0.5,
                     collisionRects: this.collisionRects

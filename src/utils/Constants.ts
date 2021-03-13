@@ -19,14 +19,15 @@ export const BasicLerp = (pointA: number, pointB: number, time: number) => {
     return (pointB - pointA) * time + pointA
 }
 export const GlobalScale: number = 1
-export const ShowCollisionDebug: boolean = false
-export const ShowCameraProjectionDebug: boolean = false
-export const ShowPlayerSynchDebug: boolean = false
 
 export class DebugConstants {
     static DisableFoliage: boolean = false
     static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false
+    static ShowCameraProjectionDebug: boolean = false
+    static ShowPlayerSynchDebug: boolean = false
+    static ShowCollisionDebug: boolean = false
+    static ShowInteractiveContainerDebug: boolean = true
 }
 
 export class AIDebugConstants {
