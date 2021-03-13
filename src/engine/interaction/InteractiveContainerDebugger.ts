@@ -26,7 +26,6 @@ export class InteractiveContainerDebugger extends Container implements IInteract
         this.debugGraphics.beginFill(0xfca103)
         this.debugGraphics.drawIRect(this.container.interactiveBounds)
         this.debugGraphics.endFill()
-        this.debugGraphics.alpha = 0.25
 
         this.addChild(this.debugGraphics)
     }
@@ -34,5 +33,11 @@ export class InteractiveContainerDebugger extends Container implements IInteract
     update() {
         this.debugGraphics.x = this.container.interactiveBounds.x
         this.debugGraphics.y = this.container.interactiveBounds.y
+
+        if (this.container.canInteract) {
+            this.debugGraphics.alpha = 0.5
+        } else {
+            this.debugGraphics.alpha = 0.25
+        }
     }
 }
