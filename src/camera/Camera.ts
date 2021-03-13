@@ -41,25 +41,19 @@ export class Camera implements ICamera {
     _x: number = 0
     _y: number = 0
     offsetEaseDamping: number = 20
-    // screenShakeDamping: number = 2
-    // screenShakeRecoveryDamping: number = 5
-    // maximumShakeAmount: number = 2
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero
     mouseFollowDamping: number = 50
     offset: IVector2 = Vector2.Zero
     transformOffset: IVector2 = Vector2.Zero
     instantOffset: IVector2 = Vector2.Zero
-    // _targetJitterOffset: IVector2 = Vector2.Zero
-    // _jitterOffset: IVector2 = Vector2.Zero
-    // _targetScreenShakeOffset: IVector2 = Vector2.Zero
-    // _screenShakeOffset: IVector2 = Vector2.Zero
 
     cameraDebuggerPlugin: CameraDebuggerPlugin
     cameraFlashPlugin: CameraFlashPlugin
     cameraOverlayEffectsPlugin: ICameraOverlayEffectsPlugin
     cameraSwayPlugin: ICameraSwayPlugin
     cameraShakePlugin: ICameraShakePlugin
+    plugins: any[]
 
     public static getInstance() {
         if (Camera.INSTANCE === undefined) {
@@ -80,6 +74,11 @@ export class Camera implements ICamera {
         this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this)
         this.cameraSwayPlugin = new CameraSwayPlugin(this)
         this.cameraShakePlugin = new CameraShakePlugin(this)
+        this.plugins = [
+            this.cameraFlashPlugin, this.cameraDebuggerPlugin,
+            this.cameraOverlayEffectsPlugin, this.cameraSwayPlugin,
+            this.cameraShakePlugin
+        ]
 
         this._stage.width = 1080
         this._stage.height = 720
@@ -94,19 +93,19 @@ export class Camera implements ICamera {
     }
 
     update() {
-        // this.updateCameraSway()
-        // this.updateMouseFollowOffset()
-        // this.updateCameraShake()
-        this.cameraShakePlugin.update()
-        this.cameraSwayPlugin.update()
-        this.cameraFlashPlugin.update()
+        for (var i in this.plugins) {
+            const plugin = this.plugins[i]
+
+            if (typeof plugin.update === 'function') {
+                plugin.update()
+            }
+        }
 
         if (this._target !== undefined) {
             this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
             this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
             this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
-            this.offset.y += ((this.transformOffset.y) // + this._jitterOffset.y)
-                - this.offset.y) / this.offsetEaseDamping
+            this.offset.y += ((this.transformOffset.y) - this.offset.y) / this.offsetEaseDamping
                 
             this.x = this._target.x + this.offset.x
                 + this.mouseOffset.x + this.instantOffset.x
@@ -131,19 +130,9 @@ export class Camera implements ICamera {
         const offsetX = (mouseX - viewportMiddleX) / 20
         const offsetY = (mouseY - viewportMiddleY) / 15
         
-        console.log(offsetX, offsetY)
-        
         this.targetMouseOffset.x = offsetX
         this.targetMouseOffset.y = offsetY
     }
-
-    // updateCameraShake() {
-    //     this._screenShakeOffset.x += (this._targetScreenShakeOffset.x - this._screenShakeOffset.x) / this.screenShakeDamping
-    //     this._screenShakeOffset.y += (this._targetScreenShakeOffset.y - this._screenShakeOffset.y) / this.screenShakeDamping
-
-    //     this._targetScreenShakeOffset.x += (0 - this._targetScreenShakeOffset.x) / this.screenShakeRecoveryDamping
-    //     this._targetScreenShakeOffset.y += (0 - this._targetScreenShakeOffset.y) / this.screenShakeRecoveryDamping
-    // }
 
     shake(amount: number) {
         this.cameraShakePlugin.shake(amount)
