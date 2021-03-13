@@ -13,7 +13,7 @@ export interface IPlayerBody extends IContainer, IUpdatable {
     sprite: PIXI.Sprite
     currentShown?: PIXI.AnimatedSprite | Sprite
     animator: IPlayerBodyAnimator
-    showRunningSprite(): void
+    showWalkingSprite(): void
     showJumpingSprite(): void
     showIdleSprite(): void
     showDyingSprite(): void
@@ -61,7 +61,7 @@ export class PlayerBody extends Container implements IPlayerBody {
         this.animator.update()
     }
 
-    showRunningSprite() {
+    showWalkingSprite() {
         if (this.currentShown !== this._walkingSprite) {
             this._walkingSprite.gotoAndStop(0)
             this.currentShown = this._walkingSprite

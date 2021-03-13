@@ -55,9 +55,10 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
                     this.playerBody.showIdleSprite()
 
                     break
+                case PlayerBodyState.Sprinting:
                 case PlayerBodyState.Walking:
 
-                    this.playerBody.showRunningSprite()
+                    this.playerBody.showWalkingSprite()
 
                     break
             }

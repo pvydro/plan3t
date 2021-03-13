@@ -44,7 +44,8 @@ export enum PlayerConsciousnessState {
 
 export enum PlayerBodyState {
     Idle = 0,
-    Walking = 1
+    Walking = 1,
+    Sprinting = 2
 }
 
 export enum PlayerLegsState {

@@ -42,7 +42,8 @@ export class PlayerHeadController implements IPlayerHeadController {
         if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
             this.rotateWithDeath()
             headBobRotation = 1
-        } else if (this.player.bodyState === PlayerBodyState.Walking) {
+        } else if (this.player.bodyState === PlayerBodyState.Walking
+        || this.player.bodyState === PlayerBodyState.Sprinting) {
             this.targetRotation = direction === Direction.Right ? 0.1 : -0.1
         } else {
             if (this._shouldRotateHeadWithMouseMove) {

@@ -34,7 +34,7 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
                 })
             },
             onEnter() {
-                if (this.tooltip !== undefined) {
+                if (!this.hasBeenInteracted && this.tooltip !== undefined) {
                     this.tooltip.show()
                 }
             },

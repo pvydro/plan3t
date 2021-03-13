@@ -1,7 +1,7 @@
 import { Key } from 'ts-keycode-enum'
 import { Animator } from '../../../engine/display/Animator'
 import { Sprite } from '../../../engine/display/Sprite'
-import { Tween, TweenDirection } from '../../../engine/display/tween/Tween'
+import { Tween } from '../../../engine/display/tween/Tween'
 import { IInteractiveContainer, InteractiveContainer, InteractiveContainerOptions } from '../../../engine/interaction/InteractiveContainer'
 import { IRect } from '../../../engine/math/Rect'
 import { IUpdatable } from '../../../interface/IUpdatable'

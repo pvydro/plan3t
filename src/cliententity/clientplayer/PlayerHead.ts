@@ -83,7 +83,9 @@ export class PlayerHead extends Container {
     }
 
     swapHeadBobState() {
-        let targetBobAmt = this.player.bodyState === PlayerBodyState.Walking ? 1.25 : 1
+        const isWalking = (this.player.bodyState === PlayerBodyState.Walking
+                || this.player.bodyState === PlayerBodyState.Sprinting)
+        let targetBobAmt = isWalking ? 1.25 : 1
 
         this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
         this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt

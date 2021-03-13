@@ -2,7 +2,6 @@ import { Flogger } from '../../service/Flogger'
 import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
-import { Camera } from '../../camera/Camera'
 import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 
@@ -20,11 +19,13 @@ export class PlayerController implements IPlayerController {
     leftKeyDown: boolean = false
     rightKeyDown: boolean = false
     downKeyDown: boolean = false
+    sprintKeyDown: boolean = false
     spaceKeyPressed: boolean = false
     mousePos: IVector2 = Vector2.Zero
 
     playerCrouchDivisor: number = 1.75
     playerWalkingSpeed: number = 1.5
+    playerSprintMultiplier: number = 1.25
     playerJumpingHeight: number = 5
     floorFriction = 5
 
@@ -65,17 +66,15 @@ export class PlayerController implements IPlayerController {
         const bodyState = this.player.bodyState
         const legsState = this.player.legsState
         const walkingDirection = this.player.walkingDirection
-        const targetXVel = (this.playerWalkingSpeed * walkingDirection) / this.walkDivisor
+        const sprintMultiplier = this.player.bodyState === PlayerBodyState.Sprinting
+            ? this.playerSprintMultiplier : 1
+        const targetXVel = ((this.playerWalkingSpeed * walkingDirection) / this.walkDivisor)
+            * sprintMultiplier
 
         switch (bodyState) {
+            case PlayerBodyState.Sprinting:
             case PlayerBodyState.Walking:
 
-
-                // if (walkingDirection === Direction.Left) {
-                //     this.player.xVel = -this.playerWalkingSpeed / this.walkDivisor
-                // } else if (walkingDirection === Direction.Right) {
-                //     this.player.xVel = this.playerWalkingSpeed / this.walkDivisor
-                // }
                 this.player.xVel = targetXVel
                 
                 break
@@ -114,12 +113,12 @@ export class PlayerController implements IPlayerController {
 
     moveLeft() {
         this.player.walkingDirection = Direction.Left
-        this.player.bodyState = PlayerBodyState.Walking
+        this.player.bodyState = this.sprintKeyDown ? PlayerBodyState.Sprinting : PlayerBodyState.Walking
     }
 
     moveRight() {
         this.player.walkingDirection = Direction.Right
-        this.player.bodyState = PlayerBodyState.Walking
+        this.player.bodyState = this.sprintKeyDown ? PlayerBodyState.Sprinting : PlayerBodyState.Walking
     }
 
     jump() {
@@ -172,6 +171,9 @@ export class PlayerController implements IPlayerController {
                 case Key.S:
                     this.downKeyDown = true
                     break
+                case Key.Shift:
+                    this.sprintKeyDown = true
+                    break
             }
         })
 
@@ -186,6 +188,9 @@ export class PlayerController implements IPlayerController {
                     break
                 case Key.S:
                     this.downKeyDown = false
+                    break
+                case Key.Shift:
+                    this.sprintKeyDown = false
                     break
             }
         })
