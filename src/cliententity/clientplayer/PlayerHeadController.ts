@@ -1,4 +1,3 @@
-import { Camera } from '../../camera/Camera'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'

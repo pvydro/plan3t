@@ -106,7 +106,7 @@ export class InteractiveContainer extends Container implements IInteractiveConta
         this.interactiveSimuRect.x = this.x + this.interactiveBounds.x
         this.interactiveSimuRect.y = this.y
 
-        // Interactable sensing
+        // Interactable simusensing
         if (this.player !== undefined) {
             if (this.interactiveSimuRect.contains(this.player.x, this.player.y)) {
                 this.enteredInteractZone(true)
@@ -117,9 +117,8 @@ export class InteractiveContainer extends Container implements IInteractiveConta
             this.player = ClientPlayer.getInstance()
         }
 
-        if (this.debugger !== undefined) {
-            this.debugger.update()
-        }
+        if (this.debugger !== undefined) this.debugger.update()
+        if (this.walkZone !== undefined) this.walkZone.update()
     }
 
     interact(): Promise<any> {

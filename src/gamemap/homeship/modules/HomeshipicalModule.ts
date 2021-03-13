@@ -30,7 +30,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
 
     constructor(options?: HomeshipicalModuleOptions) {
         options.interactiveBounds = {
-            width: 96,
+            width: 72,
             height: options.sprite ? options.sprite.height : 64
         }
         options.addWalkZone = true
@@ -46,6 +46,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
 
             if (options.shouldAddTooltip === true) {
                 const keyText = Key[this.interactKey]
+                const tooltipPadding = 4
 
                 this.tooltip = TooltipManager.getInstance().addTooltip({
                     type: TooltipType.Key,
@@ -53,8 +54,8 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
                     hideByDefault: true,
                     targetToFollow: {
                         target: this,
-                        center: true,
-                        xOffset: -(this.interactiveBounds.width / 2) + this.sprite.halfWidth
+                        xOffset: (this.interactiveBounds.width / 1.5) - this.sprite.halfWidth - tooltipPadding,
+                        yOffset: (this.interactiveBounds.height / 2)
                     },
                 })
             }
