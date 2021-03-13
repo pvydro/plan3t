@@ -25,7 +25,7 @@ export class Animator implements IAnimator {
             this._currentAnimation.pause()
         }
 
-        this._currentAnimation.play()
+        await this._currentAnimation.play()
     }
 
     async pause() {

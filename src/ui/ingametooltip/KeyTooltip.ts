@@ -63,12 +63,12 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
     async show() {
         this.animator.currentAnimation = this.showAnimation
         this.alpha = 1
-        await this.animator.currentAnimation.play()
+        await this.animator.play()
     }
 
     async hide() {
         this.animator.currentAnimation = this.hideAnimation
-        await this.animator.currentAnimation.play()
+        await this.animator.play()
         this.alpha = 0
     }
 }

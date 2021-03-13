@@ -1,4 +1,4 @@
-import { TweenDirection, TweenOptions } from './Tween'
+import { TweenOptions } from './Tween'
 import { Easing } from './TweenEasing'
 
 export interface IPredefinedTween extends TweenOptions {

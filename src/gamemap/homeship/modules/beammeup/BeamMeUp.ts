@@ -19,11 +19,15 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
             interactKey: Key.E,
             shouldAddTooltip: true,
             onInteract() {
-                Flogger.log('BeamMeUp', 'onInteract')
-                
                 return new Promise((resolve) => {
+                    Flogger.log('BeamMeUp', 'onInteract')
+
+                    this.highlight()
+
                     window.setTimeout(() => {
                         Flogger.log('BeamMeUp', 'interaction finished')
+
+                        this.unhighlight()
 
                         resolve(true)
                     }, 1000)

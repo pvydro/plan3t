@@ -12,6 +12,7 @@ import { InteractiveContainerDebugger } from './InteractiveContainerDebugger'
 export interface IInteractiveContainer extends IContainer, IUpdatable {
     interactiveBounds: IRect
     canInteract: boolean
+    hasBeenInteracted: boolean
     interact(): Promise<any>
 }
 
@@ -31,6 +32,7 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     debugger?: InteractiveContainerDebugger
     interactiveBounds: Rect
     canInteract: boolean = false
+    hasBeenInteracted: boolean = false
     interactiveOffsetX: number = 0
     interactiveSimuRect: Rect
     onInteract?: Function
@@ -122,8 +124,10 @@ export class InteractiveContainer extends Container implements IInteractiveConta
                 if (typeof this.onInteract === 'function') {
                     await this.onInteract()
                 }
-
+                
+                this.hasBeenInteracted = true
                 this.currentInteractionPromise = undefined
+
                 resolve(true)
             })
         }
