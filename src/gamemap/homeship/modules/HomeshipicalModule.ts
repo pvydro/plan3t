@@ -33,6 +33,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
             width: 96,
             height: options.sprite ? options.sprite.height : 64
         }
+        options.addWalkZone = true
         super(options)
         
         this.animator = new Animator()
@@ -52,7 +53,8 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
                     hideByDefault: true,
                     targetToFollow: {
                         target: this,
-                        center: true
+                        center: true,
+                        xOffset: -(this.interactiveBounds.width / 2) + this.sprite.halfWidth
                     },
                 })
             }

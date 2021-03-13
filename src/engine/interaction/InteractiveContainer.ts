@@ -8,9 +8,12 @@ import { Container, IContainer } from '../display/Container'
 import { IDimension } from '../math/Dimension'
 import { IRect, Rect } from '../math/Rect'
 import { InteractiveContainerDebugger } from './InteractiveContainerDebugger'
+import { InteractiveContainerWalkZone } from './InteractiveContainerWalkZone'
 
 export interface IInteractiveContainer extends IContainer, IUpdatable {
     interactiveBounds: IRect
+    interactiveSimuRect: IRect
+    interactiveOffsetX: number
     canInteract: boolean
     hasBeenInteracted: boolean
     interact(): Promise<any>
@@ -20,6 +23,7 @@ export interface InteractiveContainerOptions {
     interactKey?: Key
     interactiveBounds?: IDimension
     interactiveOffsetX?: number
+    addWalkZone?: boolean
     onInteract?: Function
     onEnter?: Function
     onExit?: Function
@@ -35,6 +39,7 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     hasBeenInteracted: boolean = false
     interactiveOffsetX: number = 0
     interactiveSimuRect: Rect
+    walkZone?: InteractiveContainerWalkZone
     onInteract?: Function
     onEnter?: Function
     onExit?: Function
@@ -78,6 +83,10 @@ export class InteractiveContainer extends Container implements IInteractiveConta
             x: this.x, y: this.y,
             width: this.interactiveBounds.width, height: this.interactiveBounds.height
         })
+
+        if (options !== undefined && options.addWalkZone) {
+            this.addWalkZone()
+        }
 
         // Debugger
         if (DebugConstants.ShowInteractiveContainerDebug) {
@@ -148,6 +157,15 @@ export class InteractiveContainer extends Container implements IInteractiveConta
         }
 
         this.canInteract = entered
+    }
+
+    addWalkZone() {
+        this.walkZone = new InteractiveContainerWalkZone({
+            interactiveBounds: this.interactiveSimuRect,
+            interactiveOffsetX: this.interactiveOffsetX
+        })
+
+        this.addChild(this.walkZone)
     }
 
     applyKeyListener() {

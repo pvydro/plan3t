@@ -111,8 +111,6 @@ export class Camera implements ICamera {
                 + this.mouseOffset.x + this.instantOffset.x
             this.y = this._target.y + this.offset.y
                 + this.mouseOffset.y + this.instantOffset.y
-
-            console.log(this.mouseOffset.x)
         }
 
         Camera.Zero = this.toScreen({ x: 0, y: 0 })

@@ -53,7 +53,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
 
         this.pointerCursor = new CrosshairCursor({ crosshair: this })
 
-        for (let i in this.nodes) {
+        for (const i in this.nodes) {
             const node = this.nodes[i]
             this.addChild(node)
         }
