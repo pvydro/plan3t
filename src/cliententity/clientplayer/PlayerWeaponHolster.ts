@@ -53,7 +53,6 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         InputProcessor.on(InputEvents.KeyDown, (e: KeyboardEvent) => {
             switch (e.which) {
                 case Key.Q:
-                case Key.E:
                     this.swapWeapon()
                     break
                 case Key.R:

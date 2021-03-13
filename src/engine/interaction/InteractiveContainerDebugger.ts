@@ -1,7 +1,6 @@
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Container } from '../display/Container'
 import { Graphix } from '../display/Graphix'
-import { IRect } from '../math/Rect'
 import { IInteractiveContainer } from './InteractiveContainer'
 
 export interface IInteractiveContainerDebugger extends IUpdatable {

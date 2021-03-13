@@ -1,6 +1,8 @@
 import { Key } from 'ts-keycode-enum'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
+import { Flogger } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
 import { Container, IContainer } from '../display/Container'
 import { IDimension } from '../math/Dimension'
@@ -17,6 +19,7 @@ export interface InteractiveContainerOptions {
     interactKey?: Key
     interactiveBounds?: IDimension
     interactiveOffsetX?: number
+    onInteract?: Function
 }
 
 export class InteractiveContainer extends Container implements IInteractiveContainer {
@@ -28,7 +31,8 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     canInteract: boolean = false
     interactiveOffsetX: number = 0
     interactiveSimuRect: Rect
-    
+    onInteract: Function
+
     constructor(options?: InteractiveContainerOptions) {
         super()
 
@@ -42,9 +46,14 @@ export class InteractiveContainer extends Container implements IInteractiveConta
             }
             if (options.interactKey !== undefined) {
                 this.interactKey = options.interactKey
+
+                this.applyKeyListener()
             }
             if (options.interactiveOffsetX !== undefined) {
                 this.interactiveOffsetX = options.interactiveOffsetX
+            }
+            if (options.onInteract !== undefined) {
+                this.onInteract = options.onInteract
             }
         }
 
@@ -76,7 +85,6 @@ export class InteractiveContainer extends Container implements IInteractiveConta
         // Interactable sensing
         if (this.player !== undefined) {
             if (this.interactiveSimuRect.contains(this.player.x, this.player.y)) {
-                console.log('oh')
                 this.canInteract = true
             } else {
                 this.canInteract = false
@@ -91,8 +99,31 @@ export class InteractiveContainer extends Container implements IInteractiveConta
     }
 
     interact(): Promise<any> {
-        if (this.currentInteractionPromise !== undefined) {
-            return this.currentInteractionPromise
+        Flogger.log('InteractiveContainer', 'interact')
+
+        if (!this.canInteract) {
+            Flogger.log('InteractiveContainer', 'Out of interaction range')
+            
+            return 
         }
+
+        if (this.currentInteractionPromise == undefined) {
+            this.currentInteractionPromise = new Promise(async (resolve) => {
+                await this.onInteract()
+
+                this.currentInteractionPromise = undefined
+                resolve(true)
+            })
+        }
+
+        return this.currentInteractionPromise
+    }
+
+    applyKeyListener() {
+        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
+            if (event.which === this.interactKey) {
+                this.interact()
+            }
+        })
     }
 }
