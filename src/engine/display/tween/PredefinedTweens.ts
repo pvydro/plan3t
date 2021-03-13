@@ -1,14 +1,9 @@
-import { TweenDirection } from './Tween'
+import { TweenDirection, TweenOptions } from './Tween'
 import { Easing } from './TweenEasing'
 
-export interface IPredefinedTween {
-    duration?: number
-    ease?: gsap.EaseFunction
-    autoplay?: boolean
-    direction?: TweenDirection
+export interface IPredefinedTween extends TweenOptions {
     offsetY?: number
-    offsetYX?: number
-    [ key: string ]: any
+    offsetX?: number
 }
 
 export class PredefinedTweens {
