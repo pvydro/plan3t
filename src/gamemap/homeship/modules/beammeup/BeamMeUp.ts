@@ -20,7 +20,10 @@ export class BeamMeUp extends HomeshipicalModule implements IBeamMeUp {
         TooltipManager.getInstance().addTooltip({
             type: TooltipType.Key,
             text: 'E',
-            targetToFollow: this
+            targetToFollow: {
+                target: this,
+                center: true
+            }
         })
     }
 }

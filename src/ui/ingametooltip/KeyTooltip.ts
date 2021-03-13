@@ -21,6 +21,6 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
     }
 
     update() {
-
+        super.update()
     }
 }

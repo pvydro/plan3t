@@ -56,6 +56,7 @@ export class Defaults {
 export class UIConstants {
     static HUDScale: number = 5
     static HUDPadding: number = 42
+    static TooltipMargin: number = 4
     static SwipeAnimationDistance: number = 4
 }
 

@@ -4,6 +4,7 @@ import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityMana
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { IParticleManager, ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { IRoomManager } from '../manager/roommanager/RoomManager'
+import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
 
 export interface IGameLoop {
@@ -20,17 +21,19 @@ export class GameLoop implements IGameLoop {
     static Delta: number = 1
     _initialized: boolean = false
     _shouldLoop: boolean = true
-    clientManager?: IClientManager = undefined
-    particleManager?: ParticleManager = undefined
-    entityManager?: IEntityManager = undefined
-    gravityManager: IGravityManager = undefined
-    roomManager?: IRoomManager = undefined
+    clientManager?: IClientManager
+    particleManager?: ParticleManager
+    tooltipManager?: TooltipManager
+    entityManager?: IEntityManager
+    gravityManager: IGravityManager
+    roomManager?: IRoomManager
 
     constructor(options: GameLoopOptions) {
         this.assignOptions(options)
 
         this.gravityManager = GravityManager.getInstance()
         this.particleManager = ParticleManager.getInstance()
+        this.tooltipManager = TooltipManager.getInstance()
     }
 
     startGameLoop(options?: GameLoopOptions) {
@@ -76,6 +79,7 @@ export class GameLoop implements IGameLoop {
         // Update current state
         this.clientManager.update()
         this.particleManager.update()
+        this.tooltipManager.update()
 
         if (this._shouldLoop) {
             requestAnimationFrame(this.gameLoop.bind(this))
