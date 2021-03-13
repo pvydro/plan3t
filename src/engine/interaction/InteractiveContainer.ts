@@ -121,11 +121,12 @@ export class InteractiveContainer extends Container implements IInteractiveConta
 
         if (this.currentInteractionPromise == undefined) {
             this.currentInteractionPromise = new Promise(async (resolve) => {
+                this.hasBeenInteracted = true
+
                 if (typeof this.onInteract === 'function') {
                     await this.onInteract()
                 }
                 
-                this.hasBeenInteracted = true
                 this.currentInteractionPromise = undefined
 
                 resolve(true)

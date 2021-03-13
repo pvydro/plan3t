@@ -23,7 +23,6 @@ export class CameraSwayPlugin implements ICameraSwayPlugin {
     }
     
     update() {
-        // Update sway values
         this._jitterOffset.x += (this._targetJitterOffset.x - this._jitterOffset.x) / this.jitterDamping
         this._jitterOffset.y += (this._targetJitterOffset.y - this._jitterOffset.y) / this.jitterDamping
 

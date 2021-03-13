@@ -4,6 +4,7 @@ import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
+import { DebugConstants } from '../../utils/Constants'
 
 export interface IPlayerController {
     update(): void
@@ -66,8 +67,12 @@ export class PlayerController implements IPlayerController {
         const bodyState = this.player.bodyState
         const legsState = this.player.legsState
         const walkingDirection = this.player.walkingDirection
-        const walkMultiplier = this.player.bodyState === PlayerBodyState.Sprinting
-            ? this.playerSprintMultiplier : 1
+        const superSprint = (DebugConstants.SuperSprint)
+        let walkMultiplier = this.player.bodyState === PlayerBodyState.Sprinting
+            ? (superSprint
+                ? this.playerSprintMultiplier * 3
+                : this.playerSprintMultiplier)
+            : 1
         const targetXVel = ((this.playerWalkingSpeed * walkingDirection) / this.walkDivisor)
             * walkMultiplier
 

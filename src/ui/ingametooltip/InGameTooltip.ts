@@ -12,6 +12,7 @@ export enum TooltipType {
 
 export interface IInGameTooltip extends IUIComponent {
     tooltipContainer: IContainer
+    used(): Promise<any>
 }
 
 export interface ITargetToFollow {
@@ -93,20 +94,16 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
         }
     }
 
-    show(): Promise<void> {
-        return new Promise((resolve) => {
-            this.tooltipContainer.alpha = 1
-
-            resolve()
-        })
+    async show() {
+        this.tooltipContainer.alpha = 1
     }
 
-    hide(): Promise<void> {
-        return new Promise((resolve) => {
-            this.tooltipContainer.alpha = 0
+    async hide() {
+        this.tooltipContainer.alpha = 0
+    }
 
-            resolve()
-        })
+    async used(): Promise<void> {
+        this.tooltipContainer.alpha = 0
     }
 
     get backgroundWidth() {

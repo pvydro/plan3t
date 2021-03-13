@@ -8,11 +8,14 @@ import { InGameTooltip, InGameTooltipOptions } from './InGameTooltip'
 import { Animator, IAnimator } from '../../engine/display/Animator'
 import { Tween } from '../../engine/display/tween/Tween'
 import { PredefinedTweens } from '../../engine/display/tween/PredefinedTweens'
+import { Easing } from '../../engine/display/tween/TweenEasing'
 
 export interface KeyTooltipOptions extends InGameTooltipOptions {
+    
 }
 
 export interface IKeyTooltip extends InGameTooltip {
+    
 }
 
 export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
@@ -20,6 +23,7 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
     keyText: TextSprite
     showAnimation: TweenLite
     hideAnimation: TweenLite
+    usedAnimation: TweenLite
     originalY: number
 
     constructor(options: KeyTooltipOptions) {
@@ -45,11 +49,16 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
             ease: swipeUpAnim.ease,
             alpha: 1,
         })
-
         this.hideAnimation = Tween.to(this.tooltipContainer, {
             y: this.originalY + swipeUpAnim.offsetY,
             duration: swipeUpAnim.duration,
             ease: swipeUpAnim.ease,
+            alpha: 0
+        })
+        this.usedAnimation = Tween.to(this.tooltipContainer, {
+            y: this.originalY - swipeUpAnim.offsetY,
+            duration: 1,
+            ease: Easing.EaseInQuint,
             alpha: 0
         })
         
@@ -68,6 +77,12 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
 
     async hide() {
         this.animator.currentAnimation = this.hideAnimation
+        await this.animator.play()
+        this.alpha = 0
+    }
+
+    async used() {
+        this.animator.currentAnimation = this.usedAnimation
         await this.animator.play()
         this.alpha = 0
     }

@@ -71,7 +71,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
     }
 
     async highlight() {
-        this.tooltip.hide()
+        this.tooltip.used()
         this.animator.currentAnimation = this.highlightAnimation
         this.animator.play()
     }

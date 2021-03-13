@@ -9,12 +9,14 @@ import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugi
 import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
 import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugin/CameraOverlayEffectsPlugin'
 import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
+import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugin'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
     stage: CameraStage
     offset: IVector2
     transformOffset: IVector2
+    instantOffset: IVector2
     offsetEaseDamping: number
     resize(width: number, height: number): void
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
@@ -39,23 +41,25 @@ export class Camera implements ICamera {
     _x: number = 0
     _y: number = 0
     offsetEaseDamping: number = 20
-    screenShakeDamping: number = 2
-    screenShakeRecoveryDamping: number = 5
-    maximumShakeAmount: number = 2
+    // screenShakeDamping: number = 2
+    // screenShakeRecoveryDamping: number = 5
+    // maximumShakeAmount: number = 2
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero
     mouseFollowDamping: number = 50
     offset: IVector2 = Vector2.Zero
     transformOffset: IVector2 = Vector2.Zero
+    instantOffset: IVector2 = Vector2.Zero
     // _targetJitterOffset: IVector2 = Vector2.Zero
     // _jitterOffset: IVector2 = Vector2.Zero
-    _targetScreenShakeOffset: IVector2 = Vector2.Zero
-    _screenShakeOffset: IVector2 = Vector2.Zero
+    // _targetScreenShakeOffset: IVector2 = Vector2.Zero
+    // _screenShakeOffset: IVector2 = Vector2.Zero
 
     cameraDebuggerPlugin: CameraDebuggerPlugin
     cameraFlashPlugin: CameraFlashPlugin
     cameraOverlayEffectsPlugin: ICameraOverlayEffectsPlugin
     cameraSwayPlugin: ICameraSwayPlugin
+    cameraShakePlugin: ICameraShakePlugin
 
     public static getInstance() {
         if (Camera.INSTANCE === undefined) {
@@ -75,6 +79,7 @@ export class Camera implements ICamera {
         this.cameraDebuggerPlugin = new CameraDebuggerPlugin(this)
         this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this)
         this.cameraSwayPlugin = new CameraSwayPlugin(this)
+        this.cameraShakePlugin = new CameraShakePlugin(this)
 
         this._stage.width = 1080
         this._stage.height = 720
@@ -91,7 +96,8 @@ export class Camera implements ICamera {
     update() {
         // this.updateCameraSway()
         // this.updateMouseFollowOffset()
-        this.updateCameraShake()
+        // this.updateCameraShake()
+        this.cameraShakePlugin.update()
         this.cameraSwayPlugin.update()
         this.cameraFlashPlugin.update()
 
@@ -102,10 +108,10 @@ export class Camera implements ICamera {
             this.offset.y += ((this.transformOffset.y) // + this._jitterOffset.y)
                 - this.offset.y) / this.offsetEaseDamping
                 
-            this.x = this._target.x + this.offset.x + this.mouseOffset.x
-                //  + this._jitterOffset.x + this._screenShakeOffset.x
-            this.y = this._target.y + this.offset.y + this.mouseOffset.y
-                //  + this._screenShakeOffset.y
+            this.x = this._target.x + this.offset.x
+                + this.mouseOffset.x + this.instantOffset.x
+            this.y = this._target.y + this.offset.y
+                + this.mouseOffset.y + this.instantOffset.y
 
             console.log(this.mouseOffset.x)
         }
@@ -131,21 +137,16 @@ export class Camera implements ICamera {
         this.targetMouseOffset.y = offsetY
     }
 
-    updateCameraShake() {
-        this._screenShakeOffset.x += (this._targetScreenShakeOffset.x - this._screenShakeOffset.x) / this.screenShakeDamping
-        this._screenShakeOffset.y += (this._targetScreenShakeOffset.y - this._screenShakeOffset.y) / this.screenShakeDamping
+    // updateCameraShake() {
+    //     this._screenShakeOffset.x += (this._targetScreenShakeOffset.x - this._screenShakeOffset.x) / this.screenShakeDamping
+    //     this._screenShakeOffset.y += (this._targetScreenShakeOffset.y - this._screenShakeOffset.y) / this.screenShakeDamping
 
-        this._targetScreenShakeOffset.x += (0 - this._targetScreenShakeOffset.x) / this.screenShakeRecoveryDamping
-        this._targetScreenShakeOffset.y += (0 - this._targetScreenShakeOffset.y) / this.screenShakeRecoveryDamping
-    }
+    //     this._targetScreenShakeOffset.x += (0 - this._targetScreenShakeOffset.x) / this.screenShakeRecoveryDamping
+    //     this._targetScreenShakeOffset.y += (0 - this._targetScreenShakeOffset.y) / this.screenShakeRecoveryDamping
+    // }
 
     shake(amount: number) {
-        const maximumShake = this.maximumShakeAmount * amount
-
-        this._targetScreenShakeOffset.x = (Math.random() * maximumShake)
-        this._targetScreenShakeOffset.y = (Math.random() * maximumShake)
-        this._targetScreenShakeOffset.x *= (Math.random() > 0.5) ? 1 : -1
-        this._targetScreenShakeOffset.y *= (Math.random() > 0.5) ? 1 : -1
+        this.cameraShakePlugin.shake(amount)
     }
 
     flash(options: CameraFlashOptions) {
