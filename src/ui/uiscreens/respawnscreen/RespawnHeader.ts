@@ -1,13 +1,13 @@
 import { IUIComponent } from '../../UIComponent'
-import { TextSprite } from '../../../engine/display/TextSprite'
 import { Fonts } from '../../../asset/Fonts'
 import { UIConstants } from '../../../utils/Constants'
+import { UIText } from '../../UIText'
 
 export interface IRespawnHeader extends IUIComponent {
     
 }
 
-export class RespawnHeader extends TextSprite implements IRespawnHeader {
+export class RespawnHeader extends UIText implements IRespawnHeader {
     _isShown: boolean
 
     constructor() {
@@ -27,22 +27,6 @@ export class RespawnHeader extends TextSprite implements IRespawnHeader {
 
     reposition(addListener?: boolean) {
         this.position.set(UIConstants.HUDPadding, UIConstants.HUDPadding)
-    }
-
-    forceHide() {
-        this.alpha = 0
-    }
-
-    async show() {
-        this._isShown = true
-    }
-    
-    async hide() {
-        this._isShown = false
-    }
-
-    get isShown() {
-        return this._isShown
     }
 
     demolish() {
