@@ -140,10 +140,10 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     applyScale() {
         const toScale: UIComponent[] = [
             this.healthBar, this.ammoStatus,
-            // this.respawnScreen.respawnButton,
-            this.hotbar,
-            this.inventory
+            this.hotbar, this.inventory
         ]
+
+        this.inGameMenu.applyScale()
 
         super.applyScale(toScale)
     }

@@ -17,6 +17,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     private static INSTANCE: InGameMenu
     darkener: Darkener
     respawnScreen: RespawnScreen
+    allScreens: IUIScreen[]
 
     static getInstance() {
         if (InGameMenu.INSTANCE === undefined) {
@@ -36,6 +37,10 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
 
         this.addChild(this.darkener)
         this.addChild(this.respawnScreen)
+
+        this.allScreens = [
+            this.respawnScreen
+        ]
     }
 
     async showScreen(id: InGameScreenID) {
@@ -58,11 +63,12 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     }
 
     applyScale() {
-        const toScale: UIComponent[] = [
-            this.respawnScreen.respawnButton
-        ]
+        for (const i in this.allScreens) {
+            const screen = this.allScreens[i]
+            screen.applyScale()
+        }
 
-        super.applyScale(toScale)
+        super.applyScale()
     }
 
     forceHide() {

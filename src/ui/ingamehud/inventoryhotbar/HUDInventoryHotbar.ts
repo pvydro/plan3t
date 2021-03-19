@@ -68,4 +68,8 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
             slot.x = spacingTotal * i
         }
     }
+
+    async hide() {
+        this.alpha = 0
+    }
 }
