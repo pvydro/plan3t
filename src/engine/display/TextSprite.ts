@@ -21,6 +21,7 @@ export interface TextSpriteOptions {
     color?: number
     align?: TextSpriteAlign
     rescale?: number
+    uppercase?: boolean
 }
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
@@ -29,15 +30,16 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     rescale: number
 
     constructor(options: TextSpriteOptions) {
+        const text = options.uppercase === true ? options.text.toUpperCase() : options.text
         const fontFamily = options.fontFamily ?? Fonts.Font.family
-        const fontSize = options.fontSize ?? 16
+        const fontSize = options.fontSize ?? 64
         const fill = options.color ?? 0xFFFFFF
         const align = (options.align as string) ?? 'center'
         const wordWrap = false
         const rescale = options.rescale ?? 0.5
         const style = new PIXI.TextStyle({ fontFamily, fontSize, fill, align, wordWrap })
         
-        super(options.text, style)
+        super(text, style)
         
         this.style = style
         this.rescale = rescale

@@ -32,7 +32,8 @@ export class TextParticle extends Particle implements ITextParticle {
 
     constructor(options: TextParticleOptions) {
         options.sprite = new TextSprite({
-            text: options.text
+            text: options.text,
+            fontSize: 16
         })
         super(options)
 
