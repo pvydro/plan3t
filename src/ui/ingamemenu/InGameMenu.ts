@@ -9,6 +9,7 @@ export enum InGameScreenID {
 
 export interface IInGameMenu {
     showScreen(id: InGameScreenID): Promise<void>
+    hideScreen(id: InGameScreenID): Promise<void>
     hideAllScreens(): Promise<void>
 }
 
@@ -40,7 +41,14 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     async showScreen(id: InGameScreenID) {
         const screen = this.getScreenForID(id)
 
+        this.darkener.show()
         await screen.show()
+    }
+
+    async hideScreen(id: InGameScreenID) {
+        const screen = this.getScreenForID(id)
+
+        await screen.hide()
     }
 
     async hideAllScreens() {

@@ -4,6 +4,7 @@ import { InputEvents, InputProcessor } from "../../input/InputProcessor";
 import { ParticleManager } from "../../manager/particlemanager/ParticleManager";
 import { Flogger } from "../../service/Flogger";
 import { InGameHUD } from "../../ui/ingamehud/InGameHUD";
+import { InGameScreenID } from "../../ui/ingamemenu/InGameMenu";
 import { IClientPlayer, PlayerConsciousnessState } from "./ClientPlayer";
 
 export interface IPlayerHealthController {
@@ -96,6 +97,6 @@ export class PlayerHealthController implements IPlayerHealthController {
             position: { x: this.player.x, y: this.player.y }
         }))
 
-        hud.requestRespawnScreen()
+        hud.requestScreen(InGameScreenID.RespawnScreen)
     }
 }

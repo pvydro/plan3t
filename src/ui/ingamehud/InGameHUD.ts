@@ -6,7 +6,6 @@ import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
-import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
 import { UIScreen } from '../uiscreens/UIScreen'
 import { AmmoStatusComponent } from './ammostatus/AmmoStatusComponent'
 import { Crosshair, CrosshairState } from './crosshair/Crosshair'
@@ -16,8 +15,9 @@ import { HUDInventoryHotbar } from './inventoryhotbar/HUDInventoryHotbar'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     initializeHUD(): Promise<void>
-    requestRespawnScreen(): Promise<void>
-    closeRespawnScreen(): Promise<void>
+    // requestRespawnScreen(): Promise<void>
+    // closeRespawnScreen(): Promise<void>
+    requestScreen(id: InGameScreenID): Promise<void>
     requestCrosshairState(state: CrosshairState): void
 }
 
@@ -62,8 +62,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         return new Promise((resolve, reject) => {
             this.addChild(this.ammoStatus)
             this.addChild(this.hotbar)
-            // this.addChild(this.respawnScreen)
-            // this.addChild(this.inventory)
             this.addChild(this.inGameMenu)
             this.addChild(this.crosshair)
 
@@ -109,31 +107,33 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         }
     }
 
-    async requestRespawnScreen() {
-        Flogger.log('InGameHUD', 'requestRespawnScreen')
-        
+    async requestScreen(id: InGameScreenID) {
+        Flogger.log('InGameHUD', 'requestScreen', 'id', id)
+
         await this.hideHUDComponents()
-        // await this.respawnScreen.show()
-        await this.inGameMenu.showScreen(InGameScreenID.RespawnScreen)
+        await this.inGameMenu.showScreen(id)
 
         setTimeout(() => {
             this.crosshair.state = CrosshairState.Cursor
-        }, 250)
+        })
     }
 
-    async closeRespawnScreen() {
-        Flogger.log('InGameHUD', 'closeRespawnScreen')
+    async closeScreen(id: InGameScreenID) {
+        Flogger.log('InGameHUD', 'closeScreen', 'id', id)
 
-        // await this.respawnScreen.hide()
-        this.crosshair.state = CrosshairState.Gameplay
+        await this.inGameMenu.hideScreen(id)
         await this.showHUDComponents()
+
+        this.crosshair.state = CrosshairState.Gameplay
     }
 
     private async hideHUDComponents() {
+        await this.hotbar.hide()
         await this.ammoStatus.hide()
     }
 
     private async showHUDComponents() {
+        await this.hotbar.show()
         await this.ammoStatus.show()
     }
 

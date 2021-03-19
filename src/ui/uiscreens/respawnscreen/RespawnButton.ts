@@ -5,6 +5,7 @@ import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { Flogger } from '../../../service/Flogger'
 import { UIConstants, WindowSize } from '../../../utils/Constants'
 import { InGameHUD } from '../../ingamehud/InGameHUD'
+import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
 export interface IRespawnButton extends IUIButton, IReposition {
@@ -48,7 +49,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
         const hud = InGameHUD.getInstance()
         const roomManager = RoomManager.getInstance()
 
-        hud.closeRespawnScreen()
+        hud.closeScreen(InGameScreenID.RespawnScreen)
         roomManager.requestClientPlayerRespawn()
     }
 
