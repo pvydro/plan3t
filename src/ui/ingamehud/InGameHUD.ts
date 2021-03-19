@@ -115,7 +115,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         setTimeout(() => {
             this.crosshair.state = CrosshairState.Cursor
-        })
+        }, 250)
     }
 
     async closeScreen(id: InGameScreenID) {

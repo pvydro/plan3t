@@ -48,7 +48,8 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
 
         this.allScreens = [
             this.respawnScreen,
-            this.inGameInventory
+            this.inGameInventory,
+            this.beamMeUpScreen
         ]
     }
 
@@ -82,7 +83,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
 
     forceHide() {
         this.darkener.forceHide()
-        
+
         for (const i in this.allScreens) {
             const screen = this.allScreens[i]
             
@@ -97,6 +98,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
             case InGameScreenID.RespawnScreen:
                 screen = this.respawnScreen
                 break
+            default:
             case InGameScreenID.BeamMeUp:
                 screen = this.beamMeUpScreen
                 break

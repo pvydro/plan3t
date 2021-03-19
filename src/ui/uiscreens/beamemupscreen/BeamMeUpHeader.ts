@@ -6,17 +6,26 @@ export interface IBeamMeUpHeader extends IUIComponent {
 }
 
 export class BeamMeUpHeader extends UIComponent implements IBeamMeUpHeader {
-    currentPlanetheader: UIText
+    currentPlanetIntroHeader: UIText
+    currentPlanetText: UIText
 
     constructor() {
         super()
 
-        this.currentPlanetheader = new UIText({
+        this.currentPlanetIntroHeader = new UIText({
             text: 'Current Planet',
             uppercase: true
         })
+        this.currentPlanetText = new UIText({
+            text: 'Kepler',
+            uppercase: true
+        })
 
-        this.addChild(this.currentPlanetheader)
+        this.addChild(this.currentPlanetIntroHeader)
+        this.addChild(this.currentPlanetText)
+    }
 
+    forceHide() {
+        this.alpha = 0
     }
 }

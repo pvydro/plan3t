@@ -17,6 +17,6 @@ export class BeamMeUpScreen extends UIScreen implements IBeamMeUpScreen {
     }
 
     forceHide() {
-        
+        this.header.forceHide()
     }
 }

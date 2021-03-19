@@ -3,6 +3,8 @@ import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { ClientPlayer, PlayerConsciousnessState } from '../../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../../engine/display/Sprite'
 import { Flogger } from '../../../../service/Flogger'
+import { InGameHUD } from '../../../../ui/ingamehud/InGameHUD'
+import { InGameScreenID } from '../../../../ui/ingamemenu/InGameMenu'
 import { HomeshipicalModule, IHomeShipicalModule } from '../HomeshipicalModule'
 
 export interface IBeamMeUpModule extends IHomeShipicalModule {
@@ -15,6 +17,7 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
     constructor() {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.HSM_BEAM_ME_UP))
         const sprite = new Sprite({ texture })
+        // let hud = InGameHUD.getInstance()
 
         super({
             sprite,
@@ -31,6 +34,13 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
                     
                     this.didInteract = true
                     this.highlight()
+
+                    // if (hud) {
+                    //     hud.requestScreen(InGameScreenID.BeamMeUp)
+                    // } else {
+                    //     // hud = InGameHUD.getInstance()
+                    //     // hud.requestScreen(InGameScreenID.BeamMeUp)
+                    // }
 
                     player.consciousnessState = PlayerConsciousnessState.Controlled
 
