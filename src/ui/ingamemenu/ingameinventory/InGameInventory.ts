@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js'
-import { Assets, AssetUrls } from '../../asset/Assets'
-import { Sprite } from '../../engine/display/Sprite'
-import { Flogger } from '../../service/Flogger'
-import { UIConstants, WindowSize } from '../../utils/Constants'
-import { IUIComponent, UIComponent } from '../UIComponent'
+import { Assets, AssetUrls } from '../../../asset/Assets'
+import { Sprite } from '../../../engine/display/Sprite'
+import { Flogger } from '../../../service/Flogger'
+import { UIConstants, WindowSize } from '../../../utils/Constants'
+import { IUIComponent, UIComponent } from '../../UIComponent'
 
 export interface IInGameInventory extends IUIComponent {
 
@@ -35,8 +35,8 @@ export class InGameInventory extends UIComponent implements IInGameInventory {
         this.bottomBarSprite.y = 4 // this.minimumHeight + this.topBarSprite.height
         this.bottomBarSprite.x = 4 // this.bottomBarSprite.width
 
-        const thisX = (WindowSize.width / 2) / UIConstants.HUDScale
-        const thisY = ((WindowSize.height / 2) / UIConstants.HUDScale)
+        const thisX = (WindowSize.width / 2) / UIConstants.UIScale
+        const thisY = ((WindowSize.height / 2) / UIConstants.UIScale)
             -(this.height / 2)
 
         // this.position.set(thisX, thisY)

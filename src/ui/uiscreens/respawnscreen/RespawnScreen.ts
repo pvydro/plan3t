@@ -13,7 +13,7 @@ export interface IRespawnScreen extends IUIScreen {
 }
 
 export class RespawnScreen extends UIScreen implements IRespawnScreen {
-    darkener: Darkener
+    // darkener: Darkener
     respawnHeader: RespawnHeader
     respawnButton: UIButton
     animator: IRespawnScreenAnimator
@@ -22,11 +22,11 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
         super({})
 
         this.animator = new RespawnScreenAnimator({ screen: this })
-        this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })
+        // this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })
         this.respawnHeader = new RespawnHeader()
         this.respawnButton = new RespawnButton()
         
-        this.addChild(this.darkener)
+        // this.addChild(this.darkener)
         this.addChild(this.respawnHeader)
         this.addChild(this.respawnButton)
     }

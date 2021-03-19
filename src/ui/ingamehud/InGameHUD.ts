@@ -2,10 +2,12 @@ import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { UIConstants, WindowSize } from '../../utils/Constants'
-import { IInGameInventory, InGameInventory } from '../ingameinventory/InGameInventory'
+import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
+import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
 import { UIContainer } from '../UIContainer'
 import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
+import { UIScreen } from '../uiscreens/UIScreen'
 import { AmmoStatusComponent } from './ammostatus/AmmoStatusComponent'
 import { Crosshair, CrosshairState } from './crosshair/Crosshair'
 import { HealthBar } from './healthbar/HealthBar'
@@ -19,7 +21,7 @@ export interface IInGameHUD extends IUpdatable, IReposition {
     requestCrosshairState(state: CrosshairState): void
 }
 
-export class InGameHUD extends UIComponent implements IInGameHUD {
+export class InGameHUD extends UIScreen implements IInGameHUD {
     private static INSTANCE: InGameHUD
     _initialized: boolean = false
     hudContainer: UIContainer
@@ -29,7 +31,8 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
     healthBar: HealthBar
     queuedHealthBars: OverheadHealthBar[] = []
     inventory: InGameInventory
-    respawnScreen: RespawnScreen
+    // respawnScreen: RespawnScreen
+    inGameMenu: InGameMenu
 
     static getInstance() {
         if (!this.INSTANCE) {
@@ -44,12 +47,13 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
             shouldFillWindow: true 
         })
 
-        this.respawnScreen = new RespawnScreen()
+        // this.respawnScreen = new RespawnScreen()
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
         this.hotbar = new HUDInventoryHotbar()
         this.inventory = new InGameInventory()
+        this.inGameMenu = InGameMenu.getInstance()
     }
 
     async initializeHUD(): Promise<void> {
@@ -58,12 +62,14 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         return new Promise((resolve, reject) => {
             this.addChild(this.ammoStatus)
             this.addChild(this.hotbar)
-            this.addChild(this.respawnScreen)
-            this.addChild(this.crosshair)
+            // this.addChild(this.respawnScreen)
             // this.addChild(this.inventory)
+            this.addChild(this.inGameMenu)
+            this.addChild(this.crosshair)
 
             this.queuedHealthBars = []
-            this.respawnScreen.forceHide()
+            // this.respawnScreen.forceHide()
+            this.inGameMenu.forceHide()
             this.applyScale()
             this.reposition(true)
             this._initialized = true
@@ -87,12 +93,12 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         // Health bar
         this.healthBar.position.x = WindowSize.width - UIConstants.HUDPadding
         this.healthBar.position.y = WindowSize.height - UIConstants.HUDPadding
-        - (this.healthBar.backgroundSprite.height * UIConstants.HUDScale)
+        - (this.healthBar.backgroundSprite.height * UIConstants.UIScale)
 
         // Ammo status
         this.ammoStatus.position.x = UIConstants.HUDPadding
         this.ammoStatus.position.y = WindowSize.height - UIConstants.HUDPadding
-        - (this.ammoStatus.backgroundSprite.height * UIConstants.HUDScale)
+        - (this.ammoStatus.backgroundSprite.height * UIConstants.UIScale)
     }
 
     requestCrosshairState(state: CrosshairState) {
@@ -107,7 +113,8 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         Flogger.log('InGameHUD', 'requestRespawnScreen')
         
         await this.hideHUDComponents()
-        await this.respawnScreen.show()
+        // await this.respawnScreen.show()
+        await this.inGameMenu.showScreen(InGameScreenID.RespawnScreen)
 
         setTimeout(() => {
             this.crosshair.state = CrosshairState.Cursor
@@ -117,7 +124,7 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
     async closeRespawnScreen() {
         Flogger.log('InGameHUD', 'closeRespawnScreen')
 
-        await this.respawnScreen.hide()
+        // await this.respawnScreen.hide()
         this.crosshair.state = CrosshairState.Gameplay
         await this.showHUDComponents()
     }
@@ -130,18 +137,14 @@ export class InGameHUD extends UIComponent implements IInGameHUD {
         await this.ammoStatus.show()
     }
 
-    private applyScale() {
+    applyScale() {
         const toScale: UIComponent[] = [
             this.healthBar, this.ammoStatus,
-            this.respawnScreen.respawnButton,
+            // this.respawnScreen.respawnButton,
             this.hotbar,
             this.inventory
         ]
 
-        for (var i in toScale) {
-            const scaledComponent = toScale[i]
-
-            scaledComponent.scale.set(UIConstants.HUDScale, UIConstants.HUDScale)
-        }
+        super.applyScale(toScale)
     }
 }

@@ -71,8 +71,8 @@ export class WeaponHint extends UIComponent implements IWeaponHint {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        const newX = WindowSize.width / UIConstants.HUDScale
+        const newX = WindowSize.width / UIConstants.UIScale
 
-        this.weaponContainer.x = newX - this.leftPadding - (UIConstants.HUDPadding / UIConstants.HUDScale)
+        this.weaponContainer.x = newX - this.leftPadding - (UIConstants.HUDPadding / UIConstants.UIScale)
     }
 }

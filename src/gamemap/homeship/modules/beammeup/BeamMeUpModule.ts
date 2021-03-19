@@ -10,6 +10,8 @@ export interface IBeamMeUpModule extends IHomeShipicalModule {
 }
 
 export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModule {
+    didInteract: boolean
+
     constructor() {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.HSM_BEAM_ME_UP))
         const sprite = new Sprite({ texture })
@@ -21,10 +23,13 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
             interactKey: Key.E,
             shouldAddTooltip: true,
             onInteract() {
+                if (this.didInteract) return
+
                 return new Promise((resolve) => {
                     Flogger.log('BeamMeUpModule', 'onInteract')
                     const player = ClientPlayer.getInstance()
-
+                    
+                    this.didInteract = true
                     this.highlight()
 
                     player.consciousnessState = PlayerConsciousnessState.Controlled
@@ -48,8 +53,6 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
                     this.tooltip.hide()
                 }
             }
-        })
-
-        
+        })        
     }
 }

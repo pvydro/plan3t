@@ -49,7 +49,7 @@ export class RespawnScreenAnimator extends Animator implements IRespawnScreenAni
 
     get alphaTargets() {
         return [
-            this.screen.darkener,
+            // this.screen.darkener,
             this.screen.respawnHeader,
             this.screen.respawnButton
         ]
