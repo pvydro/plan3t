@@ -4,12 +4,13 @@ import { Sprite } from '../../../engine/display/Sprite'
 import { Flogger } from '../../../service/Flogger'
 import { UIConstants, WindowSize } from '../../../utils/Constants'
 import { IUIComponent, UIComponent } from '../../UIComponent'
+import { UIScreen } from '../../uiscreens/UIScreen'
 
 export interface IInGameInventory extends IUIComponent {
 
 }
 
-export class InGameInventory extends UIComponent implements IInGameInventory {
+export class InGameInventory extends UIScreen implements IInGameInventory {
 
     topBarSprite: Sprite
     bottomBarSprite: Sprite
@@ -50,5 +51,15 @@ export class InGameInventory extends UIComponent implements IInGameInventory {
         for (var i = 0; i < totalSlots; i++) {
             
         }
+    }
+
+    forceHide() {
+        this.alpha = 0
+    }
+
+    applyScale() {
+        const toScale = [ this ]
+
+        super.applyScale(toScale)
     }
 }

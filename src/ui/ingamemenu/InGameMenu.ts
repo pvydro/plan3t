@@ -2,6 +2,7 @@ import { Darkener } from '../../engine/display/lighting/Darkener'
 import { UIComponent } from '../UIComponent'
 import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
 import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
+import { InGameInventory } from './ingameinventory/InGameInventory'
 
 export enum InGameScreenID {
     RespawnScreen
@@ -17,6 +18,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     private static INSTANCE: InGameMenu
     darkener: Darkener
     respawnScreen: RespawnScreen
+    inGameInventory: InGameInventory
     allScreens: IUIScreen[]
 
     static getInstance() {
@@ -34,12 +36,15 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
 
         this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })
         this.respawnScreen = new RespawnScreen()
+        this.inGameInventory = new InGameInventory()
 
         this.addChild(this.darkener)
         this.addChild(this.respawnScreen)
+        this.addChild(this.inGameInventory)
 
         this.allScreens = [
-            this.respawnScreen
+            this.respawnScreen,
+            this.inGameInventory
         ]
     }
 
@@ -72,8 +77,13 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     }
 
     forceHide() {
-        this.respawnScreen.forceHide()
+        // this.respawnScreen.forceHide()
         this.darkener.forceHide()
+        for (const i in this.allScreens) {
+            const screen = this.allScreens[i]
+            
+            screen.forceHide()
+        }
     }
 
     getScreenForID(id: InGameScreenID) {
