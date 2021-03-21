@@ -2,6 +2,7 @@ import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IShowHide } from '../interface/IShowHide'
 import { IUpdatable } from '../interface/IUpdatable'
+import { UIComponentBorder, UIComponentBorderOptions } from './UIComponentBorder'
 import { UIContainer, UIContainerOptions } from './UIContainer'
 
 export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
@@ -23,14 +24,23 @@ export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
 }
 
 export interface UIComponentOptions extends UIContainerOptions {
-
+    borderOptions?: UIComponentBorderOptions
 }
 
 export class UIComponent extends UIContainer implements IUIComponent {
     _isShown: boolean
+    border?: UIComponentBorder
 
     constructor(options?: UIComponentOptions) {
         super(options)
+
+        if (options !== undefined) {
+            if (options.borderOptions !== undefined) {
+                this.border = new UIComponentBorder(options.borderOptions)
+
+                this.addChild(this.border)
+            }
+        }
     }
 
     forceHide() {
