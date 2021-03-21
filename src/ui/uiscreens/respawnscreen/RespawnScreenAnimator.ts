@@ -32,7 +32,7 @@ export class RespawnScreenAnimator extends Animator implements IRespawnScreenAni
 
     async hide() {
         this.currentAnimation = Tween.to(this.alphaTargets, {
-            duration: AnimTimes.RespawnScreen.HeaderFade,
+            duration: AnimTimes.Defaults.HeaderFade,
             alpha: 0
         })
 

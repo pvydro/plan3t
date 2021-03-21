@@ -17,7 +17,6 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
     constructor() {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.HSM_BEAM_ME_UP))
         const sprite = new Sprite({ texture })
-        // let hud = InGameHUD.getInstance()
 
         super({
             sprite,
@@ -25,29 +24,25 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
             interactiveOffsetX: sprite.halfWidth,
             interactKey: Key.E,
             shouldAddTooltip: true,
-            onInteract() {
+            onInteract: () => {
                 if (this.didInteract) return
 
                 return new Promise((resolve) => {
                     Flogger.log('BeamMeUpModule', 'onInteract')
                     const player = ClientPlayer.getInstance()
+                    const self = this
                     
                     this.didInteract = true
                     this.highlight()
-
-                    // if (hud) {
-                    //     hud.requestScreen(InGameScreenID.BeamMeUp)
-                    // } else {
-                    //     // hud = InGameHUD.getInstance()
-                    //     // hud.requestScreen(InGameScreenID.BeamMeUp)
-                    // }
+                    this.requestBeamMeUpScreen()
 
                     player.consciousnessState = PlayerConsciousnessState.Controlled
 
                     window.setTimeout(() => {
                         Flogger.log('BeamMeUpModule', 'module interaction finished')
 
-                        this.unhighlight()
+                        self.didInteract = false
+                        self.unhighlight()
 
                         resolve(true)
                     }, 1000)
@@ -64,5 +59,16 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
                 }
             }
         })        
+    }
+
+    requestBeamMeUpScreen() {
+        Flogger.log('BeamMeUpModule', 'requestBeamMeUpScreen')
+        // const hud = InGameHUD.getInstance()
+
+        // if (hud) {
+        // InGameHUD.requestScreen(InGameScreenID.BeamMeUp)
+        // } else {
+        //     Flogger.error('No hud available')
+        // }
     }
 }

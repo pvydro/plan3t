@@ -1,3 +1,5 @@
+import { Key } from 'ts-keycode-enum'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
@@ -54,6 +56,14 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.hotbar = new HUDInventoryHotbar()
         this.inventory = new InGameInventory()
         this.inGameMenu = InGameMenu.getInstance()
+
+        // Temp
+
+        InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
+            if (ev.which === Key.B) {
+                this.requestScreen(InGameScreenID.BeamMeUp)
+            }
+        })
     }
 
     async initializeHUD(): Promise<void> {
@@ -111,11 +121,20 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         Flogger.log('InGameHUD', 'requestScreen', 'id', id)
 
         await this.hideHUDComponents()
-        await this.inGameMenu.showScreen(id)
-
+        if (this.inGameMenu) {
+            await this.inGameMenu.showScreen(id)
+        }
         setTimeout(() => {
             this.crosshair.state = CrosshairState.Cursor
         }, 250)
+    }
+
+    static requestScreen(id: InGameScreenID) {
+        Flogger.log('InGameHUD', 'static requestScreen', 'id', id)
+
+        // const hud = InGameHUD.INSTANCE
+
+        // hud.requestScreen(id)
     }
 
     async closeScreen(id: InGameScreenID) {
