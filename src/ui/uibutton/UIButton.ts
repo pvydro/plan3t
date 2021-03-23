@@ -1,4 +1,5 @@
 import { Assets } from '../../asset/Assets'
+import { Fonts } from '../../asset/Fonts'
 import { Graphix } from '../../engine/display/Graphix'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteOptions } from '../../engine/display/TextSprite'
@@ -28,7 +29,11 @@ export interface UIButtonBackgroundOptions {
     idle?: string
     hovered?: string
     triggered?: string
-    graphic?: Graphix
+    graphic?: UIButtonGraphicOptions
+}
+
+export interface UIButtonGraphicOptions {
+    graphic: Graphix
 }
 
 export interface UIButtonTextOptions extends TextSpriteOptions {
@@ -174,6 +179,7 @@ export class UIButton extends UIComponent implements IUIButton {
     
     applyText(options: UIButtonOptions) {
         const textOptions = options.text
+        textOptions.fontFamily = textOptions.fontFamily ?? Fonts.Font.family
 
         if (this._textSprite !== undefined) {
             this._textSprite.demolish()
@@ -181,11 +187,13 @@ export class UIButton extends UIComponent implements IUIButton {
 
         if (textOptions !== undefined) {
             const textSprite = new TextSprite(textOptions)
+            
             textSprite.position.set(-this.backgroundWidth, -this.backgroundHeight)
-
-            textSprite.x += this.halfWidth - (textSprite.textWidth / 2)
-            textSprite.y += this.halfHeight - (textSprite.textHeight / 2) + textOptions.offsetY
             textSprite.alpha = textOptions.alpha ?? 1
+            if (this.backgroundSprite !== undefined) {
+                textSprite.x += this.halfWidth - (textSprite.textWidth / 2)
+                textSprite.y += this.halfHeight - (textSprite.textHeight / 2) + textOptions.offsetY
+            }
             
             this._textSprite = textSprite
             this.addChild(this._textSprite)
@@ -197,7 +205,6 @@ export class UIButton extends UIComponent implements IUIButton {
         const anchor = options.anchor
         
         if (background !== undefined) {
-
             if (background.idle !== undefined) {
                 const idle = PIXI.Texture.from(Assets.get(background.idle))
                 const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : idle
@@ -217,7 +224,9 @@ export class UIButton extends UIComponent implements IUIButton {
                     if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
                 }
             } else if (background.graphic !== undefined) {
-                this._backgroundGraphic = background.graphic
+                this._backgroundGraphic = background.graphic.graphic
+
+                this.addChild(this._backgroundGraphic)
             }
         }
     }
@@ -275,18 +284,18 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     get backgroundWidth() {
-        return this.backgroundSprite.width
+        return this.backgroundSprite ? this.backgroundSprite.width : this.width
     }
 
     get backgroundHeight() {
-        return this.backgroundSprite.height
+        return this.backgroundSprite ? this.backgroundSprite.height : this.height
     }
 
     get halfWidth() {
-        return this.backgroundSprite.halfWidth
+        return this.width / 2
     }
 
     get halfHeight() {
-        return this.backgroundSprite.halfHeight
+        return this.height / 2
     }
 }

@@ -21,7 +21,8 @@ export class RespawnButton extends UIButton implements IRespawnButton {
                 x: 1, y: 1
             },
             text: {
-                text: 'RESPAWN',
+                text: 'Respawn',
+                uppercase: true,
                 fontFamily: Fonts.Font.family,
                 fontSize: 18,
                 color: 0x000000,

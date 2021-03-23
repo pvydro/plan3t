@@ -173,6 +173,7 @@ export class AssetUrls {
 
     // UI
     static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'
+    static HOLO_BUTTON_BG = 'assets/image/ui/generic/holobuttonbg'
     static IGI_TOP = 'assets/image/ui/ingameinventory/container-top'
     static TOOLTIP_KEY = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
 

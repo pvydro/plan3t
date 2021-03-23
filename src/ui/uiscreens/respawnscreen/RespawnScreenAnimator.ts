@@ -23,7 +23,7 @@ export class RespawnScreenAnimator extends Animator implements IRespawnScreenAni
 
     async show() {
         this.currentAnimation = Tween.to(this.alphaTargets, {
-            duration: AnimTimes.RespawnScreen.HeaderFade,
+            duration: AnimTimes.Defaults.HeaderFade,
             alpha: 1
         })
 
