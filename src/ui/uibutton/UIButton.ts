@@ -1,9 +1,9 @@
 import { Assets } from '../../asset/Assets'
-import { Fonts } from '../../asset/Fonts'
 import { Graphix } from '../../engine/display/Graphix'
 import { Sprite } from '../../engine/display/Sprite'
-import { TextSprite, TextSpriteOptions } from '../../engine/display/TextSprite'
+import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
+import { UIConstants } from '../../utils/Constants'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './UIButtonDarkenerPlugin'
@@ -29,11 +29,7 @@ export interface UIButtonBackgroundOptions {
     idle?: string
     hovered?: string
     triggered?: string
-    graphic?: UIButtonGraphicOptions
-}
-
-export interface UIButtonGraphicOptions {
-    graphic: Graphix
+    graphic?: Graphix
 }
 
 export interface UIButtonTextOptions extends TextSpriteOptions {
@@ -179,7 +175,6 @@ export class UIButton extends UIComponent implements IUIButton {
     
     applyText(options: UIButtonOptions) {
         const textOptions = options.text
-        textOptions.fontFamily = textOptions.fontFamily ?? Fonts.Font.family
 
         if (this._textSprite !== undefined) {
             this._textSprite.demolish()
@@ -187,15 +182,27 @@ export class UIButton extends UIComponent implements IUIButton {
 
         if (textOptions !== undefined) {
             const textSprite = new TextSprite(textOptions)
-            
-            textSprite.position.set(-this.backgroundWidth, -this.backgroundHeight)
-            textSprite.alpha = textOptions.alpha ?? 1
-            if (this.backgroundSprite !== undefined) {
-                textSprite.x += this.halfWidth - (textSprite.textWidth / 2)
-                textSprite.y += this.halfHeight - (textSprite.textHeight / 2) + textOptions.offsetY
+            this._textSprite = textSprite
+            const alignment = textOptions.align ?? TextSpriteAlign.Center
+            const offsetY = textOptions.offsetY ?? 0
+            const startY = -(this.textHeight / 2) + this.halfHeight
+
+            this.textSprite.position.set(0, startY)
+            if (options.anchor !== undefined) {
+                if (options.anchor.x === 1) {
+                    this.textSprite.position.set(-this.backgroundWidth, -this.backgroundHeight)
+                }
+            }
+
+            this.textSprite.alpha = textOptions.alpha ?? 1
+            this.textSprite.y += offsetY
+
+            if (alignment === TextSpriteAlign.Left) {
+                this.textSprite.x += UIConstants.JustificationPadding
+            } else if (alignment === TextSpriteAlign.Center) {
+                this.textSprite.x += this.halfWidth - (this.textWidth / 2)
             }
             
-            this._textSprite = textSprite
             this.addChild(this._textSprite)
         }
     }
@@ -211,6 +218,7 @@ export class UIButton extends UIComponent implements IUIButton {
                 const triggered = background.triggered ? PIXI.Texture.from(Assets.get(background.triggered)) : hovered
     
                 this.backgroundSprite = new Sprite({ texture: idle })
+                
                 if (hovered !== idle) {
                     this.backgroundSpriteHovered = new Sprite({ texture: hovered })
                 }
@@ -224,7 +232,7 @@ export class UIButton extends UIComponent implements IUIButton {
                     if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
                 }
             } else if (background.graphic !== undefined) {
-                this._backgroundGraphic = background.graphic.graphic
+                this._backgroundGraphic = background.graphic
 
                 this.addChild(this._backgroundGraphic)
             }
@@ -284,18 +292,26 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     get backgroundWidth() {
-        return this.backgroundSprite ? this.backgroundSprite.width : this.width
+        return this.backgroundSprite ? this.backgroundSprite.width : 0
     }
 
     get backgroundHeight() {
-        return this.backgroundSprite ? this.backgroundSprite.height : this.height
+        return this.backgroundSprite ? this.backgroundSprite.height : 0
     }
 
     get halfWidth() {
-        return this.width / 2
+        return this.backgroundWidth / 2
     }
 
     get halfHeight() {
-        return this.height / 2
+        return this.backgroundHeight / 2
+    }
+
+    get textWidth() {
+        return this.textSprite ? this.textSprite.textWidth : 0
+    }
+
+    get textHeight() {
+        return this.textSprite ? this.textSprite.textHeight : 0
     }
 }

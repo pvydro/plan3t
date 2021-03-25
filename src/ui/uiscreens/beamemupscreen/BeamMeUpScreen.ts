@@ -23,7 +23,7 @@ export class BeamMeUpScreen extends UIScreen implements IBeamMeUpScreen {
         this.addChild(this.header)
         this.addChild(this.beamMeUpButton)
 
-        this.beamMeUpButton.position.set(100, 100)
+        this.reposition(true)
     }
 
     async show() {
@@ -40,5 +40,20 @@ export class BeamMeUpScreen extends UIScreen implements IBeamMeUpScreen {
 
     forceHide() {
         this.header.forceHide()
+    }
+
+    reposition(addListeners?: boolean) {
+        super.reposition(addListeners)
+
+        const buttonY = this.header.y + this.header.height
+        this.beamMeUpButton.position.set(this.header.x, buttonY)
+    }
+
+    applyScale() {
+        const toScale = [
+            this.beamMeUpButton
+        ]
+
+        super.applyScale(toScale)
     }
 }

@@ -61,6 +61,7 @@ export class UIConstants {
     static HUDMargin: number = 4
     static TooltipMargin: number = 4
     static SwipeAnimationDistance: number = 4
+    static JustificationPadding: number = 2
 }
 
 export enum Events {

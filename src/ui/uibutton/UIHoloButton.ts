@@ -1,6 +1,6 @@
 import { AssetUrls } from '../../asset/Assets'
 import { Graphix } from '../../engine/display/Graphix'
-import { UIButton, UIButtonGraphicOptions, UIButtonOptions } from './UIButton'
+import { UIButton, UIButtonOptions } from './UIButton'
 
 export interface IUIHoloButton {
 

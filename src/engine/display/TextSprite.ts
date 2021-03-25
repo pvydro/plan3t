@@ -43,7 +43,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         
         this.style = style
         this.rescale = rescale
-        this._textDimensions = PIXI.TextMetrics.measureText(options.text, style)
+        this._textDimensions = PIXI.TextMetrics.measureText(text, style)
 
         this.scale.set(rescale, rescale)        
     }
