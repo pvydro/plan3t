@@ -1,15 +1,12 @@
-import { Container } from 'pixi.js'
 import { Assets, AssetUrls } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
+import { Container } from '../engine/display/Container'
 import { Graphix } from '../engine/display/Graphix'
 import { Sprite } from '../engine/display/Sprite'
 import { Dimension, IDimension } from '../engine/math/Dimension'
-import { InputEvents, InputProcessor } from '../input/InputProcessor'
-import { IReposition } from '../interface/IReposition'
-import { log } from '../service/Flogger'
 import { WindowSize } from '../utils/Constants'
 
-export interface IGameMapSky extends IReposition {
+export interface IGameMapSky {
 
 }
 
@@ -29,7 +26,7 @@ export class GameMapSky extends Container implements IGameMapSky {
 
         this.camera = Camera.getInstance()
 
-        this.reposition(true)
+        // this.reposition(true)
         this.configure(options)
     }
 
@@ -45,9 +42,9 @@ export class GameMapSky extends Container implements IGameMapSky {
             const skyTexture = PIXI.Texture.from(Assets.get(AssetUrls.SKY_DAWN))
 
             this.skySprite = new Sprite({ texture: skyTexture })
-            this.skySprite.dimension = this.skyDimensions
+            // this.skySprite//.dimension = this.skyDimensions
         }
-
+        
         this.addChild(this.skySprite)
     }
 
@@ -68,26 +65,26 @@ export class GameMapSky extends Container implements IGameMapSky {
         }
     }
 
-    reposition(addListener?: boolean) {
-        log('GameMapSky', 'reposition')
+    // reposition(addListener?: boolean) {
+    //     log('GameMapSky', 'reposition')
 
-        // Listeners
-        if (addListener && !this._addedRepositionListeners) {
-            this._addedRepositionListeners = true
+    //     // Listeners
+    //     if (addListener && !this._addedRepositionListeners) {
+    //         this._addedRepositionListeners = true
 
-            InputProcessor.on(InputEvents.Resize, () => {
-                this.reposition(false)
-            })
-        }
+    //         InputProcessor.on(InputEvents.Resize, () => {
+    //             this.reposition(false)
+    //         })
+    //     }
 
-        // Properties
-        this.skyDimensions.width = window.innerWidth + (this.overflowMargin * 2)
-        this.skyDimensions.height = window.innerHeight + (this.overflowMargin * 2)
+    //     // Properties
+    //     this.skyDimensions.width = window.innerWidth + (this.overflowMargin * 2)
+    //     this.skyDimensions.height = window.innerHeight + (this.overflowMargin * 2)
 
-        if (this.skySprite && (this.skySprite as Sprite)) {
-            (this.skySprite as Sprite).dimension = this.skyDimensions
-        }
+    //     if (this.skySprite && (this.skySprite as Sprite)) {
+    //         (this.skySprite as Sprite).dimension = this.skyDimensions
+    //     }
 
-        log('GameMapSky', 'New sky dimensions', { 'width': this.skyDimensions.width, 'height': this.skyDimensions.height })
-    }
+    //     log('GameMapSky', 'New sky dimensions', { 'width': this.skyDimensions.width, 'height': this.skyDimensions.height })
+    // }
 }

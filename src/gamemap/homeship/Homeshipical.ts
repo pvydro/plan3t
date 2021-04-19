@@ -62,7 +62,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
                 this.modules = moduleResponse.modules
 
                 this.addChild(this.tileLayer)
-                this.addChild(this.outline)
+                // this.addChild(this.outline) TODO FIXME Bring this back
                 this.addChild(this.moduleLayer)
                 
                 this.outline.initialize()

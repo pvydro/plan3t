@@ -11,7 +11,7 @@ import { SphericalData } from './spherical/SphericalData'
 import { GameMapContainer } from './GameMapContainer'
 import { Homeshipical } from './homeship/Homeshipical'
 import { Camera } from '../camera/Camera'
-import { CameraLayer } from '../camera/CameraStage'
+import { CameraLayer, CameraStageBackground } from '../camera/CameraStage'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
@@ -22,7 +22,7 @@ export interface IGameMap extends IDemolishable, IUpdatable {
 export class GameMap extends Container implements IGameMap {
     private static INSTANCE?: GameMap
     currentMap?: GameMapContainer
-    sky: GameMapSky
+    // sky: GameMapSky
     
     static getInstance() {
         if (GameMap.INSTANCE === undefined) {
@@ -37,12 +37,12 @@ export class GameMap extends Container implements IGameMap {
 
         this.scale.set(GlobalScale, GlobalScale)
 
-        this.sky = new GameMapSky()
+        // this.sky = new GameMapSky()
         // this.addChild(this.sky)
     }
 
     update() {
-        if (this.sky) this.sky.update()
+        // if (this.sky) this.sky.update()
         if (this.currentMap) this.currentMap.update()
     }
 
@@ -51,10 +51,11 @@ export class GameMap extends Container implements IGameMap {
 
         const homeship = Homeshipical.getInstance()
 
-        await this.sky.configure({ allBlack: true })
-        await this.applyGameMapContainer(homeship)
+        // await this.sky.configure({ allBlack: true })
+        // await this.sky.configure()
+        this.camera.stage.setBackground(CameraStageBackground.BlueSky)
 
-        this.camera.stage.addChildAtLayer(this.sky, CameraLayer.GameMapSky)
+        await this.applyGameMapContainer(homeship)
     }
 
     // TODO: Seed
@@ -71,10 +72,9 @@ export class GameMap extends Container implements IGameMap {
 
         const spherical = new Spherical(data)
 
+        // await this.sky.configure()
+        // this.camera.stage.setBackground(this.sky)
         await this.applyGameMapContainer(spherical)
-        await this.sky.configure()
-
-        this.camera.stage.addChildAtLayer(this.sky, CameraLayer.GameMapSky)
     }
 
     private applyGameMapContainer(mapContainer: GameMapContainer): Promise<void> {

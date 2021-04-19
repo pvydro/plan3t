@@ -15,7 +15,7 @@ import { exists } from '../utils/Utils'
 
 export interface ICamera extends IUpdatable {
     resize(width: number, height: number): void
-    toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
+    toScreen(point: IVector2 | PIXI.ObservablePoint): IVector2
     follow(object: { x: number, y: number, width?: number, height?: number }): void
     clearFollowTarget(): void
     clear(): void
@@ -116,9 +116,10 @@ export class Camera implements ICamera {
             this.y = this._target.y + this.offset.y
                 + this.mouseOffset.y + this.instantOffset.y
         }
-
+        
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
+        this.stage.update()
     }
 
     clear() {
@@ -188,9 +189,10 @@ export class Camera implements ICamera {
             this.updateMouseFollowOffset(this._mouseX, this._mouseY)
         })
 
+        // TODO: Temporary
         InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
             if (event.which === Key.DownArrow) {
-                this.setZoom(this.zoom - 0.1)
+                this.setZoom(this.zoom - 0.5)
             } else if (event.which === Key.UpArrow) {
                 this.setZoom(this.zoom + 0.1)
             }
