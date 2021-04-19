@@ -6,7 +6,6 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { log } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
-import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 

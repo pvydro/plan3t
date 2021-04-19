@@ -74,6 +74,7 @@ export class GameMap extends Container implements IGameMap {
 
         // await this.sky.configure()
         // this.camera.stage.setBackground(this.sky)
+        this.camera.stage.setBackground(CameraStageBackground.BlueSky)
         await this.applyGameMapContainer(spherical)
     }
 

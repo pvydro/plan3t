@@ -7,9 +7,7 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 import { Flogger } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
-import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
-import { Particle } from '../engine/display/particle/Particle'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
