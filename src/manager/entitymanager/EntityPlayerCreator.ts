@@ -22,7 +22,7 @@ export interface EntityPlayerCreatorOptions {
 }
 
 export class EntityPlayerCreator implements IEntityPlayerCreator {
-    currentPlayer: ClientPlayer
+    _currentClientPlayer?: ClientPlayer
     entityManager: IEntityManager
 
     constructor(options: EntityPlayerCreatorOptions) {
@@ -33,6 +33,10 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         const sessionId = options.sessionId ?? 'localplayer'
         Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', sessionId, 'isClientPlayer', options.isClientPlayer)
 
+        if (options.isClientPlayer && this._currentClientPlayer) {
+            return this._currentClientPlayer
+        }
+
         const player = this.getPlayer(options)
 
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
@@ -42,10 +46,8 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         })
         
         // Client player camera follow
-        if (options.isClientPlayer === true) {
-            this.currentPlayer = player
-            
-            this.camera.follow(this.currentPlayer as PIXI.DisplayObject)
+        if (options.isClientPlayer === true) {            
+            this.camera.follow(this._currentClientPlayer as PIXI.DisplayObject)
             
             this.markPlayerAsSpawned(sessionId)
         }
@@ -57,15 +59,21 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         let player
 
         if (options.isClientPlayer === true) {
-            player = ClientPlayer.getInstance({
-                clientControl: true,
-                offlineControl: options.isOfflinePlayer ?? false,
-                entity: options.entity,
-                entityManager: this.entityManager,
-                sessionId: options.sessionId
-            })
-            player.x = 512
-            player.y = -64
+            if (this._currentClientPlayer) {
+                return this._currentClientPlayer
+            } else {
+                this._currentClientPlayer = ClientPlayer.getInstance({
+                    clientControl: true,
+                    offlineControl: options.isOfflinePlayer ?? false,
+                    entity: options.entity,
+                    entityManager: this.entityManager,
+                    sessionId: options.sessionId
+                })
+                player = this._currentClientPlayer
+
+                player.x = 512
+                player.y = -64  // TODO Get the positioning out of here
+            }
         } else {
             player = new ClientPlayer({ entity: options.entity })
         }

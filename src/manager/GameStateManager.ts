@@ -57,10 +57,11 @@ export class GameStateManager implements IGameStateManager {
     async enterState(id: GameStateID) {
         log('GameStateManager', 'enterState', 'id', id)
 
-        // if (this.currentState !== undefined) {
-        //     this.currentState.demolish()
-        // }
-        await this.exitState()
+        if (this.currentState) {
+            log('GameStateManager', 'Already in a state, exiting first...')
+            
+            await this.exitState()
+        }
 
         this._currentStateID = id
         this._currentState = this.getStateByID(id)
@@ -70,7 +71,7 @@ export class GameStateManager implements IGameStateManager {
 
     async exitState() {
         log('GameStateManager', 'exitState', 'id', this.currentStateID)
-
+        
         if (this.currentState) {
             await this.currentState.exit()
             this._currentState = undefined

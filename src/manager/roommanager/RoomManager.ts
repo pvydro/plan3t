@@ -1,9 +1,9 @@
 import { Room } from 'colyseus.js'
 import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetGameState'
 import { Entity } from '../../network/rooms/Entity'
-import { IClientManager } from '../ClientManager'
+import { ClientManager, IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
-import { Flogger } from '../../service/Flogger'
+import { Flogger, log } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
@@ -48,13 +48,13 @@ export class RoomManager implements IRoomManager {
     }
 
     private constructor(options: RoomManagerOptions) {
-        this.clientManager = options.clientManager
+        this.clientManager = ClientManager.getInstance()
         this.gameMapManager = options.gameMapManager
         this.entityManager = this.clientManager.entityManager
     }
 
     async initializeRoom(): Promise<Room> {
-        Flogger.log('RoomManager', 'initializeRoom')
+        log('RoomManager', 'initializeRoom')
         const client = this.clientManager.client
 
         this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
@@ -67,7 +67,7 @@ export class RoomManager implements IRoomManager {
         return new Promise((resolve) => {
             // First state change
             this.currentRoom.onStateChange.once((state) => {
-                Flogger.log('RooManager', 'firstState received')
+                log('RoomManager', 'firstState received')
                 
                 if (state.planetHasBeenSet) {
                     if (state.planetSpherical !== undefined) {
@@ -102,7 +102,7 @@ export class RoomManager implements IRoomManager {
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {
-        Flogger.log('RoomManager', 'parseRoomSpherical', 'schema', schema)
+        log('RoomManager', 'parseRoomSpherical', 'schema', schema)
 
         const parsedPoints = []
 
@@ -177,7 +177,7 @@ export class RoomManager implements IRoomManager {
 
     static set clientSessionId(value: string) {
         Flogger.color('red')
-        Flogger.log('New client session ID has been set', value)
+        log('New client session ID has been set', value)
         
         this._clientSessionId = value
     }

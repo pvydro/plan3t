@@ -4,7 +4,7 @@ import { GameMap } from '../gamemap/GameMap'
 import { SphericalData } from '../gamemap/spherical/SphericalData'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
-import { IClientManager } from './ClientManager'
+import { ClientManager, IClientManager } from './ClientManager'
 
 export interface IGameMapManager extends IUpdatable {
     gameMap: GameMap
@@ -13,17 +13,13 @@ export interface IGameMapManager extends IUpdatable {
     initializeHomeship(): Promise<void>
 }
 
-export interface GameMapManagerOptions {
-    clientManager: IClientManager
-}
-
 export class GameMapManager implements IGameMapManager {
     _initialized: boolean = false
     _gameMap?: GameMap
     clientManager: IClientManager
 
-    constructor(options: GameMapManagerOptions) {
-        this.clientManager = options.clientManager
+    constructor() {
+        this.clientManager = ClientManager.getInstance()
     }
 
     async initialize(sphericalData?: SphericalData) {

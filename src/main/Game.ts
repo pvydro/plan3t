@@ -35,7 +35,7 @@ export class Game implements IGame {
         const game = this
         this._entityManager = new EntityManager({ game })
         this._clientCamera = Camera.getInstance()
-        this._clientManager = new ClientManager({ game, entityManager: this.entityManager })
+        this._clientManager = ClientManager.getInstance({ game, entityManager: this.entityManager })
         this._particleManager = ParticleManager.getInstance()
     }
 

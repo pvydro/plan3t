@@ -8,6 +8,7 @@ import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
+import { ClientManager } from '../manager/ClientManager'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -33,7 +34,6 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         this.camera.viewport.addChild(this.inGameHUD)
 
         // To get the camera, you need the game stage, pass Game through StateManager
-        this.stage.addChild(this.cameraViewport)
 
         this.gameMapManager.initializeHomeship().then(async () => {
             log(this.name, 'Homeship initialized')
@@ -66,10 +66,13 @@ export class HomeshipState extends GameState implements ISpaceshipState {
 
     async exit() {
         log(this.name, 'exit')
+        const clientManager = ClientManager.getInstance()
 
         await this.inGameHUD.hideHUDComponents()
         this.camera.clear()
-        // this.stage.removeChild(this.cameraViewport)
+        this.camera.clearFollowTarget()
+
+        clientManager.clearEntityManager()
 
         super.exit()
     }

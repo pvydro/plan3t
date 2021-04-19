@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js'
-import { IClientManager } from '../manager/ClientManager'
+import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 import { GravityManager, IGravityManager } from '../manager/GravityManager'
 import { IParticleManager, ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { IRoomManager } from '../manager/roommanager/RoomManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
+import { exists } from '../utils/Utils'
 
 export interface IGameLoop {
     startGameLoop(): void
@@ -59,12 +60,11 @@ export class GameLoop implements IGameLoop {
             this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
                 const clientEntity = localEntity.clientEntity
 
-                if (clientEntity !== undefined
-                && clientEntity !== null) {
+                if (exists(clientEntity)) {
                     if (typeof clientEntity.update === 'function') {
                         clientEntity.update()
                     }
-
+                    
                     // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
                     this.gravityManager.applyVelocityToEntity(clientEntity)
                 }
@@ -89,7 +89,7 @@ export class GameLoop implements IGameLoop {
     assignOptions(options: GameLoopOptions) {
         if (options !== undefined) {
             this.clientManager = options.clientManager ?? this.clientManager
-            this.entityManager = options.clientManager.entityManager ?? this.entityManager
+            this.entityManager = this.clientManager.entityManager ?? this.entityManager
             this.roomManager = options.roomManager ?? this.roomManager
         }
     }

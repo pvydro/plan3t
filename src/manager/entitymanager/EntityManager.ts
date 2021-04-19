@@ -2,7 +2,7 @@ import { Entity } from '../../network/rooms/Entity'
 import { RoomManager } from '../roommanager/RoomManager'
 import { Camera } from '../../camera/Camera'
 import { ClientEntity } from '../../cliententity/ClientEntity'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { GravityManager, IGravityManager } from '../GravityManager'
 import { Game } from '../../main/Game'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
@@ -29,6 +29,7 @@ export interface IEntityManager extends IUpdatable {
     createClientPlayer(entity: Entity, sessionId: string): ClientPlayer
     createEnemyPlayer(entity: Entity, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
+    clearClientEntities(): void
     updateEntity(entity: Entity, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number, entity?: Entity): void
     registerEntity(sessionId: string, localEntity: LocalEntity): void
@@ -84,13 +85,13 @@ export class EntityManager implements IEntityManager {
     }
     
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
-        Flogger.log('EntityManager', 'updateEntity', 'sessionId', sessionId)
+        log('EntityManager', 'updateEntity', 'sessionId', sessionId)
 
         this.synchronizer.updateEntity(entity, sessionId, changes)
     }
 
     createPassiveCreature() {
-        Flogger.log('EntityManager', 'createPassiveCreature')
+        log('EntityManager', 'createPassiveCreature')
 
         this.creatureCreator.createCreature({
             type: CreatureType.Koini
@@ -98,7 +99,7 @@ export class EntityManager implements IEntityManager {
     }
 
     createOfflinePlayer() {
-        Flogger.log('EntityManager', 'createOfflinePlayer')
+        log('EntityManager', 'createOfflinePlayer')
 
         const player = this.playerCreator.createPlayer({
             isClientPlayer: true,
@@ -110,7 +111,7 @@ export class EntityManager implements IEntityManager {
     }
 
     createClientPlayer(entity: Entity, sessionId: string) {
-        Flogger.log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
+        log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({
             entity, sessionId,
@@ -123,7 +124,7 @@ export class EntityManager implements IEntityManager {
     }
 
     createEnemyPlayer(entity: Entity, sessionId: string) {
-        Flogger.log('EntityManager', 'createEntity', 'sessionId', sessionId)
+        log('EntityManager', 'createEntity', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({ entity, sessionId })
 
@@ -131,16 +132,22 @@ export class EntityManager implements IEntityManager {
     }
 
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
-        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity,
+        log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity,
             'x', x, 'y', y, 'rotation', rotation)
 
         this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
     }
 
     registerEntity(sessionId: string, localEntity: LocalEntity) {
-        Flogger.log('EntityManager', 'registerEntity', 'sessionId', sessionId)
+        log('EntityManager', 'registerEntity', 'sessionId', sessionId)
 
         this._clientEntities.set(sessionId, localEntity)
+    }
+
+    clearClientEntities() {
+        log('EntityManager', 'clearClientEntities')
+
+        this._clientEntities.clear()
     }
 
     getEntity(sessionId: string) {

@@ -6,6 +6,7 @@ import { GameMap, IGameMap } from '../gamemap/GameMap'
 import { GameStateManager, IGameStateManager } from './GameStateManager'
 import { Game } from '../main/Game'
 import { IUpdatable } from '../interface/IUpdatable'
+import { Flogger, log } from '../service/Flogger';
 
 export interface IClientManager extends IUpdatable {
     client: Client
@@ -14,6 +15,7 @@ export interface IClientManager extends IUpdatable {
     gameStateManager: IGameStateManager
     gameMap: IGameMap
     initialize(): Promise<void>
+    clearEntityManager(): void
 }
 
 export interface ClientManagerOptions {
@@ -21,16 +23,28 @@ export interface ClientManagerOptions {
     game: Game
 }
 
-export class ClientManager implements ClientManager {
+export class ClientManager implements IClientManager {
+    private static Instance: IClientManager
     _client: Client
     _camera: ICamera
     _gameMap: GameMap
     _game: Game
-
     _entityManager: IEntityManager
     _gameStateManager: IGameStateManager
 
-    constructor(options: ClientManagerOptions) {
+    static getInstance(options?: ClientManagerOptions) {
+        if (!ClientManager.Instance) {
+            if (options !== undefined) {
+                ClientManager.Instance = new ClientManager(options)
+            } else {
+                Flogger.error('Tried to get new ClientManager.Instance with no options')
+            }
+        }
+
+        return ClientManager.Instance
+    }
+
+    private constructor(options: ClientManagerOptions) {
         this._game = options.game
         this._camera = options.game.camera
         this._entityManager = options.entityManager
@@ -49,6 +63,12 @@ export class ClientManager implements ClientManager {
         }
 
         this._entityManager.update()
+    }
+
+    clearEntityManager() {
+        log('ClientManager', 'clearEntityManager')
+        
+        this._entityManager.clearClientEntities()
     }
 
     get client() {

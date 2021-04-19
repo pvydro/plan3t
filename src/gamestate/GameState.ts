@@ -28,9 +28,7 @@ export abstract class GameState implements IGameState {
         this.game = options.game
 
         this.clientManager = this.game.clientManager
-        this.gameMapManager = new GameMapManager({
-            clientManager: this.clientManager
-        })
+        this.gameMapManager = new GameMapManager()
         this.roomManager = RoomManager.getInstance({
             clientManager: this.clientManager,
             gameMapManager: this.gameMapManager

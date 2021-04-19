@@ -11,20 +11,22 @@ import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugi
 import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
 import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugin'
 import { log } from '../service/Flogger'
+import { exists } from '../utils/Utils'
 
 export interface ICamera extends IUpdatable {
+    resize(width: number, height: number): void
+    toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
+    follow(object: { x: number, y: number, width?: number, height?: number }): void
+    clearFollowTarget(): void
+    clear(): void
+    shake(amount: number): void
+    flash(options: CameraFlashOptions): void
     viewport: Viewport
     stage: CameraStage
     offset: IVector2
     transformOffset: IVector2
     instantOffset: IVector2
     offsetEaseDamping: number
-    resize(width: number, height: number): void
-    toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
-    follow(object: { x: number, y: number, width?: number, height?: number }): void
-    clear(): void
-    shake(amount: number): void
-    flash(options: CameraFlashOptions): void
 }
 
 export class Camera implements ICamera {
@@ -103,7 +105,7 @@ export class Camera implements ICamera {
             }
         }
 
-        if (this._target !== undefined) {
+        if (exists(this._target)) {
             this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
             this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
             this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
@@ -149,6 +151,8 @@ export class Camera implements ICamera {
     }
 
     follow(object: { x: number, y: number, width?: number, height?: number }) {
+        log('Camera', 'follow', 'target')
+
         this._target = object
     }
 
@@ -191,6 +195,12 @@ export class Camera implements ICamera {
                 this.setZoom(this.zoom + 0.1)
             }
         })
+    }
+
+    clearFollowTarget() {
+        log('Camera', 'clearFollowTarget')
+
+        this._target = undefined
     }
 
     static toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {

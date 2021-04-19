@@ -29,22 +29,22 @@ export class GameplayState extends GameState implements IGameplayState {
         this.hornet = new PassiveHornet()
         this.inGameHUD = InGameHUD.getInstance()
 
-        this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.Players)
+        this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)
     }
     
     async initialize() {
         await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
 
-        this.roomManager.initializeRoom().then(async (room: Room) => {
-            Flogger.log('GameplayState', 'Room initialized')
+        // this.roomManager.initializeRoom().then(async (room: Room) => {
+        //     Flogger.log('GameplayState', 'Room initialized')
 
-            await this.inGameHUD.initializeHUD()
+        //     await this.inGameHUD.initializeHUD()
     
-            this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
-            this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
-        })
+        //     this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+        //     this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
+        //     this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
+        // })
     }
 
     update() {
