@@ -52,7 +52,7 @@ export class CollisionManager implements ICollisionManager {
     */
     private checkGroundCollision(entity: GravityEntity, collisionRect: Rect): GravityEntity {
 
-        // TODO: This logic needs to be handled in a Intersects class of sorts.
+        // TODO: This logic needs to be handled in an Intersects class of sorts.
 
         const entityBounds = entity.boundingBox
         const entityBottomY = entity.y + (entityBounds.width * GlobalScale)

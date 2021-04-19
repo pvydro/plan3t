@@ -38,6 +38,7 @@ export class GameMapContainer extends Container implements IGameMapContainer {
     }
 
     clearMap() {
+        this.collisionRects = []
         if (this.tileLayer !== undefined) {
             this.tileLayer.demolish()
             this.removeChild(this.tileLayer)
