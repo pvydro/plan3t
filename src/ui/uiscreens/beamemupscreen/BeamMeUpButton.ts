@@ -1,15 +1,13 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { Fonts } from '../../../asset/Fonts'
-import { TextSpriteAlign } from '../../../engine/display/TextSprite'
 import { Flogger } from '../../../service/Flogger'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
-import { UIHoloButton } from '../../uibutton/UIHoloButton'
 
 export interface IBeamMeUpButton extends IUIButton {
 
 }
 
-export class BeamMeUpButton extends UIHoloButton implements IBeamMeUpButton {
+export class BeamMeUpButton extends UIButton implements IBeamMeUpButton {
     constructor() {
         super({
             type: UIButtonType.Tap,
@@ -23,12 +21,14 @@ export class BeamMeUpButton extends UIHoloButton implements IBeamMeUpButton {
                 fontSize: 16,
                 color: 0xFFFFFF,
             },
-            // background: {
-            //     idle: AssetUrls.HOLO_BUTTON_BG
-            // },
-            onTrigger: () => {
-
-            }
+            background: {
+                idle: AssetUrls.MID_BUTTON_METAL
+            },
+            darkenerPluginOptions: {
+                hoverTint: 0xdbdbdb,
+                clickTint: 0x969696
+            },
+            onTrigger: () => {}
         })
     }
 

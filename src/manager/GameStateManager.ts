@@ -2,12 +2,13 @@ import { GameplayState } from '../gamestate/GameplayState'
 import { GameState, GameStateOptions, IGameState } from '../gamestate/GameState'
 import { HomeshipState } from '../gamestate/HomeshipState'
 import { IDemolishable } from '../interface/IDemolishable'
-import { Game } from '../main/Game'
+import { Game, IGame } from '../main/Game'
 import { Flogger } from '../service/Flogger'
 
 export interface IGameStateManager extends IDemolishable {
-    initialize()
-    update()
+    initialize(): void
+    update(): void
+    setGame(game: Game)
 }
 
 export interface GameStateManagerOptions {
@@ -23,14 +24,22 @@ export enum GameStateID {
 }
 
 export class GameStateManager implements IGameStateManager {
+    private static Instance: IGameStateManager
     _currentState: IGameState
     _currentStateID: GameStateID
     _defaultState
-    game: Game
+    game?: Game
 
-    constructor(options: GameStateManagerOptions) {
-        this.game = options.game
-        this._defaultState = options.defaultState ?? GameStateID.Homeship // GameStateID.Gameplay
+    static getInstance() {
+        if (!GameStateManager.Instance) {
+            GameStateManager.Instance = new GameStateManager()
+        }
+
+        return GameStateManager.Instance
+    }
+
+    private constructor() {
+        this._defaultState = GameStateID.Homeship // GameStateID.Gameplay
     }
 
     initialize() {
@@ -87,5 +96,9 @@ export class GameStateManager implements IGameStateManager {
 
     get currentStateID() {
         return this._currentStateID
+    }
+
+    setGame(game: Game) {
+        this.game = game
     }
 }

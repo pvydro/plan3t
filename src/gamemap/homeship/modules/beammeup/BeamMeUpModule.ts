@@ -25,28 +25,31 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
             interactKey: Key.E,
             shouldAddTooltip: true,
             onInteract: () => {
-                if (this.didInteract) return
 
-                return new Promise((resolve) => {
-                    Flogger.log('BeamMeUpModule', 'onInteract')
-                    const player = ClientPlayer.getInstance()
-                    const self = this
+                console.log('%cONTRIGGER', 'font-size: 400%; background-color: red;')
+
+                // if (this.didInteract) return
+
+                // return new Promise((resolve) => {
+                //     Flogger.log('BeamMeUpModule', 'onInteract')
+                //     const player = ClientPlayer.getInstance()
+                //     const self = this
                     
-                    this.didInteract = true
-                    this.highlight()
-                    this.requestBeamMeUpScreen()
+                //     this.didInteract = true
+                //     this.highlight()
+                //     this.requestBeamMeUpScreen()
 
-                    player.consciousnessState = PlayerConsciousnessState.Controlled
+                //     player.consciousnessState = PlayerConsciousnessState.Controlled
 
-                    window.setTimeout(() => {
-                        Flogger.log('BeamMeUpModule', 'module interaction finished')
+                //     window.setTimeout(() => {
+                //         Flogger.log('BeamMeUpModule', 'module interaction finished')
 
-                        self.didInteract = false
-                        self.unhighlight()
+                //         self.didInteract = false
+                //         self.unhighlight()
 
-                        resolve(true)
-                    }, 1000)
-                })
+                //         resolve(true)
+                //     }, 1000)
+                // })
             },
             onEnter() {
                 if (!this.hasBeenInteracted && this.tooltip !== undefined) {

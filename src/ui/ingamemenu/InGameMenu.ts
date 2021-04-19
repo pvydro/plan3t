@@ -38,18 +38,18 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
 
         this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })
         this.respawnScreen = new RespawnScreen()
-        this.beamMeUpScreen = new BeamMeUpScreen()
-        this.inGameInventory = new InGameInventory()
+        // this.beamMeUpScreen = new BeamMeUpScreen()
+        // this.inGameInventory = new InGameInventory()
 
         this.addChild(this.darkener)
         this.addChild(this.respawnScreen)
-        this.addChild(this.beamMeUpScreen)
-        this.addChild(this.inGameInventory)
+        // this.addChild(this.beamMeUpScreen)
+        // this.addChild(this.inGameInventory)
 
         this.allScreens = [
             this.respawnScreen,
-            this.inGameInventory,
-            this.beamMeUpScreen
+            // this.inGameInventory,
+            // this.beamMeUpScreen
         ]
     }
 

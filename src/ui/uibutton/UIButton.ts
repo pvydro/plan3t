@@ -70,7 +70,11 @@ export class UIButton extends UIComponent implements IUIButton {
     extendedOnRelease?: Function
 
     constructor(options: UIButtonOptions) {
-        super()
+        super({
+            borderOptions: {
+                borderWidth: 1
+            }
+        })
 
         this.type = options.type
         this.extendedOnHold = options.onHold
@@ -83,7 +87,7 @@ export class UIButton extends UIComponent implements IUIButton {
             this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerPluginOptions))
         }
 
-        this.applyMouseListeners(options.addClickListeners)
+        this.applyMouseListeners(options.addClickListeners ?? true)
         this.applyBackgroundTexture(options)
         this.applyText(options)
     }
@@ -214,15 +218,15 @@ export class UIButton extends UIComponent implements IUIButton {
         if (background !== undefined) {
             if (background.idle !== undefined) {
                 const idle = PIXI.Texture.from(Assets.get(background.idle))
-                const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : idle
-                const triggered = background.triggered ? PIXI.Texture.from(Assets.get(background.triggered)) : hovered
+                const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : undefined
+                const triggered = background.triggered ? PIXI.Texture.from(Assets.get(background.triggered)) : undefined
     
                 this.backgroundSprite = new Sprite({ texture: idle })
                 
-                if (hovered !== idle) {
+                if (hovered !== undefined && background.hovered !== background.idle) {
                     this.backgroundSpriteHovered = new Sprite({ texture: hovered })
                 }
-                if (triggered !== hovered) {
+                if (triggered !== undefined && background.triggered !== background.hovered) {
                     this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
                 }
     
@@ -245,6 +249,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
     set backgroundSprite(value: Sprite) {
         if (this._backgroundSprite !== undefined) {
+            this._backgroundSprite.demolish()
             this.removeChild(this._backgroundSprite)
         }
 

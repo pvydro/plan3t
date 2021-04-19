@@ -3,7 +3,7 @@ import { IRect } from '../engine/math/Rect'
 export function exists(item): boolean {
     let doesExist = true
     
-    if (item == null || item == undefined) {
+    if (item === null || item === undefined) {
         doesExist = false
     }
 

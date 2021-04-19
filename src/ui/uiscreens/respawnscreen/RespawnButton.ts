@@ -16,7 +16,6 @@ export class RespawnButton extends UIButton implements IRespawnButton {
     constructor() {
         super({
             type: UIButtonType.Tap,
-            addClickListeners: true,
             anchor: {
                 x: 1, y: 1
             },

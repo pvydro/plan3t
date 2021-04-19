@@ -49,7 +49,6 @@ export class Game implements IGame {
         
         await this.clientManager.initialize()
 
-        this.clientManager.gameStateManager.initialize()
         this.stage.addChild(this.cameraViewport)
         this.initializeGameLoop()
     }

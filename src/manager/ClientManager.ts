@@ -38,7 +38,9 @@ export class ClientManager implements ClientManager {
 
     async initialize() {
         this._client = new Client(ENDPOINT)
-        this._gameStateManager = new GameStateManager({ game: this._game })
+        this._gameStateManager = GameStateManager.getInstance()
+        this._gameStateManager.setGame(this._game)
+        await this._gameStateManager.initialize()
     }
 
     update() {

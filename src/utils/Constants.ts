@@ -28,7 +28,7 @@ export class DebugConstants {
     static ShowCameraProjectionDebug: boolean = false
     static ShowPlayerSynchDebug: boolean = false
     static ShowCollisionDebug: boolean = false
-    static ShowInteractiveContainerDebug: boolean = false
+    static ShowInteractiveContainerDebug: boolean = true
 }
 
 export class AIDebugConstants {
