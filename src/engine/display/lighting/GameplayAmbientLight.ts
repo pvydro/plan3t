@@ -1,11 +1,12 @@
 import { Container } from 'pixi.js'
 import { Camera } from '../../../camera/Camera'
+import { IDemolishable } from '../../../interface/IDemolishable'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { WindowSize } from '../../../utils/Constants'
 import { Darkener } from './Darkener'
 import { Light } from './Light'
 
-export interface IGameplayAmbientLight extends IUpdatable {
+export interface IGameplayAmbientLight extends IUpdatable, IDemolishable {
 
 }
 
@@ -23,10 +24,15 @@ export class GameplayAmbientLight extends Container implements IGameplayAmbientL
             alpha: 1//0.8
         })
 
-        // this.addChild(this.overlayDarkener)
+        this.addChild(this.overlayDarkener) // TODO: This is our suspect for black bg over map
     }
     
     update() {
         this.overlayDarkener.position.set(Camera.Zero.x, Camera.Zero.y)
+    }
+
+    demolish() {
+        this.overlayDarkener.demolish()
+        this.removeChild(this.overlayDarkener)
     }
 }

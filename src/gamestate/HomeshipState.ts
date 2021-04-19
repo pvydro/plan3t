@@ -67,6 +67,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
     async exit() {
         log(this.name, 'exit')
 
+        this.ambientLight.demolish()
         await this.inGameHUD.hideHUDComponents()
 
         super.exit()

@@ -119,6 +119,7 @@ export class Camera implements ICamera {
         
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
+        
         this.stage.update()
     }
 

@@ -1,9 +1,10 @@
 import { Container } from 'pixi.js'
+import { IDemolishable } from '../../../interface/IDemolishable'
 import { UIComponent } from '../../../ui/UIComponent'
 import { WindowSize } from '../../../utils/Constants'
 import { Graphix } from '../Graphix'
 
-export interface IDarkener {
+export interface IDarkener extends IDemolishable {
 
 }
 
@@ -16,6 +17,8 @@ export interface DarkenerOptions {
 }
 
 export class Darkener extends UIComponent implements IDarkener {
+    graphics: Graphix
+
     constructor(options?: DarkenerOptions) {
         super()
 
@@ -27,10 +30,12 @@ export class Darkener extends UIComponent implements IDarkener {
             blendMode: options && options.blendMode ? options.blendMode : PIXI.BLEND_MODES.SUBTRACT
         }
 
-        this.createRect(op)
+        this.alpha = options.alpha
+        this.graphics = this.createRect(op)
+        this.addChild(this.graphics)
     }
 
-    createRect(options: DarkenerOptions) {
+    createRect(options: DarkenerOptions): Graphix {
         const graphics = new Graphix()
 
         graphics.beginFill(options.color)
@@ -39,14 +44,17 @@ export class Darkener extends UIComponent implements IDarkener {
 
         graphics.blendMode = options.blendMode
 
-        this.addChild(graphics)
-
-        this.alpha = options.alpha
+        return graphics
     }
 
     forceHide() {
         this.alpha = 0
 
         super.forceHide()
+    }
+
+    demolish() {
+        this.removeChild(this.graphics)
+        this.graphics.demolish()
     }
 }
