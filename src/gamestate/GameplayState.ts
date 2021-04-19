@@ -8,6 +8,7 @@ import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 import { Flogger } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
+import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -40,6 +41,9 @@ export class GameplayState extends GameState implements IGameplayState {
         this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
         this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
         this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+        setTimeout(() => {
+            this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
+        }, 1500);
 
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)

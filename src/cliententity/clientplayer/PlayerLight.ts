@@ -88,7 +88,7 @@ export class PlayerLight extends Container implements IPlayerLight {
             light.width = size
             light.height = size
 
-            light.alpha = 0.175//125
+            light.alpha = 0.08//0.175
 
             this.lights.push(light)
             this.hardLights.push(light)
