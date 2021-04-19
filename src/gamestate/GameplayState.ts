@@ -35,6 +35,7 @@ export class GameplayState extends GameState implements IGameplayState {
 
         const player = this.entityManager.createOfflinePlayer()
         this.camera.follow(player)
+        this.inGameHUD.showHUDComponents()
 
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
         this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
