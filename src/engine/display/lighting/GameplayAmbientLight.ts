@@ -23,7 +23,7 @@ export class GameplayAmbientLight extends Container implements IGameplayAmbientL
             alpha: 1//0.8
         })
 
-        this.addChild(this.overlayDarkener)
+        // this.addChild(this.overlayDarkener)
     }
     
     update() {

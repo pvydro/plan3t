@@ -43,7 +43,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
         this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
 
-        await this.initializeBackground()
+        // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
 
         this.roomManager.initializeRoom().then(async (room: Room) => {
@@ -64,10 +64,10 @@ export class GameplayState extends GameState implements IGameplayState {
 
     }
 
-    initializeBackground() {
-        const boundaries = new PIXI.Graphics()
-        boundaries.beginFill(0x000000)
-        boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
-        this.camera.stage.addChildAtLayer(boundaries, CameraLayer.Background)
-    }
+    // initializeBackground() {
+    //     const boundaries = new PIXI.Graphics()
+    //     boundaries.beginFill(0x000000)
+    //     boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
+    //     this.camera.stage.addChildAtLayer(boundaries, CameraLayer.Background)
+    // }
 }

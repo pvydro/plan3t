@@ -1,3 +1,4 @@
+import { resolveModuleName } from 'typescript'
 import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'

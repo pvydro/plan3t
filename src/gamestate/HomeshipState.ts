@@ -8,15 +8,16 @@ import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
+import { Graphix } from '../engine/display/Graphix'
 
 export interface ISpaceshipState extends IGameState {
 
 }
 
 export class HomeshipState extends GameState implements ISpaceshipState {
+    backgroundGraphics: Graphix
     ambientLight: GameplayAmbientLight
     inGameHUD: InGameHUD
-    // player: 
 
     constructor(options: GameStateOptions) {
         super({
@@ -31,8 +32,6 @@ export class HomeshipState extends GameState implements ISpaceshipState {
     async initialize() {
         await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
-
-        // To get the camera, you need the game stage, pass Game through StateManager
 
         this.gameMapManager.initializeHomeship().then(async () => {
             log(this.name, 'Homeship initialized')
@@ -74,9 +73,10 @@ export class HomeshipState extends GameState implements ISpaceshipState {
     }
 
     initializeBackground() {
-        const boundaries = new PIXI.Graphics()
-        boundaries.beginFill(0x8F8F8F)
-        boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
-        this.camera.stage.addChildAtLayer(boundaries, CameraLayer.Background)
+        // TODO FIXME Uncomment this to add background to HomeShip state
+        // this.backgroundGraphics = new Graphix()
+        // this.backgroundGraphics.beginFill(0x8F8F8F)
+        // this.backgroundGraphics.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
+        // this.camera.stage.addChildAtLayer(this.backgroundGraphics, CameraLayer.Background)
     }
 }
