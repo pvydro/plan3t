@@ -1,12 +1,13 @@
-import { IDemolishable } from '../interface/IDemolishable'
 import { Game } from '../main/Game'
 import { IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
+import { log } from '../service/Flogger'
 
-export interface IGameState extends IDemolishable {
+export interface IGameState {
     initialize(): Promise<void>
+    exit(): Promise<void>
     update(): void
 }
 
@@ -36,7 +37,15 @@ export abstract class GameState implements IGameState {
         })
     }
 
-    initialize(): Promise<void> {
+    async initialize() {
+        log('GameState', 'initialize', 'id', this.id)
+
+        return
+    }
+
+    async exit() {
+        log('GameState', 'exit', 'id', this.id)
+
         return
     }
 
@@ -44,10 +53,6 @@ export abstract class GameState implements IGameState {
         return
     }
     
-    demolish() {
-        return
-    }
-
     get camera() {
         return this.game.camera
     }
@@ -66,5 +71,9 @@ export abstract class GameState implements IGameState {
 
     get entityManager() {
         return this.clientManager.entityManager
+    }
+
+    get name() {
+        return (this.id + 'State')
     }
 }

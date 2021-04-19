@@ -1,5 +1,5 @@
 import { Container } from '../engine/display/Container'
-import { Flogger } from '../service/Flogger'
+import { log, loudLog } from '../service/Flogger'
 import { ICamera } from './Camera'
 
 export const CameraLayer = {
@@ -39,7 +39,7 @@ export class CameraStage extends Container implements ICameraStage {
     }
 
     private createLayerContainers() {
-        Flogger.log('CameraStage', 'createLayerContainers')
+        log('CameraStage', 'createLayerContainers')
 
         const layerIds = Object.values(CameraLayer)
 
@@ -83,11 +83,11 @@ export class CameraStage extends Container implements ICameraStage {
     findParentLayer(child: any): number | undefined {
         let parentLayer = undefined
 
-        for (let i in this.layers) {
+        for (const i in this.layers) {
             const layerContainer = this.layers[i]
             const layerChildren = layerContainer.children
 
-            for (let j in layerChildren) {
+            for (const j in layerChildren) {
                 const layerChild = layerChildren[j]
 
                 if (child === layerChild) {
@@ -97,5 +97,26 @@ export class CameraStage extends Container implements ICameraStage {
         }
 
         return parentLayer
+    }
+
+    /**
+     * Remove child from each layer one by one
+     */
+    clearChildren() {
+        log('CameraStage', 'clearChildren')
+
+        for (const i in this.layers) {
+            const layerContainer = this.layers[i]
+            const layerChildren = layerContainer.children
+
+            // layerContainer.clearChildren()
+
+            for (const j in layerChildren) {
+                const layerChild = layerChildren[j]
+
+                layerContainer.removeChild(layerChild)
+                layerChild.destroy()
+            }
+        }
     }
 }

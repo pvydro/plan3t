@@ -1,10 +1,9 @@
-import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
 import { GameStateID } from '../manager/GameStateManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
-import { Flogger } from '../service/Flogger'
+import { log } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { WorldSize } from '../utils/Constants'
@@ -37,7 +36,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         this.stage.addChild(this.cameraViewport)
 
         this.gameMapManager.initializeHomeship().then(async () => {
-            Flogger.log('GameplayState', 'Homeship initialized')
+            log(this.name, 'Homeship initialized')
+
             const player = this.entityManager.createOfflinePlayer()
             const particleManager = ParticleManager.getInstance()
             const tooltipManager = TooltipManager.getInstance()
@@ -52,7 +52,10 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             this.camera.stage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
             this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
             this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+
+            super.initialize()
         })
+
     }
 
     update() {
@@ -61,8 +64,14 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         this.inGameHUD.update()
     }
 
-    demolish() {
-        
+    async exit() {
+        log(this.name, 'exit')
+
+        await this.inGameHUD.hideHUDComponents()
+        this.camera.clear()
+        // this.stage.removeChild(this.cameraViewport)
+
+        super.exit()
     }
 
     initializeBackground() {

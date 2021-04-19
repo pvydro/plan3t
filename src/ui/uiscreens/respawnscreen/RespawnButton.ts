@@ -49,7 +49,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
         const hud = InGameHUD.getInstance()
         const roomManager = RoomManager.getInstance()
 
-        hud.closeScreen(InGameScreenID.RespawnScreen)
+        hud.closeMenuScreen(InGameScreenID.RespawnScreen)
         roomManager.requestClientPlayerRespawn()
     }
 

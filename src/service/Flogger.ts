@@ -1,6 +1,8 @@
 export class Flogger {
   public static isLoggingEnabled: boolean = true
+  private static _color: string = 'orange'
   private static tempColor: string = 'orange'
+  private static style = 'color: ' + Flogger.color
 
   static init() {
 
@@ -9,15 +11,16 @@ export class Flogger {
   static log(message: string, ...object: any) {
     if (!Flogger.isLoggingEnabled) return
 
-    const style = 'color: ' + this.tempColor
-
     if (object) {
-      console.log(`%c${message}: ${JSON.stringify(object)}`, style)
+      console.log(`%c${message}: ${JSON.stringify(object)}`, this.style)
     } else {
-      console.log(`%c${message}`, style)
+      console.log(`%c${message}`, this.style)
     }
 
-    this.tempColor = 'orange'
+    if (this.tempColor) {
+      this.tempColor = this._color
+      this.style = 'color: ' + this.tempColor
+    }
   }
 
   static warn(message: string, ...object: any) {
@@ -42,5 +45,14 @@ export class Flogger {
 
   static color(temporaryColor: string) {
     this.tempColor = temporaryColor
+    this.style = 'color: ' + this.tempColor
   }
+}
+
+export function log(message: string, ...object: any) {
+  return Flogger.log(message, ...object)
+}
+
+export function loudLog(message: string, ...object: any) {
+  console.log(`%c${message}: ${JSON.stringify(object)}`, 'font-size: 200%; color: tomato')
 }

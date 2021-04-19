@@ -97,6 +97,6 @@ export class PlayerHealthController implements IPlayerHealthController {
             position: { x: this.player.x, y: this.player.y }
         }))
 
-        hud.requestScreen(InGameScreenID.RespawnScreen)
+        hud.requestMenuScreen(InGameScreenID.RespawnScreen)
     }
 }

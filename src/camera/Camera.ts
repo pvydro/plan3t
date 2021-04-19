@@ -10,6 +10,7 @@ import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientpl
 import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugin/CameraOverlayEffectsPlugin'
 import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
 import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugin'
+import { log } from '../service/Flogger'
 
 export interface ICamera extends IUpdatable {
     viewport: Viewport
@@ -21,6 +22,7 @@ export interface ICamera extends IUpdatable {
     resize(width: number, height: number): void
     toScreen(point: Vector2 | PIXI.ObservablePoint): IVector2
     follow(object: { x: number, y: number, width?: number, height?: number }): void
+    clear(): void
     shake(amount: number): void
     flash(options: CameraFlashOptions): void
 }
@@ -115,6 +117,12 @@ export class Camera implements ICamera {
 
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
+    }
+
+    clear() {
+        log('Camera', 'clear')
+
+        this.stage.clearChildren()
     }
 
     updateMouseFollowOffset(mouseX: number, mouseY: number) {

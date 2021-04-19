@@ -2,6 +2,7 @@ import { Key } from 'ts-keycode-enum'
 import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { ClientPlayer, PlayerConsciousnessState } from '../../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../../engine/display/Sprite'
+import { GameStateID, GameStateManager } from '../../../../manager/GameStateManager'
 import { Flogger } from '../../../../service/Flogger'
 import { InGameHUD } from '../../../../ui/ingamehud/InGameHUD'
 import { InGameScreenID } from '../../../../ui/ingamemenu/InGameMenu'
@@ -27,6 +28,8 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
             onInteract: () => {
 
                 console.log('%cONTRIGGER', 'font-size: 400%; background-color: red;')
+
+                GameStateManager.getInstance().enterState(GameStateID.Gameplay)
 
                 // if (this.didInteract) return
 

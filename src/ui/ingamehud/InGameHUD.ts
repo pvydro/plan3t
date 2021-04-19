@@ -17,9 +17,10 @@ import { HUDInventoryHotbar } from './inventoryhotbar/HUDInventoryHotbar'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     initializeHUD(): Promise<void>
+    hideHUDComponents(): Promise<void>
     // requestRespawnScreen(): Promise<void>
     // closeRespawnScreen(): Promise<void>
-    requestScreen(id: InGameScreenID): Promise<void>
+    requestMenuScreen(id: InGameScreenID): Promise<void>
     requestCrosshairState(state: CrosshairState): void
 }
 
@@ -61,7 +62,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             if (ev.which === Key.B) {
-                this.requestScreen(InGameScreenID.BeamMeUp)
+                this.requestMenuScreen(InGameScreenID.BeamMeUp)
             }
         })
     }
@@ -117,7 +118,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         }
     }
 
-    async requestScreen(id: InGameScreenID) {
+    async requestMenuScreen(id: InGameScreenID) {
         Flogger.log('InGameHUD', 'requestScreen', 'id', id)
 
         await this.hideHUDComponents()
@@ -129,15 +130,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         }, 250)
     }
 
-    static requestScreen(id: InGameScreenID) {
-        Flogger.log('InGameHUD', 'static requestScreen', 'id', id)
-
-        // const hud = InGameHUD.INSTANCE
-
-        // hud.requestScreen(id)
-    }
-
-    async closeScreen(id: InGameScreenID) {
+    async closeMenuScreen(id: InGameScreenID) {
         Flogger.log('InGameHUD', 'closeScreen', 'id', id)
 
         await this.inGameMenu.hideScreen(id)
@@ -146,12 +139,12 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.crosshair.state = CrosshairState.Gameplay
     }
 
-    private async hideHUDComponents() {
+    async hideHUDComponents() {
         await this.hotbar.hide()
         await this.ammoStatus.hide()
     }
 
-    private async showHUDComponents() {
+    async showHUDComponents() {
         await this.hotbar.show()
         await this.ammoStatus.show()
     }
