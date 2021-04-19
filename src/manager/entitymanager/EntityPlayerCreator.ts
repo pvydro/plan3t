@@ -8,6 +8,7 @@ import { IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
     createPlayer(options: PlayerCreationOptions): ClientPlayer
+    clearRegisteredPlayer(): void
 }
 
 export interface PlayerCreationOptions {
@@ -38,17 +39,14 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         }
 
         const player = this.getPlayer(options)
-
-        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
         this.entityManager.registerEntity(sessionId, {
             clientEntity: player,
             serverEntity: options.entity
         })
         
         // Client player camera follow
-        if (options.isClientPlayer === true) {            
-            this.camera.follow(this._currentClientPlayer as PIXI.DisplayObject)
-            
+        if (options.isClientPlayer) {
+            // this.camera.follow(this._currentClientPlayer as PIXI.DisplayObject)
             this.markPlayerAsSpawned(sessionId)
         }
 
@@ -58,7 +56,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
     private getPlayer(options: PlayerCreationOptions): ClientPlayer {
         let player
 
-        if (options.isClientPlayer === true) {
+        if (options.isClientPlayer) {
             if (this._currentClientPlayer) {
                 return this._currentClientPlayer
             } else {
@@ -95,6 +93,10 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                 }
             }
         }, 1000)
+    }
+
+    clearRegisteredPlayer() {
+        this._currentClientPlayer = undefined
     }
 
     get roomState() {

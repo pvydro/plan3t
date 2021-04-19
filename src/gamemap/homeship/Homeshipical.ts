@@ -1,6 +1,5 @@
 import { Container } from '../../engine/display/Container'
 import { IRect } from '../../engine/math/Rect'
-import { IUpdatable } from '../../interface/IUpdatable'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'
@@ -79,6 +78,11 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
         this.removeChild(this.outline)
 
         return super.clearMap()
+    }
+
+    demolish() {
+        this.outline.demolish()
+        this.clearChildren()
     }
 
     get groundRect() {

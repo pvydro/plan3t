@@ -1,5 +1,5 @@
 import { Game } from '../main/Game'
-import { IClientManager } from '../manager/ClientManager'
+import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
@@ -43,6 +43,12 @@ export abstract class GameState implements IGameState {
 
     async exit() {
         log('GameState', 'exit', 'id', this.id)
+        
+        const clientManager = ClientManager.getInstance()
+
+        this.camera.clear()
+        this.camera.clearFollowTarget()
+        clientManager.clearEntityManager()
 
         return
     }

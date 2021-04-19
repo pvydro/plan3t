@@ -115,7 +115,7 @@ export class CameraStage extends Container implements ICameraStage {
                 const layerChild = layerChildren[j]
 
                 layerContainer.removeChild(layerChild)
-                layerChild.destroy()
+                // layerChild.destroy()
             }
         }
     }

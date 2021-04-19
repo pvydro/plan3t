@@ -147,6 +147,7 @@ export class EntityManager implements IEntityManager {
     clearClientEntities() {
         log('EntityManager', 'clearClientEntities')
 
+        this.playerCreator.clearRegisteredPlayer()
         this._clientEntities.clear()
     }
 

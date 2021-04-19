@@ -7,6 +7,7 @@ import { FourWayDirection } from '../../engine/math/Direction'
 import { Graphix } from '../../engine/display/Graphix'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
+import { log } from '../../service/Flogger'
 
 export interface IHomeshipicalOutline extends IContainer {
     initialize(): void
@@ -106,6 +107,14 @@ export class HomeshipicalOutline extends Container implements IHomeshipicalOutli
 
         edge.beginFill(edgeColor)
 
-        return  edge
+        return edge
+    }
+
+    demolish() {
+        log('HomeshipicalOutline', 'demolish')
+
+        this.clearChildren()
+        this.leftSideEdgeCover.demolish()
+        this.topSideEdgeCover.demolish()
     }
 }

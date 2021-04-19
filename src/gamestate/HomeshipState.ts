@@ -8,7 +8,6 @@ import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
-import { ClientManager } from '../manager/ClientManager'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -46,12 +45,14 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             player.holster.holsterWeapon()
 
             await this.inGameHUD.initializeHUD()
+            this.camera.follow(player)
             this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
-            
-            this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-            this.camera.stage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
-            this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
-            this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+
+            this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
+            this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+            this.cameraStage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
+            this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
+            this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
 
             super.initialize()
         })
@@ -66,13 +67,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
 
     async exit() {
         log(this.name, 'exit')
-        const clientManager = ClientManager.getInstance()
 
         await this.inGameHUD.hideHUDComponents()
-        this.camera.clear()
-        this.camera.clearFollowTarget()
-
-        clientManager.clearEntityManager()
 
         super.exit()
     }

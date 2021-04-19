@@ -9,6 +9,7 @@ import { Flogger } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { WorldSize } from '../utils/Constants'
 import { GameState, GameStateOptions, IGameState } from './GameState'
+import { Particle } from '../engine/display/particle/Particle'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -28,23 +29,28 @@ export class GameplayState extends GameState implements IGameplayState {
         this.ambientLight = new GameplayAmbientLight()
         this.hornet = new PassiveHornet()
         this.inGameHUD = InGameHUD.getInstance()
-
-        this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)
     }
     
     async initialize() {
+        const particleManager = ParticleManager.getInstance()
+
+        const player = this.entityManager.createOfflinePlayer()
+        this.camera.follow(player)
+
+        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
+        this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
+        this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+        this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
+        this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+
         await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
 
-        // this.roomManager.initializeRoom().then(async (room: Room) => {
-        //     Flogger.log('GameplayState', 'Room initialized')
+        this.roomManager.initializeRoom().then(async (room: Room) => {
+            Flogger.log('GameplayState', 'Room initialized')
 
-        //     await this.inGameHUD.initializeHUD()
-    
-        //     this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-        //     this.camera.stage.addChildAtLayer(ParticleManager.getInstance().container, CameraLayer.Particle)
-        //     this.camera.stage.addChildAtLayer(ParticleManager.getInstance().overlayContainer, CameraLayer.OverlayParticle)
-        // })
+            await this.inGameHUD.initializeHUD()
+        })
     }
 
     update() {
