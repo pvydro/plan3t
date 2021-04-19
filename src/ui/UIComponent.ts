@@ -48,7 +48,7 @@ export class UIComponent extends UIContainer implements IUIComponent {
     }
 
     reposition(addListener?: boolean) {
-        if (addListener === true) {
+        if (addListener) {
             InputProcessor.on(InputEvents.Resize, () => {
                 this.reposition(false)
             })

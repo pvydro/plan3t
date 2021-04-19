@@ -19,4 +19,12 @@ export class Dimension implements IDimension {
     get height() {
         return this._height
     }
+
+    set width(value: number) {
+        this._width = value
+    }
+
+    set height(value: number) {
+        this._height = value
+    }
 }

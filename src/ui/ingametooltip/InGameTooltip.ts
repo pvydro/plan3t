@@ -76,7 +76,7 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
             this.tooltipContainer.addChild(this.textSprite)
         }
 
-        if (options.hideByDefault === true) {
+        if (options.hideByDefault) {
             this.tooltipContainer.alpha = 0
         }
     }

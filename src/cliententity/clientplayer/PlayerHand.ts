@@ -111,7 +111,7 @@ export class PlayerHand extends Container implements IPlayerHand {
 
     showSecondHand(shouldShow: boolean, handX?: number, handY?: number) {
         Flogger.log('PlayerHand', 'showSecondHand', 'shouldShow', shouldShow, 'handX', handX, 'handY', handY)
-        if (shouldShow === true) {
+        if (shouldShow) {
             this.secondHandSprite.alpha = 1
         } else {
             this.secondHandSprite.alpha = 0

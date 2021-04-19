@@ -1,6 +1,6 @@
 import { GameMapHelper } from './GameMapHelper'
 import { IDemolishable } from '../interface/IDemolishable'
-import { Flogger } from '../service/Flogger'
+import { Flogger, log } from '../service/Flogger'
 import { Spherical } from './spherical/Spherical'
 import { Container } from '../engine/display/Container'
 import { GlobalScale } from '../utils/Constants'
@@ -10,6 +10,8 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { SphericalData } from './spherical/SphericalData'
 import { GameMapContainer } from './GameMapContainer'
 import { Homeshipical } from './homeship/Homeshipical'
+import { Camera } from '../camera/Camera'
+import { CameraLayer } from '../camera/CameraStage'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
@@ -36,7 +38,7 @@ export class GameMap extends Container implements IGameMap {
         this.scale.set(GlobalScale, GlobalScale)
 
         this.sky = new GameMapSky()
-        this.addChild(this.sky)
+        // this.addChild(this.sky)
     }
 
     update() {
@@ -45,31 +47,34 @@ export class GameMap extends Container implements IGameMap {
     }
 
     async initializeHomeship(): Promise<void> {
-        Flogger.log('GameMap', 'initializeHomeship')
+        log('GameMap', 'initializeHomeship')
 
         const homeship = Homeshipical.getInstance()
 
         await this.sky.configure({ allBlack: true })
         await this.applyGameMapContainer(homeship)
+
+        this.camera.stage.addChildAtLayer(this.sky, CameraLayer.GameMapSky)
     }
 
     // TODO: Seed
     async initializeRandomSpherical(): Promise<void> {
-        Flogger.log('GameMap', 'initializeRandomSpherical')
+        log('GameMap', 'initializeRandomSpherical')
 
         const randomSphericalData = await GameMapHelper.getRandomSphericalData()
-        const randomSpherical = new Spherical(randomSphericalData)
 
-        await this.sky.configure()
-        await this.applyGameMapContainer(randomSpherical)
+        this.initializePremadeSpherical(randomSphericalData)
     }
 
     async initializePremadeSpherical(data: SphericalData) {
-        Flogger.log('GameMap', 'initializePremadeSpherical')
+        log('GameMap', 'initializePremadeSpherical')
 
         const spherical = new Spherical(data)
 
         await this.applyGameMapContainer(spherical)
+        await this.sky.configure()
+
+        this.camera.stage.addChildAtLayer(this.sky, CameraLayer.GameMapSky)
     }
 
     private applyGameMapContainer(mapContainer: GameMapContainer): Promise<void> {
@@ -98,10 +103,14 @@ export class GameMap extends Container implements IGameMap {
     }
 
     demolish() {
-        Flogger.log('GameMap', 'demolish')
+        log('GameMap', 'demolish')
     }
 
     get collidableRects() {
         return (this.currentMap && this.currentMap.collisionRects) ? this.currentMap.collisionRects : []
+    }
+
+    get camera() {
+        return Camera.getInstance()
     }
 }

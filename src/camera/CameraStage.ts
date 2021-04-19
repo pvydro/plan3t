@@ -1,21 +1,23 @@
 import { Container } from '../engine/display/Container'
-import { log, loudLog } from '../service/Flogger'
+import { log } from '../service/Flogger'
 import { ICamera } from './Camera'
 
+let layerIndex = 0
 export const CameraLayer = {
-    Background: 0,
-    GameMapBackground: 1,
-    GameMap: 2,
-    Bullet: 3,
-    Particle: 4,
-    Players: 5,
-    Creatures: 6,
-    Lighting: 7,
-    GameMapOverlay: 8,
-    Overlay: 9,
-    Tooltips: 10,
-    OverlayParticle: 11,
-    DebugOverlay: 12
+    GameMapSky: layerIndex++,
+    Background: layerIndex++,
+    GameMapBackground: layerIndex++,
+    GameMap: layerIndex++,
+    Bullet: layerIndex++,
+    Particle: layerIndex++,
+    Players: layerIndex++,
+    Creatures: layerIndex++,
+    Lighting: layerIndex++,
+    GameMapOverlay: layerIndex++,
+    Overlay: layerIndex++,
+    Tooltips: layerIndex++,
+    OverlayParticle: layerIndex++,
+    DebugOverlay: layerIndex++
 }
 
 export interface ICameraStage {

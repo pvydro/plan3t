@@ -44,7 +44,7 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
     createDebugGraphics(rectangles?: IRect[]): Graphix {
         rectangles = rectangles ? rectangles : this.collisionRects
 
-        Flogger.log('CollisionDebugger', 'createDebugGraphics', 'rectangles', rectangles)
+        Flogger.log('CollisionDebugger', 'createDebugGraphics')
 
         const rectangleGraphics = new Graphix()
 

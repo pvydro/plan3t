@@ -102,7 +102,10 @@ export class RoomManager implements IRoomManager {
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {
-        log('RoomManager', 'parseRoomSpherical', 'schema', schema)
+        log('RoomManager', 'parseRoomSpherical', 'schema', {
+            'biome': schema.biome,
+            'dimension': schema.dimension
+        })
 
         const parsedPoints = []
 
@@ -136,7 +139,9 @@ export class RoomManager implements IRoomManager {
         if (currentSpherical) {
             const currentData = currentSpherical.data
 
-            this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+            if (currentData) {
+                this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+            }
         }
     }
 
