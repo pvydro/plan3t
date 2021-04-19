@@ -15,7 +15,7 @@ export interface HomeshipicalRespone extends SphericalResponse {
 }
 
 export class Homeshipical extends GameMapContainer implements IHomeshipical {
-    private static INSTANCE: Homeshipical
+    private static Instance: Homeshipical
     builder: IHomeshipicalBuilder
     moduleBuilder: IHomeshipicalModuleBuilder
     outline: HomeshipicalOutline
@@ -23,11 +23,11 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
     modules: HomeshipicalModule[]
 
     static getInstance() {
-        if (Homeshipical.INSTANCE === undefined) {
-            Homeshipical.INSTANCE = new Homeshipical()
+        if (Homeshipical.Instance === undefined) {
+            Homeshipical.Instance = new Homeshipical()
         }
 
-        return Homeshipical.INSTANCE
+        return Homeshipical.Instance
     }
 
     private constructor() {

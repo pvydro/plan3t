@@ -21,7 +21,7 @@ export enum CrosshairState {
 }
 
 export class Crosshair extends UIComponent implements ICrosshair {
-    private static INSTANCE: Crosshair
+    private static Instance: Crosshair
     
     _state: CrosshairState = CrosshairState.Gameplay
     pointerCursor: ICrosshairCursor
@@ -42,10 +42,10 @@ export class Crosshair extends UIComponent implements ICrosshair {
 
     
     static getInstance() {
-        if (Crosshair.INSTANCE === undefined) {
-            Crosshair.INSTANCE = new Crosshair()
+        if (Crosshair.Instance === undefined) {
+            Crosshair.Instance = new Crosshair()
         }
-        return Crosshair.INSTANCE
+        return Crosshair.Instance
     }
 
     private constructor() {

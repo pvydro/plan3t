@@ -16,18 +16,18 @@ export interface ParticleManagerOptions {
 }
 
 export class ParticleManager implements IParticleManager {
-    private static INSTANCE: ParticleManager
+    private static Instance: ParticleManager
     collisionManager: IParticleCollisionManager
     container: Container
     overlayContainer: Container
     particles: Set<IParticle>
 
     static getInstance() {
-        if (ParticleManager.INSTANCE === undefined) {
-            ParticleManager.INSTANCE = new ParticleManager()
+        if (ParticleManager.Instance === undefined) {
+            ParticleManager.Instance = new ParticleManager()
         }
 
-        return ParticleManager.INSTANCE
+        return ParticleManager.Instance
     }
 
     private constructor() {

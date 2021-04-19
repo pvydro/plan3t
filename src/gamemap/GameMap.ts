@@ -20,16 +20,16 @@ export interface IGameMap extends IDemolishable, IUpdatable {
 }
 
 export class GameMap extends Container implements IGameMap {
-    private static INSTANCE?: GameMap
+    private static Instance?: GameMap
     currentMap?: GameMapContainer
     // sky: GameMapSky
     
     static getInstance() {
-        if (GameMap.INSTANCE === undefined) {
-            GameMap.INSTANCE = new GameMap()
+        if (GameMap.Instance === undefined) {
+            GameMap.Instance = new GameMap()
         }
 
-        return GameMap.INSTANCE
+        return GameMap.Instance
     }
 
     private constructor() {

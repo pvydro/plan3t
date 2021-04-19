@@ -25,7 +25,7 @@ export interface IInGameHUD extends IUpdatable, IReposition {
 }
 
 export class InGameHUD extends UIScreen implements IInGameHUD {
-    private static INSTANCE: InGameHUD
+    private static Instance: InGameHUD
     _initialized: boolean = false
     hudContainer: UIContainer
     crosshair: Crosshair
@@ -38,11 +38,11 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     inGameMenu: InGameMenu
 
     static getInstance() {
-        if (!this.INSTANCE) {
-            this.INSTANCE = new InGameHUD()
+        if (!this.Instance) {
+            this.Instance = new InGameHUD()
         }
 
-        return this.INSTANCE
+        return this.Instance
     }
 
     private constructor() {

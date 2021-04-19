@@ -64,7 +64,7 @@ export interface ClientPlayerOptions {
 }
 
 export class ClientPlayer extends GravityEntity {
-    private static INSTANCE: ClientPlayer
+    private static Instance: ClientPlayer
     
     _entityManager?: IEntityManager
     _clientControl: boolean = false
@@ -88,15 +88,15 @@ export class ClientPlayer extends GravityEntity {
     emitter: Emitter = new Emitter()
 
     static getInstance(options?: ClientPlayerOptions): ClientPlayer | undefined {
-        if (ClientPlayer.INSTANCE === undefined) {
+        if (ClientPlayer.Instance === undefined) {
             if (options === undefined) {
                 return undefined
             } else {
-                ClientPlayer.INSTANCE = new ClientPlayer(options)
+                ClientPlayer.Instance = new ClientPlayer(options)
             }
         }
 
-        return ClientPlayer.INSTANCE
+        return ClientPlayer.Instance
     }
 
     constructor(options: ClientPlayerOptions) {

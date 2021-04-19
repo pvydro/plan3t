@@ -27,7 +27,7 @@ export interface RoomManagerOptions {
 }
 
 export class RoomManager implements IRoomManager {
-    private static INSTANCE: RoomManager
+    private static Instance: RoomManager
     static _room: Room<PlanetGameState>
     static _clientSessionId = 'local'
     
@@ -36,15 +36,15 @@ export class RoomManager implements IRoomManager {
     entityManager: IEntityManager
 
     static getInstance(options?: RoomManagerOptions): RoomManager | undefined {
-        if (RoomManager.INSTANCE === undefined) {
+        if (RoomManager.Instance === undefined) {
             if (options === undefined) {
                 return undefined
             } else {
-                RoomManager.INSTANCE = new RoomManager(options)
+                RoomManager.Instance = new RoomManager(options)
             }
         }
 
-        return RoomManager.INSTANCE
+        return RoomManager.Instance
     }
 
     private constructor(options: RoomManagerOptions) {

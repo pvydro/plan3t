@@ -8,17 +8,17 @@ export interface ITooltipManager extends IUpdatable {
 }
 
 export class TooltipManager implements ITooltipManager {
-    private static INSTANCE: TooltipManager
+    private static Instance: TooltipManager
     container: Container
     factory: IInGameTooltipFactory
     tooltips: Set<IInGameTooltip>
     
     static getInstance() {
-        if (TooltipManager.INSTANCE === undefined) {
-            TooltipManager.INSTANCE = new TooltipManager()
+        if (TooltipManager.Instance === undefined) {
+            TooltipManager.Instance = new TooltipManager()
         }
 
-        return TooltipManager.INSTANCE
+        return TooltipManager.Instance
     }
 
     private constructor() {

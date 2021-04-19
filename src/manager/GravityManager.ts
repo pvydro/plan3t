@@ -17,16 +17,16 @@ export interface GravityManagerOptions {
 }
 
 export class GravityManager implements IGravityManager {
-    private static INSTANCE: GravityManager
+    private static Instance: GravityManager
     collisionManager: ICollisionManager
     gameMap: GameMap
 
     static getInstance() {
-        if (GravityManager.INSTANCE === undefined) {
-            GravityManager.INSTANCE = new GravityManager()
+        if (GravityManager.Instance === undefined) {
+            GravityManager.Instance = new GravityManager()
         }
 
-        return GravityManager.INSTANCE
+        return GravityManager.Instance
     }
 
     private constructor() {

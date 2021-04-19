@@ -5,11 +5,11 @@ export interface IClientPlayerInventory extends IPlayerInventory {
 }
 
 export class ClientPlayerInventory extends PlayerInventory implements IClientPlayerInventory {
-    private static INSTANCE: ClientPlayerInventory
+    private static Instance: ClientPlayerInventory
 
     static getInstance() {
-        if (ClientPlayerInventory.INSTANCE === undefined) {
-            ClientPlayerInventory.INSTANCE = new ClientPlayerInventory()
+        if (ClientPlayerInventory.Instance === undefined) {
+            ClientPlayerInventory.Instance = new ClientPlayerInventory()
         }
     }
 

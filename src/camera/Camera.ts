@@ -30,7 +30,7 @@ export interface ICamera extends IUpdatable {
 }
 
 export class Camera implements ICamera {
-    private static INSTANCE: Camera
+    private static Instance: Camera
     private baseZoom: number = 3
     private baseWidth: number = 1280
     static Zero: Vector2 = Vector2.Zero
@@ -60,11 +60,11 @@ export class Camera implements ICamera {
     plugins: any[]
 
     public static getInstance() {
-        if (Camera.INSTANCE === undefined) {
-            Camera.INSTANCE = new Camera()
+        if (Camera.Instance === undefined) {
+            Camera.Instance = new Camera()
         }
 
-        return Camera.INSTANCE
+        return Camera.Instance
     }
 
     private constructor() {

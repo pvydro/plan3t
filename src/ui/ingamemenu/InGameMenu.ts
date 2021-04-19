@@ -16,7 +16,7 @@ export interface IInGameMenu {
 }
 
 export class InGameMenu extends UIScreen implements IInGameMenu {
-    private static INSTANCE: InGameMenu
+    private static Instance: InGameMenu
     darkener: Darkener
     respawnScreen: RespawnScreen
     beamMeUpScreen: BeamMeUpScreen
@@ -24,11 +24,11 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     allScreens: IUIScreen[]
 
     static getInstance() {
-        if (InGameMenu.INSTANCE === undefined) {
-            InGameMenu.INSTANCE = new InGameMenu()
+        if (InGameMenu.Instance === undefined) {
+            InGameMenu.Instance = new InGameMenu()
         }
 
-        return InGameMenu.INSTANCE
+        return InGameMenu.Instance
     }
     
     private constructor() {
