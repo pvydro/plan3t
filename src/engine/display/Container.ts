@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { IDimension } from '../math/Dimension'
+import { IVector2 } from '../math/Vector2'
 
 export interface IContainer extends IDemolishable {
     name: string 
@@ -15,6 +16,7 @@ export interface IContainer extends IDemolishable {
     y: number
     width: number
     height: number
+    pos: IVector2
     clearChildren(): void
 }
 
@@ -30,11 +32,19 @@ export class Container extends PIXI.Container implements IContainer {
         })
     }
 
+    set pos(value: IVector2) {
+        this.position.x = value.x
+        this.position.y = value.y
+    }
+
+    get pos() {
+        return this.position
+    }
+
     set dimension(value: IDimension) {
         this.width = value.width
         this.height = value.height
     }
-
 
     get halfWidth() {
         return this.width / 2

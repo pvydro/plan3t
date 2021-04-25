@@ -123,8 +123,8 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
         counterFadeAnim.play()
     }
 
-    reposition(addListeners: boolean) {
-        super.reposition(addListeners)
+    reposition(addListener: boolean) {
+        super.reposition(addListener)
 
         const leftPadding = 5
 

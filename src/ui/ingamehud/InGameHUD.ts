@@ -96,8 +96,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.inventory.update()
     }
 
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
 
         // Health bar
         this.healthBar.position.x = WindowSize.width - UIConstants.HUDPadding

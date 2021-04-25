@@ -37,8 +37,8 @@ export class BeamMeUpHeader extends UIComponent implements IBeamMeUpHeader {
         this.alpha = 0
     }
 
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
 
         const topHeaderHeight = this.currentPlanetIntroHeader.textHeight
         const bottomHeaderMargin = UIConstants.HUDMargin

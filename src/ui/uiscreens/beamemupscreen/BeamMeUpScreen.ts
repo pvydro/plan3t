@@ -42,8 +42,8 @@ export class BeamMeUpScreen extends UIScreen implements IBeamMeUpScreen {
         this.header.forceHide()
     }
 
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
 
         const buttonY = this.header.y + this.header.height
         this.beamMeUpButton.position.set(this.header.x, buttonY)
