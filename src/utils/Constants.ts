@@ -48,13 +48,6 @@ export class GravityConstants {
     private constructor() {}
 }
 
-export class Defaults {
-    static BulletVelocity: number = 5
-    static ShouldLightsJitter: boolean = false
-
-    private constructor() {}
-}
-
 export class UIConstants {
     static UIScale: number = 5
     static HUDPadding: number = 42

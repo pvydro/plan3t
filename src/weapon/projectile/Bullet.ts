@@ -6,7 +6,8 @@ import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
-import { Defaults, GlobalScale } from '../../utils/Constants'
+import { GlobalScale } from '../../utils/Constants'
+import { PhysDefaults } from '../../utils/Defaults'
 
 export enum ProjectileType {
     Bullet = 'Bullet'
@@ -41,7 +42,7 @@ export class Bullet extends GravityEntity implements IBullet {
         
         this._id = Bullet.BulletIdIteration++
         this.rotation = options.rotation ?? 0
-        this.velocity = options.velocity ?? Defaults.BulletVelocity
+        this.velocity = options.velocity ?? PhysDefaults.bulletVelocity
         this.entityManager = options.entityManager
 
         this.xVel = this.velocity * Math.cos(this.rotation)

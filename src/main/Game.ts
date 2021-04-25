@@ -55,6 +55,10 @@ export class Game implements IGame {
         this.stage.addChild(this.cameraViewport)
         this.stage.addChild(this._loadingScreen)
         this.initializeGameLoop()
+
+        setTimeout(() => {
+            this._loadingScreen.hide()
+        }, 1000)
     }
 
     instantiateApplication() {

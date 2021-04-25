@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import gsap from 'gsap/all'
 import { PixiPlugin } from 'gsap/PixiPlugin'
-import { Easing } from './TweenEasing'
+import { AnimDefaults, Defaults } from '../../../utils/Defaults'
 
 export enum TweenDirection {
     Normal = 'normal',
@@ -36,10 +36,10 @@ export class Tween {
     }
 
     private static applyDefaultsToOptions(options: TweenOptions): TweenOptions {
-        const autoplay = options.autoplay !== undefined ? options.autoplay : false
+        const autoplay = options.autoplay !== undefined ? options.autoplay : AnimDefaults.autoplay
 
-        options.duration = options.duration ?? 0.5
-        options.ease = options.ease ?? Easing.EaseOutExpo
+        options.duration = options.duration ?? AnimDefaults.duration
+        options.ease = options.ease ?? AnimDefaults.easing
         options.paused = !autoplay
         options.direction = options.direction ?? TweenDirection.Normal
 

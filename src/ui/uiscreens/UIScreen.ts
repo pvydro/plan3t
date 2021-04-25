@@ -5,6 +5,7 @@ import { exists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 
 export interface IUIScreen extends IUIComponent {
+    backgroundGraphic?: Graphix
     applyScale(components?: any[]): void
 }
 

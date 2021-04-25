@@ -7,7 +7,6 @@ import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { IVector2 } from '../engine/math/Vector2'
 import { Flogger } from '../service/Flogger'
-import { Defaults } from '../utils/Constants'
 import { ProjectileType } from './projectile/Bullet'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
@@ -67,7 +66,7 @@ export class Weapon extends Container implements IWeapon {
     recoilX: number = 0
     recoilY: number = 0
     reloadTime: number = 0
-    bulletVelocity: number = Defaults.BulletVelocity
+    bulletVelocity: number = 5
 
     sprite: Sprite
     unloadedSprite: Sprite

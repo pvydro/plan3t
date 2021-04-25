@@ -5,6 +5,7 @@ import { IRect, Rect } from '../engine/math/Rect'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { GameLoop } from '../gameloop/GameLoop'
 import { GravityConstants } from '../utils/Constants'
+import { PhysDefaults } from '../utils/Defaults'
 import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity'
 
 export interface IGravityEntity extends IClientEntity {
@@ -35,11 +36,12 @@ export class GravityEntity extends ClientEntity {
     constructor(options?: GravityEntityOptions) {
         super(options)
 
-        this.horizontalFriction = (options && options.horizontalFriction) ?? 5
-        this.weight = (options && options.weight) ?? 0
-        this.boundingBox = this.createBoundingBox(options)//(options && options.boundingBox) ?? { x: 0, y: 0, width: this.width, height: this.height }
+        this.horizontalFriction = (options && options.horizontalFriction) ?? PhysDefaults.horizontalFriction
+        this.weight = (options && options.weight) ?? PhysDefaults.weight
+        this.boundingBox = this.createBoundingBox(options)
+        //(options && options.boundingBox) ?? { x: 0, y: 0, width: this.width, height: this.height }
 
-        if (options && options.addDebugRectangle=== true) {
+        if (options && options.addDebugRectangle) {
             this.debugger = new CollisionDebugger({
                 collisionRects: [ this.boundingBox ]
             })
