@@ -1,5 +1,7 @@
 import { Graphix } from '../../engine/display/Graphix'
+import { TextStyles } from '../../engine/display/TextStyles'
 import { log } from '../../service/Flogger'
+import { Defaults } from '../../utils/Defaults'
 import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
 import { LoadingIcon } from './LoadingIcon'
 import { ILoadingScreenAnimator, LoadingScreenAnimator } from './LoadingScreenAnimator'
@@ -52,10 +54,11 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        this.loadingIcon.pos = {
-            x: 150,
-            y: 150
-        }
+        const x = Defaults.UIEdgePadding
+        const y = window.innerHeight - Defaults.UIEdgePadding
+            - (this.loadingIcon.textHeight)// * TextStyles.TextRescaleMultiplier)
+        
+        this.loadingIcon.pos = { x, y }
     }
 
     applyScale() {

@@ -4,7 +4,7 @@ import { IDemolishable } from '../../interface/IDemolishable'
 import { TextDefaults } from '../../utils/Defaults'
 import { IDimension } from '../math/Dimension'
 import { IVector2, Vector2 } from '../math/Vector2'
-import { scaleFontSize, scaleRescale } from './TextStyles'
+import { scaleFontSize, scaleRescale, TextStyles } from './TextStyles'
 
 export enum TextSpriteAlign {
     Left = 'left',
@@ -60,6 +60,14 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     
     get textHeight() {
         return this._textDimensions.height * this.rescale
+    }
+    
+    get scaledTextWidth() {
+        return this.textWidth * TextStyles.TextRescaleMultiplier
+    }
+    
+    get scaledTextHeight() {
+        return this.textHeight * TextStyles.TextRescaleMultiplier
     }
 
     get textDimensions() {

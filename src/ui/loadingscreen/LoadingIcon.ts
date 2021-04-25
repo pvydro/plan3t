@@ -3,7 +3,8 @@ import { IUIComponent, UIComponent } from '../UIComponent'
 import { UIText } from '../UIText'
 
 export interface ILoadingIcon extends IUIComponent {
-
+    textHeight: number
+    textWidth: number
 }
 
 export class LoadingIcon extends UIComponent implements ILoadingIcon {
@@ -19,5 +20,13 @@ export class LoadingIcon extends UIComponent implements ILoadingIcon {
         })
         
         this.addChild(this.text)
+    }
+
+    get textWidth() {
+        return this.text.scaledTextWidth
+    }
+
+    get textHeight() {
+        return this.text.scaledTextHeight
     }
 }

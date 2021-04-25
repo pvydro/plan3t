@@ -1,15 +1,14 @@
 import { Fonts } from '../../asset/Fonts'
-import { TextDefaults } from '../../utils/Defaults'
 import { TextSpriteStyle } from './TextSprite'
-
-const TextRescaleMultiplier = 4
 
 export interface ITextStyles {
     [ key: string ]: TextSpriteStyle
 }
 
+const _textScaleMultiplier = 4
+
 export class TextStyles {
-    // static Screen
+    static TextRescaleMultiplier: number = _textScaleMultiplier
     static Menu: ITextStyles = {
         HeaderSmall: {
             fontSize: scaleFontSize(8),
@@ -43,7 +42,7 @@ export class TextStyles {
  * @returns Translated font size
  */
 export function scaleFontSize(value: number) {
-    return value * TextRescaleMultiplier
+    return value * _textScaleMultiplier
 }
 
 /**
@@ -53,5 +52,5 @@ export function scaleFontSize(value: number) {
  * @returns Translated rescale
  */
 export function scaleRescale(value: number) {
-    return value / TextRescaleMultiplier
+    return value / _textScaleMultiplier
 }
