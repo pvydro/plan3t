@@ -9,6 +9,7 @@ import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
+import { Defaults } from '../utils/Defaults'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -53,6 +54,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
             this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
 
+            Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             super.initialize()
         })
 

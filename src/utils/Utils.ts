@@ -24,6 +24,9 @@ export function rect(x: number, y: number, width: number, height: number): IRect
     return { x, y, width, height }
 }
 
+export function timeoutToPromise(time: number) {
+    return new Promise(resolve => setTimeout(resolve, time))
+}
 export class Utils {
 
 }

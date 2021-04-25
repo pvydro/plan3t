@@ -7,6 +7,7 @@ export class Defaults {
     static UIMargin: number = 4
     static SwipeAnimationDistance: number = 4
     static JustificationPadding: number = 2
+    static LoadingScreenCloseDelay: number = 1000
 }
 
 export const TextDefaults = {

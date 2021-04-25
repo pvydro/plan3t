@@ -12,6 +12,7 @@ import { Viewport } from '../camera/Viewport'
 import { Fonts } from '../asset/Fonts'
 import { Tween } from '../engine/display/tween/Tween'
 import { LoadingScreen } from '../ui/loadingscreen/LoadingScreen'
+import { timeoutToPromise } from '../utils/Utils'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -55,10 +56,6 @@ export class Game implements IGame {
         this.stage.addChild(this.cameraViewport)
         this.stage.addChild(this._loadingScreen)
         this.initializeGameLoop()
-
-        setTimeout(() => {
-            Game.showLoadingScreen(false)
-        }, 1000)
     }
 
     instantiateApplication() {
@@ -85,9 +82,11 @@ export class Game implements IGame {
         this.gameLoop.startGameLoop()
     }
 
-    static async showLoadingScreen(shouldShow?: boolean) {
+    static async showLoadingScreen(shouldShow: boolean, timeout?: number) {
         log('Game', 'showLoadingScreen', 'shouldShow', shouldShow)
 
+        if (timeout !== undefined) await timeoutToPromise(timeout)
+        
         const screen = LoadingScreen.getInstance()
 
         if (shouldShow) {
