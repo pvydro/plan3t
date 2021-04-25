@@ -1,17 +1,31 @@
+import { Graphix } from '../../engine/display/Graphix'
+import { log } from '../../service/Flogger'
 import { UIConstants } from '../../utils/Constants'
+import { exists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 
 export interface IUIScreen extends IUIComponent {
     applyScale(components?: any[]): void
 }
 
+export interface UIScreenBackgroundOptions {
+    backgroundColor?: number
+}
 export interface UIScreenOptions extends UIComponentOptions {
-
+    background?: UIScreenBackgroundOptions
 }
 
 export class UIScreen extends UIComponent implements IUIScreen {
+    backgroundGraphic?: Graphix
+
     constructor(options?: UIScreenOptions) {
         super(options)
+
+        if (options !== undefined) {
+            if (exists(options.background)) {
+                this.createBackgroundGraphics(options.background)
+            }
+        }
     }
 
     applyScale(components?: any[]) {
@@ -23,5 +37,23 @@ export class UIScreen extends UIComponent implements IUIScreen {
                 scaledComponent.scale.set(UIConstants.UIScale, UIConstants.UIScale)
             }
         }
+    }
+
+    protected createBackgroundGraphics(options: UIScreenBackgroundOptions) {
+        log('UIScreen', 'createBackgroundGraphics')
+
+        const backgroundColor = options.backgroundColor ?? 0x000000
+        const width = window.innerWidth
+        const height = window.innerHeight
+
+        if (this.backgroundGraphic !== undefined) {
+            this.backgroundGraphic.demolish()
+        }
+
+        this.backgroundGraphic = new Graphix()
+        this.backgroundGraphic.beginFill(backgroundColor)
+        this.backgroundGraphic.drawRect(0, 0, width, height)
+
+        this.addChild(this.backgroundGraphic)
     }
 }

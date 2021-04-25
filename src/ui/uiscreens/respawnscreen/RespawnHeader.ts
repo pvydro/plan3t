@@ -13,8 +13,10 @@ export class RespawnHeader extends UIText implements IRespawnHeader {
     constructor() {
         super({
             text: 'YOU DIED',
-            fontFamily: Fonts.Font.family,
-            fontSize: 64,
+            style: {
+                fontFamily: Fonts.Font.family,
+                fontSize: 64,
+            }
         })
 
         this.anchor.set(0, 0)

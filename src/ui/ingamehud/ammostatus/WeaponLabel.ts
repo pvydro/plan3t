@@ -36,7 +36,9 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         this.ammoStatus = options.ammoStatus
         this.textSprite = new TextSprite({
             text: '',
-            fontSize: 12
+            style: {
+                fontSize: 12
+            }
         })
 
         this.addChild(this.textSprite)

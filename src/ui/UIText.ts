@@ -12,7 +12,6 @@ export interface UITextOptions extends TextSpriteOptions {
 export class UIText extends TextSprite implements IUIText {
     _isShown: boolean
 
-
     constructor(options: UITextOptions) {
         super(options)
     }

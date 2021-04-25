@@ -22,11 +22,13 @@ export class RespawnButton extends UIButton implements IRespawnButton {
             text: {
                 text: 'Respawn',
                 uppercase: true,
-                fontFamily: Fonts.Font.family,
-                fontSize: 18,
-                color: 0x000000,
                 offsetY: 3,
-                alpha: 0.5
+                alpha: 0.5,
+                style: {
+                    fontFamily: Fonts.Font.family,
+                    fontSize: 18,
+                    color: 0x000000
+                }
             },
             background: {
                 idle: AssetUrls.MID_BUTTON_METAL

@@ -16,12 +16,16 @@ export interface ITextSprite extends IDemolishable {
 
 export interface TextSpriteOptions {
     text: string
-    fontFamily?: string
-    fontSize?: number
-    color?: number
     align?: TextSpriteAlign
     rescale?: number
     uppercase?: boolean
+    style?: TextSpriteStyle
+}
+
+export interface TextSpriteStyle {
+    fontFamily?: string
+    fontSize?: number
+    color?: number
 }
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
@@ -31,9 +35,9 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
 
     constructor(options: TextSpriteOptions) {
         const text = options.uppercase === true ? options.text.toUpperCase() : options.text
-        const fontFamily = options.fontFamily ?? Fonts.Font.family
-        const fontSize = options.fontSize ?? 64
-        const fill = options.color ?? 0xFFFFFF
+        const fontFamily = (options.style && options.style.fontFamily) ?? Fonts.Font.family
+        const fontSize = (options.style && options.style.fontSize) ?? 64
+        const fill = (options.style && options.style.color) ?? 0xFFFFFF
         const align = (options.align as string) ?? 'center'
         const wordWrap = false
         const rescale = options.rescale ?? 0.5

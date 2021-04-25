@@ -9,6 +9,7 @@ import { Animator, IAnimator } from '../../engine/display/Animator'
 import { Tween } from '../../engine/display/tween/Tween'
 import { PredefinedTweens } from '../../engine/display/tween/PredefinedTweens'
 import { Easing } from '../../engine/display/tween/TweenEasing'
+import { TextStyles } from '../../engine/display/TextStyles'
 
 export interface KeyTooltipOptions extends InGameTooltipOptions {
     
@@ -34,9 +35,8 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
         options.backgroundSprite = new Sprite({ texture })
         options.text = {
             text: keyText,
-            fontSize: 12,
-            fontFamily: Fonts.Font.family,
-            align: TextSpriteAlign.Center
+            align: TextSpriteAlign.Center,
+            style: TextStyles.KeyTooltip
         }
         super(options)
 

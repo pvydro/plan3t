@@ -17,9 +17,11 @@ export class BeamMeUpButton extends UIButton implements IBeamMeUpButton {
             text: {
                 text: 'Beam me down',
                 uppercase: true,
-                fontFamily: Fonts.Font.family,
-                fontSize: 16,
-                color: 0xFFFFFF,
+                style: {
+                    fontFamily: Fonts.Font.family,
+                    fontSize: 16,
+                    color: 0xFFFFFF,
+                }
             },
             background: {
                 idle: AssetUrls.MID_BUTTON_METAL

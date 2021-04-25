@@ -30,8 +30,8 @@ export class HUDInventoryHotbarSlot extends UIComponent implements IHUDInventory
     initializeGraphics() {
         this.hotbarKeyTextSprite = new TextSprite({
             text: this.hotbarKeyString,
-            fontSize: 8,
-            rescale: 0.35
+            rescale: 0.35,
+            style: { fontSize: 8 }
         })
         this.hotbarKeyTextSprite.y -= this.hotbarKeyTextSprite.textHeight + 1
 

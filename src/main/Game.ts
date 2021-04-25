@@ -11,6 +11,7 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Viewport } from '../camera/Viewport'
 import { Fonts } from '../asset/Fonts'
 import { Tween } from '../engine/display/tween/Tween'
+import { LoadingScreen } from '../ui/loadingscreen/LoadingScreen'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -26,6 +27,7 @@ export class Game implements IGame {
     _clientManager: IClientManager
     _entityManager: EntityManager
     _particleManager: ParticleManager
+    _loadingScreen: LoadingScreen
 
     gameLoop: IGameLoop
 
@@ -37,6 +39,7 @@ export class Game implements IGame {
         this._clientCamera = Camera.getInstance()
         this._clientManager = ClientManager.getInstance({ game, entityManager: this.entityManager })
         this._particleManager = ParticleManager.getInstance()
+        this._loadingScreen = LoadingScreen.getInstance()
     }
 
     async bootstrap() {
@@ -50,6 +53,7 @@ export class Game implements IGame {
         await this.clientManager.initialize()
 
         this.stage.addChild(this.cameraViewport)
+        this.stage.addChild(this._loadingScreen)
         this.initializeGameLoop()
     }
 

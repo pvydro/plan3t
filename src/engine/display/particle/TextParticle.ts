@@ -1,5 +1,6 @@
 import { TweenLite } from 'gsap/all'
 import { TextSprite } from '../TextSprite'
+import { TextStyles } from '../TextStyles'
 import { PredefinedTweens } from '../tween/PredefinedTweens'
 import { Tween, TweenOptions } from '../tween/Tween'
 import { Easing } from '../tween/TweenEasing'
@@ -33,7 +34,7 @@ export class TextParticle extends Particle implements ITextParticle {
     constructor(options: TextParticleOptions) {
         options.sprite = new TextSprite({
             text: options.text,
-            fontSize: 16
+            style: TextStyles.TextParticle
         })
         super(options)
 
