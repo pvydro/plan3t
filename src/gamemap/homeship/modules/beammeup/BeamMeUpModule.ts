@@ -29,7 +29,7 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
 
                 console.log('%cONTRIGGER', 'font-size: 400%; background-color: red;')
 
-                GameStateManager.getInstance().enterState(GameStateID.Gameplay)
+                GameStateManager.getInstance().enterState(GameStateID.WaveGame)
 
                 // if (this.didInteract) return
 
