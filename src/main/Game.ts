@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Flogger } from '../service/Flogger'
+import { Flogger, log } from '../service/Flogger'
 import { Spritesheets } from '../asset/Spritesheets'
 import { WindowSize } from '../utils/Constants'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
@@ -57,7 +57,7 @@ export class Game implements IGame {
         this.initializeGameLoop()
 
         setTimeout(() => {
-            this._loadingScreen.hide()
+            Game.showLoadingScreen(false)
         }, 1000)
     }
 
@@ -83,6 +83,18 @@ export class Game implements IGame {
         })
 
         this.gameLoop.startGameLoop()
+    }
+
+    static async showLoadingScreen(shouldShow?: boolean) {
+        log('Game', 'showLoadingScreen', 'shouldShow', shouldShow)
+
+        const screen = LoadingScreen.getInstance()
+
+        if (shouldShow) {
+            return screen.show()
+        } else {
+            return screen.hide()
+        }
     }
 
     get gameMap() {

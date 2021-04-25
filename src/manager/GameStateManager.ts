@@ -66,7 +66,7 @@ export class GameStateManager implements IGameStateManager {
         this._currentStateID = id
         this._currentState = this.getStateByID(id)
 
-        this.currentState.initialize()
+        await this.currentState.initialize()
     }
 
     async exitState() {

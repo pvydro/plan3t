@@ -8,6 +8,7 @@ import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
+import { Game } from '../main/Game'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -65,6 +66,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
 
     async exit() {
         log(this.name, 'exit')
+
+        await Game.showLoadingScreen(true)
 
         this.ambientLight.demolish()
         await this.inGameHUD.hideHUDComponents()

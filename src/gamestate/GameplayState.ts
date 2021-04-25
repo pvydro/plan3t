@@ -9,6 +9,7 @@ import { Flogger } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
+import { Game } from '../main/Game'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -51,6 +52,8 @@ export class GameplayState extends GameState implements IGameplayState {
 
         this.roomManager.initializeRoom().then(async (room: Room) => {
             Flogger.log('GameplayState', 'Room initialized')
+
+            Game.showLoadingScreen(false)
 
             await this.inGameHUD.initializeHUD()
         })
