@@ -1,6 +1,5 @@
 import { Graphix } from '../../../engine/display/Graphix'
 import { TextSprite } from '../../../engine/display/TextSprite'
-import { UIConstants } from '../../../utils/Constants'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 
 export interface IHUDInventoryHotbarSlot extends IUIComponent {

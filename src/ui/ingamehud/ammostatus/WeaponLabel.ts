@@ -2,7 +2,7 @@ import { Camera } from '../../../camera/Camera'
 import { TextSprite } from '../../../engine/display/TextSprite'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
-import { UIConstants } from '../../../utils/Constants'
+import { Defaults } from '../../../utils/Defaults'
 import { IWeapon, WeaponState } from '../../../weapon/Weapon'
 import { UIComponent } from '../../UIComponent'
 import { AmmoStatusComponent } from './AmmoStatusComponent'
@@ -119,7 +119,7 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         if (this.textSprite.text != '') {
             if (this.swipeAnimation == undefined) {
                 this.swipeAnimation = Tween.to(this.textSprite, {
-                    x: this.originalX + UIConstants.SwipeAnimationDistance,
+                    x: this.originalX + Defaults.SwipeAnimationDistance,
                     alpha: 0,
                     duration: state === WeaponLabelState.Reloading ? 0.1 : 0.5,
                     onComplete: () => {

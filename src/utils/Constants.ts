@@ -48,15 +48,6 @@ export class GravityConstants {
     private constructor() {}
 }
 
-export class UIConstants {
-    static UIScale: number = 5
-    static HUDPadding: number = 42
-    static HUDMargin: number = 4
-    static TooltipMargin: number = 4
-    static SwipeAnimationDistance: number = 4
-    static JustificationPadding: number = 2
-}
-
 export enum Events {
     PlayerWalkBounce = 'PlayerWalkBounce'
 }

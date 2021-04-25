@@ -1,9 +1,8 @@
-import { resolveModuleName } from 'typescript'
 import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
-import { UIConstants } from '../../utils/Constants'
+import { Defaults } from '../../utils/Defaults'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 
 export enum TooltipType {
@@ -88,7 +87,7 @@ export class InGameTooltip extends UIComponent implements IInGameTooltip {
                 + (this.shouldCenter ? (targetWidth / 2) - (this.backgroundWidth / 2)
                 : 0) + this.xOffset
             const newY = this.targetToFollow.y
-                - this.backgroundHeight - UIConstants.TooltipMargin + this.yOffset
+                - this.backgroundHeight - Defaults.UIMargin + this.yOffset
 
             this.position.set(newX, newY)
         }

@@ -3,7 +3,7 @@ import { Graphix } from '../../engine/display/Graphix'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IVector2 } from '../../engine/math/Vector2'
-import { UIConstants } from '../../utils/Constants'
+import { Defaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './UIButtonDarkenerPlugin'
@@ -202,7 +202,7 @@ export class UIButton extends UIComponent implements IUIButton {
             this.textSprite.y += offsetY
 
             if (alignment === TextSpriteAlign.Left) {
-                this.textSprite.x += UIConstants.JustificationPadding
+                this.textSprite.x += Defaults.JustificationPadding
             } else if (alignment === TextSpriteAlign.Center) {
                 this.textSprite.x += this.halfWidth - (this.textWidth / 2)
             }

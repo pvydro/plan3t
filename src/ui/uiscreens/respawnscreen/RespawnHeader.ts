@@ -1,7 +1,7 @@
 import { IUIComponent } from '../../UIComponent'
 import { Fonts } from '../../../asset/Fonts'
-import { UIConstants } from '../../../utils/Constants'
 import { UIText } from '../../UIText'
+import { Defaults } from '../../../utils/Defaults'
 
 export interface IRespawnHeader extends IUIComponent {
     
@@ -20,15 +20,15 @@ export class RespawnHeader extends UIText implements IRespawnHeader {
         })
 
         this.anchor.set(0, 0)
-        this.reposition(true)
+        this.reposition()
     }
 
     update() {
         
     }
 
-    reposition(addListener?: boolean) {
-        this.position.set(UIConstants.HUDPadding, UIConstants.HUDPadding)
+    reposition() {
+        this.position.set(Defaults.UIEdgePadding, Defaults.UIEdgePadding)
     }
 
     demolish() {

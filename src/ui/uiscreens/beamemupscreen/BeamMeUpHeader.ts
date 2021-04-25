@@ -1,4 +1,4 @@
-import { UIConstants } from '../../../utils/Constants'
+import { Defaults } from '../../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { UIText } from '../../UIText'
 
@@ -41,8 +41,8 @@ export class BeamMeUpHeader extends UIComponent implements IBeamMeUpHeader {
         super.reposition(addListener)
 
         const topHeaderHeight = this.currentPlanetIntroHeader.textHeight
-        const bottomHeaderMargin = UIConstants.HUDMargin
-        const leftMargin = UIConstants.HUDPadding
+        const bottomHeaderMargin = Defaults.UIMargin
+        const leftMargin = Defaults.UIEdgePadding
         const marginedElements = [
             this.currentPlanetIntroHeader,
             this.currentPlanetText,
@@ -55,6 +55,6 @@ export class BeamMeUpHeader extends UIComponent implements IBeamMeUpHeader {
         }
 
         this.currentPlanetText.position.y = topHeaderHeight + bottomHeaderMargin
-        this.position.set(UIConstants.HUDPadding, UIConstants.HUDPadding)
+        this.position.set(Defaults.UIEdgePadding, Defaults.UIEdgePadding)
     }
 }

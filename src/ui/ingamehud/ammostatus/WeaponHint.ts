@@ -3,9 +3,10 @@ import { Container } from '../../../engine/display/Container'
 import { Sprite } from '../../../engine/display/Sprite'
 import { WeaponHelper } from '../../../weapon/WeaponHelper'
 import { AdjustmentFilter } from 'pixi-filters'
-import { UIConstants, WindowSize } from '../../../utils/Constants'
+import { WindowSize } from '../../../utils/Constants'
 import { IReposition } from '../../../interface/IReposition'
 import { UIComponent } from '../../UIComponent'
+import { Defaults } from '../../../utils/Defaults'
 
 export interface IWeaponHint extends IReposition {
 
@@ -71,8 +72,8 @@ export class WeaponHint extends UIComponent implements IWeaponHint {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        const newX = WindowSize.width / UIConstants.UIScale
+        const newX = WindowSize.width / Defaults.UIScale
 
-        this.weaponContainer.x = newX - this.leftPadding - (UIConstants.HUDPadding / UIConstants.UIScale)
+        this.weaponContainer.x = newX - this.leftPadding - (Defaults.UIEdgePadding / Defaults.UIScale)
     }
 }

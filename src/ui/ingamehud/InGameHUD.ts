@@ -3,7 +3,8 @@ import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
-import { UIConstants, WindowSize } from '../../utils/Constants'
+import { WindowSize } from '../../utils/Constants'
+import { Defaults } from '../../utils/Defaults'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
@@ -100,14 +101,14 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         super.reposition(addListener)
 
         // Health bar
-        this.healthBar.position.x = WindowSize.width - UIConstants.HUDPadding
-        this.healthBar.position.y = WindowSize.height - UIConstants.HUDPadding
-        - (this.healthBar.backgroundSprite.height * UIConstants.UIScale)
+        this.healthBar.position.x = WindowSize.width - Defaults.UIEdgePadding
+        this.healthBar.position.y = WindowSize.height - Defaults.UIEdgePadding
+        - (this.healthBar.backgroundSprite.height * Defaults.UIScale)
 
         // Ammo status
-        this.ammoStatus.position.x = UIConstants.HUDPadding
-        this.ammoStatus.position.y = WindowSize.height - UIConstants.HUDPadding
-        - (this.ammoStatus.backgroundSprite.height * UIConstants.UIScale)
+        this.ammoStatus.position.x = Defaults.UIEdgePadding
+        this.ammoStatus.position.y = WindowSize.height - Defaults.UIEdgePadding
+        - (this.ammoStatus.backgroundSprite.height * Defaults.UIScale)
     }
 
     requestCrosshairState(state: CrosshairState) {
