@@ -1,5 +1,4 @@
 import { Graphix } from '../../engine/display/Graphix'
-import { TextStyles } from '../../engine/display/TextStyles'
 import { log } from '../../service/Flogger'
 import { Defaults } from '../../utils/Defaults'
 import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
@@ -55,8 +54,7 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
         super.reposition(addListener)
 
         const x = Defaults.UIEdgePadding
-        const y = window.innerHeight - Defaults.UIEdgePadding
-            - (this.loadingIcon.textHeight)// * TextStyles.TextRescaleMultiplier)
+        const y = window.innerHeight - Defaults.UIEdgePadding - (this.loadingIcon.textHeight)
         
         this.loadingIcon.pos = { x, y }
     }
