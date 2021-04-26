@@ -1,7 +1,7 @@
 import { Container } from '../engine/display/Container'
 import { IUpdatable } from '../interface/IUpdatable'
 import { IInGameTooltip, InGameTooltip, InGameTooltipOptions } from '../ui/ingametooltip/InGameTooltip'
-import { IInGameTooltipFactory, InGameTooltipFactory } from '../ui/ingametooltip/InGameTooltipFactory'
+import { IInGameTooltipFactory, InGameTooltipFactory } from '../factory/InGameTooltipFactory'
 
 export interface ITooltipManager extends IUpdatable {
 

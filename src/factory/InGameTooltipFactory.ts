@@ -1,5 +1,5 @@
-import { InGameTooltipOptions, TooltipType } from './InGameTooltip'
-import { KeyTooltip } from './KeyTooltip'
+import { InGameTooltipOptions, TooltipType } from '../ui/ingametooltip/InGameTooltip'
+import { KeyTooltip } from '../ui/ingametooltip/KeyTooltip'
 
 export interface IInGameTooltipFactory {
     createTooltip(options: InGameTooltipOptions)

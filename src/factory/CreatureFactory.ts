@@ -1,7 +1,7 @@
 import { SormEnemy } from '../enemy/sorm/SormEnemy'
-import { Creature, CreatureType } from './Creature'
-import { Koini } from './koini/Koini'
-import { PassiveHornet } from './passivehornet/PassiveHornet'
+import { Creature, CreatureType } from '../creature/Creature'
+import { Koini } from '../creature/koini/Koini'
+import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 
 export interface ICreatureFactory {
     createCreatureForType(type: CreatureType): Creature

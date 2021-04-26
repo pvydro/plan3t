@@ -17,7 +17,7 @@ export interface EnemyProperties {
 export abstract class Enemy extends TravelkinCreature implements IEnemy {
     static EnemyIdIteration: number = 0
 
-    constructor(options?: EnemyOptions) {
+    constructor(options: EnemyOptions) {
         super(options)
 
         const enemyProperties = EnemyHelper.getPropertiesForEnemyType(this)
