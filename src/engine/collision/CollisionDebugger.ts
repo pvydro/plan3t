@@ -4,6 +4,7 @@ import { Graphix } from '../display/Graphix'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Flogger } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
+import { isArray } from '../../utils/Utils'
 
 export interface ICollisionDebugger extends IContainer, IDemolishable {
     initializeAndShowGraphics(): void
@@ -11,7 +12,7 @@ export interface ICollisionDebugger extends IContainer, IDemolishable {
 }
 
 export interface CollisionDebuggerOptions {
-    collisionRects?: IRect[]
+    collisionRects?: IRect | IRect[]
     color?: number
     lineWidth?: number
 }
@@ -27,7 +28,13 @@ export class CollisionDebugger extends Container implements ICollisionDebugger {
         if (options) {
             this.color = options.color ?? this.color
             this.lineWidth = options.lineWidth ?? this.lineWidth
-            this.collisionRects = options.collisionRects ?? undefined
+
+            if (options.collisionRects) {
+                const rect = options.collisionRects as IRect
+
+                this.collisionRects = rect ? [ rect ]
+                    : (options.collisionRects as IRect[])
+            }
         }
 
         if (DebugConstants.ShowCollisionDebug) {

@@ -23,7 +23,7 @@ export class PlayerCollision extends Container implements IPlayerCollision {
 
         if (DebugConstants.ShowCollisionDebug) {
             this.debugger = new CollisionDebugger({
-                collisionRects: [ this.boundingBox ]
+                collisionRects: this.boundingBox
             })
 
             this.addChild(this.debugger)

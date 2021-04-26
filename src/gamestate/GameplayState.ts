@@ -5,14 +5,13 @@ import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbient
 import { GameStateID } from '../manager/GameStateManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
-import { Flogger } from '../service/Flogger'
+import { log } from '../service/Flogger'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { asyncTimeout } from '../utils/Utils'
-import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -36,16 +35,16 @@ export class GameplayState extends GameState implements IGameplayState {
     
     async initialize() {
         const particleManager = ParticleManager.getInstance()
-
         const player = this.entityManager.createOfflinePlayer()
+
         this.camera.follow(player)
         this.inGameHUD.showHUDComponents()
 
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
         this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
-        this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-        this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
-        this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+        this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+        this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
+        this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
         await asyncTimeout(1500)
         this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
 
@@ -53,11 +52,14 @@ export class GameplayState extends GameState implements IGameplayState {
         this.camera.viewport.addChild(this.inGameHUD)
 
         this.roomManager.initializeRoom().then(async (room: Room) => {
-            Flogger.log('GameplayState', 'Room initialized')
+            log('GameplayState', 'Room initialized')
+
+            player.pos = {
+                x: 512,
+                y: -256
+            }
 
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
-            ClientPlayer.getInstance().controller.forceTriggerJump()
-
             await this.inGameHUD.initializeHUD()
         })
     }
@@ -72,11 +74,4 @@ export class GameplayState extends GameState implements IGameplayState {
     demolish() {
 
     }
-
-    // initializeBackground() {
-    //     const boundaries = new PIXI.Graphics()
-    //     boundaries.beginFill(0x000000)
-    //     boundaries.drawRoundedRect(0, 0, WorldSize.width, WorldSize.height, 30)
-    //     this.camera.stage.addChildAtLayer(boundaries, CameraLayer.Background)
-    // }
 }
