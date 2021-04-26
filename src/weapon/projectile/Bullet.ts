@@ -69,7 +69,7 @@ export class Bullet extends GravityEntity implements IBullet {
 
     demolish() {
         if (this.entityManager !== undefined) {
-            this.entityManager.removeEntity(this.id.toString(), CameraLayer.Bullet)
+            this.entityManager.removeEntity(this.entityId, CameraLayer.Bullet)
         }
     }
 

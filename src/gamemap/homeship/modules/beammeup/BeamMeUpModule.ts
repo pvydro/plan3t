@@ -26,9 +26,6 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
             interactKey: Key.E,
             shouldAddTooltip: true,
             onInteract: () => {
-
-                console.log('%cONTRIGGER', 'font-size: 400%; background-color: red;')
-
                 GameStateManager.getInstance().enterState(GameStateID.WaveGame)
 
                 // if (this.didInteract) return
