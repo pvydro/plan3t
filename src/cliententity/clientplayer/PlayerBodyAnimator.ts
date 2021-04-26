@@ -66,9 +66,9 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
     }
 
     buildAnimatedSprites() {
-        const walkingSheet = Spritesheets.get(SpritesheetUrls.PLAYER_BODY_WALKING)
-        const jumpingSheet = Spritesheets.get(SpritesheetUrls.PLAYER_BODY_JUMPING)
-        const dyingSheet = Spritesheets.get(SpritesheetUrls.PLAYER_BODY_DYING)
+        const walkingSheet = Spritesheets.get(SpritesheetUrls.PlayerBodyWalking)
+        const jumpingSheet = Spritesheets.get(SpritesheetUrls.PlayerBodyJumping)
+        const dyingSheet = Spritesheets.get(SpritesheetUrls.PlayerBodyDying)
         
         // Walking animation
         this.walkingSprite = new AnimatedSprite({

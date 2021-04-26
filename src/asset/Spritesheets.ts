@@ -4,9 +4,11 @@ import { Flogger } from '../service/Flogger'
 export class SpritesheetUrls {
     private constructor() {}
 
-    static PLAYER_BODY_WALKING = 'assets/image/player/body/body_walking.json'
-    static PLAYER_BODY_JUMPING = 'assets/image/player/body/body_jumping.json'
-    static PLAYER_BODY_DYING = 'assets/image/player/body/body_dying.json'
+    static PlayerBodyWalking = 'assets/image/player/body/body_walking.json'
+    static PlayerBodyJumping = 'assets/image/player/body/body_jumping.json'
+    static PlayerBodyDying = 'assets/image/player/body/body_dying.json'
+
+    static SormWalking = 'assets/image/enemy/sorm/sorm_walking.json'
 }
 
 export class Spritesheets {

@@ -1,6 +1,7 @@
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { GameStateID } from '../manager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
+import { asyncTimeout } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
 import { GameStateOptions, IGameState } from './GameState'
 
@@ -22,7 +23,9 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
     async initialize() {
         await super.initialize()
 
-        this.waveManager = WaveRunnerManager.getInstance()
-        this.waveManager.initialize()
+        asyncTimeout(500).then(() => {
+            this.waveManager = WaveRunnerManager.getInstance()
+            this.waveManager.initialize()
+        })
     }
 }
