@@ -11,6 +11,7 @@ export interface IKoini extends ITravelkinCreature {
 export class Koini extends TravelkinCreature implements IKoini {
     constructor() {
         const idleTexture = PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_KOINI))
+        
         super({
             type: CreatureType.Koini,
             walkSpeed: 1,

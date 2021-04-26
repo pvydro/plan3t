@@ -1,4 +1,5 @@
-import { ClientEntity } from '../cliententity/ClientEntity'
+import { Camera } from '../camera/Camera'
+import { CameraLayer } from '../camera/CameraStage'
 import { CreatureType } from '../creature/Creature'
 import { Enemy } from '../enemy/Enemy'
 import { EnemyManager, IEnemyManager } from '../manager/enemymanager/EnemyManager'
@@ -29,6 +30,8 @@ export class WaveRunnerGame implements IWaveRunnerGame {
                 log('WaveRunnerGame', 'spawner.onSpawn', 'entityId', (enemy && enemy.entityId) ?? 'Not defined')
 
                 this.enemyManager.registerEnemy(enemy)
+
+                Camera.getInstance().stage.addChildAtLayer(enemy, CameraLayer.Creatures)
             }
         })
         this.wave = new Wave({

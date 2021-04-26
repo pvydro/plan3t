@@ -20,7 +20,7 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     constructor(options: EnemyOptions) {
         super(options)
 
-        const enemyProperties = EnemyHelper.getPropertiesForEnemyType(this)
+        const enemyProperties = EnemyHelper.getPropertiesForEnemyType(this) // TODO: Remove this
 
         this.applyEnemyProperties(enemyProperties)
         this.entityId = 'Enemy' + Enemy.EnemyIdIteration++
