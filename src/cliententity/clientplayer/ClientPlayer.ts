@@ -19,6 +19,7 @@ import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { IPlayerHealthController, PlayerHealthController } from './PlayerHealthController'
+import { point } from '../../engine/math/Vector2'
 
 export interface IClientPlayer extends IGravityEntity {
     sessionId: string
@@ -102,7 +103,8 @@ export class ClientPlayer extends GravityEntity {
     constructor(options: ClientPlayerOptions) {
         super({
             horizontalFriction: 5,
-            weight: 0.5
+            weight: 0.5,
+            gravityAnchor: point(0, 0.5)
         })
         const player = this
 

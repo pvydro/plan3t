@@ -17,7 +17,6 @@ export interface RectOptions {
 }
 
 export class Rect extends PIXI.Rectangle implements IRect {
-    // constructor(x: number, y: number, width: number, height: number) {
     constructor(options: RectOptions) {
         super(
             options.x,
@@ -44,5 +43,13 @@ export class Rect extends PIXI.Rectangle implements IRect {
     set dimension(value: IDimension) {
         this.width = value.width
         this.height = value.height
+    }
+
+    get halfHeight() {
+        return this.height / 2
+    }
+
+    get halfWidth() {
+        return this.width / 2
     }
 }

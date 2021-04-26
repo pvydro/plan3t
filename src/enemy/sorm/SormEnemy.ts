@@ -17,8 +17,7 @@ export class SormEnemy extends Enemy implements ISormEnemy {
             idleSprite,
             walkSpeed: 1,
             weight: 0.5,
-            boundingDimensions: { width: idleSprite.width, height: idleSprite.height },
-            boundingBoxAnchor: { x: 0.5, y: 0 }
+            // gravityAnchor: { x: 0, y: 0.5 }
         })
     }
 }

@@ -1,4 +1,3 @@
-import { Koini } from '../creature/koini/Koini'
 import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
 import { IDimension } from '../engine/math/Dimension'
 import { Direction } from '../engine/math/Direction'
@@ -13,6 +12,7 @@ export interface IGravityEntity extends IClientEntity {
     isOnGround: boolean
     currentGroundRect: Rect
     direction: Direction
+    gravityAnchor: IVector2
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
 }
@@ -22,6 +22,7 @@ export interface GravityEntityOptions extends ClientEntityOptions {
     boundingBox?: IRect
     boundingDimensions?: IDimension
     boundingBoxAnchor?: IVector2
+    gravityAnchor?: IVector2
     weight?: number
     addDebugRectangle?: boolean
 }
@@ -30,6 +31,7 @@ export class GravityEntity extends ClientEntity {
     _currentGroundRect?: Rect
     _onGround: boolean = false
     _direction: Direction = Direction.Right
+    gravityAnchor: IVector2 = Vector2.Zero
     horizontalFriction: number
     boundingBox: IRect
     weight: number
@@ -42,9 +44,14 @@ export class GravityEntity extends ClientEntity {
         this.weight = (options && options.weight) ?? PhysDefaults.weight
         const collisionRects = this.boundingBox = this.createBoundingBox(options)
 
-        if (options && options.addDebugRectangle) {
-            this.debugger = new CollisionDebugger({ collisionRects })
-            this.addChild(this.debugger)
+        if (options) {
+            if (options.addDebugRectangle) {
+                this.debugger = new CollisionDebugger({ collisionRects })
+                this.addChild(this.debugger)
+            }
+            if (options.gravityAnchor) {
+                this.gravityAnchor = options.gravityAnchor
+            }
         }
     }
 
@@ -95,8 +102,8 @@ export class GravityEntity extends ClientEntity {
         const width = (options.boundingDimensions && options.boundingDimensions.width) ?? this.width
         const height = (options.boundingDimensions && options.boundingDimensions.height) ?? this.height
         const boundingBoxAnchor: IVector2 = (options && options.boundingBoxAnchor) ?? Vector2.Zero
-        const anchorXOffset = -this.width * boundingBoxAnchor.x
-        const anchorYOffset = -this.height * boundingBoxAnchor.y
+        const anchorXOffset = -width * boundingBoxAnchor.x
+        const anchorYOffset = -height * boundingBoxAnchor.y
         const boundingBox: IRect = (options && options.boundingBox) ?? {
             x: 0, y: 0,
             width, height
