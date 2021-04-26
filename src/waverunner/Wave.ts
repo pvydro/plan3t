@@ -4,7 +4,7 @@ import { Emitter } from '../utils/Emitter'
 import { exists, functionExists } from '../utils/Utils'
 
 export interface IWave {
-    enemies: number
+    totalEnemies: number
     startSpawnIntervals()
 }
 
@@ -14,8 +14,9 @@ export interface WaveOptions {
 
 export class Wave extends Emitter implements IWave {
     _onSpawn: Function
-    enemies: number = 10
-    spawnInervalTime: number = 5000
+    totalEnemies: number = 10
+    spawnIntervalTime: number = 2000
+    totalSpawns: number = 0
 
     constructor(options?: WaveOptions) {
         super()
@@ -31,8 +32,10 @@ export class Wave extends Emitter implements IWave {
         log('Wave', 'startSpawnIntervals')
 
         setInterval(() => {
-            this.spawnEnemy()
-        }, this.spawnInervalTime)
+            if (this.totalSpawns < this.totalEnemies) {
+                this.spawnEnemy()
+            }
+        }, this.spawnIntervalTime)
     }
 
     spawnEnemy() {

@@ -34,7 +34,7 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
 
         creature.pos = { x, y }
 
-        super.spawn()
+        super.spawn(creature)
     }
 
     /**
