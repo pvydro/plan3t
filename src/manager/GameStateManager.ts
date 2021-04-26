@@ -1,6 +1,7 @@
 import { GameplayState } from '../gamestate/GameplayState'
 import { GameState, GameStateOptions, IGameState } from '../gamestate/GameState'
 import { HomeshipState } from '../gamestate/HomeshipState'
+import { WaveGameState } from '../gamestate/WaveGameState'
 import { IDemolishable } from '../interface/IDemolishable'
 import { Game } from '../main/Game'
 import { log } from '../service/Flogger'
@@ -96,6 +97,9 @@ export class GameStateManager implements IGameStateManager {
                 break
             case GameStateID.Homeship:
                 state = new HomeshipState(options)
+                break
+            case GameStateID.WaveGame:
+                state = new WaveGameState(options)
                 break
                 
         }
