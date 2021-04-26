@@ -24,7 +24,7 @@ export class SphericalTileFoliage extends Sprite implements ISphericalTileFoliag
 
     static findFoliageDirForTile(tile: SphericalTile) {
         const chosenFoliage = NumberUtils.getRandomIntegerBetween(0, SphericalTileFoliage.TotalFoliages)
-        const tileDir = Assets.TILE_DIR + tile.biome + '/foliage' + chosenFoliage
+        const tileDir = Assets.TileDir + tile.biome + '/foliage' + chosenFoliage
 
         return tileDir
     }

@@ -1,7 +1,6 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { GlobalScale } from '../../../utils/Constants'
 import { AnimatedSprite } from '../AnimatedSprite'
-import { Sprite } from '../Sprite'
 import { IParticle, Particle, ParticleOptions, ParticlePositioningOptions } from './Particle'
 
 export interface IMuzzleFlashParticle extends IParticle {
@@ -12,7 +11,7 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
     private static aTextures = [ AssetUrls.MUZZLE_FLASH_A_0, AssetUrls.MUZZLE_FLASH_A_1, AssetUrls.MUZZLE_FLASH_A_2, AssetUrls.MUZZLE_FLASH_A_3, ]
     private static bTextures = [ AssetUrls.MUZZLE_FLASH_B_0, AssetUrls.MUZZLE_FLASH_B_1, AssetUrls.MUZZLE_FLASH_B_2, AssetUrls.MUZZLE_FLASH_B_3, ]
     private static cTextures = [ AssetUrls.MUZZLE_FLASH_C_0, AssetUrls.MUZZLE_FLASH_C_1, AssetUrls.MUZZLE_FLASH_C_2, AssetUrls.MUZZLE_FLASH_C_3, ]
-    private static dTextures = [ AssetUrls.MUZZLE_FLASH_D_0, AssetUrls.MUZZLE_FLASH_D_1, AssetUrls.MUZZLE_FLASH_D_2, AssetUrls.MUZZLE_FLASH_D_3, ]
+    private static dTextures = [ AssetUrls.MUZZLE_FLASH_D_0, AssetUrls.MUZZLE_FLASH_D_1, AssetUrls.MUZZLE_FLASH_D_2, AssetUrls.MUZZLE_FLASH_D_3, ] // TODO Automate this :facepalm:
     private static textureArrays = [ 
         MuzzleFlashParticle.aTextures, 
         MuzzleFlashParticle.bTextures, 
@@ -22,7 +21,7 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
 
     constructor(options?: ParticlePositioningOptions) {
         const sprite = new AnimatedSprite({
-            textureUrls: MuzzleFlashParticle.randomAnimation,
+            textureUrls: MuzzleFlashParticle.RandomAnimation,
             animationSpeed: 0.25,
         })
 
@@ -40,7 +39,7 @@ export class MuzzleFlashParticle extends Particle implements IMuzzleFlashParticl
         this.scale.set(GlobalScale, GlobalScale)
     }
 
-    static get randomAnimation(): string[] {
+    static get RandomAnimation(): string[] {
         const finalTextures = []
 
         for (let i = 0; i < 4; i++) {

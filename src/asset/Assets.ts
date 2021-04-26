@@ -7,7 +7,7 @@ export class Assets {
     private static _imagesStartLoading: boolean = false
     private static _imagesFinishedLoading: boolean = false
 
-    static TILE_DIR = 'assets/image/gamemap/tiles/'
+    static TileDir = 'assets/image/gamemap/tiles/'
     static BASE_IMAGE_DIR: string = 'assets/image'
 
     private constructor() {}
@@ -61,7 +61,7 @@ export class Assets {
             const biomeKeys = Object.values(SphericalBiome)
             const tileValues = Object.values(SphericalTileValues)
             const tileAssets = []
-            const tileDir = Assets.TILE_DIR
+            const tileDir = Assets.TileDir
             const totalFoliage = 10
 
             biomeKeys.forEach((biome: SphericalBiome) => {
@@ -118,14 +118,14 @@ export class AssetUrls {
     static EnemySormIdle = 'assets/image/enemy/sorm/idle'
 
     // Spherical/GameMap
-    static SKY_DAWN = 'assets/image/gamemap/sky/dawn'
-    static SPHERICAL_TEST = 'assets/image/gamemap/spherical/spherical_test'
-    static SEMI_SPHERICAL_1 = 'assets/image/gamemap/spherical/semispherical_0'
-    static SPHERICAL_SM_0 = 'assets/image/gamemap/spherical/spherical_sm_0'
-    static TILE_TEST = Assets.TILE_DIR + 'cloningfacility/tile_0'
+    static SkyDawn = 'assets/image/gamemap/sky/dawn'
+    static SphericalTest = 'assets/image/gamemap/spherical/spherical_test'
+    static SemiSpherical = 'assets/image/gamemap/spherical/semispherical_0'
+    static SphericalSM = 'assets/image/gamemap/spherical/spherical_sm_0'
+    static TileTest = Assets.TileDir + 'cloningfacility/tile_0'
 
     // Projectiles
-    static PROJECTILE_BULLET = 'assets/image/weapons/projectiles/bullet'
+    static ProjectileBullet = 'assets/image/weapons/projectiles/bullet'
 
     // Particles
     static MUZZLE_FLASH_A_0 = 'assets/image/particles/muzzleflash/a/0'

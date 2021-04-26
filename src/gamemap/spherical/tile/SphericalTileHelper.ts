@@ -50,7 +50,7 @@ export class SphericalTileHelper {
     }
 
     static getTilesheetFromColorData(value: SphericalTileColorData, biome: SphericalBiome): string {
-        const tileDir = Assets.TILE_DIR
+        const tileDir = Assets.TileDir
         const biomeDir = tileDir + biome
         let dir = biomeDir + '/'
 

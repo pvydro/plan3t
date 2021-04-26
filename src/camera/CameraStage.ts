@@ -151,7 +151,7 @@ export class CameraStage extends Container implements ICameraStage {
 
         if (background === CameraStageBackground.BlueSky) {
             const backgroundSprite = new Sprite({
-                texture: PIXI.Texture.from(Assets.get(AssetUrls.SKY_DAWN))
+                texture: PIXI.Texture.from(Assets.get(AssetUrls.SkyDawn))
             })
 
             this.backgroundContainer.addChild(backgroundSprite)

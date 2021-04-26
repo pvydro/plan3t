@@ -39,7 +39,7 @@ export class GameMapSky extends Container implements IGameMapSky {
             this.skySprite.drawIRect({ x: 0, y: 0, width: WindowSize.width, height: WindowSize.width })
             this.skySprite.endFill()
         } else {
-            const skyTexture = PIXI.Texture.from(Assets.get(AssetUrls.SKY_DAWN))
+            const skyTexture = PIXI.Texture.from(Assets.get(AssetUrls.SkyDawn))
 
             this.skySprite = new Sprite({ texture: skyTexture })
             // this.skySprite//.dimension = this.skyDimensions

@@ -31,7 +31,7 @@ export class Bullet extends GravityEntity implements IBullet {
     velocity: number
 
     constructor(options?: BulletOptions) {
-        const assetUrl = Assets.get(AssetUrls.PROJECTILE_BULLET)
+        const assetUrl = Assets.get(AssetUrls.ProjectileBullet)
         const sprite = new Sprite({ texture: PIXI.Texture.from(assetUrl) })
         sprite.anchor.set(0.5, 0.5)
         super({
