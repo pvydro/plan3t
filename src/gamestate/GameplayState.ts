@@ -11,6 +11,8 @@ import { GameState, GameStateOptions, IGameState } from './GameState'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
+import { asyncPromise } from '../utils/Utils'
+import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -44,9 +46,8 @@ export class GameplayState extends GameState implements IGameplayState {
         this.camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
         this.camera.stage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
         this.camera.stage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
-        setTimeout(() => {
-            this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
-        }, 1500);
+        await asyncPromise(1500)
+        this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
 
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
@@ -54,7 +55,8 @@ export class GameplayState extends GameState implements IGameplayState {
         this.roomManager.initializeRoom().then(async (room: Room) => {
             Flogger.log('GameplayState', 'Room initialized')
 
-            Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
+            await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
+            ClientPlayer.getInstance().controller.forceTriggerJump()
 
             await this.inGameHUD.initializeHUD()
         })

@@ -62,6 +62,11 @@ export abstract class Creature extends GravityEntity implements ICreature {
 }
 
 export enum CreatureType {
+    // Passive
     Koini = 'Koini',
-    PassiveHornet = 'PassiveHornet'
+    PassiveHornet = 'PassiveHornet',
+
+    // Enemies
+    FlyingEye = 'FlyingEye',
+    Sorm = 'Sorm',
 }

@@ -108,13 +108,14 @@ export class AssetUrls {
 
     private constructor() {}
 
-    static PLAYER_IDLE = 'assets/image/player/body/body-idle'
-    static PLAYER_HEAD_HUMAN_DEFAULT = 'assets/image/player/head/head-default'
-    static PLAYER_HAND_HUMAN_DEFAULT = 'assets/image/player/hand/hand-default'
-    static PLAYER_HEAD_HUMAN_ASTRO = 'assets/image/player/head/head-astro'
+    static PlayerIdle = 'assets/image/player/body/body-idle'
+    static PlayerHeadHumanDefault = 'assets/image/player/head/head-default'
+    static PlayerHandHumanDefault = 'assets/image/player/hand/hand-default'
+    static PlayerHeadHumanAstro = 'assets/image/player/head/head-astro'
 
     // Enemy
-    static ENEMY_FLYINGEYE_IDLE = 'assets/image/enemy/flyingeye/flyingeye'
+    static EnemyFlyingEyeIdle = 'assets/image/enemy/flyingeye/flyingeye'
+    static EnemySormIdle = 'assets/image/enemy/sorm/idle'
 
     // Spherical/GameMap
     static SKY_DAWN = 'assets/image/gamemap/sky/dawn'

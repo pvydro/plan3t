@@ -1,5 +1,5 @@
 import { IEnemy, Enemy, EnemyProperties } from '../Enemy'
-import { IDimension, Dimension } from '../../../engine/math/Dimension'
+import { IDimension, Dimension } from '../../engine/math/Dimension'
 import { FlyingEnemy } from '../flyingenemy/FlyingEnemy'
 
 export class EnemyHelper {

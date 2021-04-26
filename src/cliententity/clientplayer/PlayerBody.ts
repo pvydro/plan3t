@@ -43,7 +43,7 @@ export class PlayerBody extends Container implements IPlayerBody {
             playerBody: this
         })
 
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_IDLE))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PlayerIdle))
         this._sprite = new Sprite({ texture })
         this._sprite.anchor.set(0.5, 0.5)
 

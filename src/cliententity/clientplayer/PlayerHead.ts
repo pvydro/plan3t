@@ -37,7 +37,7 @@ export class PlayerHead extends Container {
         })
 
 //
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HEAD_HUMAN_DEFAULT))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PlayerHeadHumanDefault))
         this.headSprite = new Sprite({ texture })
         this.headSprite.anchor.set(0.475, 0.9)
 //

@@ -23,12 +23,12 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
 
     async initialize() {
         await super.initialize()
+        ClientPlayer.getInstance().pos = {
+            x: 512,
+            y: -256
+        }
 
         this.waveManager = WaveRunnerManager.getInstance()
         await this.waveManager.initialize()
-
-        await asyncPromise(1000)
-        ClientPlayer.getInstance().controller.forceTriggerJump()
-
     }
 }

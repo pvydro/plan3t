@@ -69,6 +69,10 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
         }
     }
 
+    async show() {
+        this.alpha = 1
+    }
+
     async hide() {
         this.alpha = 0
     }

@@ -43,7 +43,7 @@ export class PlayerHand extends Container implements IPlayerHand {
         this._player = options.player
         this.controller = new PlayerHandController({ playerHand: this })
         
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PLAYER_HAND_HUMAN_DEFAULT))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PlayerHandHumanDefault))
         this.handSprite = new Sprite({ texture })
         this.secondHandSprite = new Sprite({ texture })
         this.handSprite.anchor.set(0.5, 0.5)
