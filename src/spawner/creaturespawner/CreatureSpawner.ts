@@ -17,7 +17,7 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
     _typeToSpawn: CreatureType | CreatureType[]
 
     constructor(options: CreatureSpawnerOptions) {
-        super()
+        super(options)
 
         this._typeToSpawn = options.typeToSpawn
     }
@@ -31,7 +31,7 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
         const creature = CreatureFactory.createCreatureForType(type)
 
         creature.pos = { x, y }
-
+        
         super.spawn(creature)
     }
 

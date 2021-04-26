@@ -1,7 +1,7 @@
 import { Events } from '../model/events/Events'
 import { log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
-import { exists, functionExists } from '../utils/Utils'
+import { asyncTimeout, exists, functionExists } from '../utils/Utils'
 
 export interface IWave {
     totalEnemies: number
@@ -16,6 +16,7 @@ export class Wave extends Emitter implements IWave {
     _onSpawn: Function
     totalEnemies: number = 10
     spawnIntervalTime: number = 2000
+    startDelayTime: number = 3000
     totalSpawns: number = 0
 
     constructor(options?: WaveOptions) {
@@ -31,11 +32,15 @@ export class Wave extends Emitter implements IWave {
     startSpawnIntervals() {
         log('Wave', 'startSpawnIntervals')
 
-        setInterval(() => {
-            if (this.totalSpawns < this.totalEnemies) {
-                this.spawnEnemy()
-            }
-        }, this.spawnIntervalTime)
+        asyncTimeout(this.startDelayTime).then(() => {
+            log('Wave', 'startDelayTime Complete')
+            
+            setInterval(() => {
+                if (this.totalSpawns < this.totalEnemies) {
+                    this.spawnEnemy()
+                }
+            }, this.spawnIntervalTime)
+        })
     }
 
     spawnEnemy() {
@@ -46,5 +51,13 @@ export class Wave extends Emitter implements IWave {
         if (this._onSpawn !== undefined) {
             this._onSpawn()
         }
+    }
+
+    set onSpawn(value: Function) {
+        this._onSpawn = value
+    }
+
+    get onSpawn() {
+        return this._onSpawn
     }
 }

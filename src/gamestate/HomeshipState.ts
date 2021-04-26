@@ -43,6 +43,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
 
             player.light.disableHardLights()
             player.holster.holsterWeapon()
+            player.x = 32
 
             await this.inGameHUD.initializeHUD()
             this.camera.follow(player)

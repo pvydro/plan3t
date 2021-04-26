@@ -3,7 +3,7 @@ import { log } from '../../service/Flogger'
 import { EntityManager, IEntityManager } from '../entitymanager/EntityManager'
 
 export interface IEnemyManager {
-
+    registerEnemy(enemy: Enemy): void
 }
 
 export class EnemyManager implements IEnemyManager {

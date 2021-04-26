@@ -24,8 +24,4 @@ export class Koini extends TravelkinCreature implements IKoini {
             this.direction = Direction.Right
         }
     }
-
-    update() {
-        super.update()
-    }
 }

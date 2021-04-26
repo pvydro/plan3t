@@ -7,6 +7,7 @@ import { exists, functionExists } from '../utils/Utils'
 
 export interface ISpawner {
     spawn(): void
+    onSpawn?: Function
 }
 
 export interface SpawnerOptions {
@@ -16,7 +17,7 @@ export interface SpawnerOptions {
 export class Spawner extends Emitter implements ISpawner {
     _onSpawn?: Function
 
-    constructor(options?: SpawnerOptions) {
+    constructor(options: SpawnerOptions) {
         super()
 
         if (exists(options)) {
@@ -32,15 +33,19 @@ export class Spawner extends Emitter implements ISpawner {
         this.emit(Events.Spawn)
 
         if (this._onSpawn !== undefined) {
-            this._onSpawn()
-        }
-
-        if (entity !== undefined) {
-            EntityManager.getInstance().registerEntity(entity.entityId, entity)
+            this._onSpawn(entity)
         }
     }
 
     private findSpawnLocation() { // TODO: This
 
+    }
+
+    set onSpawn(value: Function) {
+        this._onSpawn = value
+    }
+
+    get onSpawn() {
+        return this._onSpawn
     }
 }

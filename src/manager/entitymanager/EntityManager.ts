@@ -118,7 +118,6 @@ export class EntityManager implements IEntityManager {
             isClientPlayer: true,
             isOfflinePlayer: true
         })
-        player.x = 32
 
         return player
     }

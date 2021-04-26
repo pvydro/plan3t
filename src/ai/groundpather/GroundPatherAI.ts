@@ -1,7 +1,7 @@
 import { Direction } from '../../engine/math/Direction'
 import { Rect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { AI, AINode, AIOptions, IAI } from '../AI'
 import { GroundPatherDebugger, IGroundPatherDebugger } from './GroundPatherDebugger'
 
@@ -63,7 +63,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     findPointOnCurrentGround() {
-        Flogger.log('GroundPatherAI', 'findPointOnCurrentGround')
+        // log('GroundPatherAI', 'findPointOnCurrentGround')
 
         if (this.currentGroundRect === undefined) return
 
@@ -88,11 +88,11 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     findNewGround() {
-        Flogger.log('GroundPatherAI', 'findNewGround')
+        // log('GroundPatherAI', 'findNewGround')
     }
 
     findNewPoint() {
-        Flogger.log('GroundPatherAI', 'findNewPoint')
+        // log('GroundPatherAI', 'findNewPoint')
 
         this.currentState = GroundPatherState.Wandering
 
@@ -119,7 +119,8 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     decideIfContinueOrStop() {
-        Flogger.log('GroundPatherAI', 'decideIfContinueOrStop')
+        // log('GroundPatherAI', 'decideIfContinueOrStop')
+
         const shouldStop: boolean = (Math.random() > 0.5)
 
         if (shouldStop) {
@@ -130,7 +131,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     decideDirection(): Direction {
-        Flogger.log('GroundPatherAI', 'decideDirection')
+        // log('GroundPatherAI', 'decideDirection')
 
         const direction = (Math.random() > 0.5) ? Direction.Left : Direction.Right
 
@@ -140,7 +141,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     stopForSomeTime() {
-        Flogger.log('GroundPatherAI', 'stopForSomeTime')
+        // log('GroundPatherAI', 'stopForSomeTime')
         
         if (this.currentState === GroundPatherState.Stopped) return
 
