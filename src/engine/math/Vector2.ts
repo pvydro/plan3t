@@ -30,6 +30,8 @@ export class Vector2 extends PIXI.Point implements IVector2 {
     }
 }
 
-export function point(x: number, y: number): IVector2 {
+export function point(x: number, y?: number): IVector2 {
+    y = y ?? x
+    
     return { x, y }
 }

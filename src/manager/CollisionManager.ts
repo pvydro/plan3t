@@ -54,7 +54,7 @@ export class CollisionManager implements ICollisionManager {
         // TODO: This logic needs to be handled in an Intersects class of sorts.
         const entityBounds = entity.boundingBox
         const heightOffsetMultiplier = -entity.gravityAnchor.y ?? 0
-        const heightOffset = (entityBounds.height * heightOffsetMultiplier)
+        const heightOffset = entityBounds.height * heightOffsetMultiplier
         const entityBottomY = entity.y + ((entityBounds.height + heightOffset) * GlobalScale)
         const centerX = entity.x
         const rectLeftSide = collisionRect.x

@@ -99,13 +99,17 @@ export class GravityEntity extends ClientEntity {
      * @returns an IRect representing the newly generated bounding box
      */
     private createBoundingBox(options?: GravityEntityOptions): IRect {
-        const width = (options.boundingDimensions && options.boundingDimensions.width) ?? this.width
-        const height = (options.boundingDimensions && options.boundingDimensions.height) ?? this.height
+        const passedWidth = (options.boundingBox && options.boundingBox.width)
+            ?? (options.boundingDimensions && options.boundingDimensions.width)
+        const passedHeight = (options.boundingBox && options.boundingBox.height)
+            ?? (options.boundingDimensions && options.boundingDimensions.height)
+        const width = passedWidth ?? this.width
+        const height = passedHeight ?? this.height
         const boundingBoxAnchor: IVector2 = (options && options.boundingBoxAnchor) ?? Vector2.Zero
         const anchorXOffset = -width * boundingBoxAnchor.x
         const anchorYOffset = -height * boundingBoxAnchor.y
         const boundingBox: IRect = (options && options.boundingBox) ?? {
-            x: 0, y: 0,
+            x: 0, y: this.height - height,
             width, height
         }
 
