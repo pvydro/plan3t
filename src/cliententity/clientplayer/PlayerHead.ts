@@ -5,8 +5,8 @@ import { Assets, AssetUrls } from '../../asset/Assets'
 import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
-import { Events } from '../../utils/Constants'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
+import { PlayerEvents } from '../../model/events/Events'
 
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number
@@ -45,7 +45,7 @@ export class PlayerHead extends Container {
         this.addChild(this.headSprite)
 
         // Bob head when walking
-        this.player.emitter.on(Events.PlayerWalkBounce, () => {
+        this.player.emitter.on(PlayerEvents.PlayerWalkBounce, () => {
             this.swapHeadBobState()
         })
     }

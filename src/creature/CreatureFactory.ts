@@ -1,3 +1,4 @@
+import { SormEnemy } from '../enemy/sorm/SormEnemy'
 import { Creature, CreatureType } from './Creature'
 import { Koini } from './koini/Koini'
 import { PassiveHornet } from './passivehornet/PassiveHornet'
@@ -15,11 +16,17 @@ export class CreatureFactory implements ICreatureFactory {
         let creature = undefined
 
         switch (type) {
+            // PassiveCreatures
             case CreatureType.Koini:
                 creature = new Koini()
                 break
             case CreatureType.PassiveHornet:
                 creature = new PassiveHornet()
+                break
+
+            // Enemies
+            case CreatureType.Sorm:
+                creature = new SormEnemy()
                 break
         }
 

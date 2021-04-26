@@ -1,6 +1,8 @@
 const EventEmitter = require('eventemitter3')
 
-export class Emitter extends EventEmitter {
+export interface IEmitter {
+}
+export class Emitter extends EventEmitter implements IEmitter {
     constructor() {
         super()
     }

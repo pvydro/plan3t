@@ -47,7 +47,3 @@ export class GravityConstants {
 
     private constructor() {}
 }
-
-export enum Events {
-    PlayerWalkBounce = 'PlayerWalkBounce'
-}

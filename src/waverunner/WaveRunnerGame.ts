@@ -7,6 +7,7 @@ export interface IWaveRunnerGame {
 
 export class WaveRunnerGame implements IWaveRunnerGame {
     wave: IWave
+    // spawner:
 
     constructor() {
 

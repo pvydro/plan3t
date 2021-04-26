@@ -1,7 +1,7 @@
 import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { Events } from '../../utils/Constants'
+import { PlayerEvents } from '../../model/events/Events'
 import { IClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
 import { IPlayerBody } from './PlayerBody'
 
@@ -82,7 +82,7 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
         this.walkingSprite.onFrameChange = () => {
             if (this.walkingSprite.currentFrame == Math.floor(this.walkingSprite.totalFrames / 2) - 1
             || this.walkingSprite.currentFrame == this.walkingSprite.totalFrames - 1) {
-                this.player.emitter.emit(Events.PlayerWalkBounce)
+                this.player.emitter.emit(PlayerEvents.PlayerWalkBounce)
             }
         }
 
