@@ -27,7 +27,7 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
         log('CreatureSpawner', 'spawn', 'type', type)
         const player = ClientPlayer.getInstance()
         const x = player.x
-        const y = player.y
+        const y = player.y - 128
         const creature = CreatureFactory.createCreatureForType(type)
 
         creature.pos = { x, y }

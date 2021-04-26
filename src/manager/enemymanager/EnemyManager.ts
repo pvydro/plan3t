@@ -6,6 +6,7 @@ export interface IEnemyManager {
     registerEnemy(enemy: Enemy): void
 }
 
+// TODO: EntityEnemyCreator, follow path of EntityCreatureCreator
 export class EnemyManager implements IEnemyManager {
     private static Instance: IEnemyManager
     entityManager: IEntityManager
@@ -25,8 +26,6 @@ export class EnemyManager implements IEnemyManager {
     registerEnemy(enemy: Enemy) {
         log('EnemyManager', 'registerEnemy', 'id', enemy.entityId)
 
-        this.entityManager.registerEntity(enemy.entityId, {
-            clientEntity: enemy
-        })
+        this.entityManager.registerEntity(enemy.entityId, enemy)
     }
 }

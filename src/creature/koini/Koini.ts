@@ -11,18 +11,14 @@ export interface IKoini extends ITravelkinCreature {
 export class Koini extends TravelkinCreature implements IKoini {
     constructor() {
         const idleTexture = PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_KOINI))
-        
+
         super({
             type: CreatureType.Koini,
+            idleSprite: new Sprite({ texture: idleTexture }),
             walkSpeed: 1,
-            weight: 0.5,
-            idleSprite: new Sprite({ texture: idleTexture })
+            weight: 0.5
         })
         
-        this._direction = Direction.Left
-
-        if (Math.random() > 0.5) {
-            this.direction = Direction.Right
-        }
+        this._direction = Math.random() > 0.5 ? Direction.Right : Direction.Left
     }
 }

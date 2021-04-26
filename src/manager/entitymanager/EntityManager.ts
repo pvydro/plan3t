@@ -31,7 +31,7 @@ export interface IEntityManager extends IUpdatable {
     createOfflinePlayer(): ClientPlayer
     clearClientEntities(): void
     updateEntity(entity: Entity, sessionId: string, changes?: any): void
-    removeEntity(sessionId: string, layer?: number, entity?: Entity): void
+    removeEntity(sessionId: string, layer?: number): void
     registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
     getEntity(sessionId: string): Entity
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
@@ -87,7 +87,7 @@ export class EntityManager implements IEntityManager {
         this.synchronizer.update()
     }
 
-    removeEntity(sessionId: string, layer?: number, entity?: Entity) {
+    removeEntity(sessionId: string, layer?: number) {
         const removedLocalEntity = this._clientEntities.get(sessionId)
         
         this.cameraStage.removeFromLayer(removedLocalEntity.clientEntity, layer)

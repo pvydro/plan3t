@@ -13,7 +13,9 @@ export class SormEnemy extends Enemy implements ISormEnemy {
 
         super({
             type: CreatureType.Sorm,
-            idleSprite: new Sprite({ texture })
+            idleSprite: new Sprite({ texture }),
+            walkSpeed: 1,
+            weight: 0.5
         })
     }
 }
