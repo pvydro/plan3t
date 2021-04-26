@@ -2,7 +2,7 @@ import { Entity } from '../../network/rooms/Entity'
 import { RoomManager } from '../roommanager/RoomManager'
 import { Camera } from '../../camera/Camera'
 import { ClientEntity } from '../../cliententity/ClientEntity'
-import { log } from '../../service/Flogger'
+import { Flogger, log } from '../../service/Flogger'
 import { GravityManager, IGravityManager } from '../GravityManager'
 import { Game } from '../../main/Game'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
@@ -42,6 +42,7 @@ export interface EntityManagerOptions {
 }
 
 export class EntityManager implements IEntityManager {
+    private static Instance: IEntityManager
     _clientEntities: Map<string, LocalEntity> = new Map()
 
     game: Game
@@ -51,7 +52,19 @@ export class EntityManager implements IEntityManager {
     projectileCreator: IEntityProjectileCreator
     synchronizer: IEntitySynchronizer
 
-    constructor(options: EntityManagerOptions) {
+    static getInstance(options?: EntityManagerOptions) {
+        if (!this.Instance) {
+            if (options !== undefined) {
+                this.Instance = new EntityManager(options)
+            } else {
+                Flogger.error('Tried to get new ClientManager.Instance with no options')
+            }
+        }
+
+        return this.Instance
+    }
+
+    private constructor(options: EntityManagerOptions) {
         const entityManager = this
 
         this.game = options.game

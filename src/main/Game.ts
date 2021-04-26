@@ -3,7 +3,7 @@ import { Flogger, log } from '../service/Flogger'
 import { Spritesheets } from '../asset/Spritesheets'
 import { WindowSize } from '../utils/Constants'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
-import { EntityManager } from '../manager/entitymanager/EntityManager'
+import { EntityManager, IEntityManager } from '../manager/entitymanager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { Assets } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
@@ -26,7 +26,7 @@ export class Game implements IGame {
     _application: PIXI.Application
     _clientCamera: Camera
     _clientManager: IClientManager
-    _entityManager: EntityManager
+    _entityManager: IEntityManager
     _particleManager: ParticleManager
     _loadingScreen: LoadingScreen
 
@@ -36,7 +36,7 @@ export class Game implements IGame {
         this.instantiateApplication()
 
         const game = this
-        this._entityManager = new EntityManager({ game })
+        this._entityManager = EntityManager.getInstance({ game })
         this._clientCamera = Camera.getInstance()
         this._clientManager = ClientManager.getInstance({ game, entityManager: this.entityManager })
         this._particleManager = ParticleManager.getInstance()

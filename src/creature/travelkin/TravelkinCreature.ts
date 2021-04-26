@@ -14,7 +14,7 @@ export interface ITravelkinCreature extends ICreature {
 }
 
 export interface TravelkinCreatureOptions extends CreatureOptions {
-    walkSpeed: number
+    walkSpeed?: number
 }
 
 export class TravelkinCreature extends Creature implements ITravelkinCreature {
@@ -28,7 +28,7 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
 
         const travelkin = this
 
-        this.walkSpeed = options.walkSpeed
+        this.walkSpeed = options.walkSpeed ?? 5
         this.ai = new GroundPatherAI({ gravityEntity: travelkin })
         this.movementController = new TravelkinMovementController({ travelkin })
     }

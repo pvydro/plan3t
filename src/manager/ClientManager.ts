@@ -33,15 +33,15 @@ export class ClientManager implements IClientManager {
     _gameStateManager: IGameStateManager
 
     static getInstance(options?: ClientManagerOptions) {
-        if (!ClientManager.Instance) {
+        if (!this.Instance) {
             if (options !== undefined) {
-                ClientManager.Instance = new ClientManager(options)
+                this.Instance = new ClientManager(options)
             } else {
                 Flogger.error('Tried to get new ClientManager.Instance with no options')
             }
         }
 
-        return ClientManager.Instance
+        return this.Instance
     }
 
     private constructor(options: ClientManagerOptions) {
