@@ -5,11 +5,11 @@
 import { SpriteUtilities } from '../lib/spriteutilities'
 
 export class SpriteUtils {
-    private static utility: SpriteUtilities = new SpriteUtilities()
+    private static Utility: SpriteUtilities = new SpriteUtilities()
 
     private constructor() {}
 
     static getFrameSeries(startIndex: number, endIndex: number, baseName: string, extension: string): any[] {
-        return this.utility.frameSeries(startIndex, endIndex, baseName, extension)
+        return this.Utility.frameSeries(startIndex, endIndex, baseName, extension)
     }
 }

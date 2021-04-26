@@ -12,19 +12,19 @@ export interface ISphericalTileHelper {
 }
 
 export class SphericalTileValues {
-    public static CoreGrassTile: SphericalTileColorData = {
+    static CoreGrassTile: SphericalTileColorData = {
         r: 85, g: 163, b: 95, a: 1
     }
-    public static CoreDirtTile: SphericalTileColorData = {
+    static CoreDirtTile: SphericalTileColorData = {
         r: 128, g: 85, b: 58, a: 1
     }
-    public static CoreGroundTile: SphericalTileColorData = {
+    static CoreGroundTile: SphericalTileColorData = {
         r: 135, g: 135, b: 135, a: 1
     }
-    public static CoreMantleTile: SphericalTileColorData = {
+    static CoreMantleTile: SphericalTileColorData = {
         r: 207, g: 106, b: 19, a: 1
     }
-    public static CoreInfernoTile: SphericalTileColorData = {
+    static CoreInfernoTile: SphericalTileColorData = {
         r: 227, g: 163, b: 0, a: 1
     }
 }

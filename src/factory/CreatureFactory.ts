@@ -3,16 +3,12 @@ import { Creature, CreatureType } from '../creature/Creature'
 import { Koini } from '../creature/koini/Koini'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 
-export interface ICreatureFactory {
-    createCreatureForType(type: CreatureType): Creature
-}
-
-export class CreatureFactory implements ICreatureFactory {
-    constructor() {
+export class CreatureFactory {
+    private constructor() {
 
     }
 
-    createCreatureForType(type: CreatureType): Creature {
+    static createCreatureForType(type: CreatureType): Creature {
         let creature = undefined
 
         switch (type) {

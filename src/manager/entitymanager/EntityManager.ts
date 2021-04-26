@@ -32,7 +32,7 @@ export interface IEntityManager extends IUpdatable {
     clearClientEntities(): void
     updateEntity(entity: Entity, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number, entity?: Entity): void
-    registerEntity(sessionId: string, localEntity: LocalEntity): void
+    registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
     getEntity(sessionId: string): Entity
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
 }
@@ -151,8 +151,11 @@ export class EntityManager implements IEntityManager {
         this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
     }
 
-    registerEntity(sessionId: string, localEntity: LocalEntity) {
+    registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity) {
         log('EntityManager', 'registerEntity', 'sessionId', sessionId)
+
+        localEntity = (localEntity instanceof ClientEntity)
+            ? { clientEntity: localEntity } : localEntity
 
         this._clientEntities.set(sessionId, localEntity)
     }

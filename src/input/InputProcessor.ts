@@ -15,7 +15,7 @@ export enum InputEvents {
 }
 
 export class InputProcessor {
-    private static INSTANCE = new InputProcessor()
+    private static Instance = new InputProcessor()
     private static Emitter = new Emitter()
 
     private constructor() {

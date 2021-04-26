@@ -1,5 +1,6 @@
 export enum Events {
-    Spawn = 'Spawn'
+    Spawn = 'Spawn',
+    SpawnEnemy = 'SpawnEnemy'
 }
 
 export enum PlayerEvents {

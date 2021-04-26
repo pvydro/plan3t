@@ -1,7 +1,9 @@
+import { ClientEntity } from '../cliententity/ClientEntity'
+import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { Events } from '../model/events/Events'
 import { log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
-import { exists } from '../utils/Utils'
+import { exists, functionExists } from '../utils/Utils'
 
 export interface ISpawner {
     spawn(): void
@@ -18,21 +20,24 @@ export class Spawner extends Emitter implements ISpawner {
         super()
 
         if (exists(options)) {
-            if (exists(options.onSpawn)) {
+            if (functionExists(options.onSpawn)) {
                 this._onSpawn = options.onSpawn
             }
         }
-
-        this.on(Events.Spawn, () => {
-            console.log('%cSpawnerSpawn', 'font-size: 400%; background-color: red;')
-        })
     }
 
-    spawn() {
+    spawn(entity?: ClientEntity) {
         log('Spawner', 'spawn')
 
         this.emit(Events.Spawn)
-        this._onSpawn()
+
+        if (this._onSpawn !== undefined) {
+            this._onSpawn()
+        }
+
+        if (entity !== undefined) {
+            EntityManager.getInstance().registerEntity(entity.entityId, entity)
+        }
     }
 
     private findSpawnLocation() { // TODO: This

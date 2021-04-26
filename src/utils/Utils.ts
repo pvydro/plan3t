@@ -27,6 +27,11 @@ export function rect(x: number, y: number, width: number, height: number): IRect
 export function asyncPromise(time: number) {
     return new Promise(resolve => setTimeout(resolve, time))
 }
+
+export function isArray(obj: any) {
+    return Array.isArray(obj)
+}
+
 export class Utils {
 
 }

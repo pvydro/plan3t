@@ -51,6 +51,8 @@ export class Bullet extends GravityEntity implements IBullet {
         this.type = EntityType.Bullet
 
         this.scale.set(GlobalScale, GlobalScale)
+
+        this.entityId = 'Bullet' + this._id
     }
 
     get id() {

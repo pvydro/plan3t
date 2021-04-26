@@ -2,7 +2,7 @@ import { create } from 'colyseus/lib/MatchMaker'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Creature, CreatureType } from '../../creature/Creature'
-import { CreatureFactory, ICreatureFactory } from '../../factory/CreatureFactory'
+import { CreatureFactory } from '../../factory/CreatureFactory'
 import { IEntityManager } from './EntityManager'
 
 export interface IEntityCreatureCreator {
@@ -19,19 +19,17 @@ export interface EntityCreatureCreatorOptions {
 
 export class EntityCreatureCreator implements IEntityCreatureCreator {
     entityManager: IEntityManager
-    creatureFactory: ICreatureFactory
     creatures: Map<string, Creature> = new Map()
 
     constructor(options: EntityCreatureCreatorOptions) {
         this.entityManager = options.entityManager
-        this.creatureFactory = new CreatureFactory()
     }
 
     createCreature(options: CreatureCreationOptions) {
-        const creature = this.creatureFactory.createCreatureForType(options.type)
+        const creature = CreatureFactory.createCreatureForType(options.type)
 
         this.cameraStage.addChildAtLayer(creature, CameraLayer.Creatures)
-        this.entityManager.registerEntity(creature.entityId, { clientEntity: creature })
+        this.entityManager.registerEntity(creature.entityId, creature)
         this.creatures.set(creature.entityId, creature)
         
         creature.x = 512 + (Math.random() * 128)
