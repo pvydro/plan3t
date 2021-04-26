@@ -10,12 +10,14 @@ export interface ISormEnemy extends IEnemy {
 export class SormEnemy extends Enemy implements ISormEnemy {
     constructor() {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.EnemySormIdle))
+        const idleSprite = new Sprite({ texture })
 
         super({
             type: CreatureType.Sorm,
-            idleSprite: new Sprite({ texture }),
+            idleSprite,
             walkSpeed: 1,
-            weight: 0.5
+            weight: 0.5,
+            boundingBoxAnchor: { x: 0.5, y: 0 }
         })
     }
 }
