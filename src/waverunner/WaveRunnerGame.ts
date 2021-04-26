@@ -1,5 +1,5 @@
 import { CreatureType } from '../creature/Creature'
-import { log } from '../service/Flogger'
+import { Flogger, log } from '../service/Flogger'
 import { CreatureSpawner, ICreatureSpawner } from '../spawner/creaturespawner/CreatureSpawner'
 import { IWave, Wave } from './Wave'
 
@@ -16,6 +16,7 @@ export class WaveRunnerGame implements IWaveRunnerGame {
     }
 
     beginWaveRunner() {
+        Flogger.color('tomato')
         log('WaveRunnerGame', 'beginWaveRunner')
 
         this.spawner = new CreatureSpawner({

@@ -21,7 +21,7 @@ export interface GameStateManagerOptions {
 export enum GameStateID {
     StartMenu = 'StartMenu',
     Gameplay = 'Gameplay',
-    WaveGame = 'WaveGame',
+    WaveRunnerGame = 'WaveGame',
     Homeship = 'Spaceship',
     Empty = 'Empty'
 }
@@ -30,7 +30,7 @@ export class GameStateManager implements IGameStateManager {
     private static Instance: IGameStateManager
     _currentState?: IGameState
     _currentStateID: GameStateID
-    _defaultState: GameStateID = GameStateID.Homeship // GameStateID.Gameplay/
+    _defaultState: GameStateID = GameStateID.WaveRunnerGame // GameStateID.Homeship
     game?: Game
 
     static getInstance() {
@@ -98,7 +98,7 @@ export class GameStateManager implements IGameStateManager {
             case GameStateID.Homeship:
                 state = new HomeshipState(options)
                 break
-            case GameStateID.WaveGame:
+            case GameStateID.WaveRunnerGame:
                 state = new WaveGameState(options)
                 break
                 

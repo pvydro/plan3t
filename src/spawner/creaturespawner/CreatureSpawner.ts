@@ -20,17 +20,15 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
         super()
 
         this._typeToSpawn = options.typeToSpawn
-
-        // TODO: Multi-type spawning w/ randomization & configuration
     }
 
     spawn() {
-        log('CreatureSpawner', 'spawn')
-
+        const type = this.typeToSpawn
+        log('CreatureSpawner', 'spawn', 'type', type)
         const player = ClientPlayer.getInstance()
         const x = player.x
         const y = player.y
-        const creature = CreatureFactory.createCreatureForType(this.typeToSpawn)
+        const creature = CreatureFactory.createCreatureForType(type)
 
         creature.pos = { x, y }
 
@@ -39,6 +37,8 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
 
     /**
      * Returns a random type based on the list provided via options
+     * 
+     * TODO: Multi-type spawning w/ randomization & configuration
      */
     get typeToSpawn() {
         const chosenType = isArray(this._typeToSpawn)

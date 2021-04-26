@@ -1,7 +1,6 @@
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { GameStateID } from '../manager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
-import { asyncPromise } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
 import { GameStateOptions, IGameState } from './GameState'
 
@@ -15,11 +14,10 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
     constructor(options: GameStateOptions) {
         super({
             game: options.game,
-            id: GameStateID.WaveGame
+            id: GameStateID.WaveRunnerGame
         })
 
     }
-
 
     async initialize() {
         await super.initialize()
