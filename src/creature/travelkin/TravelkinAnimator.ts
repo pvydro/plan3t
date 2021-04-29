@@ -5,11 +5,13 @@ import { ITravelkinCreature, TravelkinMovementState } from './TravelkinCreature'
 
 export interface ITravelkinAnimator extends IAnimator {
     walkingSprite: AnimatedSprite
+    walkingSheet?: PIXI.Spritesheet
     updateAnimationState(): void
 }
 
 export interface TravelkinAnimatorOptions {
     travelkin: ITravelkinCreature
+    walkingSheet?: PIXI.Spritesheet
 }
 
 export class TravelkinAnimator extends Animator implements ITravelkinAnimator {
@@ -19,15 +21,16 @@ export class TravelkinAnimator extends Animator implements ITravelkinAnimator {
     constructor(options: TravelkinAnimatorOptions) {
         super()
 
-        const walkingSheet = Spritesheets.get(SpritesheetUrls.SormWalking)
-
         this.travelkin = options.travelkin
-        this.walkingSprite = new AnimatedSprite({
-            sheet: walkingSheet.animations['tile'],
-            animationSpeed: 0.25,
-            loop: true
-        })
-        this.walkingSprite.anchor.set(0.5, 0)
+
+        if (options.walkingSheet && options.walkingSheet.animations) {
+            this.walkingSprite = new AnimatedSprite({
+                sheet: options.walkingSheet.animations['tile'],
+                animationSpeed: 0.25,
+                loop: true
+            })
+            this.walkingSprite.anchor.set(0.5, 0)
+        }
     }
 
     updateAnimationState() {
@@ -36,7 +39,9 @@ export class TravelkinAnimator extends Animator implements ITravelkinAnimator {
                 this.travelkin.showIdleSprite()
                 break
             case TravelkinMovementState.Walking:
-                this.travelkin.showWalkingSprite()
+                if (this.walkingSprite) {
+                    this.travelkin.showWalkingSprite()
+                }
                 break
         }
     }

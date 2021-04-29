@@ -20,6 +20,26 @@ export function functionExists(item): boolean {
     return doesExist
 }
 
+/**
+ * Creates an array of parameters, excluding objects that are undefined or null
+ * 
+ * @param objects Children of new array
+ * @returns Array of children
+ */
+export function trimArray(...objects: any): any[] {
+    const arr: any[] = []
+
+    for (var i in objects) {
+        const child = objects[i]
+
+        if (exists(child)) {
+            arr.push(child)
+        }
+    }
+    
+    return arr
+}
+
 export function rect(x: number, y: number, width: number, height: number): IRect {
     return { x, y, width, height }
 }

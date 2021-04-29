@@ -1,6 +1,7 @@
 import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Sprite } from '../../engine/display/Sprite'
+import { trimArray } from '../../utils/Utils'
 import { ICreature, Creature, CreatureOptions } from '../Creature'
 import { ITravelkinAnimator, TravelkinAnimator } from './TravelkinAnimator'
 import { ITravelkinMovementController, TravelkinMovementController } from './TravelkinMovementController'
@@ -21,6 +22,7 @@ export interface ITravelkinCreature extends ICreature {
 
 export interface TravelkinCreatureOptions extends CreatureOptions {
     walkSpeed?: number
+    walkingSheet?: PIXI.Spritesheet
 }
 
 export class TravelkinCreature extends Creature implements ITravelkinCreature {
@@ -39,11 +41,17 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
 
         this.walkSpeed = options.walkSpeed ?? 5
         this.ai = new GroundPatherAI({ gravityEntity: travelkin })
-        this.animator = new TravelkinAnimator({ travelkin })
+        this.animator = new TravelkinAnimator({
+            travelkin,
+            walkingSheet: options.walkingSheet ?? undefined
+        })
         this.movementController = new TravelkinMovementController({ travelkin })
-        this.walkingSprite = this.animator.walkingSprite
 
-        this.addChild(this.walkingSprite)
+        // Add walkingsprite if walkingsheet was passed through
+        if (options.walkingSheet) {
+            this.walkingSprite = this.animator.walkingSprite
+            this.addChild(this.walkingSprite)
+        }
     }
 
     update() {
@@ -62,19 +70,21 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
     }
 
     showWalkingSprite() {
-        if (this.currentShown !== this.walkingSprite) {
-            this.walkingSprite.gotoAndPlay(0)
-            this.currentShown = this.walkingSprite
+        if (this.walkingSprite) {
+            if (this.currentShown !== this.walkingSprite) {
+                this.walkingSprite.gotoAndPlay(0)
+                this.currentShown = this.walkingSprite
+            }
+    
+            this.hideAllExcept(this.walkingSprite)
+            this.walkingSprite.play()
         }
-
-        this.hideAllExcept(this.walkingSprite)
-        this.walkingSprite.play()
     }
 
     hideAllExcept(shownSprite: any) {
-        const hideable = [
+        const hideable = trimArray(
             this.sprite, this.walkingSprite
-        ]
+        )
 
         for (var i in hideable) {
             const hideElement = hideable[i]
@@ -99,6 +109,7 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
     }
 
     flipAllSprites() {
-        this.walkingSprite.flipX()
+        this.sprite.flipX()
+        if (this.walkingSprite) this.walkingSprite.flipX()
     }
 }
