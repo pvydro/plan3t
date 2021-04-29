@@ -196,6 +196,7 @@ export class Weapon extends Container implements IWeapon {
             interpolation: 1,
             duration: 0.125,
             ease: Easing.Power4EaseOut,
+            // ease: Easing.RoughEase.ThreeCubicOut,
             onUpdate() {
                 recoilOffset.x = -recoilX * int.interpolation
                 recoilOffset.y = -recoilY * int.interpolation

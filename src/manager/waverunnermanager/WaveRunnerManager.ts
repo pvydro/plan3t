@@ -22,7 +22,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     }
 
     async initialize() {
-        Flogger.color('blue')
+        Flogger.color('lightsteelblue')
         log('WaveRunnerManager', 'initialize')
 
         this.currentWaveRunnerGame = new WaveRunnerGame()

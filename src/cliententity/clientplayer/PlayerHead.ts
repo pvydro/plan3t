@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js'
+import { Power0 } from 'gsap'
+import { RoughEase } from 'gsap/EasePack'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
@@ -7,6 +9,8 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
 import { PlayerEvents } from '../../model/events/Events'
+import { Tween } from '../../engine/display/tween/Tween'
+import { Easing } from '../../engine/display/tween/TweenEasing'
 
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number
@@ -22,25 +26,23 @@ export class PlayerHead extends Container {
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
 
-    _headBobOffset = 0
     _targetCrouchedOffset = 0
     _crouchedOffset = 0
+    headBobOffset = 0
     targetHeadBobOffset = 0
-    headBobState = 'up'
+    headBobState = 'notset'//'up'
 
     constructor(options: PlayerHeadOptions) {
         super()
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PlayerHeadHumanDefault))
+
         this.player = options.player
         this.controller = new PlayerHeadController({
             playerHead: this,
             player: this.player
         })
-
-//
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.PlayerHeadHumanDefault))
         this.headSprite = new Sprite({ texture })
         this.headSprite.anchor.set(0.475, 0.9)
-//
 
         this.addChild(this.headSprite)
 
@@ -53,13 +55,9 @@ export class PlayerHead extends Container {
     update() {
         if (this.player.consciousnessState === PlayerConsciousnessState.Alive) {
             this.bobHead()
-
-            const targetOffset = this.targetHeadBobOffset
             const crouchEaseAmt = 2
-
-            this._headBobOffset += (targetOffset - this.headBobOffset) / this.headBobEaseAmount
+            
             this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
-
             this.position.y = -3 + this.headBobOffset + this._crouchedOffset
         }
 
@@ -73,22 +71,37 @@ export class PlayerHead extends Container {
             this._targetCrouchedOffset = 0
         }
         
-        const graceSpace = 0.25
-
-        if (this.player.bodyState === PlayerBodyState.Idle) {
-            if (Math.abs(this.headBobOffset) > (Math.abs(this.targetHeadBobOffset) - graceSpace)) {
-                this.swapHeadBobState()
-            }
+        if (this.headBobState === 'notset') {
+            this.swapHeadBobState()
         }
     }
 
     swapHeadBobState() {
         const isWalking = (this.player.bodyState === PlayerBodyState.Walking
-                || this.player.bodyState === PlayerBodyState.Sprinting)
-        let targetBobAmt = isWalking ? 1.25 : 1
+            || this.player.bodyState === PlayerBodyState.Sprinting)
+        const targetBobAmt = isWalking ? 1.75 : 1.5
+        const ease = RoughEase.ease.config({
+            template: Power0.easeOut,
+            strength: 0.4,
+            points: 8,
+            taper: 'none',
+            randomize: false,
+            clamp: true
+        })
 
+        // Toggle head bob state
         this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
         this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt
+
+        Tween.to(this, {
+            duration: isWalking ? 0.85 : 1,
+            ease,
+            headBobOffset: this.targetHeadBobOffset,
+            autoplay: true,
+            onComplete: () => {
+                this.swapHeadBobState()
+            }
+        })
     }
 
     set direction(value: Direction) {
@@ -99,11 +112,7 @@ export class PlayerHead extends Container {
     }
 
     flipAllSprites() {
-        this.headSprite.scale.x *= -1
-    }
-
-    get headBobOffset() {
-        return this._headBobOffset
+        this.scale.x *= -1
     }
 
     get headBobEaseAmount() {

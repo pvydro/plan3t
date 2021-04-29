@@ -1,4 +1,7 @@
-import { Sine, Bounce, Cubic, Expo, Circ, Quad, Quart, Quint, Elastic, Power0, Power4 } from 'gsap'
+import { gsap, Sine, Bounce, Cubic, Expo, Circ, Quad, Quart, Quint, Elastic, Power0, Power2, Power4 } from 'gsap'
+import { RoughEase } from 'gsap/EasePack'
+
+gsap.registerPlugin(RoughEase)
 
 export const Easing = {
     Linear: Power0.easeNone,
@@ -28,5 +31,20 @@ export const Easing = {
     EaseInOutCirc: Circ.easeInOut,
     EaseInOutElastic: Elastic.easeInOut,
     EaseInOutBounce: Bounce.easeInOut,
-    Power4EaseOut: Power4.easeOut
+    Power4EaseOut: Power4.easeOut,
+    RoughEase: {
+        ThreeCubicOut: RoughEase.ease.config({
+            template: Power2.easeOut,
+            strength: 0.5,
+            points: 8,
+            taper: 'none',
+            randomize: false,
+            clamp: true
+        }),
+        Five: RoughEase.ease.config({
+            template: Power0.easeOut,
+            strength: 0.2, points: 5,
+            taper: 'none', clamp: false
+        })
+    }
 }
