@@ -1,7 +1,6 @@
 import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Sprite } from '../../engine/display/Sprite'
-import { Direction } from '../../engine/math/Direction'
 import { ICreature, Creature, CreatureOptions } from '../Creature'
 import { ITravelkinAnimator, TravelkinAnimator } from './TravelkinAnimator'
 import { ITravelkinMovementController, TravelkinMovementController } from './TravelkinMovementController'

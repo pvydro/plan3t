@@ -1,7 +1,6 @@
 import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Animator, IAnimator } from '../../engine/display/Animator'
-import { log } from '../../service/Flogger'
 import { ITravelkinCreature, TravelkinMovementState } from './TravelkinCreature'
 
 export interface ITravelkinAnimator extends IAnimator {

@@ -6,6 +6,10 @@ export class EnemyHelper {
 
     }
 
+    static getWalkingSheetForEnemy() {
+        // TODO: This
+    }
+
     static getPropertiesForEnemyType(enemy: Enemy) {
         let properties: EnemyProperties = EnemyHelper.getDefaultProperties()
 

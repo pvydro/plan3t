@@ -1,4 +1,3 @@
-import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { GameStateID } from '../manager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
 import { asyncTimeout } from '../utils/Utils'
