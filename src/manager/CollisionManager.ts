@@ -41,7 +41,9 @@ export class CollisionManager implements ICollisionManager {
             }
         }
 
-        this.checkEntityCollisionAgainstEnemies(bullet)
+        if (this.checkEntityCollisionAgainstEnemies(bullet)) {
+            bullet.demolishWithStyle()
+        }
 
         return bullet
     }
@@ -55,23 +57,26 @@ export class CollisionManager implements ICollisionManager {
         return entity
     }
 
-    private checkEntityCollisionAgainstEnemies(entity: GravityEntity): GravityEntity {
+    private checkEntityCollisionAgainstEnemies(entity: GravityEntity): boolean {
+        let hit = false
         const enemies = EntityManager.getInstance().enemyManager.enemies
 
-        // for (var i in enemies) {
         enemies.forEach((enemy: IEnemy) => {
             if (enemy.boundingBox && entity.boundingBox) {
-                // if (this.doesIntersect(entity.boundingBox, enemy.boundingBox)) {
-                //     console.log('%cHIT', 'background-color: red; font-size: 500%')
-                // }
                 if (Rect.intersects(enemy.boundsWithPosition, entity.boundsWithPosition)) {
-                    console.log('%cHIT', 'background-color: red; font-size: 500%')
+
+                    hit = true
+
+                    if (entity instanceof Bullet) {
+                        // enemy
+                    }
+
                 }
             }
 
         })
 
-        return entity
+        return hit
     }
 
     /**

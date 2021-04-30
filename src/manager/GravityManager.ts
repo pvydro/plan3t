@@ -7,7 +7,6 @@ import { exists } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { CollisionManager, ICollisionManager } from './CollisionManager'
 import { IEnemyManager } from './enemymanager/EnemyManager'
-import { IEntityManager } from './entitymanager/EntityManager'
 
 export interface IGravityManager {
     initialize(): void

@@ -5,27 +5,28 @@ import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { InGameScreenID } from '../../ui/ingamemenu/InGameMenu'
+import { HealthController, HealthControllerOptions, IHealthController } from '../gravityorganism/HealthController'
 import { IClientPlayer, PlayerConsciousnessState } from './ClientPlayer'
 
-export interface IPlayerHealthController {
-    totalHealth: number
-    currentHealth: number
-    takeDamage(damageAmount: number): void
-    suicide(): void
-    resetHealth(): void
+export interface IPlayerHealthController extends IHealthController {
+
 }
 
 export interface PlayerHealthControllerOptions {
     player: IClientPlayer
 }
 
-export class PlayerHealthController implements IPlayerHealthController {
+export class PlayerHealthController extends HealthController implements IPlayerHealthController {
     player: IClientPlayer
 
     totalHealth: number = 100
     currentHealth: number = 100
 
     constructor(options: PlayerHealthControllerOptions) {
+        super({
+            totalHealth: 100
+        })
+
         this.player = options.player
 
         if (this.player.isClientPlayer) this.addTestKeyListeners()
@@ -46,33 +47,14 @@ export class PlayerHealthController implements IPlayerHealthController {
 
     takeDamage(damageAmount: number): void {
         Flogger.log('PlayerHealthController', 'takeDamage', 'damageAmount', damageAmount)
+        super.takeDamage(damageAmount)
 
-        this.currentHealth -= damageAmount
-
-        this.checkDeath()
         this.displayDamageEffects(damageAmount)
     }
 
-    suicide(): void {
-        Flogger.log('PlayerHealthController', 'suicide')
-
-        this.takeDamage(this.totalHealth)
-    }
-
-    resetHealth(): void {
-        this.currentHealth = this.totalHealth
-    }
-
-    private checkDeath() {
-        if (this.currentHealth <= 0) {
-            this.currentHealth = 0
-
-            this.die()
-        }
-    }
-
-    private die() {
+    die() {
         Flogger.log('PlayerHealthController', 'die')
+        super.die()
 
         this.player.consciousnessState = PlayerConsciousnessState.Dead
         this.displayDeathEffects()

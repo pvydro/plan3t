@@ -7,7 +7,6 @@ import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
 import { IPlayerHand, PlayerHand } from './PlayerHand'
 import { WeaponName } from '../../weapon/WeaponName'
-import { GravityEntity, IGravityEntity } from '../GravityEntity'
 import { PlayerCollision } from './PlayerCollision'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
 import { PlayerLight } from './PlayerLight'
@@ -18,10 +17,11 @@ import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
-import { IPlayerHealthController, PlayerHealthController } from './PlayerHealthController'
+import { PlayerHealthController } from './PlayerHealthController'
 import { point } from '../../engine/math/Vector2'
+import { GravityOrganism, IGravityOrganism } from '../gravityorganism/GravityOrganism'
 
-export interface IClientPlayer extends IGravityEntity {
+export interface IClientPlayer extends IGravityOrganism {
     sessionId: string
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
@@ -32,9 +32,6 @@ export interface IClientPlayer extends IGravityEntity {
     emitter: Emitter
     isClientPlayer: boolean
     isOfflinePlayer: boolean
-    currentHealth: number
-    totalHealth: number
-    healthPercentage: number
     equipWeapon(weapon: Weapon): void
 }
 
@@ -64,7 +61,7 @@ export interface ClientPlayerOptions {
     sessionId?: string
 }
 
-export class ClientPlayer extends GravityEntity {
+export class ClientPlayer extends GravityOrganism {
     private static Instance: ClientPlayer
     
     _entityManager?: IEntityManager
@@ -84,7 +81,6 @@ export class ClientPlayer extends GravityEntity {
     light: PlayerLight
     collision: PlayerCollision
     controller: IPlayerController
-    healthController: IPlayerHealthController
     overheadHealthBar: OverheadHealthBar
     emitter: Emitter = new Emitter()
 
@@ -112,7 +108,6 @@ export class ClientPlayer extends GravityEntity {
         if (exists(options.sessionId)) this.sessionId = options.sessionId
         if (options.clientControl) this._clientControl = true
         if (options.offlineControl) this._offlineControl = true
-        
 
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
@@ -265,17 +260,5 @@ export class ClientPlayer extends GravityEntity {
 
     get entityManager() {
         return this._entityManager
-    }
-
-    get currentHealth() {
-        return this.healthController.currentHealth
-    }
-
-    get totalHealth() {
-        return this.healthController.totalHealth
-    }
-
-    get healthPercentage() {
-        return this.currentHealth / this.totalHealth
     }
 }
