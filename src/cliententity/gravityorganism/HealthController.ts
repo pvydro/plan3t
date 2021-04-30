@@ -1,6 +1,8 @@
+import { Events } from '../../model/events/Events'
 import { log } from '../../service/Flogger'
+import { Emitter, IEmitter } from '../../utils/Emitter'
 
-export interface IHealthController {
+export interface IHealthController extends IEmitter {
     totalHealth: number
     currentHealth: number
     takeDamage(damageAmount: number): void
@@ -12,13 +14,12 @@ export interface HealthControllerOptions {
     totalHealth: number
 }
 
-export class HealthController implements IHealthController {
-
+export class HealthController extends Emitter implements IHealthController {
     totalHealth: number = 100
     currentHealth: number = 100
 
     constructor(options: HealthControllerOptions) {
-
+        super()
     }
 
     takeDamage(damageAmount: number): void {
@@ -41,6 +42,8 @@ export class HealthController implements IHealthController {
 
     protected die() {
         log('HealthController', 'die')
+
+        this.emit(Events.Death)
     }
 
     private checkDeath() {

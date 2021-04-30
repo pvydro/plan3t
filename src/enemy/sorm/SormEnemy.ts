@@ -27,4 +27,8 @@ export class SormEnemy extends Enemy implements ISormEnemy {
             boundingBoxAnchor: { x: 0.5, y: 0 }
         })
     }
+
+    takeDamage(damageAmount: number) {
+        super.takeDamage(damageAmount)
+    }
 }

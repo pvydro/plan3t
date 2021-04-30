@@ -1,19 +1,18 @@
-import { GravityEntity, GravityEntityOptions, IGravityEntity } from '../cliententity/GravityEntity'
+import { GravityOrganism, GravityOrganismOptions, IGravityOrganism } from '../cliententity/gravityorganism/GravityOrganism'
 import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
 
-export interface ICreature extends IGravityEntity {
+export interface ICreature extends IGravityOrganism {
     interact(): void
-    die(): void
     flipAllSprites(): void
 }
 
-export interface CreatureOptions extends GravityEntityOptions {
+export interface CreatureOptions extends GravityOrganismOptions {
     type: CreatureType
     idleSprite: Sprite
 }
 
-export abstract class Creature extends GravityEntity implements ICreature {
+export abstract class Creature extends GravityOrganism implements ICreature {
     static CreatureIdIteration: number = 0
     entityId: string
 
@@ -37,10 +36,6 @@ export abstract class Creature extends GravityEntity implements ICreature {
     }
 
     interact() {
-
-    }
-
-    die() {
 
     }
 

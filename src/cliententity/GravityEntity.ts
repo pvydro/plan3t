@@ -130,7 +130,7 @@ export class GravityEntity extends ClientEntity {
         if (!this._boundsWithPosition) {
             this._boundsWithPosition = new Rect({
                 x: this.x + this.halfWidth - (this.boundingBox.width / 2),
-                y: this.y,
+                y: this.y + this.height - this.boundingBox.height,
                 width: this.boundingBox.width,
                 height: this.boundingBox.height
             })
