@@ -6,6 +6,8 @@ import { log } from '../service/Flogger'
 import { exists } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { CollisionManager, ICollisionManager } from './CollisionManager'
+import { IEnemyManager } from './enemymanager/EnemyManager'
+import { IEntityManager } from './entitymanager/EntityManager'
 
 export interface IGravityManager {
     initialize(): void
@@ -13,7 +15,7 @@ export interface IGravityManager {
 }
 
 export interface GravityManagerOptions {
-    gameMap: GameMap
+    enemyManager: IEnemyManager
 }
 
 export class GravityManager implements IGravityManager {
@@ -21,18 +23,11 @@ export class GravityManager implements IGravityManager {
     collisionManager: ICollisionManager
     gameMap: GameMap
 
-    static getInstance() {
-        if (GravityManager.Instance === undefined) {
-            GravityManager.Instance = new GravityManager()
-        }
-
-        return GravityManager.Instance
-    }
-
-    private constructor() {
+    constructor(options: GravityManagerOptions) {
         this.gameMap = GameMap.getInstance()
         this.collisionManager = new CollisionManager({
-            gameMap: this.gameMap
+            gameMap: this.gameMap,
+            enemyManager: options.enemyManager 
         })
     }
 

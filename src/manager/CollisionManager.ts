@@ -1,8 +1,10 @@
 import { GravityEntity } from '../cliententity/GravityEntity'
-import { Rect } from '../engine/math/Rect'
+import { IRect, Rect } from '../engine/math/Rect'
 import { GameMap } from '../gamemap/GameMap'
 import { GlobalScale } from '../utils/Constants'
 import { Bullet } from '../weapon/projectile/Bullet'
+import { EnemyManager, IEnemyManager } from './enemymanager/EnemyManager'
+import { EntityManager, IEntityManager } from './entitymanager/EntityManager'
 
 export interface ICollisionManager {
     checkEntityCollision(entity: GravityEntity): GravityEntity
@@ -11,13 +13,19 @@ export interface ICollisionManager {
 
 export interface CollisionManagerOptions {
     gameMap: GameMap
+    enemyManager: IEnemyManager
 }
 
 export class CollisionManager implements ICollisionManager {
     gameMap: GameMap
+    enemyManager: IEnemyManager
 
     constructor(options: CollisionManagerOptions) {
         this.gameMap = options.gameMap
+        this.enemyManager = options.enemyManager
+        // this
+
+        // this.entityMan = EntityManager.getInstance()
     }
 
     checkEntityCollision(entity: GravityEntity): GravityEntity {
@@ -35,6 +43,8 @@ export class CollisionManager implements ICollisionManager {
             }
         }
 
+        // this.checkEntityCollisionAgainstEnemies(bullet)
+
         return bullet
     }
     
@@ -42,6 +52,22 @@ export class CollisionManager implements ICollisionManager {
         for (var i in this.gameMapCollidableRects) {
             const rect = this.gameMapCollidableRects[i]
             entity = this.checkGroundCollision(entity, rect)
+        }
+
+        return entity
+    }
+
+    private checkEntityCollisionAgainstEnemies(entity: GravityEntity): GravityEntity {
+        const enemies = []//EnemyManager.getInstance().enemies
+
+        for (var i in enemies) {
+            const enemy = enemies[i]
+
+            if (enemy.boundingBox && entity.boundingBox) {
+                if (this.doesIntersect(entity.boundingBox, enemy.boundingBox)) {
+                    console.log('%cHIT', 'background-color: red; font-size: 500%')
+                }
+            }
         }
 
         return entity
@@ -89,6 +115,16 @@ export class CollisionManager implements ICollisionManager {
         }
 
         return entity
+    }
+
+    private doesIntersect(rect1: IRect, rect2: IRect): boolean {
+        let intersecting = false
+
+        if (Rect.int(rect1, rect2)) {
+            intersecting = true
+        }
+
+        return intersecting
     }
 
     get gameMapCollidableRects() {

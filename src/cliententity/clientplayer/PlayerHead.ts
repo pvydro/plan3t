@@ -8,9 +8,7 @@ import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsStat
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
-import { PlayerEvents } from '../../model/events/Events'
 import { Tween } from '../../engine/display/tween/Tween'
-import { Easing } from '../../engine/display/tween/TweenEasing'
 import { Flogger, log } from '../../service/Flogger'
 
 export interface IPlayerHead extends IUpdatable {
@@ -22,17 +20,24 @@ export interface PlayerHeadOptions {
 }
 
 export class PlayerHead extends Container {
+    _targetCrouchedOffset = 0
+    _crouchedOffset = 0
     player: ClientPlayer
     controller: IPlayerHeadController
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
-
-    _targetCrouchedOffset = 0
-    _crouchedOffset = 0
     headBobOffsetInterpoliation = { interpolation: 0 }
-    headBobOffset = 0
-    targetHeadBobOffset = 0
-    headBobState = 'notset'//'up'
+    headBobOffset: number = 0
+    targetHeadBobOffset: number = 0
+    headBobState: string = 'notset'//'up'
+    headBobEase: gsap.EaseFunction = RoughEase.ease.config({
+        template: Power0.easeOut,
+        strength: 0.4,
+        points: 7,
+        taper: 'none',
+        randomize: false,
+        clamp: true
+    })
 
     constructor(options: PlayerHeadOptions) {
         super()
@@ -82,23 +87,15 @@ export class PlayerHead extends Container {
     swapHeadBobState() {
         const isWalking = (this.player.bodyState === PlayerBodyState.Walking
             || this.player.bodyState === PlayerBodyState.Sprinting)
-        const targetBobAmt = 1.5
-        const ease = RoughEase.ease.config({
-            template: Power0.easeOut,
-            strength: 0.4,
-            points: 8,
-            taper: 'none',
-            randomize: false,
-            clamp: true
-        })
+        const targetBobAmt = 1
 
         // Toggle head bob state
         this.headBobState = this.headBobState === 'up' ? 'down' : 'up'
         this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt
 
         Tween.to(this.headBobOffsetInterpoliation, {
-            duration: isWalking ? 0.85 : 1,
-            ease,
+            duration: isWalking ? 1.05 : 1.25,
+            ease: this.headBobEase,
             interpolation: this.targetHeadBobOffset,
             autoplay: true,
             onComplete: () => {
@@ -108,9 +105,7 @@ export class PlayerHead extends Container {
     }
 
     set direction(value: Direction) {
-        Flogger.color('red')
         if (this.currentDirection !== value) {
-            log('HEADSPRITEFLIPX')
             this.currentDirection = value
             this.flipAllSprites()
         }

@@ -26,6 +26,13 @@ export class Rect extends PIXI.Rectangle implements IRect {
         )
     }
 
+    static int(rectA, rectB) {
+        return !(rectB.left > rectA.right || 
+                 rectB.right < rectA.left || 
+                 rectB.top > rectA.bottom ||
+                 rectB.bottom < rectA.top)
+    }
+
     static get Zero() {
         return new Rect({
             x: 0,

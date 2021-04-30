@@ -16,6 +16,7 @@ import { CreatureType } from '../../creature/Creature'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { EnemyManager, IEnemyManager } from '../enemymanager/EnemyManager'
 
 export interface LocalEntity {
     serverEntity?: Entity
@@ -26,6 +27,8 @@ export interface IEntityManager extends IUpdatable {
     clientEntities: Map<string, LocalEntity>
     camera: Camera
     roomState: PlanetGameState
+    gravityManager: IGravityManager
+    enemyManager: IEnemyManager
     createClientPlayer(entity: Entity, sessionId: string): ClientPlayer
     createEnemyPlayer(entity: Entity, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
@@ -47,6 +50,7 @@ export class EntityManager implements IEntityManager {
 
     game: Game
     gravityManager: IGravityManager
+    enemyManager: IEnemyManager
     playerCreator: IEntityPlayerCreator
     creatureCreator: IEntityCreatureCreator
     projectileCreator: IEntityProjectileCreator
@@ -68,12 +72,13 @@ export class EntityManager implements IEntityManager {
         const entityManager = this
 
         this.game = options.game
-        this.gravityManager = GravityManager.getInstance()
-
+        // this.gravityManager = GravityManager.getInstance()
+        this.gravityManager = new GravityManager({ enemyManager: entityManager.enemyManager })
         this.playerCreator = new EntityPlayerCreator({ entityManager })
         this.creatureCreator = new EntityCreatureCreator({ entityManager })
         this.projectileCreator = new EntityProjectileCreator({ entityManager })
         this.synchronizer = new EntitySynchronizer({ entityManager })
+        this.enemyManager = new EnemyManager({ entityManager })
 
         // Test key listeners
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {

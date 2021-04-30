@@ -76,6 +76,7 @@ export class Game implements IGame {
     initializeGameLoop() {
         this.gameLoop = new GameLoop({
             clientManager: this.clientManager,
+            gravityManager: this.entityManager.gravityManager
             // roomManager: this.roomManager
         })
 

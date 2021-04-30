@@ -16,6 +16,7 @@ export interface IGameLoop {
 export interface GameLoopOptions {
     clientManager?: IClientManager
     roomManager?: IRoomManager
+    gravityManager?: IGravityManager
 }
 
 export class GameLoop implements IGameLoop {
@@ -32,7 +33,6 @@ export class GameLoop implements IGameLoop {
     constructor(options: GameLoopOptions) {
         this.assignOptions(options)
 
-        this.gravityManager = GravityManager.getInstance()
         this.particleManager = ParticleManager.getInstance()
         this.tooltipManager = TooltipManager.getInstance()
     }
@@ -56,7 +56,7 @@ export class GameLoop implements IGameLoop {
         GameLoop.Delta = PIXI.Ticker.shared.deltaTime
 
         // Update all ClientEntities
-        if (this.entityManager !== undefined) {
+        if (this.entityManager && this.gravityManager) {
             this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
                 const clientEntity = localEntity.clientEntity
 
@@ -88,6 +88,7 @@ export class GameLoop implements IGameLoop {
 
     assignOptions(options: GameLoopOptions) {
         if (options !== undefined) {
+            this.gravityManager = options.gravityManager ?? this.gravityManager
             this.clientManager = options.clientManager ?? this.clientManager
             this.entityManager = this.clientManager.entityManager ?? this.entityManager
             this.roomManager = options.roomManager ?? this.roomManager

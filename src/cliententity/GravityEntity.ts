@@ -42,11 +42,13 @@ export class GravityEntity extends ClientEntity {
 
         this.horizontalFriction = (options && options.horizontalFriction) ?? PhysDefaults.horizontalFriction
         this.weight = (options && options.weight) ?? PhysDefaults.weight
-        const collisionRects = this.boundingBox = this.createBoundingBox(options)
+        this.boundingBox = this.createBoundingBox(options)
 
         if (options) {
             if (options.addDebugRectangle) {
-                this.debugger = new CollisionDebugger({ collisionRects })
+                this.debugger = new CollisionDebugger({
+                    collisionRects: this.boundingBox
+                })
                 this.addChild(this.debugger)
             }
             if (options.gravityAnchor) {
