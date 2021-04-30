@@ -95,11 +95,13 @@ export class EntityManager implements IEntityManager {
     removeEntity(sessionId: string, layer?: number) {
         const removedLocalEntity = this._clientEntities.get(sessionId)
         
-        this.cameraStage.removeFromLayer(removedLocalEntity.clientEntity, layer)
-        this._clientEntities.delete(sessionId)
-
-        delete removedLocalEntity.clientEntity
-        delete removedLocalEntity.serverEntity
+        if (removedLocalEntity) {
+            this.cameraStage.removeFromLayer(removedLocalEntity.clientEntity, layer)
+            this._clientEntities.delete(sessionId)
+    
+            delete removedLocalEntity.clientEntity
+            delete removedLocalEntity.serverEntity
+        }
     }
     
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
