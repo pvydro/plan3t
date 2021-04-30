@@ -72,7 +72,7 @@ export class EntityManager implements IEntityManager {
         const entityManager = this
 
         this.game = options.game
-        // this.gravityManager = GravityManager.getInstance()
+        
         this.gravityManager = new GravityManager({ enemyManager: entityManager.enemyManager })
         this.playerCreator = new EntityPlayerCreator({ entityManager })
         this.creatureCreator = new EntityCreatureCreator({ entityManager })

@@ -13,13 +13,15 @@ export interface IGravityEntity extends IClientEntity {
     currentGroundRect: Rect
     direction: Direction
     gravityAnchor: IVector2
+    boundingBox: Rect
+    boundsWithPosition: Rect
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
 }
 
 export interface GravityEntityOptions extends ClientEntityOptions {
     horizontalFriction?: number
-    boundingBox?: IRect
+    boundingBox?: Rect
     boundingDimensions?: IDimension
     boundingBoxAnchor?: IVector2
     gravityAnchor?: IVector2
@@ -31,9 +33,10 @@ export class GravityEntity extends ClientEntity {
     _currentGroundRect?: Rect
     _onGround: boolean = false
     _direction: Direction = Direction.Right
+    _boundsWithPosition: Rect
     gravityAnchor: IVector2 = Vector2.Zero
     horizontalFriction: number
-    boundingBox: IRect
+    boundingBox: Rect
     weight: number
     debugger?: CollisionDebugger
 
@@ -100,7 +103,7 @@ export class GravityEntity extends ClientEntity {
      * @param options Properties of the GravityEntity
      * @returns an IRect representing the newly generated bounding box
      */
-    private createBoundingBox(options?: GravityEntityOptions): IRect {
+    private createBoundingBox(options?: GravityEntityOptions): Rect {
         const passedWidth = (options.boundingBox && options.boundingBox.width)
             ?? (options.boundingDimensions && options.boundingDimensions.width)
         const passedHeight = (options.boundingBox && options.boundingBox.height)
@@ -110,16 +113,36 @@ export class GravityEntity extends ClientEntity {
         const boundingBoxAnchor: IVector2 = (options && options.boundingBoxAnchor) ?? Vector2.Zero
         const anchorXOffset = -width * boundingBoxAnchor.x
         const anchorYOffset = -height * boundingBoxAnchor.y
-        const boundingBox: IRect = (options && options.boundingBox) ?? {
+        const boundingBox: Rect = (options && options.boundingBox) ?? new Rect({
             x: 0, y: this.height - height,
             width, height
-        }
-
+        })
+        
         boundingBox.x += anchorXOffset
         boundingBox.y += anchorYOffset
-
+        
+        this._boundsWithPosition = boundingBox
         return boundingBox
         // return { width: 0, height: 0, x: 0, y: 0 }
+    }
+
+    get boundsWithPosition() {
+        if (!this._boundsWithPosition) {
+            this._boundsWithPosition = new Rect({
+                x: this.x + this.halfWidth - (this.boundingBox.width / 2),
+                y: this.y,
+                width: this.boundingBox.width,
+                height: this.boundingBox.height
+            })
+        }
+        
+        if (this._boundsWithPosition.x !== this.x
+        || this._boundsWithPosition.y !== this.y) {
+            this._boundsWithPosition.x = this.x
+            this._boundsWithPosition.y = this.y
+        }
+
+        return this._boundsWithPosition
     }
 
     get isOnGround() {

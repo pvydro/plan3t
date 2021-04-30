@@ -26,11 +26,20 @@ export class Rect extends PIXI.Rectangle implements IRect {
         )
     }
 
-    static int(rectA, rectB) {
-        return !(rectB.left > rectA.right || 
-                 rectB.right < rectA.left || 
-                 rectB.top > rectA.bottom ||
-                 rectB.bottom < rectA.top)
+    static intersects(rectA: Rect, rectB: Rect) {
+        let intersecting = false
+
+        // x
+        if (rectB.left > rectA.left && rectB.left < rectA.right
+        || rectB.right < rectA.right && rectB.right > rectA.right) {
+            if (rectB.top > rectA.top && rectB.top < rectA.bottom
+            || rectB.bottom < rectA.bottom && rectB.bottom > rectA.top) {
+            // y
+                intersecting = true
+            }
+        }
+
+        return intersecting
     }
 
     static get Zero() {
