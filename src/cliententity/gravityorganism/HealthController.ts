@@ -15,11 +15,16 @@ export interface HealthControllerOptions {
 }
 
 export class HealthController extends Emitter implements IHealthController {
-    totalHealth: number = 100
-    currentHealth: number = 100
+    totalHealth: number
+    currentHealth: number
 
     constructor(options: HealthControllerOptions) {
         super()
+
+        if (options.totalHealth) {
+            this.totalHealth = (options && options.totalHealth) ?? 100
+            this.currentHealth = options.totalHealth
+        }
     }
 
     takeDamage(damageAmount: number): void {
