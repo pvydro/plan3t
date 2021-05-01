@@ -6,7 +6,7 @@ export interface AINode extends IVector2 {
 }
 
 export interface IAI {
-    gravityEntity: IGravityEntity
+    target: IGravityEntity
     initialize(): void
 }
 
@@ -25,7 +25,7 @@ export abstract class AI implements IAI {
 
     }
 
-    get gravityEntity() {
+    get target() {
         return this._gravityEntity
     }
 }

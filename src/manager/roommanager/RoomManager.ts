@@ -181,7 +181,7 @@ export class RoomManager implements IRoomManager {
     }
 
     static set clientSessionId(value: string) {
-        Flogger.color('red')
+        Flogger.color('tomato')
         log('New client session ID has been set', value)
         
         this._clientSessionId = value

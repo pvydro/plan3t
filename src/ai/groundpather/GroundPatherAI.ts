@@ -3,12 +3,14 @@ import { Rect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { log } from '../../service/Flogger'
 import { AI, AINode, AIOptions, IAI } from '../AI'
+import { GroundPatherAIJumper, IGroundPatherAIJumper } from './GroundPatherAIJumper'
 import { GroundPatherDebugger, IGroundPatherDebugger } from './GroundPatherDebugger'
 
 export interface IGroundPatherAI extends IAI, IUpdatable {
+    jumper: IGroundPatherAIJumper
     currentGroundRect: Rect
     currentDistanceFromEdge: number
-    currentNode: AINode | undefined
+    currentNode: AINode | undefined;
     currentState: GroundPatherState
     findPointOnCurrentGround(): void
     findNewGround(): void
@@ -33,6 +35,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     _currentNode?: AINode = undefined
     _currentState: GroundPatherState = GroundPatherState.Wandering
     debugger: IGroundPatherDebugger
+    jumper: IGroundPatherAIJumper
     
     idleTimeRange: number
     idleTimeout?: number
@@ -40,15 +43,18 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     constructor(options: GroundPatherOptions) {
         super(options)
 
-        this.debugger = new GroundPatherDebugger({ groundPather: this })
+        const groundPather = this
+
+        this.jumper = new GroundPatherAIJumper({ groundPather })
+        this.debugger = new GroundPatherDebugger({ groundPather })
         this.idleTimeRange = options.idleTimeRange ?? 500
     }
 
     update() {
         this.debugger.update()
 
-        if (this._currentGroundRect !== this.gravityEntity.currentGroundRect) {
-            this.currentGroundRect = this.gravityEntity.currentGroundRect
+        if (this._currentGroundRect !== this.target.currentGroundRect) {
+            this.currentGroundRect = this.target.currentGroundRect
         }
 
         if (this.currentState === GroundPatherState.Wandering
@@ -67,15 +73,15 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
         if (this.currentGroundRect === undefined) return
 
-        const direction = this.gravityEntity.direction
+        const direction = this.target.direction
         const currentGroundY = this.currentGroundRect.y
-        const baseX = this.gravityEntity.x
+        const baseX = this.target.x
         const maximumDistance = (direction == Direction.Left)
-            ? this.gravityEntity.x - this.currentGroundRect.x
-            : this.currentGroundRightEdgeX - this.gravityEntity.x
+            ? this.target.x - this.currentGroundRect.x
+            : this.currentGroundRightEdgeX - this.target.x
 
         if (maximumDistance < 5) {
-            this.gravityEntity.direction = this.gravityEntity.direction === Direction.Left ? Direction.Right : Direction.Left
+            this.target.direction = this.target.direction === Direction.Left ? Direction.Right : Direction.Left
             return this.findPointOnCurrentGround()
         }
         const calculatedDistance = (Math.random() * maximumDistance) * direction
@@ -106,7 +112,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         if (this.currentNode === undefined) return true
 
         let hasReached = false
-        const distance = this.gravityEntity.x - this.currentNode.x
+        const distance = this.target.x - this.currentNode.x
 
         if (Math.abs(distance) < 1) {
             this.currentNode = undefined
@@ -135,7 +141,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
         const direction = (Math.random() > 0.5) ? Direction.Left : Direction.Right
 
-        this.gravityEntity.direction = direction
+        this.target.direction = direction
 
         return direction
     }
