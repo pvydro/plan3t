@@ -4,7 +4,6 @@ import { Graphix } from '../display/Graphix'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Flogger } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
-import { isArray } from '../../utils/Utils'
 
 export interface ICollisionDebugger extends IContainer, IDemolishable {
     initializeAndShowGraphics(): void

@@ -141,7 +141,6 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         }
 
         // Jumper graphics
-        console.log(this.groundPather.jumper.sensor as IRect)
         this.currentJumperGraphics.width = this.groundPather.jumper.sensor.width
         this.currentJumperGraphics.height = this.groundPather.jumper.sensor.height
 

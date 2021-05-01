@@ -51,7 +51,10 @@ export class CollisionManager implements ICollisionManager {
     private checkEntityCollisionAgainstMap(entity: GravityEntity): GravityEntity {
         for (var i in this.gameMapCollidableRects) {
             const rect = this.gameMapCollidableRects[i]
-            entity = this.checkGroundCollision(entity, rect)
+
+            if (this.checkGroundCollision(entity, rect)) {
+                entity.landedOnGround(rect)
+            }
         }
 
         return entity
@@ -82,30 +85,23 @@ export class CollisionManager implements ICollisionManager {
     /**
      * Check if yVel will pass block, if so, set yvel to max without passing.
     */
-    private checkGroundCollision(entity: GravityEntity, collisionRect: Rect): GravityEntity {
-        // TODO: This logic needs to be handled in an Intersects class of sorts.
-        const entityBounds = entity.boundingBox
-        const heightOffsetMultiplier = -entity.gravityAnchor.y ?? 0
-        const heightOffset = entityBounds.height * heightOffsetMultiplier
-        const entityBottomY = entity.y + ((entityBounds.height + heightOffset) * GlobalScale)
+    private checkGroundCollision(entity: GravityEntity, collisionRect: Rect): boolean {
         const centerX = entity.x
         const rectLeftSide = collisionRect.x
         const rectRightSide = collisionRect.x + collisionRect.width
         const rectBottomSide = collisionRect.y
 
         // Check if above, and within horizontally, rectangle
-        if (entityBottomY <= rectBottomSide
+        if (entity.bottomY <= rectBottomSide
         && centerX >= rectLeftSide
         && centerX <= rectRightSide) {
             // Check if entity + entity yVel will collide
-            if (entityBottomY + entity.yVel >= collisionRect.y) {
-                const difference = collisionRect.y - entityBottomY
-                entity.yVel = difference
-                entity.landedOnGround(collisionRect)
+            if (entity.bottomY + entity.yVel >= collisionRect.y) {
+                return true
             }
         }
 
-        return entity
+        return false
     }
 
     private checkSideCollision(entity: GravityEntity, collisionRect: Rect): GravityEntity {

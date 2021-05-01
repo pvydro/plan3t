@@ -1,10 +1,10 @@
 import { CollisionDebugger } from '../engine/collision/CollisionDebugger'
 import { IDimension } from '../engine/math/Dimension'
 import { Direction } from '../engine/math/Direction'
-import { IRect, Rect } from '../engine/math/Rect'
+import { Rect } from '../engine/math/Rect'
 import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { GameLoop } from '../gameloop/GameLoop'
-import { GravityConstants } from '../utils/Constants'
+import { GlobalScale, GravityConstants } from '../utils/Constants'
 import { PhysDefaults } from '../utils/Defaults'
 import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity'
 
@@ -15,6 +15,7 @@ export interface IGravityEntity extends IClientEntity {
     gravityAnchor: IVector2
     boundingBox: Rect
     boundsWithPosition: Rect
+    bottomY: number
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
 }
@@ -93,9 +94,11 @@ export class GravityEntity extends ClientEntity {
     }
 
     landedOnGround(groundRect: Rect) {
-        this.onGround = true
+        const difference = groundRect.y - this.bottomY
 
+        this.onGround = true
         this._currentGroundRect = groundRect
+        this.yVel = difference
     }
 
     /**
@@ -153,6 +156,15 @@ export class GravityEntity extends ClientEntity {
 
     get yVel() {
         return this._yVel
+    }
+
+    get bottomY() {
+        const entityBounds = this.boundingBox
+        const heightOffsetMultiplier = -this.gravityAnchor.y ?? 0
+        const heightOffset = entityBounds.height * heightOffsetMultiplier
+        const entityBottomY = this.y + ((entityBounds.height + heightOffset) * GlobalScale)
+
+        return entityBottomY
     }
 
     get boundsWithVelocity() {
