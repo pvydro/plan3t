@@ -32,7 +32,7 @@ export class DebugConstants {
 }
 
 export class AIDebugConstants {
-    static ShowCurrentNode: boolean = true
+    static ShowCurrentNode: boolean = false
     static ShowCurrentGroundIndicator: boolean = false
     static ShowCurrentGroundRange: boolean = false
     static ShowGroundJumperSensors: boolean = true

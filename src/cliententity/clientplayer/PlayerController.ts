@@ -120,11 +120,15 @@ export class PlayerController implements IPlayerController {
     }
 
     moveLeft() {
+        if (this.player.isOnWallLeft) this.comeToStop()
+
         this.player.walkingDirection = Direction.Left
         this.player.bodyState = this.sprintKeyDown ? PlayerBodyState.Sprinting : PlayerBodyState.Walking
     }
 
     moveRight() {
+        if (this.player.isOnWallRight) this.comeToStop()
+
         this.player.walkingDirection = Direction.Right
         this.player.bodyState = this.sprintKeyDown ? PlayerBodyState.Sprinting : PlayerBodyState.Walking
     }

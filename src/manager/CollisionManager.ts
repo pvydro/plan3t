@@ -57,7 +57,8 @@ export class CollisionManager implements ICollisionManager {
             }
 
             if (this.checkSideCollision(entity, rect)) {
-                console.log('%cSideCollision')
+                entity.hitWall(rect)
+                // console.log('%cSideCollision')
             }
         }
 
@@ -107,9 +108,9 @@ export class CollisionManager implements ICollisionManager {
     }
 
     private checkSideCollision(entity: GravityEntity, collisionRect: Rect): boolean {
-        const entityBounds = entity.boundsWithPosition
+        const entityBounds = entity.boundsWithVelocity
 
-        if (entity.topY < collisionRect.y) {
+        if (entity.middleY > collisionRect.y) {
             if (entityBounds.intersects(collisionRect)) {
                 return true
             }

@@ -10,6 +10,8 @@ import { ClientEntity, ClientEntityOptions, IClientEntity } from './ClientEntity
 
 export interface IGravityEntity extends IClientEntity {
     isOnGround: boolean
+    isOnWallLeft: boolean
+    isOnWallRight: boolean
     currentGroundRect: Rect
     direction: Direction
     gravityAnchor: IVector2
@@ -22,6 +24,7 @@ export interface IGravityEntity extends IClientEntity {
     middleY: number
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
+    hitWall(wallRect: Rect): void
 }
 
 export interface GravityEntityOptions extends ClientEntityOptions {
@@ -37,6 +40,8 @@ export interface GravityEntityOptions extends ClientEntityOptions {
 export class GravityEntity extends ClientEntity {
     _currentGroundRect?: Rect
     _onGround: boolean = false
+    _onWallLeft: boolean = false
+    _onWallRight: boolean = false
     _direction: Direction = Direction.Right
     _boundsWithPosition: Rect
     _boundsWithVelocity: Rect
@@ -105,6 +110,16 @@ export class GravityEntity extends ClientEntity {
         this.yVel = difference
     }
 
+    hitWall(wallRect: Rect) {
+        if (this.middleX < wallRect.middleX) {
+            this._onWallLeft = false
+            this._onWallRight = true
+        } else {
+            this._onWallLeft = true
+            this._onWallRight = false
+        }
+    }
+
     /**
      * Generates a bounding box for a GravityEntity using anchor & dimensions.
      * 
@@ -112,27 +127,22 @@ export class GravityEntity extends ClientEntity {
      * @returns an IRect representing the newly generated bounding box
      */
     private createBoundingBox(options?: GravityEntityOptions): Rect {
-        const passedWidth = (options.boundingBox && options.boundingBox.width)
-            ?? (options.boundingDimensions && options.boundingDimensions.width)
-        const passedHeight = (options.boundingBox && options.boundingBox.height)
-            ?? (options.boundingDimensions && options.boundingDimensions.height)
+        const passedWidth = (options.boundingBox && options.boundingBox.width) ?? (options.boundingDimensions && options.boundingDimensions.width)
+        const passedHeight = (options.boundingBox && options.boundingBox.height) ?? (options.boundingDimensions && options.boundingDimensions.height)
         const width = passedWidth ?? this.width
         const height = passedHeight ?? this.height
         const boundingBoxAnchor: IVector2 = (options && options.boundingBoxAnchor) ?? Vector2.Zero
         const anchorXOffset = -width * boundingBoxAnchor.x
         const anchorYOffset = -height * boundingBoxAnchor.y
         const boundingBox: Rect = (options && options.boundingBox) ?? new Rect({
-            x: 0, y: this.height - height,
+            x: anchorXOffset, y: this.height - height + anchorYOffset,
             width, height
         })
         
-        boundingBox.x += anchorXOffset
-        boundingBox.y += anchorYOffset
-        
         this._boundsWithPosition = boundingBox
         this._boundsWithVelocity = boundingBox
+
         return boundingBox
-        // return { width: 0, height: 0, x: 0, y: 0 }
     }
 
     get boundsWithPosition() {
@@ -182,6 +192,10 @@ export class GravityEntity extends ClientEntity {
         return this.y
     }
 
+    get middleX() {
+        return this.x
+    }
+
     get xVel() {
         return this._xVel
     }
@@ -196,6 +210,14 @@ export class GravityEntity extends ClientEntity {
 
     get isOnGround() {
         return this._onGround
+    }
+
+    get isOnWallLeft() {
+        return this._onWallLeft
+    }
+
+    get isOnWallRight() {
+        return this._onWallRight
     }
 
     set onGround(value: boolean) {
@@ -215,6 +237,22 @@ export class GravityEntity extends ClientEntity {
     }
 
     set xVel(value: number) {
+        // if (value > 0) {
+        //     if (this.isOnWallRight) {
+        //         value = 0
+        //         // return
+        //     } else if (this.isOnWallLeft) {
+        //         this._onWallLeft = false
+        //     }
+        // } else if (value < 0) {
+        //     if (this.isOnWallLeft) {
+        //         value = 0
+        //         // return
+        //     } else if (this.isOnWallRight) {
+        //         this._onWallRight = false
+        //     }
+        // }
+
         this._xVel = value
         this._boundsWithVelocity.x = this.boundsWithPosition.x + this._xVel
     }

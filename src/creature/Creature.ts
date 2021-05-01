@@ -1,6 +1,7 @@
 import { GravityOrganism, GravityOrganismOptions, IGravityOrganism } from '../cliententity/gravityorganism/GravityOrganism'
 import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
+import { Rect } from '../engine/math/Rect'
 
 export interface ICreature extends IGravityOrganism {
     interact(): void
@@ -37,6 +38,10 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     interact() {
 
+    }
+
+    hitWall(wallRect: Rect) {
+        super.hitWall(wallRect)
     }
 
     flipAllSprites() {
