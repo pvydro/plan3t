@@ -96,15 +96,13 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         const camera = Camera.getInstance()
         const targetDotSize = this.debugValues.targetDotSize
         const graphix = []
+        
         this.debugContainer = new Container()
-
-        // const graphix: Graphix[] = [
-            this.currentTargetGraphics = new Graphix({ alpha: 0.5 })
-            this.currentGroundGraphics = new Graphix({ alpha: 0.25 })
-            this.currentRangeGraphics = new Graphix()
-            this.currentNodeGraphics = new Graphix()
-            this.currentJumperGraphics = new Graphix({ alpha: 0.25 })
-        // ]
+        this.currentTargetGraphics = new Graphix({ alpha: 0.5 })
+        this.currentGroundGraphics = new Graphix({ alpha: 0.25 })
+        this.currentRangeGraphics = new Graphix()
+        this.currentNodeGraphics = new Graphix()
+        this.currentJumperGraphics = new Graphix({ alpha: 0.25 })
 
         // Configured graphics
         if (AIDebugConstants.ShowCurrentGroundIndicator)
