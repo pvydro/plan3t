@@ -4,7 +4,8 @@ import { exists } from '../../utils/Utils'
 import { IRect } from '../math/Rect'
 
 export interface IGraphix extends IDemolishable {
-
+    halfWidth: number
+    halfHeight: number
 }
 
 export interface GraphixOptions {
@@ -40,6 +41,14 @@ export class Graphix extends PIXI.Graphics implements IGraphix {
 
     demolish() {
         this.destroy()
+    }
+
+    get halfWidth() {
+        return this.width / 2
+    }
+
+    get halfHeight() {
+        return this.height / 2
     }
 }
 

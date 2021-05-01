@@ -59,26 +59,35 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
 
         if (this.target.isOnGround && exists(currentGroundRect)) {
             // Ground indicator
-            this.currentGroundGraphics.x = currentGroundRect.x - (groundIndicatorBleedAmount / 2)
-            this.currentGroundGraphics.y = currentGroundRect.y + groundIndicatorDistance
-            this.currentGroundGraphics.width = currentGroundRect.width + groundIndicatorBleedAmount
+            if (AIDebugConstants.ShowCurrentGroundIndicator) {
+                this.currentGroundGraphics.x = currentGroundRect.x - (groundIndicatorBleedAmount / 2)
+                this.currentGroundGraphics.y = currentGroundRect.y + groundIndicatorDistance
+                this.currentGroundGraphics.width = currentGroundRect.width + groundIndicatorBleedAmount
+            }
 
             // Range indicator
-            this.currentRangeGraphics.x = this.target.x
-            this.currentRangeGraphics.y = currentGroundRect.y + (groundIndicatorDistance * 2)
-            this.currentRangeGraphics.width = currentDistanceFromEdge
-            if (targetDirection === Direction.Left) {
-                this.currentRangeGraphics.x -= this.currentRangeGraphics.width
+            if (AIDebugConstants.ShowCurrentGroundRange) {
+                this.currentRangeGraphics.x = this.target.x
+                this.currentRangeGraphics.y = currentGroundRect.y + (groundIndicatorDistance * 2)
+                this.currentRangeGraphics.width = currentDistanceFromEdge
+                if (targetDirection === Direction.Left) {
+                    this.currentRangeGraphics.x -= this.currentRangeGraphics.width
+                }
             }
 
             // Node inidicator
-            if (exists(currentNode)) {
+            if (AIDebugConstants.ShowCurrentNode && exists(currentNode)) {
                 this.currentNodeGraphics.alpha = 1
                 this.currentNodeGraphics.x = currentNode.x
                 this.currentNodeGraphics.y = currentNode.y
             } else {
                 this.currentNodeGraphics.alpha = 0
             }
+        }
+
+        if (AIDebugConstants.ShowGroundJumperSensors) {
+            this.currentJumperGraphics.x = this.target.x - this.currentJumperGraphics.halfWidth 
+            this.currentJumperGraphics.y = this.target.y
         }
     }
 
@@ -94,7 +103,7 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
             this.currentGroundGraphics = new Graphix({ alpha: 0.25 })
             this.currentRangeGraphics = new Graphix()
             this.currentNodeGraphics = new Graphix()
-            this.currentJumperGraphics = new Graphix()
+            this.currentJumperGraphics = new Graphix({ alpha: 0.25 })
         // ]
 
         // Configured graphics
@@ -126,8 +135,6 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         console.log(this.groundPather.jumper.sensor as IRect)
         this.currentJumperGraphics.width = this.groundPather.jumper.sensor.width
         this.currentJumperGraphics.height = this.groundPather.jumper.sensor.height
-        this.currentJumperGraphics.x = this.groundPather.jumper.sensor.x
-        this.currentJumperGraphics.y = this.groundPather.jumper.sensor.y
 
         // Graphic initial modification
         this.currentTargetGraphics.rotation = 45 * (Math.PI / 180)

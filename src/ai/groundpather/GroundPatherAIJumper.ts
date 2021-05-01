@@ -13,7 +13,7 @@ export interface GroundPatherAIJumperOptions {
 export class GroundPatherAIJumper implements IGroundPatherAIJumper {
     groundPather: IGroundPatherAI
     sensorRect: Rect
-    sensorPadding: number = 16
+    sensorPadding: number = 8
 
     constructor(options: GroundPatherAIJumperOptions) {
         this.groundPather = options.groundPather
