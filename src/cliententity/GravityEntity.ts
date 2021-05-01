@@ -34,6 +34,7 @@ export class GravityEntity extends ClientEntity {
     _onGround: boolean = false
     _direction: Direction = Direction.Right
     _boundsWithPosition: Rect
+    _boundsWithVelocity: Rect
     gravityAnchor: IVector2 = Vector2.Zero
     horizontalFriction: number
     boundingBox: Rect
@@ -122,6 +123,7 @@ export class GravityEntity extends ClientEntity {
         boundingBox.y += anchorYOffset
         
         this._boundsWithPosition = boundingBox
+        this._boundsWithVelocity = boundingBox
         return boundingBox
         // return { width: 0, height: 0, x: 0, y: 0 }
     }
@@ -145,6 +147,18 @@ export class GravityEntity extends ClientEntity {
         return this._boundsWithPosition
     }
 
+    get xVel() {
+        return this._xVel
+    }
+
+    get yVel() {
+        return this._yVel
+    }
+
+    get boundsWithVelocity() {
+        return this._boundsWithVelocity
+    }
+
     get isOnGround() {
         return this._onGround
     }
@@ -157,11 +171,21 @@ export class GravityEntity extends ClientEntity {
         return this._currentGroundRect
     }
 
+    get direction() {
+        return this._direction
+    }
+
     set direction(value: Direction) {
         this._direction = value
     }
 
-    get direction() {
-        return this._direction
+    set xVel(value: number) {
+        this._xVel = value
+        this._boundsWithVelocity.x = this.boundsWithPosition.x + this._xVel
+    }
+
+    set yVel(value: number) {
+        this._yVel = value
+        this._boundsWithVelocity.y = this.boundsWithPosition.y + this._yVel
     }
 }

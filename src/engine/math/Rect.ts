@@ -26,6 +26,10 @@ export class Rect extends PIXI.Rectangle implements IRect {
         )
     }
 
+    intersects(rectB: Rect) {
+        return Rect.intersects(this, rectB)
+    }
+
     static intersects(rectA: Rect, rectB: Rect) {
         let intersecting = false
 

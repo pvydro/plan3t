@@ -3,6 +3,7 @@ import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
+import { IDimension } from '../../engine/math/Dimension'
 import { Direction } from '../../engine/math/Direction'
 import { IRect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
@@ -95,8 +96,12 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         Flogger.log('GroundPatherDebugger', 'createDebugGraphics')
         const camera = Camera.getInstance()
         const targetDotSize = this.debugValues.targetDotSize
+        const jumperSensorDimension: IDimension = {
+            width: this.groundPather.jumper.sensor.width,
+            height: this.groundPather.jumper.sensor.height
+        }
         const graphix = []
-        
+
         this.debugContainer = new Container()
         this.currentTargetGraphics = new Graphix({ alpha: 0.5 })
         this.currentGroundGraphics = new Graphix({ alpha: 0.25 })
@@ -119,11 +124,17 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         // Graphic drawing
         for (var i in graphix) {
             const g = graphix[i]
-            const isCurrentNode = (g === this.currentNodeGraphics)
+            const isCurrentlyNode = (g === this.currentNodeGraphics)
+            const isCurrentlyJumper = (g === this.currentJumperGraphics)
+            const width = isCurrentlyJumper ? jumperSensorDimension.width : targetDotSize
+            const height = isCurrentlyJumper ? jumperSensorDimension.width : targetDotSize
 
-            if (isCurrentNode) g.lineStyle(1, this.aiColor)
-            g.beginFill(isCurrentNode ? 0xFFFFFF : this.aiColor)
-            g.drawRect(0, 0, targetDotSize, targetDotSize)
+            if (isCurrentlyNode || isCurrentlyJumper) {
+                g.lineStyle(1, this.aiColor)  
+            } else {
+                g.beginFill(isCurrentlyNode ? 0xFFFFFF : this.aiColor)
+            }
+            g.drawRect(0, 0, width, height)
             g.blendMode = PIXI.BLEND_MODES.COLOR_BURN
 
             this.debugContainer.addChild(g)
