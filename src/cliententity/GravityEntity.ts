@@ -15,7 +15,11 @@ export interface IGravityEntity extends IClientEntity {
     gravityAnchor: IVector2
     boundingBox: Rect
     boundsWithPosition: Rect
+    topY: number
     bottomY: number
+    rightX: number
+    leftX: number
+    middleY: number
     comeToStop(): void
     landedOnGround(groundRect: Rect): void
 }
@@ -150,21 +154,40 @@ export class GravityEntity extends ClientEntity {
         return this._boundsWithPosition
     }
 
+    get topY() {
+        const heightOffsetMultiplier = -this.gravityAnchor.y ?? 0
+        const heightOffset = this.boundingBox.height * heightOffsetMultiplier
+        const entityTopY = this.y - ((this.boundingBox.height + heightOffset) * GlobalScale)
+
+        return entityTopY
+    }
+
+    get bottomY() {
+        const heightOffsetMultiplier = -this.gravityAnchor.y ?? 0
+        const heightOffset = this.boundingBox.height * heightOffsetMultiplier
+        const entityBottomY = this.y + ((this.boundingBox.height + heightOffset) * GlobalScale)
+
+        return entityBottomY
+    }
+
+    get rightX() {
+        return this.x + this.halfWidth
+    }
+
+    get leftX() {
+        return this.x - this.halfWidth
+    }
+
+    get middleY() {
+        return this.y
+    }
+
     get xVel() {
         return this._xVel
     }
 
     get yVel() {
         return this._yVel
-    }
-
-    get bottomY() {
-        const entityBounds = this.boundingBox
-        const heightOffsetMultiplier = -this.gravityAnchor.y ?? 0
-        const heightOffset = entityBounds.height * heightOffsetMultiplier
-        const entityBottomY = this.y + ((entityBounds.height + heightOffset) * GlobalScale)
-
-        return entityBottomY
     }
 
     get boundsWithVelocity() {

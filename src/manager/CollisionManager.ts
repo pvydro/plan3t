@@ -55,6 +55,10 @@ export class CollisionManager implements ICollisionManager {
             if (this.checkGroundCollision(entity, rect)) {
                 entity.landedOnGround(rect)
             }
+
+            if (this.checkSideCollision(entity, rect)) {
+                console.log('%cSideCollision')
+            }
         }
 
         return entity
@@ -67,13 +71,11 @@ export class CollisionManager implements ICollisionManager {
         enemies.forEach((enemy: IEnemy) => {
             if (enemy.boundingBox && entity.boundingBox) {
                 if (Rect.intersects(enemy.boundsWithPosition, entity.boundsWithPosition)) {
-
                     hit = true
 
                     if (entity instanceof Bullet) {
                         enemy.takeDamage(10)
                     }
-
                 }
             }
 
@@ -104,19 +106,23 @@ export class CollisionManager implements ICollisionManager {
         return false
     }
 
-    private checkSideCollision(entity: GravityEntity, collisionRect: Rect): GravityEntity {
-        const entityBounds = entity.boundingBox
-        const entityRightX = entity.x + ((entityBounds.width / 2) * GlobalScale)
-        const entityLeftX = entity.x - ((entityBounds.width / 2) * GlobalScale)
+    private checkSideCollision(entity: GravityEntity, collisionRect: Rect): boolean {
+        const entityBounds = entity.boundsWithPosition
 
-        if (collisionRect.y <= (entity.y + (entityBounds.height / 2))) {
-            if (entityRightX + entity.xVel >= collisionRect.x) {
-                const difference = collisionRect.x - entityRightX
-                entity.xVel = difference
+        if (entity.topY < collisionRect.y) {
+            if (entityBounds.intersects(collisionRect)) {
+                return true
             }
         }
+        // if (collisionRect.y <= (entity.y + (entityBounds.height / 2))) {
+        //     if (entity.rightX + entity.xVel >= collisionRect.x) {
+        //         // const difference = collisionRect.x - entity.rightX
 
-        return entity
+        //         // entity.xVel = difference
+        //     }
+        // }
+
+        return false
     }
 
     get gameMapCollidableRects() {
