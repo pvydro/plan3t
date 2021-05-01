@@ -100,7 +100,8 @@ export class ClientPlayer extends GravityOrganism {
         super({
             horizontalFriction: 5,
             weight: 0.5,
-            gravityAnchor: point(0, 0.5)
+            gravityAnchor: point(0, 0.5),
+            jumpHeight: 5
         })
         const player = this
 

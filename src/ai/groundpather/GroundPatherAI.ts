@@ -15,6 +15,7 @@ export interface IGroundPatherAI extends IAI, IUpdatable {
     findPointOnCurrentGround(): void
     findNewGround(): void
     checkIfReachedNode(): boolean
+    jump(): void
 }
 
 export enum GroundPatherState {
@@ -52,6 +53,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     update() {
         this.debugger.update()
+        this.jumper.update()
 
         if (this._currentGroundRect !== this.target.currentGroundRect) {
             this.currentGroundRect = this.target.currentGroundRect
@@ -91,6 +93,10 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
             x: baseX + calculatedDistance,
             y: currentGroundY
         } 
+    }
+
+    jump() {
+        this.target.jump()
     }
 
     findNewGround() {

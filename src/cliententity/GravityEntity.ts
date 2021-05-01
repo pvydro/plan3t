@@ -23,6 +23,7 @@ export interface IGravityEntity extends IClientEntity {
     leftX: number
     middleY: number
     comeToStop(): void
+    jump(): void
     landedOnGround(groundRect: Rect): void
     hitWall(wallRect: Rect): void
 }
@@ -35,6 +36,7 @@ export interface GravityEntityOptions extends ClientEntityOptions {
     gravityAnchor?: IVector2
     weight?: number
     addDebugRectangle?: boolean
+    jumpHeight?: number
 }
 
 export class GravityEntity extends ClientEntity {
@@ -45,6 +47,7 @@ export class GravityEntity extends ClientEntity {
     _direction: Direction = Direction.Right
     _boundsWithPosition: Rect
     _boundsWithVelocity: Rect
+    jumpHeight: number
     gravityAnchor: IVector2 = Vector2.Zero
     horizontalFriction: number
     boundingBox: Rect
@@ -57,6 +60,7 @@ export class GravityEntity extends ClientEntity {
         this.horizontalFriction = (options && options.horizontalFriction) ?? PhysDefaults.horizontalFriction
         this.weight = (options && options.weight) ?? PhysDefaults.weight
         this.boundingBox = this.createBoundingBox(options)
+        this.jumpHeight = options.jumpHeight ?? 5
 
         if (options) {
             if (options.addDebugRectangle) {
@@ -90,6 +94,15 @@ export class GravityEntity extends ClientEntity {
         }
 
         super.update()
+    }
+
+    jump() {
+        console.log('JUMP!')
+        
+        if (!this.isOnGround) return
+
+        this.onGround = false
+        this.yVel = -this.jumpHeight
     }
 
     comeToStop() {

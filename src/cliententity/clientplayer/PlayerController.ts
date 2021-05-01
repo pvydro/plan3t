@@ -134,20 +134,19 @@ export class PlayerController implements IPlayerController {
     }
 
     jump() {
-        if (!this.player.isOnGround) {
-            return
-        }
+        if (!this.player.isOnGround) return
         
         this.player.legsState = PlayerLegsState.Jumping
     }
 
     private triggerJump() {
-        if (!this.player.isOnGround) {
-            return
-        }
+        // if (!this.player.isOnGround) {
+        //     return
+        // }
 
-        this.player.onGround = false
-        this.player.yVel = -this.playerJumpingHeight
+        // this.player.onGround = false
+        // this.player.yVel = -this.playerJumpingHeight
+        this.player.jump()
     }
 
     forceTriggerJump() {

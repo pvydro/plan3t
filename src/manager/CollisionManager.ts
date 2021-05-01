@@ -58,7 +58,6 @@ export class CollisionManager implements ICollisionManager {
 
             if (this.checkSideCollision(entity, rect)) {
                 entity.hitWall(rect)
-                // console.log('%cSideCollision')
             }
         }
 
@@ -96,8 +95,8 @@ export class CollisionManager implements ICollisionManager {
 
         // Check if above, and within horizontally, rectangle
         if (entity.bottomY <= rectBottomSide
-        && centerX >= rectLeftSide
-        && centerX <= rectRightSide) {
+            && centerX >= rectLeftSide
+            && centerX <= rectRightSide) {
             // Check if entity + entity yVel will collide
             if (entity.bottomY + entity.yVel >= collisionRect.y) {
                 return true
@@ -111,7 +110,7 @@ export class CollisionManager implements ICollisionManager {
         const entityBounds = entity.boundsWithVelocity
 
         if (entity.middleY > collisionRect.y) {
-            if (entityBounds.intersects(collisionRect)) {
+            if (Rect.intersects(entityBounds, collisionRect)) {
                 return true
             }
         }
