@@ -1,3 +1,4 @@
+import { Direction } from '../../engine/math/Direction'
 import { IRect, Rect } from '../../engine/math/Rect'
 import { GameMap } from '../../gamemap/GameMap'
 import { IUpdatable } from '../../interface/IUpdatable'
@@ -36,23 +37,28 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
             const rect = this.groundRects[i]
             const boundingBox = this.groundPather.target.boundsWithPosition
             const middleY = this.groundPather.target.middleY
+            const middleX = this.groundPather.target.x
+            const direction = this.groundPather.target.direction
 
             if (middleY < rect.y) {
-                console.log('bb intersects')
+                // console.log('bb intersects')
                 if (Rect.intersects(boundingBox, rect)) {
-                    this.groundPather.jump()
-                    // this.groundPather.target
-                    // if (rect.left > boundingBox.left) {
-
-                    // }
-                    // Check if rectmidx < this.midx
-                    // Jump left if so
-                    // Else jump right
+                    if (rect.left < middleX && direction === Direction.Left
+                    || rect.left > middleX && direction === Direction.Right) {
+                        this.groundPather.jump()
+                        // this.groundPather.target
+                        // if (rect.left > boundingBox.left) {
+    
+                        // }
+                        // Check if rectmidx < this.midx
+                        // Jump left if so
+                        // Else jump right
+                    }
+                    // Check if intersects
+                    // Check if right side empty
+                    // Else if left side empty
+                    // Jump and go in that dir
                 }
-                // Check if intersects
-                // Check if right side empty
-                // Else if left side empty
-                // Jump and go in that dir
             }
         }
     }
