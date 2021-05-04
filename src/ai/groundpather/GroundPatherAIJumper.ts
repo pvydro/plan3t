@@ -14,6 +14,7 @@ export interface GroundPatherAIJumperOptions {
 
 export class GroundPatherAIJumper implements IGroundPatherAIJumper {
     groundPather: IGroundPatherAI
+    _sensorRectWithPosition: Rect
     sensorRect: Rect
     sensorPadding: number = 8
     groundRects: Rect[]
@@ -29,23 +30,40 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
             x, y: 0,
             width, height
         })
+        this._sensorRectWithPosition = this.sensorRect
         this.groundRects = GameMap.getInstance().collidableRects
     }
 
     update() {
         for (var i in this.groundRects) {
             const rect = this.groundRects[i]
-            const boundingBox = this.groundPather.target.boundsWithPosition
-            const middleY = this.groundPather.target.middleY
-            const middleX = this.groundPather.target.x
-            const direction = this.groundPather.target.direction
+            const target = this.groundPather.target
 
-            if (middleY < rect.y) {
+            if (rect.y < target.middleY) {
+                if (target.middleX + this.sensorRect.halfWidth > rect.x) {  // Approaching from right
+                    this.jump()
+                } else if (target.middleX - this.sensorRect.halfWidth > rect.x + rect.width) {  // Approaching from left
+                    this.jump()
+                }
+            }
+
+            // const boundingBox = this.groundPather.target.boundsWithPosition
+            // const middleY = this.groundPather.target.middleY
+            // const middleX = this.groundPather.target.x
+            // const direction = this.groundPather.target.direction
+
+            // if (this.groundPather.target.y < rect.y) {
                 // console.log('bb intersects')
-                if (Rect.intersects(boundingBox, rect)) {
-                    if (rect.left < middleX && direction === Direction.Right
-                    || rect.left > middleX && direction === Direction.Left) {
-                        this.groundPather.jump()
+
+                // if (Rect.intersects(this.sensorWithPosition, rect)) {
+
+                    // if (rect.left > middleX && direction === Direction.Right) {
+
+
+                    // || rect.right < middleX && direction === Direction.Left) { Not working
+
+
+
                         // this.groundPather.target
                         // if (rect.left > boundingBox.left) {
     
@@ -53,17 +71,35 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
                         // Check if rectmidx < this.midx
                         // Jump left if so
                         // Else jump right
-                    }
+                    // }
+
+
                     // Check if intersects
                     // Check if right side empty
                     // Else if left side empty
                     // Jump and go in that dir
-                }
-            }
+            //     }
+            // }
         }
+    }
+
+    jump() {
+        this.groundPather.jump()
     }
 
     get sensor() {
         return this.sensorRect
+    }
+
+    get sensorWithPosition() {
+        const newX = this.groundPather.target.middleX - this.sensorRect.halfWidth
+        const newY = this.groundPather.target.y
+
+        if (newX !== this._sensorRectWithPosition.x || newY !== this._sensorRectWithPosition.y) {
+            this._sensorRectWithPosition.x = newX
+            this._sensorRectWithPosition.y = newY
+        }
+
+        return this._sensorRectWithPosition
     }
 }

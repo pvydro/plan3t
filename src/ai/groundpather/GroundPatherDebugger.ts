@@ -6,6 +6,7 @@ import { Graphix } from '../../engine/display/Graphix'
 import { IDimension } from '../../engine/math/Dimension'
 import { Direction } from '../../engine/math/Direction'
 import { IRect } from '../../engine/math/Rect'
+import { point } from '../../engine/math/Vector2'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { AIDebugConstants } from '../../utils/Constants'
@@ -141,6 +142,8 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
         }
 
         // Jumper graphics
+        this.currentJumperGraphics.x = this.groundPather.jumper.sensor.x
+        this.currentJumperGraphics.y = this.groundPather.jumper.sensor.y
         this.currentJumperGraphics.width = this.groundPather.jumper.sensor.width
         this.currentJumperGraphics.height = this.groundPather.jumper.sensor.height
 

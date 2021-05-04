@@ -21,6 +21,7 @@ export interface IGravityEntity extends IClientEntity {
     bottomY: number
     rightX: number
     leftX: number
+    middleX: number
     middleY: number
     comeToStop(): void
     jump(): void
@@ -97,8 +98,6 @@ export class GravityEntity extends ClientEntity {
     }
 
     jump() {
-        console.log('JUMP!')
-        
         if (!this.isOnGround) return
 
         this.onGround = false
