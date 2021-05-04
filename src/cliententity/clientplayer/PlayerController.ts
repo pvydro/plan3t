@@ -25,7 +25,7 @@ export class PlayerController implements IPlayerController {
     mousePos: IVector2 = Vector2.Zero
 
     playerCrouchDivisor: number = 1.75
-    playerWalkingSpeed: number = 1.5
+    playerWalkingSpeed: number = 1
     playerSprintMultiplier: number = 1.25
     playerJumpingHeight: number = 5
     floorFriction = 5

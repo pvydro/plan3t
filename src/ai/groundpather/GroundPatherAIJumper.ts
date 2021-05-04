@@ -23,7 +23,7 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
         
         const x = 0 + this.groundPather.target.halfWidth - (this.sensorPadding / 2)
         const width = (this.groundPather.target.width + (this.sensorPadding * 2))
-        const height = this.groundPather.target.height
+        const height = this.groundPather.target.halfHeight
 
         this.sensorRect = new Rect({
             x, y: 0,
@@ -43,8 +43,8 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
             if (middleY < rect.y) {
                 // console.log('bb intersects')
                 if (Rect.intersects(boundingBox, rect)) {
-                    if (rect.left < middleX && direction === Direction.Left
-                    || rect.left > middleX && direction === Direction.Right) {
+                    if (rect.left < middleX && direction === Direction.Right
+                    || rect.left > middleX && direction === Direction.Left) {
                         this.groundPather.jump()
                         // this.groundPather.target
                         // if (rect.left > boundingBox.left) {
