@@ -41,11 +41,13 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
             const direction = this.groundPather.target.direction
 
             if (rect.middleY < target.bottomY) {
-                if (target.middleX + this.sensorRect.halfWidth > rect.x
-                && direction === Direction.Right) {  // Approaching from right
-                    this.jump()
-                } else if (target.middleX - this.sensorRect.halfWidth > rect.x + rect.width
+                if (target.middleX - this.sensorRect.halfWidth < rect.right
+                && target.middleX - this.sensorRect.halfWidth
                 && direction === Direction.Left) {  // Approaching from left
+                    this.jump()
+                } else if (target.middleX + this.sensorRect.halfWidth > rect.x
+                && target.middleX + this.sensorRect.halfWidth < rect.right
+                && direction === Direction.Right) {  // Approaching from right
                     this.jump()
                 }
             }
