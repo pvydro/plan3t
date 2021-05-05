@@ -1,4 +1,5 @@
 import { IGravityEntity } from '../cliententity/GravityEntity'
+import { IGravityOrganism } from '../cliententity/gravityorganism/GravityOrganism'
 import { IVector2 } from '../engine/math/Vector2'
 
 export interface AINode extends IVector2 {
@@ -11,14 +12,14 @@ export interface IAI {
 }
 
 export interface AIOptions {
-    gravityEntity: IGravityEntity
+    gravityOrganism: IGravityOrganism
 }
 
 export abstract class AI implements IAI {
-    _gravityEntity: IGravityEntity
+    _gravityOrganism: IGravityOrganism
 
     constructor(options: AIOptions) {
-        this._gravityEntity = options.gravityEntity
+        this._gravityOrganism = options.gravityOrganism
     }
 
     initialize() {
@@ -26,6 +27,6 @@ export abstract class AI implements IAI {
     }
 
     get target() {
-        return this._gravityEntity
+        return this._gravityOrganism
     }
 }

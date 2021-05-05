@@ -40,7 +40,7 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
         const travelkin = this
 
         this.walkSpeed = options.walkSpeed ?? 5
-        this.ai = new GroundPatherAI({ gravityEntity: travelkin })
+        this.ai = new GroundPatherAI({ gravityOrganism: travelkin })
         this.animator = new TravelkinAnimator({
             travelkin,
             walkingSheet: options.walkingSheet ?? undefined

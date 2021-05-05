@@ -64,7 +64,7 @@ export class PlayerHead extends Container {
             this.bobHead()
             const crouchEaseAmt = 2
             
-            this.headBobOffset = this.headBobOffsetInterpoliation.interpolation
+            this.headBobOffset = this.headBobOffsetInterpoliation.interpolation//Math.trunc()
             this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
             this.position.y = -3 + this.headBobOffset + this._crouchedOffset
         }
@@ -94,7 +94,7 @@ export class PlayerHead extends Container {
         this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt
 
         Tween.to(this.headBobOffsetInterpoliation, {
-            duration: isWalking ? 1.05 : 1.25,
+            duration: isWalking ? 2 : 2.25,//1.05 : 1.25,
             ease: this.headBobEase,
             interpolation: this.targetHeadBobOffset,
             autoplay: true,

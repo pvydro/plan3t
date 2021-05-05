@@ -12,10 +12,10 @@ export interface ICameraDebuggerPlugin {
 
 export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPlugin {
     camera: ICamera
-    debugGraphics: Graphix
+    toScreenGraphics: Graphix
     color: number = 0x60b5b2
     lineWidth: number = 1
-    debugPosition: IVector2 = Vector2.Zero
+    toScreenDebugPosition: IVector2 = Vector2.Zero
 
     constructor(camera: ICamera) {
         super()
@@ -28,22 +28,22 @@ export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPl
     }
 
     update(x: number, y: number) {
-        if (this.debugGraphics !== undefined) {
-            this.debugPosition = this.camera.toScreen(new Vector2(x, y))
-            this.debugGraphics.position.set(this.debugPosition.x, this.debugPosition.y)
+        if (this.toScreenGraphics !== undefined) {
+            this.toScreenDebugPosition = this.camera.toScreen(new Vector2(x, y))
+            this.toScreenGraphics.position.set(this.toScreenDebugPosition.x, this.toScreenDebugPosition.y)
         }
     }
 
     createDebugGraphics() {
         Flogger.log('CameraDebuggerPlugin', 'createDebugGraphics')
 
-        this.debugGraphics = new Graphix()
+        this.toScreenGraphics = new Graphix()
 
-        this.debugGraphics.beginFill(this.color)
-        this.debugGraphics.drawRect(0, 0, 5, 5)
-        this.debugGraphics.endFill()
+        this.toScreenGraphics.beginFill(this.color)
+        this.toScreenGraphics.drawRect(0, 0, 5, 5)
+        this.toScreenGraphics.endFill()
 
-        this.addChild(this.debugGraphics)
+        this.addChild(this.toScreenGraphics)
     }
 
     applyMouseListener() {
