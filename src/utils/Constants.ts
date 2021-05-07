@@ -21,7 +21,7 @@ export const BasicLerp = (pointA: number, pointB: number, time: number) => {
 export const GlobalScale: number = 1
 
 export class DebugConstants {
-    static SuperSprint: boolean = true
+    static SuperSprint: boolean = false
     static DisableFoliage: boolean = false
     static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false

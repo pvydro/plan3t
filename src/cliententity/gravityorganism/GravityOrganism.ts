@@ -54,7 +54,7 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         this.healthController.takeDamage(dmg)
     }
 
-    die() {
+    async die() {
         log('GravityOrganism', 'die')
     }
     

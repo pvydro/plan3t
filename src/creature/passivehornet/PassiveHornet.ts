@@ -58,7 +58,7 @@ export class PassiveHornet extends Creature implements IPassiveHornet {
 
     }
 
-    die() {
+    async die() {
 
     }
 }

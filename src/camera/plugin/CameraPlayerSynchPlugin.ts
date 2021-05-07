@@ -7,8 +7,8 @@ export interface ICameraPlayerSynchPlugin extends IUpdatable {
 
 export class CameraPlayerSynchPlugin implements ICameraPlayerSynchPlugin {
     camera: ICamera
-    xVelOffsetDivisor = 30
-    xVelOffsetMultiplier: number = 15
+    xVelOffsetDivisor = 150//30
+    xVelOffsetMultiplier: number = 40//15
     xVelOffset: number = 0
     targetXVelOffset: number = 0
 
