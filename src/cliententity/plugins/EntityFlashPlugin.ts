@@ -4,7 +4,7 @@ import { log } from '../../service/Flogger'
 import { EntityPlugin, EntityPluginOptions, IEntityPlugin } from './EntityPlugin'
 
 export interface IEntityFlashPlugin extends IEntityPlugin, IUpdatable {
-    flash(options: EntityFlashOptions): void
+    flash(options?: EntityFlashOptions): void
 }
 
 export interface EntityFlashOptions {
@@ -32,13 +32,15 @@ export class EntityFlashPlugin extends EntityPlugin implements IEntityFlashPlugi
         }
     }
 
-    flash(options: EntityFlashOptions) {
-        log('EntityFlashPlugin', 'flash')
+    flash(options?: EntityFlashOptions) {
+        options = options ?? { maximumBrightness: 1, randomize: false }
+
+        log('EntityFlashPlugin', 'flash', 'options', options)
 
         for (var i in this.spritesToFlash) {
             const spr = this.spritesToFlash[i]
 
-            spr.tint = 4*0xFFFFFF
+            // spr.tint = 4*0xFFFFFF
         }
 
         // const targetSprite = this.entity.sprite

@@ -23,12 +23,15 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         options.sprite = options.idleSprite
         options.sprite.anchor.x = 0.5
         options.plugins = options.plugins ?? {}
-        options.plugins.addFlashPlugin = true
         options.addDebugRectangle = options.addDebugRectangle ?? true
         options.boundingBoxAnchor = options.boundingBoxAnchor ?? { x: 0.5, y: 0 }
         options.boundingDimensions = options.boundingDimensions ?? {
             width: options.idleSprite.width,
             height: options.idleSprite.height
+        }
+        options.plugins = {
+            addFlashPlugin: true,
+            addKnockbackPlugin: true
         }
         
         super(options)
@@ -56,6 +59,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     takeDamage(damageAmount: number) {
         this.flash()
+        this.knockback()
 
         super.takeDamage(damageAmount)
     }

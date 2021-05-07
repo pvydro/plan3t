@@ -5,6 +5,7 @@ import { IDimension } from '../engine/math/Dimension'
 import { IUpdatable } from '../interface/IUpdatable'
 import { IVector2 } from '../engine/math/Vector2'
 import { EntityFlashOptions, EntityFlashPlugin, IEntityFlashPlugin } from './plugins/EntityFlashPlugin'
+import { EntityKnockbackOptions, EntityKnockbackPlugin, IEntityKnockbackPlugin } from './plugins/EntityKnockbackPlugin'
 
 export interface IClientEntity extends IContainer, IUpdatable {
     x: number
@@ -29,11 +30,12 @@ export enum EntityType {
 
 export interface IClientEntityPluginOptions {
     addFlashPlugin?: boolean
-    addKnockbackPlugin?: boolean   // TODO
+    addKnockbackPlugin?: boolean
 }
 
 export interface IClientEntityPlugins {
     flashPlugin?: IEntityFlashPlugin
+    knockbackPlugin?: IEntityKnockbackPlugin
 }
 
 export interface ClientEntityOptions {
@@ -63,11 +65,13 @@ export class ClientEntity extends Container implements IClientEntity {
             this.sprite = options.sprite
             const entity = this
 
+            // Plugins
             if (options.plugins) {
                 if (options.plugins.addFlashPlugin) {
                     this.plugins.flashPlugin = new EntityFlashPlugin({ entity })
-                } else if (options.plugins.addKnockbackPlugin) {
-                    // TODO: This
+                }
+                if (options.plugins.addKnockbackPlugin) {
+                    this.plugins.knockbackPlugin = new EntityKnockbackPlugin({ entity })
                 }
             }
         }
@@ -88,9 +92,15 @@ export class ClientEntity extends Container implements IClientEntity {
     }
 
     flash(options?: EntityFlashOptions) {
-        options = options ?? { maximumBrightness: 1, randomize: false }
-
-        this.plugins.flashPlugin.flash(options)
+        if (this.plugins.flashPlugin) {
+            this.plugins.flashPlugin.flash(options)
+        }
+    }
+    
+    knockback(options?: EntityKnockbackOptions) {
+        if (this.plugins.knockbackPlugin) {
+            this.plugins.knockbackPlugin.knockback(options)
+        }
     }
 
     getAllSprites() {
