@@ -58,17 +58,17 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         super.hitWall(wallRect)
     }
 
-    takeDamage(damageAmount: number | Bullet) {
+    takeDamage(damage: number | Bullet) {
         this.flash()
 
-        if (damageAmount instanceof Bullet) {
-            const bullet = damageAmount as Bullet
+        if (damage instanceof Bullet) {
+            const bullet = damage as Bullet
             let direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
 
             this.knockback({ direction })
         }
 
-        super.takeDamage(damageAmount)
+        super.takeDamage(damage)
     }
 
     flipAllSprites() {

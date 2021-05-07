@@ -33,11 +33,11 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
         this.dimension = properties.dimension
     }
 
-    takeDamage(damageAmount: number | Bullet) {
-        super.takeDamage(damageAmount)
+    takeDamage(damage: number | Bullet) {
+        super.takeDamage(damage)
 
         const camera = Camera.getInstance()
-        const dmg = (damageAmount instanceof Bullet) ? damageAmount.damage : damageAmount
+        const dmg = (damage instanceof Bullet) ? damage.damage : damage
         const particleManager = ParticleManager.getInstance()
         const damageString = '-' + dmg
         

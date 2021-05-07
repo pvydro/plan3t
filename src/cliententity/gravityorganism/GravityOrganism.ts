@@ -9,7 +9,7 @@ export interface IGravityOrganism extends IGravityEntity {
     totalHealth: number
     healthPercentage: number
     jump(): void
-    takeDamage(damageAmount: number | Bullet): void
+    takeDamage(damage: number | Bullet): void
 }
 
 export interface GravityOrganismOptions extends GravityEntityOptions {
@@ -40,13 +40,13 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         this.yVel = -this.jumpHeight
     }
 
-    takeDamage(damageAmount: number | Bullet) {
+    takeDamage(damage: number | Bullet) {
         log('GravityOrganism', 'takeDamage', 'damageAmount')
         
-        let dmg = damageAmount as number
+        let dmg = damage as number
         
-        if (damageAmount instanceof Bullet) {
-            const bullet = damageAmount as Bullet
+        if (damage instanceof Bullet) {
+            const bullet = damage as Bullet
             
             dmg = bullet.damage
         }

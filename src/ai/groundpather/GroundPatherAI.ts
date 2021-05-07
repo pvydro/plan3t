@@ -15,6 +15,8 @@ export interface IGroundPatherAI extends IAI, IUpdatable {
     findPointOnCurrentGround(): void
     findNewGround(): void
     checkIfReachedNode(): boolean
+    stopForSomeTime(): void
+    decideIfContinueOrStop(): void
     jump(): void
 }
 

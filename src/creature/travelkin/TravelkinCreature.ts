@@ -2,6 +2,7 @@ import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPat
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Sprite } from '../../engine/display/Sprite'
 import { trimArray } from '../../utils/Utils'
+import { Bullet } from '../../weapon/projectile/Bullet'
 import { ICreature, Creature, CreatureOptions } from '../Creature'
 import { ITravelkinAnimator, TravelkinAnimator } from './TravelkinAnimator'
 import { ITravelkinMovementController, TravelkinMovementController } from './TravelkinMovementController'
@@ -102,6 +103,12 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
     flipAllSprites() {
         this.sprite.flipX()
         if (this.walkingSprite) this.walkingSprite.flipX()
+    }
+
+    takeDamage(damage: number | Bullet) {
+        this.ai.decideIfContinueOrStop()
+
+        super.takeDamage(damage)
     }
 
     get movementState() {
