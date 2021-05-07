@@ -33,6 +33,7 @@ export class Sprite extends PIXI.Sprite implements ISprite {
         if (options.includeOverlay !== undefined) {
             this.initializeOverlayGraphics(options.includeOverlay)
         }
+
     }
 
     initializeOverlayGraphics(options: SpriteOverlayOptions) {

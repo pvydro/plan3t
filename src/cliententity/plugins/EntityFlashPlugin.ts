@@ -18,22 +18,25 @@ export interface EntityFlashPluginOptions extends EntityPluginOptions {
 }
 
 export class EntityFlashPlugin extends EntityPlugin implements IEntityFlashPlugin {
+    spritesToFlash: ISprite[]
+    
     constructor(options: EntityFlashPluginOptions) {
         super(options)
 
+        this.spritesToFlash = this.entity.getAllSprites()
     }
 
     update() {
-
+        if (this.spritesToFlash.length !== this.entity.getAllSprites().length) {
+            this.spritesToFlash = this.entity.getAllSprites()
+        }
     }
 
     flash(options: EntityFlashOptions) {
         log('EntityFlashPlugin', 'flash')
 
-        const allSprites = this.entity.getAllSprites()
-
-        for (var i in this.entity.getAllSprites()) {
-            const spr = allSprites[i]
+        for (var i in this.spritesToFlash) {
+            const spr = this.spritesToFlash[i]
 
             spr.tint = 4*0xFFFFFF
         }
