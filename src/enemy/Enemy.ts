@@ -2,6 +2,7 @@ import { EnemyHelper } from './helper/EnemyHelper'
 import { IDimension } from '../engine/math/Dimension'
 import { ITravelkinCreature, TravelkinCreature, TravelkinCreatureOptions } from '../creature/travelkin/TravelkinCreature'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
+import { Bullet } from '../weapon/projectile/Bullet'
 
 export interface IEnemy extends ITravelkinCreature {
 
@@ -31,11 +32,12 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
         this.dimension = properties.dimension
     }
 
-    takeDamage(damageAmount: number) {
+    takeDamage(damageAmount: number | Bullet) {
         super.takeDamage(damageAmount)
 
+        const dmg = (damageAmount instanceof Bullet) ? damageAmount.damage : damageAmount
         const particleManager = ParticleManager.getInstance()
-        const damageString = '-' + damageAmount
+        const damageString = '-' + dmg
         
         particleManager.addTextParticle({
             text: damageString,

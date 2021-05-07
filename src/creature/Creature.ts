@@ -4,6 +4,7 @@ import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
 import { Rect } from '../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
+import { Bullet } from '../weapon/projectile/Bullet'
 
 export interface ICreature extends IGravityOrganism {
     interact(): void
@@ -57,9 +58,15 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         super.hitWall(wallRect)
     }
 
-    takeDamage(damageAmount: number) {
+    takeDamage(damageAmount: number | Bullet) {
         this.flash()
-        this.knockback()
+
+        if (damageAmount instanceof Bullet) {
+            const bullet = damageAmount as Bullet
+            let direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
+
+            this.knockback({ direction })
+        }
 
         super.takeDamage(damageAmount)
     }

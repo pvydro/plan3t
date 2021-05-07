@@ -1,5 +1,6 @@
 import { Events } from '../../model/events/Events'
 import { log } from '../../service/Flogger'
+import { Bullet } from '../../weapon/projectile/Bullet'
 import { GravityEntity, GravityEntityOptions, IGravityEntity } from '../GravityEntity'
 import { HealthController, IHealthController } from './HealthController'
 
@@ -8,7 +9,7 @@ export interface IGravityOrganism extends IGravityEntity {
     totalHealth: number
     healthPercentage: number
     jump(): void
-    takeDamage(damageAmount: number): void
+    takeDamage(damageAmount: number | Bullet): void
 }
 
 export interface GravityOrganismOptions extends GravityEntityOptions {
@@ -39,10 +40,18 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         this.yVel = -this.jumpHeight
     }
 
-    takeDamage(damageAmount: number) {
-        log('GravityOrganism', 'takeDamage', 'damageAmount', damageAmount)
-
-        this.healthController.takeDamage(damageAmount)
+    takeDamage(damageAmount: number | Bullet) {
+        log('GravityOrganism', 'takeDamage', 'damageAmount')
+        
+        let dmg = damageAmount as number
+        
+        if (damageAmount instanceof Bullet) {
+            const bullet = damageAmount as Bullet
+            
+            dmg = bullet.damage
+        }
+        
+        this.healthController.takeDamage(dmg)
     }
 
     die() {

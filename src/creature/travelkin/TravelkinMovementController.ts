@@ -29,7 +29,7 @@ export class TravelkinMovementController implements ITravelkinMovementController
         switch (movementState) {
             case TravelkinMovementState.Walking:
 
-                this.travelkin.xVel = targetXVel
+                this.travelkin.xVel += (targetXVel - this.travelkin.xVel) / 3
 
                 break
             case TravelkinMovementState.Idle:

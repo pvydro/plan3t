@@ -74,11 +74,10 @@ export class CollisionManager implements ICollisionManager {
                     hit = true
 
                     if (entity instanceof Bullet) {
-                        enemy.takeDamage(10)
+                        enemy.takeDamage(entity as Bullet)
                     }
                 }
             }
-
         })
 
         return hit

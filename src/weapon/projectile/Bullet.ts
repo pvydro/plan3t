@@ -21,6 +21,7 @@ export interface IBullet extends IGravityEntity {
 export interface BulletOptions {
     rotation?: number
     velocity?: number
+    damaage?: number
     entityManager?: IEntityManager
 }
 
@@ -29,6 +30,7 @@ export class Bullet extends GravityEntity implements IBullet {
     _id: number
     entityManager?: IEntityManager
     velocity: number
+    damage: number
 
     constructor(options?: BulletOptions) {
         const assetUrl = Assets.get(AssetUrls.ProjectileBullet)
@@ -43,6 +45,7 @@ export class Bullet extends GravityEntity implements IBullet {
         this._id = Bullet.BulletIdIteration++
         this.rotation = options.rotation ?? 0
         this.velocity = options.velocity ?? PhysDefaults.bulletVelocity
+        this.damage = options.damaage ?? 10
         this.entityManager = options.entityManager
 
         this.xVel = this.velocity * Math.cos(this.rotation)
