@@ -1,11 +1,10 @@
 import { Entity } from '../network/rooms/Entity'
-import { Sprite } from '../engine/display/Sprite'
+import { ISprite, Sprite } from '../engine/display/Sprite'
 import { IContainer, Container } from '../engine/display/Container'
 import { IDimension } from '../engine/math/Dimension'
 import { IUpdatable } from '../interface/IUpdatable'
 import { IVector2 } from '../engine/math/Vector2'
 import { EntityFlashOptions, EntityFlashPlugin, IEntityFlashPlugin } from './plugins/EntityFlashPlugin'
-import { log } from '../service/Flogger'
 
 export interface IClientEntity extends IContainer, IUpdatable {
     x: number
@@ -17,6 +16,8 @@ export interface IClientEntity extends IContainer, IUpdatable {
     type: string
     position: IVector2
     entityId: string
+    sprite: ISprite
+    getAllSprites(): ISprite[]
 }
 
 export enum EntityType {
@@ -90,6 +91,10 @@ export class ClientEntity extends Container implements IClientEntity {
         options = options ?? { maximumBrightness: 1, randomize: false }
 
         this.plugins.flashPlugin.flash(options)
+    }
+
+    getAllSprites() {
+        return [ this.sprite ]
     }
 
     get halfWidth() {

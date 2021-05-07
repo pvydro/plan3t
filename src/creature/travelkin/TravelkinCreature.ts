@@ -81,10 +81,12 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
         }
     }
 
+    getAllSprites() {
+        return trimArray(this.sprite, this.walkingSprite)
+    }
+
     hideAllExcept(shownSprite: any) {
-        const hideable = trimArray(
-            this.sprite, this.walkingSprite
-        )
+        const hideable = this.getAllSprites()
 
         for (var i in hideable) {
             const hideElement = hideable[i]
@@ -97,6 +99,11 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
         shownSprite.alpha = 1
     }
 
+    flipAllSprites() {
+        this.sprite.flipX()
+        if (this.walkingSprite) this.walkingSprite.flipX()
+    }
+
     get movementState() {
         return this._movementState
     }
@@ -106,10 +113,5 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
             this._movementState = value
             this.animator.updateAnimationState()
         }
-    }
-
-    flipAllSprites() {
-        this.sprite.flipX()
-        if (this.walkingSprite) this.walkingSprite.flipX()
     }
 }
