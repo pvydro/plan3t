@@ -64,7 +64,7 @@ export class PlayerHand extends Container implements IPlayerHand {
         const handPushAmount = this.equippedWeapon && this.equippedWeapon.handPushAmount ? this.equippedWeapon.handPushAmount : 0
         const handDropAmount = this.equippedWeapon && this.equippedWeapon.handDropAmount ? this.equippedWeapon.handDropAmount : 0
         const direction = this._player.direction
-        const bobOffsetY = this._player.head.headBobOffset / 1.5
+        const bobOffsetY = this._player.head.headBobOffsetInterpoliation.interpolation / 2.5
         let newOffsetX = direction === Direction.Right
             ? -this.baseOffsetX + handPushAmount
             : this.baseOffsetX - handPushAmount

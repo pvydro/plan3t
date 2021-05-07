@@ -36,7 +36,9 @@ export class PlayerHeadController implements IPlayerHeadController {
 
     update() {
         const direction = this.player.direction
-        let headBobRotation = ((this.playerHead.headBobOffset + 2) / 20)
+        const headBobRotationDivisor = 35 // 20
+        const headBobOffset = this.playerHead.headBobOffsetInterpoliation.interpolation
+        let headBobRotation = ((headBobOffset + 2) / headBobRotationDivisor)
 
         if (this.player.consciousnessState === PlayerConsciousnessState.Dead) {
             this.rotateWithDeath()

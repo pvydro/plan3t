@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Power0 } from 'gsap'
+import { Power4 } from 'gsap'
 import { RoughEase } from 'gsap/EasePack'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
@@ -13,6 +13,7 @@ import { Flogger, log } from '../../service/Flogger'
 
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number
+    headBobOffsetInterpoliation: { interpolation: number }
 }
 
 export interface PlayerHeadOptions {
@@ -26,18 +27,19 @@ export class PlayerHead extends Container {
     controller: IPlayerHeadController
     headSprite: Sprite
     currentDirection: Direction = Direction.Right
-    headBobOffsetInterpoliation = { interpolation: 0 }
+    headBobOffsetInterpoliation: { interpolation: number } = { interpolation: 0 }
     headBobOffset: number = 0
     targetHeadBobOffset: number = 0
     headBobState: string = 'notset'//'up'
-    headBobEase: gsap.EaseFunction = RoughEase.ease.config({
-        template: Power0.easeOut,
-        strength: 0.4,
-        points: 7,
-        taper: 'none',
-        randomize: false,
-        clamp: true
-    })
+    headBobEase: gsap.EaseFunction = Power4.easeOut
+    // RoughEase.ease.config({
+    //     template: Power0.easeOut,
+    //     strength: 0.4,
+    //     points: 7,
+    //     taper: 'none',
+    //     randomize: false,
+    //     clamp: true
+    // })
 
     constructor(options: PlayerHeadOptions) {
         super()
@@ -64,7 +66,7 @@ export class PlayerHead extends Container {
             this.bobHead()
             const crouchEaseAmt = 2
             
-            this.headBobOffset = this.headBobOffsetInterpoliation.interpolation//Math.trunc()
+            this.headBobOffset = Math.floor(this.headBobOffsetInterpoliation.interpolation)
             this._crouchedOffset += (this._targetCrouchedOffset - this._crouchedOffset) / crouchEaseAmt
             this.position.y = -3 + this.headBobOffset + this._crouchedOffset
         }
@@ -94,7 +96,7 @@ export class PlayerHead extends Container {
         this.targetHeadBobOffset = this.headBobState === 'up' ? -targetBobAmt : targetBobAmt
 
         Tween.to(this.headBobOffsetInterpoliation, {
-            duration: isWalking ? 2 : 2.25,//1.05 : 1.25,
+            duration: isWalking ? 2.05 : 2.25,//1.05 : 1.25,
             ease: this.headBobEase,
             interpolation: this.targetHeadBobOffset,
             autoplay: true,
