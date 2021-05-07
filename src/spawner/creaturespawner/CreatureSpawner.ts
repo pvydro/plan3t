@@ -1,6 +1,8 @@
+import { Key } from 'ts-keycode-enum'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { CreatureType } from '../../creature/Creature'
 import { CreatureFactory } from '../../factory/CreatureFactory'
+import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { log } from '../../service/Flogger'
 import { isArray } from '../../utils/Utils'
 import { ISpawner, Spawner, SpawnerOptions } from '../Spawner'
@@ -20,6 +22,12 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
         super(options)
 
         this._typeToSpawn = options.typeToSpawn
+
+        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
+            if (event.which === Key.M) {
+                this.spawn()
+            }
+        })
     }
 
     spawn() {
