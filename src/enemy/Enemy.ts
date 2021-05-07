@@ -3,6 +3,7 @@ import { IDimension } from '../engine/math/Dimension'
 import { ITravelkinCreature, TravelkinCreature, TravelkinCreatureOptions } from '../creature/travelkin/TravelkinCreature'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Bullet } from '../weapon/projectile/Bullet'
+import { Camera } from '../camera/Camera'
 
 export interface IEnemy extends ITravelkinCreature {
 
@@ -35,10 +36,13 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     takeDamage(damageAmount: number | Bullet) {
         super.takeDamage(damageAmount)
 
+        const camera = Camera.getInstance()
         const dmg = (damageAmount instanceof Bullet) ? damageAmount.damage : damageAmount
         const particleManager = ParticleManager.getInstance()
         const damageString = '-' + dmg
         
+        camera.shakeAndFlash(2.5)
+
         particleManager.addTextParticle({
             text: damageString,
             position: { x: this.x, y: this.y },

@@ -12,21 +12,36 @@ import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
 import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugin'
 import { log } from '../service/Flogger'
 import { exists } from '../utils/Utils'
+import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
+import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerSynchPlugin'
+
+export interface ICameraTarget {
+    x: number
+    y: number
+    xVel: number
+    yVel: number
+    width?: number
+    height?: number
+}
 
 export interface ICamera extends IUpdatable {
     resize(width: number, height: number): void
     toScreen(point: IVector2 | PIXI.ObservablePoint): IVector2
-    follow(object: { x: number, y: number, width?: number, height?: number }): void
+    follow(object: {}): void
     clearFollowTarget(): void
     clear(): void
     shake(amount: number): void
     flash(options: CameraFlashOptions): void
+    shakeAndFlash(shakeAmount: number, flashOptions?: EntityFlashOptions): void
     viewport: Viewport
     stage: CameraStage
     offset: IVector2
     transformOffset: IVector2
     instantOffset: IVector2
     offsetEaseDamping: number
+    target: ICameraTarget
+    extraXOffset: number
+    extraYOffset: number
 }
 
 export class Camera implements ICamera {
@@ -38,12 +53,14 @@ export class Camera implements ICamera {
     _mouseX: number = 0
     _mouseY: number = 0
     _resizeScale: number = 1
-    _target: { x: number, y: number, width?: number, height?: number } = undefined
+    _target: ICameraTarget = undefined
     _zoom: number = this.baseZoom
     _stage: CameraStage
     _viewport: Viewport
     _x: number = 0
     _y: number = 0
+    extraXOffset: number = 0
+    extraYOffset: number = 0
     offsetEaseDamping: number = 20
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero
@@ -57,6 +74,7 @@ export class Camera implements ICamera {
     cameraOverlayEffectsPlugin: ICameraOverlayEffectsPlugin
     cameraSwayPlugin: ICameraSwayPlugin
     cameraShakePlugin: ICameraShakePlugin
+    cameraPlayerSynchPlugin: ICameraPlayerSynchPlugin
     plugins: any[]
 
     public static getInstance() {
@@ -73,15 +91,13 @@ export class Camera implements ICamera {
         this._viewport = new Viewport()
         this._stage = new CameraStage({ camera })
         
-        this.cameraFlashPlugin = new CameraFlashPlugin(this)
-        this.cameraDebuggerPlugin = new CameraDebuggerPlugin(this)
-        this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this)
-        this.cameraSwayPlugin = new CameraSwayPlugin(this)
-        this.cameraShakePlugin = new CameraShakePlugin(this)
         this.plugins = [
-            this.cameraFlashPlugin, this.cameraDebuggerPlugin,
-            this.cameraOverlayEffectsPlugin, this.cameraSwayPlugin,
-            this.cameraShakePlugin
+            this.cameraFlashPlugin = new CameraFlashPlugin(this),
+            this.cameraDebuggerPlugin = new CameraDebuggerPlugin(this),
+            this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this),
+            this.cameraSwayPlugin = new CameraSwayPlugin(this),
+            this.cameraShakePlugin = new CameraShakePlugin(this),
+            this.cameraPlayerSynchPlugin = new CameraPlayerSynchPlugin(this)
         ]
 
         this._stage.width = 1080
@@ -111,7 +127,7 @@ export class Camera implements ICamera {
             this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
             this.offset.y += ((this.transformOffset.y) - this.offset.y) / this.offsetEaseDamping
                 
-            this.x = this._target.x + this.offset.x
+            this.x = this._target.x + this.offset.x + this.extraXOffset
                 + this.mouseOffset.x + this.instantOffset.x
             this.y = this._target.y + this.offset.y
                 + this.mouseOffset.y + this.instantOffset.y
@@ -152,7 +168,14 @@ export class Camera implements ICamera {
         this.cameraFlashPlugin.flash(options)
     }
 
-    follow(object: { x: number, y: number, width?: number, height?: number }) {
+    shakeAndFlash(shakeAmount: number, flashOptions?: CameraFlashOptions) {
+        flashOptions = flashOptions ?? { minimumBrightness: 0.4, maximumBrightness: 0.7 }
+
+        this.shake(shakeAmount)
+        this.flash(flashOptions)
+    }
+
+    follow(object: ICameraTarget) {
         log('Camera', 'follow', 'target')
 
         this._target = object

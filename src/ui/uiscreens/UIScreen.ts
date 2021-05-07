@@ -57,4 +57,13 @@ export class UIScreen extends UIComponent implements IUIScreen {
 
         this.addChild(this.backgroundGraphic)
     }
+
+    reposition(addListener: boolean) {
+        super.reposition(addListener)
+
+        if (this.backgroundGraphic) {
+            this.backgroundGraphic.width = window.innerWidth
+            this.backgroundGraphic.height = window.innerHeight
+        }
+    }
 }
