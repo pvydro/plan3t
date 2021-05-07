@@ -40,5 +40,7 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
             position: { x: this.x, y: this.y },
             positionRandomization: { randomizationRange: 32 }
         })
+
+        super.takeDamage(damageAmount)
     }
 }

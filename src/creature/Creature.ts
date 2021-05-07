@@ -26,7 +26,10 @@ export abstract class Creature extends GravityOrganism implements ICreature {
             width: options.idleSprite.width,
             height: options.idleSprite.height
         }
-
+        options.plugins = {
+            addFlashPlugin: true
+        }
+        
         super(options)
 
         this.entityId = 'Creature' + Creature.CreatureIdIteration++
@@ -42,6 +45,12 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     hitWall(wallRect: Rect) {
         super.hitWall(wallRect)
+    }
+
+    takeDamage(damageAmount: number) {
+        this.flash()
+
+        super.takeDamage(damageAmount)
     }
 
     flipAllSprites() {

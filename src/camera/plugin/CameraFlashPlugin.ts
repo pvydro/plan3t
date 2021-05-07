@@ -1,7 +1,7 @@
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { WindowSize } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
@@ -34,15 +34,15 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
     }
 
     flash(options?: CameraFlashOptions) {
-        Flogger.log('CameraFlashPlugin', 'flash')
+        log('CameraFlashPlugin', 'flash')
 
         const shouldRandomize = options.randomize !== undefined ? options.randomize : true
         const maximum = options.maximumBrightness !== undefined ? options.maximumBrightness : 1
         const minimum = maximum - options.minimumBrightness
         const randomizer = shouldRandomize ? Math.random() : 1
-        const newBrightness = (randomizer * minimum) + minimum
+        const newBrightness = (randomizer * maximum) + minimum
 
-        Flogger.log('CameraFlashPlugin', 'maximum', maximum, 'minimum', minimum, 'newBrightness', newBrightness)
+        log('CameraFlashPlugin', 'maximum', maximum, 'minimum', minimum, 'newBrightness', newBrightness)
 
         this.flashGraphic.alpha = newBrightness
     }
@@ -62,7 +62,7 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
     }
 
     initializeFlashGraphics() {
-        Flogger.log('CameraFlashPlugin', 'initializeFlashGraphics')
+        log('CameraFlashPlugin', 'initializeFlashGraphics')
 
         this.flashGraphic = new Graphix()
         this.flashGraphic.beginFill(0xFFFFFF)

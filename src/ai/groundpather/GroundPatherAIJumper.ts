@@ -52,40 +52,6 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
                     this.jump()
                 }
             }
-
-            // const boundingBox = this.groundPather.target.boundsWithPosition
-            // const middleY = this.groundPather.target.middleY
-            // const middleX = this.groundPather.target.x
-            // const direction = this.groundPather.target.direction
-
-            // if (this.groundPather.target.y < rect.y) {
-                // console.log('bb intersects')
-
-                // if (Rect.intersects(this.sensorWithPosition, rect)) {
-
-                    // if (rect.left > middleX && direction === Direction.Right) {
-
-
-                    // || rect.right < middleX && direction === Direction.Left) { Not working
-
-
-
-                        // this.groundPather.target
-                        // if (rect.left > boundingBox.left) {
-    
-                        // }
-                        // Check if rectmidx < this.midx
-                        // Jump left if so
-                        // Else jump right
-                    // }
-
-
-                    // Check if intersects
-                    // Check if right side empty
-                    // Else if left side empty
-                    // Jump and go in that dir
-            //     }
-            // }
         }
     }
 

@@ -5,6 +5,7 @@ import { Graphix } from './Graphix'
 
 export interface ISprite extends IDemolishable {
     overlayGraphic?: Graphix
+    tint: number
     flipX(): void
     flipY(): void
 }
