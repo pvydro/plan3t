@@ -226,7 +226,7 @@ export class Camera implements ICamera {
     trackMousePosition() {
         InputProcessor.on(InputEvents.MouseMove, (event: MouseEvent) => {
             this._mouseX = event.clientX
-            this._mouseY = event.clientY
+            this._mouseY = event.clientY + GameWindow.y
 
             this.updateMouseFollowOffset(this._mouseX, this._mouseY)
         })

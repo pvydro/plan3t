@@ -3,7 +3,6 @@ import { Container } from '../../../engine/display/Container'
 import { Sprite } from '../../../engine/display/Sprite'
 import { WeaponHelper } from '../../../weapon/WeaponHelper'
 import { AdjustmentFilter } from 'pixi-filters'
-import { GameWindow } from '../../../utils/Constants'
 import { IReposition } from '../../../interface/IReposition'
 import { UIComponent } from '../../UIComponent'
 import { Defaults } from '../../../utils/Defaults'
@@ -26,6 +25,7 @@ export class WeaponHint extends UIComponent implements IWeaponHint {
     constructor(options: WeaponHintOptions) {
         super()
         
+        this.ammoStatus = options.ammoStatus
         this.weaponContainer = new Container()
 
         this.addChild(this.weaponContainer)
@@ -52,13 +52,15 @@ export class WeaponHint extends UIComponent implements IWeaponHint {
         this.primaryWeaponSprite = new Sprite({ texture: primaryWeaponTexture })
         this.secondaryWeaponSprite = new Sprite({ texture: secondaryWeaponTexture })
         this.secondaryWeaponSprite.alpha = 0
-        // this.primaryWeaponSprite.anchor.set(1, 1)
-        // this.secondaryWeaponSprite.anchor.set(1, 0)
+        this.primaryWeaponSprite.anchor.set(0, 0.5)
+        this.secondaryWeaponSprite.anchor.set(0, 0.5)
 
         this.weaponContainer.addChild(this.primaryWeaponSprite)
         this.weaponContainer.addChild(this.secondaryWeaponSprite)
 
         this.initializeEffects()
+        this.reposition(true)
+        this.weaponContainer.scale.set(0.5, 0.5)
     }
 
     initializeEffects() {
@@ -78,14 +80,11 @@ export class WeaponHint extends UIComponent implements IWeaponHint {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        console.log('%cRepositioN!', 'background-color: red; font-size: 300%')
-
         const leftPadding = 5
-        const windowHeight = (GameWindow.height / Defaults.UIScale)
+        const spacing = 2
 
-        // this.weaponContainer.x =  - rightPadding
-        //  - (Defaults.UIEdgePadding / uiScale)
         this.weaponContainer.x = leftPadding
-        // this.weaponContainer.y = -this.weaponContainer.height
+        // this.weaponContainer.y = //-this.ammoStatus.backgroundSprite.height - spacing
+            // + this.primaryWeaponSprite.height
     }
 }

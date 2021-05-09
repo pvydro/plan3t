@@ -90,7 +90,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
 
         this.counterComponent.reposition(false)
         this.weaponLabel.reposition(false)
-        if (this.weaponHint) this.weaponHint.reposition(false)
+        // if (this.weaponHint) this.weaponHint.reposition(false)
     }
 
     async show() {

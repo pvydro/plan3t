@@ -14,7 +14,7 @@ export class CameraLetterboxPlugin extends UIComponent {
     _bottomBox: Graphix
     _topBox: Graphix
     _boxes: Graphix[]
-    boxColor: number = 0x5a5a5a//0x080808
+    boxColor: number = 0x080808
 
     constructor(camera: ICamera) {
         super()

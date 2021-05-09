@@ -26,17 +26,15 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
 
     private constructor() {
         super({
-            background: {
-                backgroundColor: 0x1f1f1f
-            }
+            background: { backgroundColor: 0x101010 }
         })
 
         this.animator = new LoadingScreenAnimator({ screen: this })
         this.loadingIcon = new LoadingIcon()
         
         this.addChild(this.loadingIcon)
-        this.reposition(true)
         this.applyScale()
+        this.reposition(true)
     }
 
     async show() {
@@ -54,13 +52,13 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
+        const loadingTextHeight = (this.loadingIcon && this.loadingIcon.textHeight) ?? 0
         const x = Defaults.UIEdgePadding
-        const y = 
-        GameWindow.y +
-        GameWindow.height
-            - Defaults.UIEdgePadding - (this.loadingIcon.textHeight)
+        const y = GameWindow.y + GameWindow.height - Defaults.UIEdgePadding - (loadingTextHeight)
         
-        this.loadingIcon.pos = { x, y }
+        if (this.loadingIcon) {
+            this.loadingIcon.pos = { x, y }
+        }
     }
 
     applyScale() {
