@@ -4,7 +4,7 @@ import { Container } from '../../../engine/display/Container'
 import { Sprite } from '../../../engine/display/Sprite'
 import { ClientPlayerInventory } from '../../../inventory/ClientPlayerInventory'
 import { IPlayerInventory } from '../../../inventory/PlayerInventory'
-import { Defaults } from '../../../utils/Defaults'
+import { UIDefaults } from '../../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { HUDInventoryHotbarSlot } from './HUDInventoryHotbarSlot'
 
@@ -52,7 +52,7 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        const padding = Defaults.UIEdgePadding
+        const padding = UIDefaults.UIEdgePadding
 
         this.x = padding
         this.y = padding

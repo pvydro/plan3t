@@ -1,7 +1,7 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
-import { Defaults } from '../../utils/Defaults'
+import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 
@@ -36,7 +36,7 @@ export class UIScreen extends UIComponent implements IUIScreen {
             for (var i in components) {
                 const scaledComponent = components[i]
 
-                scaledComponent.scale.set(Defaults.UIScale, Defaults.UIScale)
+                scaledComponent.scale.set(UIDefaults.UIScale, UIDefaults.UIScale)
             }
         }
     }

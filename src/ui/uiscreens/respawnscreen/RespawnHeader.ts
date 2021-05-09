@@ -1,7 +1,7 @@
 import { IUIComponent } from '../../UIComponent'
 import { Fonts } from '../../../asset/Fonts'
 import { UIText } from '../../UIText'
-import { Defaults } from '../../../utils/Defaults'
+import { UIDefaults } from '../../../utils/Defaults'
 
 export interface IRespawnHeader extends IUIComponent {
     
@@ -28,7 +28,7 @@ export class RespawnHeader extends UIText implements IRespawnHeader {
     }
 
     reposition() {
-        this.position.set(Defaults.UIEdgePadding, Defaults.UIEdgePadding)
+        this.position.set(UIDefaults.UIEdgePadding, UIDefaults.UIEdgePadding)
     }
 
     demolish() {

@@ -1,7 +1,7 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
-import { Defaults } from '../../utils/Defaults'
+import { UIDefaults } from '../../utils/Defaults'
 import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
 import { LoadingIcon } from './LoadingIcon'
 import { ILoadingScreenAnimator, LoadingScreenAnimator } from './LoadingScreenAnimator'
@@ -53,8 +53,8 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
         super.reposition(addListener)
 
         const loadingTextHeight = (this.loadingIcon && this.loadingIcon.textHeight) ?? 0
-        const x = Defaults.UIEdgePadding
-        const y = GameWindow.y + GameWindow.height - Defaults.UIEdgePadding - (loadingTextHeight)
+        const x = UIDefaults.UIEdgePadding
+        const y = GameWindow.y + GameWindow.height - UIDefaults.UIEdgePadding - (loadingTextHeight)
         
         if (this.loadingIcon) {
             this.loadingIcon.pos = { x, y }

@@ -4,7 +4,7 @@ import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
-import { Defaults } from '../../utils/Defaults'
+import { UIDefaults } from '../../utils/Defaults'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
@@ -101,9 +101,9 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         super.reposition(addListener)
 
         // Health bar
-        // this.healthBar.position.x = GameWindow.width - Defaults.UIEdgePadding
-        // this.healthBar.position.y = GameWindow.height - Defaults.UIEdgePadding
-        // - (this.healthBar.backgroundSprite.height * Defaults.UIScale)
+        // this.healthBar.position.x = GameWindow.width - UIDefaults.UIEdgePadding
+        // this.healthBar.position.y = GameWindow.height - UIDefaults.UIEdgePadding
+        // - (this.healthBar.backgroundSprite.height * UIDefaults.UIScale)
 
         // Ammo status
         // this.ammoStatus.position.x = 

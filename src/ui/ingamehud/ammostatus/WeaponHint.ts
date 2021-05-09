@@ -5,7 +5,6 @@ import { WeaponHelper } from '../../../weapon/WeaponHelper'
 import { AdjustmentFilter } from 'pixi-filters'
 import { IReposition } from '../../../interface/IReposition'
 import { UIComponent } from '../../UIComponent'
-import { Defaults } from '../../../utils/Defaults'
 import { IAmmoStatusComponent } from './AmmoStatusComponent'
 
 export interface IWeaponHint extends IReposition {

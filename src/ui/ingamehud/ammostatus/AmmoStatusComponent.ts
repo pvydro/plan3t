@@ -2,7 +2,7 @@ import { Assets, AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { ISprite, Sprite } from '../../../engine/display/Sprite'
 import { GameWindow } from '../../../utils/Constants'
-import { Defaults } from '../../../utils/Defaults'
+import { UIDefaults } from '../../../utils/Defaults'
 import { IWeapon } from '../../../weapon/Weapon'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { AmmoStatusAnimator, IAmmoStatusAnimator } from './AmmoStatusAnimator'
@@ -82,15 +82,12 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        this.pos = {
-            x: Defaults.UIEdgePadding,
-            y: GameWindow.height - Defaults.UIEdgePadding
-                - (this.backgroundSprite.height * Defaults.UIScale)
-        }
+        this.position.x = UIDefaults.UIEdgePadding,
+        this.position.y = GameWindow.height - UIDefaults.UIEdgePadding
+            - (this.backgroundSprite.height * UIDefaults.UIScale)
 
         this.counterComponent.reposition(false)
         this.weaponLabel.reposition(false)
-        // if (this.weaponHint) this.weaponHint.reposition(false)
     }
 
     async show() {
