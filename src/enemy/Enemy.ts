@@ -57,9 +57,6 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     }
 
     async die() {
-        Flogger.color('tomato')
-        Flogger.log('ENEMYDIE')
-
         const enemyManager = EntityManager.getInstance().enemyManager
 
         await super.die()

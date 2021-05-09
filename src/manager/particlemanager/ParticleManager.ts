@@ -63,7 +63,7 @@ export class ParticleManager implements IParticleManager {
     }
 
     addBloodParticles(options: GravityParticleOptions) {
-        options.color = 0xc93030
+        options.color = 0x962424
         options.totalParticles = 2
         this.addGravityParticles(options)
     }
@@ -78,12 +78,6 @@ export class ParticleManager implements IParticleManager {
             this.particles.add(particle)
         }
     }
-
-    // addBloodParticleGroup(options: BloodGroupParticleOptions) {
-    //     for (var i = 0; i < options.totalParticles; i++) {
-
-    //     }
-    // }
 
     addParticle(particle: Particle, container?: Container) {
         const cont = container ?? this.container

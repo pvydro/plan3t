@@ -6,6 +6,7 @@ import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IUpdatable } from '../interface/IUpdatable'
 import { log, loudLog } from '../service/Flogger'
+import { WindowSize } from '../utils/Constants'
 import { ICamera, Camera } from './Camera'
 
 export enum CameraStageBackground {
@@ -173,7 +174,7 @@ export class CameraStage extends Container implements ICameraStage {
             })
         }
 
-        this.backgroundContainer.width = window.innerWidth
-        this.backgroundContainer.height = window.innerHeight
+        this.backgroundContainer.width = WindowSize.width
+        this.backgroundContainer.height = WindowSize.height
     }
 }

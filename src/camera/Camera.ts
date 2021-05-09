@@ -14,6 +14,7 @@ import { log } from '../service/Flogger'
 import { exists } from '../utils/Utils'
 import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
 import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerSynchPlugin'
+import { WindowSize } from '../utils/Constants'
 
 export interface ICameraTarget {
     x: number
@@ -103,12 +104,13 @@ export class Camera implements ICamera {
         this._stage.width = 1080
         this._stage.height = 720
 
-        this.resize(window.innerWidth, window.innerHeight)
+        this.resize(WindowSize.width, WindowSize.height)
         this.setZoom(this.baseZoom)
 
         this.viewport.addChild(this.stage)
         this.viewport.addChild(this.cameraFlashPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
+        this.viewport.y = WindowSize.y
         this.trackMousePosition()
     }
 
@@ -250,11 +252,11 @@ export class Camera implements ICamera {
     }
 
     get width() {
-        return window.innerWidth
+        return WindowSize.width
     }
 
     get height() {
-        return window.innerHeight
+        return WindowSize.height
     }
 
     set x(value: number) {

@@ -1,5 +1,6 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
+import { WindowSize } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
 import { LoadingIcon } from './LoadingIcon'
@@ -54,7 +55,10 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
         super.reposition(addListener)
 
         const x = Defaults.UIEdgePadding
-        const y = window.innerHeight - Defaults.UIEdgePadding - (this.loadingIcon.textHeight)
+        const y = 
+        WindowSize.y +
+        WindowSize.height
+            - Defaults.UIEdgePadding - (this.loadingIcon.textHeight)
         
         this.loadingIcon.pos = { x, y }
     }

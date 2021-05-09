@@ -65,8 +65,8 @@ export class Game implements IGame {
         PIXI.settings.ROUND_PIXELS = true
 
         this._application = new PIXI.Application({
-            width: WindowSize.width,
-            height: window.innerHeight,
+            width: WindowSize.fullWindowWidth,
+            height: WindowSize.fullWindowHeight,
             backgroundColor: 0x0c0c0c,
             antialias: false,
             view: gameCanvas

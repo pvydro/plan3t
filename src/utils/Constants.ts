@@ -1,12 +1,28 @@
 import { IDimension } from '../engine/math/Dimension'
 
 export class WindowSize {
+    private static _width =  window.innerWidth
+    private static _height = window.innerHeight * 0.8
+    private static _topMargin = window.innerHeight * 0.1
+
     static get width() {
-        return window.innerWidth
+        return this._width
     }
 
     static get height() {
+        return this._height
+    }
+
+    static get fullWindowHeight() {
         return window.innerHeight
+    }
+
+    static get fullWindowWidth() {
+        return window.innerWidth
+    }
+
+    static get y() {
+        return this._topMargin
     }
 }
 

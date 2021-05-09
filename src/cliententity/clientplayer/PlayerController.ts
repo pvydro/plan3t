@@ -4,7 +4,7 @@ import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { DebugConstants } from '../../utils/Constants'
+import { DebugConstants, WindowSize } from '../../utils/Constants'
 
 export interface IPlayerController {
     update(): void
@@ -156,8 +156,8 @@ export class PlayerController implements IPlayerController {
 
     changeDirectionBasedOnMouse() {
         const projectedPlayerPos = {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2
+            x: WindowSize.width / 2,
+            y: WindowSize.height / 2
         }
 
         if (this.mousePos.x < projectedPlayerPos.x) {
