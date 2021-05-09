@@ -82,8 +82,10 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
+        const topMargin = UIDefaults.DefaultBleedPastBorderMargin //- UIDefaults.UIEdgePadding
+
         this.position.x = UIDefaults.UIEdgePadding,
-        this.position.y = GameWindow.height - UIDefaults.UIEdgePadding
+        this.position.y = GameWindow.height + topMargin
             - (this.backgroundSprite.height * UIDefaults.UIScale)
 
         this.counterComponent.reposition(false)

@@ -1,16 +1,24 @@
 import { Fonts } from '../asset/Fonts'
 import { Easing } from '../engine/display/tween/TweenEasing'
+import { ISmallToLargeSort } from './UtilInterfaces'
 
-export class Defaults {
+export abstract class Defaults {
     static SwipeAnimationDistance: number = 4
     static JustificationPadding: number = 2
     static LoadingScreenCloseDelay: number = 1000
 }
 
-export class UIDefaults {
+export abstract class UIDefaults {
     static UIScale: number = 5
     static UIMargin: number = 4
     static UIEdgePadding: number = 42
+
+    static UIBleedPastBorderMargins: ISmallToLargeSort = {
+        small: 8, mdSmall: 12, lgSmall: 14,
+        mid: 16, mdMid: 24, lgMid: 28,
+        large: 32, mdLarge: 42, lgLarge: 48
+    }
+    static DefaultBleedPastBorderMargin: number = UIDefaults.UIBleedPastBorderMargins.mid
 }
 
 export const TextDefaults = {

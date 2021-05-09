@@ -60,10 +60,10 @@ export class UIScreen extends UIComponent implements IUIScreen {
         this.addChild(this.backgroundGraphic)
     }
 
-    reposition(addListener: boolean) {
+    reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        if (this.backgroundGraphic) {
+        if (this.backgroundGraphic !== undefined) {
             this.backgroundGraphic.width = GameWindow.width
             this.backgroundGraphic.height = GameWindow.height
         }

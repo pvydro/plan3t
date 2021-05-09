@@ -109,8 +109,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         // this.ammoStatus.position.x = 
         // this.ammoStatus.position.y = 
 
-        this.ammoStatus.reposition(false)
         this.hotbar.reposition(false)
+        this.ammoStatus.reposition(false)
 
         this.y = GameWindow.y
     }

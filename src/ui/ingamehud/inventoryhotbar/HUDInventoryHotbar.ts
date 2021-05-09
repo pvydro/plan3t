@@ -53,9 +53,10 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
         super.reposition(addListener)
 
         const padding = UIDefaults.UIEdgePadding
+        const topMargin = -UIDefaults.DefaultBleedPastBorderMargin
 
         this.x = padding
-        this.y = padding
+        this.y = topMargin
         this.slotContainer.x = 5
         this.slotContainer.y = 5
 

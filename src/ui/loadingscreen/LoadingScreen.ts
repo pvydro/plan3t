@@ -52,9 +52,11 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
+        const topMargin = UIDefaults.UIBleedPastBorderMargins.mdSmall
+        
         const loadingTextHeight = (this.loadingIcon && this.loadingIcon.textHeight) ?? 0
         const x = UIDefaults.UIEdgePadding
-        const y = GameWindow.y + GameWindow.height - UIDefaults.UIEdgePadding - (loadingTextHeight)
+        const y = GameWindow.y + GameWindow.height + topMargin - (loadingTextHeight)
         
         if (this.loadingIcon) {
             this.loadingIcon.pos = { x, y }
