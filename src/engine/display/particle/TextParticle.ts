@@ -3,16 +3,10 @@ import { TextSprite } from '../TextSprite'
 import { TextStyles } from '../TextStyles'
 import { PredefinedTweens } from '../tween/PredefinedTweens'
 import { Tween, TweenOptions } from '../tween/Tween'
-import { Easing } from '../tween/TweenEasing'
 import { IParticle, Particle, ParticleOptions } from './Particle'
 
 export interface ITextParticle extends IParticle {
 
-}
-
-export interface TextParticlePositionRandomizationOptions {
-    shouldRandomize?: boolean
-    randomizationRange?: number
 }
 
 export interface TextParticleOptions extends ParticleOptions, TweenOptions {
@@ -21,7 +15,6 @@ export interface TextParticleOptions extends ParticleOptions, TweenOptions {
     fadeOutBreakpoint?: number
     fadeOutDivisor?: number
     startAlpha?: number
-    positionRandomization?: TextParticlePositionRandomizationOptions
 }
 
 export class TextParticle extends Particle implements ITextParticle {
@@ -45,19 +38,6 @@ export class TextParticle extends Particle implements ITextParticle {
         this.alpha = options.startAlpha ?? 1
 
         this.startExitAnimation(options)
-
-        if (options.positionRandomization !== undefined
-        && options.positionRandomization.shouldRandomize !== false) {
-            const randomizationRange = options.positionRandomization.randomizationRange ?? 32
-            let randomX = Math.random() * randomizationRange
-            let randomY = Math.random() * randomizationRange
-
-            randomX *= (Math.random() > 0.5 ? 1 : -1)
-            randomY *= (Math.random() > 0.5 ? 1 : -1)
-
-            this.x += randomX
-            this.y += randomY
-        }
     }
 
     startExitAnimation(options: TextParticleOptions) {

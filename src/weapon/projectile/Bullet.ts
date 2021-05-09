@@ -65,7 +65,7 @@ export class Bullet extends GravityEntity implements IBullet {
     emitGroundHitParticles() {
         const particleManager = ParticleManager.getInstance()
 
-        particleManager.addDustParticles({
+        particleManager.addDustParticle({
             position: { x: this.x, y: this.y }
         })
     }

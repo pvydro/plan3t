@@ -50,6 +50,10 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
             position: { x: this.x, y: this.y },
             positionRandomization: { randomizationRange: 32 }
         })
+        particleManager.addBloodParticles({
+            position: { x: this.x, y: this.y },
+            positionRandomization: { randomizationRange: 8 }
+        })
     }
 
     async die() {

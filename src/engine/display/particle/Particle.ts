@@ -19,6 +19,9 @@ export interface ParticleOptions extends AnimationOptions, ParticlePositioningOp
 export interface ParticlePositioningOptions {
     position?: IVector2
     rotation?: number
+    positionRandomization?: {
+        randomizationRange: number
+    }
 }
 
 export class Particle extends Container implements IParticle {
@@ -40,6 +43,17 @@ export class Particle extends Container implements IParticle {
         
         if (this.sprite) {
             this.addChild(this.sprite)
+        }
+        if (options.positionRandomization !== undefined) {
+            const randomizationRange = options.positionRandomization.randomizationRange ?? 32
+            let randomX = Math.random() * randomizationRange
+            let randomY = Math.random() * randomizationRange
+
+            randomX *= (Math.random() > 0.5 ? 1 : -1)
+            randomY *= (Math.random() > 0.5 ? 1 : -1)
+
+            this.x += randomX
+            this.y += randomY
         }
     }
     
