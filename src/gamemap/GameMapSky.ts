@@ -4,7 +4,7 @@ import { Container } from '../engine/display/Container'
 import { Graphix } from '../engine/display/Graphix'
 import { Sprite } from '../engine/display/Sprite'
 import { Dimension, IDimension } from '../engine/math/Dimension'
-import { WindowSize } from '../utils/Constants'
+import { GameWindow } from '../utils/Constants'
 
 export interface IGameMapSky {
 
@@ -39,7 +39,7 @@ export class GameMapSky extends Container implements IGameMapSky {
         if (options !== undefined && options.allBlack) {
             this.skySprite = new Graphix()
             this.skySprite.beginFill(0x000000)
-            this.skySprite.drawIRect({ x: 0, y: 0, width: WindowSize.width, height: WindowSize.width })
+            this.skySprite.drawIRect({ x: 0, y: 0, width: GameWindow.width, height: GameWindow.width })
             this.skySprite.endFill()
         } else {
             const skyTexture = PIXI.Texture.from(Assets.get(AssetUrls.SkyDay))

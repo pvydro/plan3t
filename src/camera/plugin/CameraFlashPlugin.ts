@@ -2,7 +2,8 @@ import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { log } from '../../service/Flogger'
-import { WindowSize } from '../../utils/Constants'
+import { UIComponent } from '../../ui/UIComponent'
+import { GameWindow as GameWindow } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
 export interface CameraFlashOptions {
@@ -15,7 +16,7 @@ export interface ICameraFlashPlugin extends IUpdatable {
     flash(options: CameraFlashOptions): void
 }
 
-export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
+export class CameraFlashPlugin extends UIComponent implements ICameraFlashPlugin {
     camera: ICamera
     flashGraphic: Graphix
     fadeToBaseDivisor: number = 2
@@ -26,10 +27,11 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
         this.camera = camera
 
         this.initializeFlashGraphics()
+        this.reposition(true)
     }
     
     update() {
-        this.enforceFlashGraphicsSize()
+        // this.enforceFlashGraphicsSize()
         this.fadeFlashGraphicsToBase()
     }
 
@@ -47,10 +49,10 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
         this.flashGraphic.alpha = newBrightness
     }
 
-    enforceFlashGraphicsSize() {
-        if (this.flashGraphic.width !== WindowSize.width) this.flashGraphic.width = WindowSize.width
-        if (this.flashGraphic.height !== WindowSize.height) this.flashGraphic.height = WindowSize.height
-    }
+    // enforceFlashGraphicsSize() {
+    //     if (this.flashGraphic.width !== GameWindow.width) this.flashGraphic.width = GameWindow.width
+    //     if (this.flashGraphic.height !== GameWindow.height) this.flashGraphic.height = GameWindow.fullWindowHeight
+    // }
 
     fadeFlashGraphicsToBase() {
         if (this.flashGraphic !== undefined
@@ -66,10 +68,18 @@ export class CameraFlashPlugin extends Container implements ICameraFlashPlugin {
 
         this.flashGraphic = new Graphix()
         this.flashGraphic.beginFill(0xFFFFFF)
-        this.flashGraphic.drawRect(0, 0, WindowSize.width, WindowSize.height)
+        this.flashGraphic.drawRect(0, 0, GameWindow.width, GameWindow.height)
         this.flashGraphic.endFill()
         this.flashGraphic.alpha = 0.5
 
         this.addChild(this.flashGraphic)
+    }
+
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
+
+        this.flashGraphic.height = GameWindow.fullWindowHeight
+        this.flashGraphic.width = GameWindow.width
+        this.flashGraphic.y = GameWindow.y
     }
 }

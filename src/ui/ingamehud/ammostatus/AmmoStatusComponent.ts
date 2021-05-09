@@ -1,7 +1,9 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
-import { Sprite } from '../../../engine/display/Sprite'
-import { IWeapon, Weapon } from '../../../weapon/Weapon'
+import { ISprite, Sprite } from '../../../engine/display/Sprite'
+import { GameWindow } from '../../../utils/Constants'
+import { Defaults } from '../../../utils/Defaults'
+import { IWeapon } from '../../../weapon/Weapon'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { AmmoStatusAnimator, IAmmoStatusAnimator } from './AmmoStatusAnimator'
 import { AmmoStatusCounterComponent } from './AmmoStatusCounterComponent'
@@ -9,24 +11,24 @@ import { WeaponHint } from './WeaponHint'
 import { WeaponLabel } from './WeaponLabel'
 
 export interface IAmmoStatusComponent extends IUIComponent {
-    
+    backgroundSprite: ISprite
 }
 
 export class AmmoStatusComponent extends UIComponent implements IAmmoStatusComponent {
     _currentWeapon?: IWeapon
+    _backgroundSprite: Sprite
     counterComponent: AmmoStatusCounterComponent
     weaponLabel: WeaponLabel
     weaponHint: WeaponHint
 
     animator: IAmmoStatusAnimator
-    backgroundSprite: Sprite
     player: ClientPlayer
 
     constructor() {
         super()
         const backgroundTexture = PIXI.Texture.from(Assets.get(AssetUrls.AMMO_STATUS_BG))
 
-        this.backgroundSprite = new Sprite({ texture: backgroundTexture })
+        this._backgroundSprite = new Sprite({ texture: backgroundTexture })
         this.animator = new AmmoStatusAnimator({ ammoStatus: this })
         this.counterComponent = new AmmoStatusCounterComponent({ parent: this })
         this.weaponLabel = new WeaponLabel({ ammoStatus: this })
@@ -67,7 +69,7 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
         this.player = ClientPlayer.getInstance()
 
         if (this.weaponHint === undefined) {
-            this.weaponHint = new WeaponHint()
+            this.weaponHint = new WeaponHint({ ammoStatus: this })
         } else {
             this.removeChild(this.weaponHint)
         }
@@ -75,6 +77,20 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
         this.weaponHint.configure(this.player)
 
         this.addChild(this.weaponHint)
+    }
+
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
+
+        this.pos = {
+            x: Defaults.UIEdgePadding,
+            y: GameWindow.height - Defaults.UIEdgePadding
+                - (this.backgroundSprite.height * Defaults.UIScale)
+        }
+
+        this.counterComponent.reposition(false)
+        this.weaponLabel.reposition(false)
+        if (this.weaponHint) this.weaponHint.reposition(false)
     }
 
     async show() {
@@ -87,6 +103,10 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
         super.hide()
 
         return this.animator.hide()
+    }
+
+    get backgroundSprite() {
+        return this._backgroundSprite
     }
 
     set currentWeapon(value: IWeapon) {

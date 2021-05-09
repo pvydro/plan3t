@@ -1,17 +1,17 @@
 import { Tween } from '../../../engine/display/tween/Tween'
 import { IShowHide } from '../../../interface/IShowHide'
-import { AmmoStatusComponent } from './AmmoStatusComponent'
+import { IAmmoStatusComponent } from './AmmoStatusComponent'
 
 export interface IAmmoStatusAnimator extends IShowHide {
     
 }
 
 export interface AmmoStatusAnimatorOptions {
-    ammoStatus: AmmoStatusComponent
+    ammoStatus: IAmmoStatusComponent
 }
 
 export class AmmoStatusAnimator implements IAmmoStatusAnimator {
-    ammoStatus: AmmoStatusComponent
+    ammoStatus: IAmmoStatusComponent
     hideAnim: TweenLite
     showAnim: TweenLite
 

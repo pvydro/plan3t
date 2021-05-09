@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { Flogger, log } from '../service/Flogger'
 import { Spritesheets } from '../asset/Spritesheets'
-import { WindowSize } from '../utils/Constants'
+import { GameWindow } from '../utils/Constants'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { EntityManager, IEntityManager } from '../manager/entitymanager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
@@ -65,8 +65,8 @@ export class Game implements IGame {
         PIXI.settings.ROUND_PIXELS = true
 
         this._application = new PIXI.Application({
-            width: WindowSize.fullWindowWidth,
-            height: WindowSize.fullWindowHeight,
+            width: GameWindow.fullWindowWidth,
+            height: GameWindow.fullWindowHeight,
             backgroundColor: 0x0c0c0c,
             antialias: false,
             view: gameCanvas

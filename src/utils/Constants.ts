@@ -1,6 +1,6 @@
 import { IDimension } from '../engine/math/Dimension'
 
-export class WindowSize {
+export class GameWindow {
     private static _width =  window.innerWidth
     private static _height = window.innerHeight * 0.8
     private static _topMargin = window.innerHeight * 0.1

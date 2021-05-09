@@ -6,7 +6,7 @@ import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IUpdatable } from '../interface/IUpdatable'
 import { log, loudLog } from '../service/Flogger'
-import { WindowSize } from '../utils/Constants'
+import { GameWindow } from '../utils/Constants'
 import { ICamera, Camera } from './Camera'
 
 export enum CameraStageBackground {
@@ -70,7 +70,7 @@ export class CameraStage extends Container implements ICameraStage {
         const layerIds = Object.values(CameraLayer)
         
         for (let i = 0; i < layerIds.length; i++) {
-            const newContainer = i === 0 ? this.backgroundContainer : new Container
+            const newContainer = i === 0 ? this.backgroundContainer : new Container()
 
             this.layers.push(newContainer)
             this.addChildAt(newContainer, i)
@@ -174,7 +174,7 @@ export class CameraStage extends Container implements ICameraStage {
             })
         }
 
-        this.backgroundContainer.width = WindowSize.width
-        this.backgroundContainer.height = WindowSize.height
+        this.backgroundContainer.width = GameWindow.width
+        this.backgroundContainer.height = GameWindow.height
     }
 }

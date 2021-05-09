@@ -1,6 +1,6 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
-import { WindowSize } from '../../utils/Constants'
+import { GameWindow } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
 import { LoadingIcon } from './LoadingIcon'
@@ -27,7 +27,7 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
     private constructor() {
         super({
             background: {
-                backgroundColor: 0x1e1e1e
+                backgroundColor: 0x1f1f1f
             }
         })
 
@@ -56,8 +56,8 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
 
         const x = Defaults.UIEdgePadding
         const y = 
-        WindowSize.y +
-        WindowSize.height
+        GameWindow.y +
+        GameWindow.height
             - Defaults.UIEdgePadding - (this.loadingIcon.textHeight)
         
         this.loadingIcon.pos = { x, y }

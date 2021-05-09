@@ -3,7 +3,7 @@ import { Fonts } from '../../../asset/Fonts'
 import { IReposition } from '../../../interface/IReposition'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { Flogger } from '../../../service/Flogger'
-import { WindowSize } from '../../../utils/Constants'
+import { GameWindow } from '../../../utils/Constants'
 import { Defaults } from '../../../utils/Defaults'
 import { InGameHUD } from '../../ingamehud/InGameHUD'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
@@ -59,7 +59,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        this.x = WindowSize.width - Defaults.UIEdgePadding
-        this.y = WindowSize.height - Defaults.UIEdgePadding
+        this.x = GameWindow.width - Defaults.UIEdgePadding
+        this.y = GameWindow.height - Defaults.UIEdgePadding
     }
 }

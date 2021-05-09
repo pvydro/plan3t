@@ -6,14 +6,14 @@ import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { Defaults } from '../../../utils/Defaults'
 import { IWeapon, WeaponState } from '../../../weapon/Weapon'
 import { UIComponent } from '../../UIComponent'
-import { AmmoStatusComponent } from './AmmoStatusComponent'
+import { IAmmoStatusComponent } from './AmmoStatusComponent'
 
 export interface IWeaponLabel {
 
 }
 
 export interface WeaponLabelOptions {
-    ammoStatus: AmmoStatusComponent
+    ammoStatus: IAmmoStatusComponent
 }
 
 export enum WeaponLabelState {
@@ -24,7 +24,7 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
     state: WeaponLabelState = undefined
     originalX: number
     textSprite: TextSprite
-    ammoStatus: AmmoStatusComponent
+    ammoStatus: IAmmoStatusComponent
     noAmmoTint: number = 0xde3333
     tintAnimation: TweenLite
     swipeAnimation: TweenLite
@@ -43,7 +43,6 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         })
 
         this.addChild(this.textSprite)
-        this.reposition(false)
     }
 
     update() {

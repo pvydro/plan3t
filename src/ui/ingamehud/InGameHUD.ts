@@ -3,7 +3,7 @@ import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
-import { WindowSize } from '../../utils/Constants'
+import { GameWindow } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
@@ -58,9 +58,9 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.hotbar = new HUDInventoryHotbar()
         this.inventory = new InGameInventory()
         this.inGameMenu = InGameMenu.getInstance()
+        this.reposition(true)
 
         // Temp
-
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             if (ev.which === Key.B) {
                 this.requestMenuScreen(InGameScreenID.BeamMeUp)
@@ -101,14 +101,18 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         super.reposition(addListener)
 
         // Health bar
-        this.healthBar.position.x = WindowSize.width - Defaults.UIEdgePadding
-        this.healthBar.position.y = WindowSize.height - Defaults.UIEdgePadding
-        - (this.healthBar.backgroundSprite.height * Defaults.UIScale)
+        // this.healthBar.position.x = GameWindow.width - Defaults.UIEdgePadding
+        // this.healthBar.position.y = GameWindow.height - Defaults.UIEdgePadding
+        // - (this.healthBar.backgroundSprite.height * Defaults.UIScale)
 
         // Ammo status
-        this.ammoStatus.position.x = Defaults.UIEdgePadding
-        this.ammoStatus.position.y = WindowSize.height - Defaults.UIEdgePadding
-        - (this.ammoStatus.backgroundSprite.height * Defaults.UIScale)
+        // this.ammoStatus.position.x = 
+        // this.ammoStatus.position.y = 
+
+        this.ammoStatus.reposition(false)
+        this.hotbar.reposition(false)
+
+        this.y = GameWindow.y
     }
 
     requestCrosshairState(state: CrosshairState) {

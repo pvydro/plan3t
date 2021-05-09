@@ -1,18 +1,20 @@
-import { Graphix } from '../../engine/display/Graphix'
+import { Graphix, IGraphix } from '../../engine/display/Graphix'
+import { UIComponent } from '../../ui/UIComponent'
 import { IUIContainer, UIContainer } from '../../ui/UIContainer'
-import { WindowSize } from '../../utils/Constants'
+import { GameWindow } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 import { CameraLayer } from '../CameraStage'
 
 export interface ICameraLetterboxPlugin extends IUIContainer {
-
+    topBox: IGraphix
+    bottomBox: IGraphix
 }
 
-export class CameraLetterboxPlugin extends UIContainer {
+export class CameraLetterboxPlugin extends UIComponent {
     _bottomBox: Graphix
     _topBox: Graphix
     _boxes: Graphix[]
-    boxColor: number = 0x080808
+    boxColor: number = 0x5a5a5a//0x080808
 
     constructor(camera: ICamera) {
         super()
@@ -26,17 +28,40 @@ export class CameraLetterboxPlugin extends UIContainer {
             const box = this.boxes[i]
 
             box.beginFill(this.boxColor)
-            box.drawRect(0, -WindowSize.topMarginHeight, WindowSize.fullWindowWidth, WindowSize.topMarginHeight)
+            box.drawRect(0, 0, GameWindow.fullWindowWidth, GameWindow.topMarginHeight)
             box.endFill()
 
             this.addChild(box)
         }
-        
-        // Position bottom box
-        this.boxes[1].y = WindowSize.height + WindowSize.topMarginHeight
+
+        this.reposition(true)
+    }
+
+    reposition(addListeners?: boolean) {
+        super.reposition(addListeners)
+
+        // Dimensions
+        for (var i in this.boxes) {
+            const box = this.boxes[i]
+
+            box.height = GameWindow.topMarginHeight
+            box.width = GameWindow.fullWindowWidth
+        }
+
+        // Position
+        this.topBox.y = 0
+        this.bottomBox.y = GameWindow.fullWindowHeight - GameWindow.topMarginHeight
     }
 
     get boxes() {
         return this._boxes
+    }
+
+    get topBox() {
+        return this.boxes[0]
+    }
+
+    get bottomBox() {
+        return this.boxes[1]
     }
 }

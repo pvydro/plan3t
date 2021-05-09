@@ -1,6 +1,6 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
-import { WindowSize } from '../../utils/Constants'
+import { GameWindow } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
@@ -45,8 +45,8 @@ export class UIScreen extends UIComponent implements IUIScreen {
         log('UIScreen', 'createBackgroundGraphics')
 
         const backgroundColor = options.backgroundColor ?? 0x000000
-        const width = WindowSize.width
-        const height = WindowSize.height
+        const width = GameWindow.width
+        const height = GameWindow.height
 
         if (this.backgroundGraphic !== undefined) {
             this.backgroundGraphic.demolish()
@@ -55,7 +55,7 @@ export class UIScreen extends UIComponent implements IUIScreen {
         this.backgroundGraphic = new Graphix()
         this.backgroundGraphic.beginFill(backgroundColor)
         this.backgroundGraphic.drawRect(0, 0, width, height)
-        this.backgroundGraphic.y = WindowSize.y
+        this.backgroundGraphic.y = GameWindow.y
 
         this.addChild(this.backgroundGraphic)
     }
@@ -64,8 +64,8 @@ export class UIScreen extends UIComponent implements IUIScreen {
         super.reposition(addListener)
 
         if (this.backgroundGraphic) {
-            this.backgroundGraphic.width = WindowSize.width
-            this.backgroundGraphic.height = WindowSize.height
+            this.backgroundGraphic.width = GameWindow.width
+            this.backgroundGraphic.height = GameWindow.height
         }
     }
 }

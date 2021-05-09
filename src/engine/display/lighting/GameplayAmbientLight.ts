@@ -2,7 +2,7 @@ import { Container } from 'pixi.js'
 import { Camera } from '../../../camera/Camera'
 import { IDemolishable } from '../../../interface/IDemolishable'
 import { IUpdatable } from '../../../interface/IUpdatable'
-import { WindowSize } from '../../../utils/Constants'
+import { GameWindow } from '../../../utils/Constants'
 import { Darkener } from './Darkener'
 import { Light } from './Light'
 
@@ -18,8 +18,8 @@ export class GameplayAmbientLight extends Container implements IGameplayAmbientL
         super()
 
         this.overlayDarkener = new Darkener({
-            width: WindowSize.width,
-            height: WindowSize.height,
+            width: GameWindow.width,
+            height: GameWindow.height,
             color: 0x000000,//0a0a0a,
             alpha: 1//0.8
         })

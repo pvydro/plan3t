@@ -4,7 +4,7 @@ import { Camera } from '../../camera/Camera'
 import { ILight, Light } from '../../engine/display/lighting/Light'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { Crosshair } from '../../ui/ingamehud/crosshair/Crosshair'
-import { WindowSize } from '../../utils/Constants'
+import { GameWindow } from '../../utils/Constants'
 import { ClientPlayer } from './ClientPlayer'
 
 export interface IPlayerLight extends ILight {
@@ -62,7 +62,7 @@ export class PlayerLight extends Container implements IPlayerLight {
     }
 
     constructLights() {
-        const totalWidth = WindowSize.width / 20//4
+        const totalWidth = GameWindow.width / 20//4
 
         const ambientLight = new Light({
             texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_VIGNETTE_BORDER)),

@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { IDimension } from '../math/Dimension'
+import { IRect } from '../math/Rect'
 import { Graphix } from './Graphix'
 
-export interface ISprite extends IDemolishable {
+export interface ISprite extends IDemolishable, IRect {
     overlayGraphic?: Graphix
     tint: number
     flipX(): void

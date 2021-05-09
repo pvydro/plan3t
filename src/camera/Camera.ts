@@ -3,7 +3,7 @@ import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
 import { CameraDebuggerPlugin } from './plugin/CameraDebuggerPlugin'
-import { CameraLayer, CameraStage } from './CameraStage'
+import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
 import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
@@ -14,8 +14,9 @@ import { log } from '../service/Flogger'
 import { exists } from '../utils/Utils'
 import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
 import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerSynchPlugin'
-import { WindowSize } from '../utils/Constants'
-import { CameraLetterboxPlugin, ICameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
+import { GameWindow } from '../utils/Constants'
+import { CameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
+import { IReposition } from '../interface/IReposition'
 
 export interface ICameraTarget {
     x: number
@@ -26,7 +27,7 @@ export interface ICameraTarget {
     height?: number
 }
 
-export interface ICamera extends IUpdatable {
+export interface ICamera extends IUpdatable, IReposition {
     resize(width: number, height: number): void
     toScreen(point: IVector2 | PIXI.ObservablePoint): IVector2
     follow(object: {}): void
@@ -104,18 +105,18 @@ export class Camera implements ICamera {
             this.cameraLetterboxPlugin = new CameraLetterboxPlugin(this)
         ]
 
-        this._stage.width = 1080
-        this._stage.height = 720
 
-        this.resize(WindowSize.width, WindowSize.height)
-        this.setZoom(this.baseZoom)
-
+        this.stage.width = 1080
+        this.stage.height = 720
         this.viewport.addChild(this.stage)
         this.viewport.addChild(this.cameraFlashPlugin)
         this.viewport.addChild(this.cameraLetterboxPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
-        this.viewport.y = WindowSize.y
+
         this.trackMousePosition()
+        this.setZoom(this.baseZoom)
+
+        this.reposition(true)
     }
 
     update() {
@@ -143,6 +144,17 @@ export class Camera implements ICamera {
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
         
         this.stage.update()
+    }
+
+    reposition(addListener?: boolean) {
+        if (addListener) {
+            InputProcessor.on(InputEvents.Resize, () => {
+                this.reposition(false)
+            })
+        }
+
+        this.stage.y = GameWindow.y
+        this.resize(GameWindow.width, GameWindow.fullWindowHeight)
     }
 
     clear() {
@@ -256,11 +268,11 @@ export class Camera implements ICamera {
     }
 
     get width() {
-        return WindowSize.width
+        return GameWindow.width
     }
 
     get height() {
-        return WindowSize.height
+        return GameWindow.height
     }
 
     set x(value: number) {

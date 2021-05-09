@@ -29,8 +29,6 @@ export class AmmoStatusCounterComponent extends UIComponent implements IAmmoStat
         this.statusComponent = options.parent
         this.counterContainer = new Container()
         this.addChild(this.counterContainer)
-
-        this.reposition(true)
     }
 
     update() {

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { IUpdatable } from '../interface/IUpdatable'
-import { WindowSize } from '../utils/Constants'
+import { GameWindow } from '../utils/Constants'
 
 export interface IUIContainer extends IUpdatable {
 
@@ -38,10 +38,10 @@ export class UIContainer extends Container implements IUIContainer {
 
     update(): void {
         if (this._shouldFillWindow) {
-            if (this._containerWidth !== WindowSize.width
-            || this._containerHeight !== WindowSize.height) {
-                this._containerWidth = WindowSize.width
-                this._containerHeight = WindowSize.height
+            if (this._containerWidth !== GameWindow.width
+            || this._containerHeight !== GameWindow.height) {
+                this._containerWidth = GameWindow.width
+                this._containerHeight = GameWindow.height
 
                 this.applyContainerEmptyFill()
             }

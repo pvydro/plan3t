@@ -31,7 +31,6 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
         this.addChild(this.slotContainer)
 
         this.setupHotbarSlots()
-        this.reposition(true)
     }
 
     setupHotbarSlots() {
