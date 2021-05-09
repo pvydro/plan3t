@@ -36,6 +36,9 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
         this.addChild(this.backgroundSprite)
         this.addChild(this.counterComponent)
         this.addChild(this.weaponLabel)
+
+        this.weaponLabel.reposition(false)
+        this.counterComponent.reposition(false)
     }
 
     update() {
@@ -82,14 +85,13 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
+        console.log('%cStatusReposition','background-color: red; font-size: 300%')
         const topMargin = UIDefaults.DefaultBleedPastBorderMargin //- UIDefaults.UIEdgePadding
 
         this.position.x = UIDefaults.UIEdgePadding,
-        this.position.y = GameWindow.height + topMargin
-            - (this.backgroundSprite.height * UIDefaults.UIScale)
-
-        this.counterComponent.reposition(false)
-        this.weaponLabel.reposition(false)
+        this.position.y = GameWindow.fullWindowHeight
+            - (this.backgroundSprite.halfHeight * UIDefaults.UIScale)
+            - (GameWindow.topMarginHeight * 2)
     }
 
     async show() {

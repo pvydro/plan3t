@@ -79,7 +79,7 @@ export class CameraFlashPlugin extends UIComponent implements ICameraFlashPlugin
         super.reposition(addListener)
 
         this.flashGraphic.height = GameWindow.fullWindowHeight
-        this.flashGraphic.width = GameWindow.width
+        this.flashGraphic.width = GameWindow.fullWindowWidth
         this.flashGraphic.y = GameWindow.y
     }
 }
