@@ -3,7 +3,7 @@ import { IVector2, Vector2 } from '../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
 import { CameraDebuggerPlugin } from './plugin/CameraDebuggerPlugin'
-import { CameraStage } from './CameraStage'
+import { CameraLayer, CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
 import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
@@ -15,6 +15,7 @@ import { exists } from '../utils/Utils'
 import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
 import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerSynchPlugin'
 import { WindowSize } from '../utils/Constants'
+import { CameraLetterboxPlugin, ICameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
 
 export interface ICameraTarget {
     x: number
@@ -76,6 +77,7 @@ export class Camera implements ICamera {
     cameraSwayPlugin: ICameraSwayPlugin
     cameraShakePlugin: ICameraShakePlugin
     cameraPlayerSynchPlugin: ICameraPlayerSynchPlugin
+    cameraLetterboxPlugin: CameraLetterboxPlugin
     plugins: any[]
 
     public static getInstance() {
@@ -98,7 +100,8 @@ export class Camera implements ICamera {
             this.cameraOverlayEffectsPlugin = new CameraOverlayEffectsPlugin(this),
             this.cameraSwayPlugin = new CameraSwayPlugin(this),
             this.cameraShakePlugin = new CameraShakePlugin(this),
-            this.cameraPlayerSynchPlugin = new CameraPlayerSynchPlugin(this)
+            this.cameraPlayerSynchPlugin = new CameraPlayerSynchPlugin(this),
+            this.cameraLetterboxPlugin = new CameraLetterboxPlugin(this)
         ]
 
         this._stage.width = 1080
@@ -109,6 +112,7 @@ export class Camera implements ICamera {
 
         this.viewport.addChild(this.stage)
         this.viewport.addChild(this.cameraFlashPlugin)
+        this.viewport.addChild(this.cameraLetterboxPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
         this.viewport.y = WindowSize.y
         this.trackMousePosition()

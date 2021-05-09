@@ -24,6 +24,10 @@ export class WindowSize {
     static get y() {
         return this._topMargin
     }
+
+    static get topMarginHeight() {
+        return this._topMargin
+    }
 }
 
 export const WorldSize: IDimension = {
