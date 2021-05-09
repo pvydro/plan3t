@@ -119,6 +119,7 @@ export class AssetUrls {
 
     // Spherical/GameMap
     static SkyDawn = 'assets/image/gamemap/sky/dawn'
+    static SkyDay = 'assets/image/gamemap/sky/day'
     static SphericalTest = 'assets/image/gamemap/spherical/spherical_test'
     static SemiSpherical = 'assets/image/gamemap/spherical/semispherical_0'
     static SphericalSM = 'assets/image/gamemap/spherical/spherical_sm_0'

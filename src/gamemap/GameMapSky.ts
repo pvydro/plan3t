@@ -30,6 +30,9 @@ export class GameMapSky extends Container implements IGameMapSky {
         this.configure(options)
     }
 
+    /**
+     * @deprecated
+     */
     configure(options?: GameMapSkyOptions) {
         this.reset()
 
@@ -39,7 +42,7 @@ export class GameMapSky extends Container implements IGameMapSky {
             this.skySprite.drawIRect({ x: 0, y: 0, width: WindowSize.width, height: WindowSize.width })
             this.skySprite.endFill()
         } else {
-            const skyTexture = PIXI.Texture.from(Assets.get(AssetUrls.SkyDawn))
+            const skyTexture = PIXI.Texture.from(Assets.get(AssetUrls.SkyDay))
 
             this.skySprite = new Sprite({ texture: skyTexture })
             // this.skySprite//.dimension = this.skyDimensions
