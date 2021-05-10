@@ -15,10 +15,6 @@ export interface ICameraLetterboxPlugin extends IUIContainer {
 }
 
 export class CameraLetterboxPlugin extends UIComponent {
-    // _topBox: Graphix
-    // _bottomBox: Graphix
-    // _topRectGradient: RectGradient
-    // _bottomRectGradient: RectGradient
     _boxes: Graphix[]
     _gradients: RectGradient[]
     boxColor: number = 0x080808
@@ -28,16 +24,18 @@ export class CameraLetterboxPlugin extends UIComponent {
 
         const windowWidth = GameWindow.fullWindowWidth
         const gradientRect = rect(0, 0, GameWindow.fullWindowWidth, 24)
+        const gradientOptions = {
+            definition: { rect: gradientRect, direction: FourWayDirection.Down },
+            totalGradientRays: 3,
+            rayAlpha: 0.075
+        }
 
-        // this._topRectGradient = 
-        // this._bottomRectGradient = new RectGradient({
-        //     definition: { rect: gradientRect, direction: FourWayDirection.Up }
-        // })
-        this._gradients = [
-            new RectGradient({ definition: { rect: gradientRect, direction: FourWayDirection.Down } }),
-            new RectGradient({ definition: { rect: gradientRect, direction: FourWayDirection.Up } })
-        ]
+        this._gradients = []
         this._boxes = [ new Graphix(), new Graphix() ]
+
+        this.gradients.push(new RectGradient(gradientOptions))
+        gradientOptions.definition.direction = FourWayDirection.Up
+        this.gradients.push(new RectGradient(gradientOptions))
 
         for (var i in this.boxes) {
             const box = this.boxes[i]
