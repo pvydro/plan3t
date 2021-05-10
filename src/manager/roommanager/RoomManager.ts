@@ -3,7 +3,7 @@ import { PlanetGameState, PlanetSphericalSchema } from '../../network/schema/pla
 import { Entity } from '../../network/rooms/Entity'
 import { ClientManager, IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
-import { Flogger, log } from '../../service/Flogger'
+import { importantLog, log } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
@@ -181,8 +181,7 @@ export class RoomManager implements IRoomManager {
     }
 
     static set clientSessionId(value: string) {
-        Flogger.color('tomato')
-        log('New client session ID has been set', value)
+        importantLog('New client session ID has been set', value)
         
         this._clientSessionId = value
     }

@@ -63,6 +63,7 @@ export class Assets {
             const tileAssets = []
             const tileDir = Assets.TileDir
             const totalFoliage = 10
+            const totalTrees = 2
 
             biomeKeys.forEach((biome: SphericalBiome) => {
                 const biomeDir = tileDir + biome
@@ -80,6 +81,16 @@ export class Assets {
                         tileAssets.push(Assets.get(foliageDir))
                     } catch (error) {
                         Flogger.warn('No foliage for ' + biome, 'i', i)
+                    }
+                }
+
+                for (let i = 0; i < totalTrees; i++) {
+                    let treeDir = biomeDir + '/' + 'tree' + i
+
+                    try {
+                        tileAssets.push(Assets.get(treeDir))
+                    } catch (error) {
+                        Flogger.warn('No tree for ' + biome, 'i', i)
                     }
 
                 }
@@ -124,6 +135,10 @@ export class AssetUrls {
     static SemiSpherical = 'assets/image/gamemap/spherical/semispherical_0'
     static SphericalSM = 'assets/image/gamemap/spherical/spherical_sm_0'
     static TileTest = Assets.TileDir + 'cloningfacility/tile_0'
+
+    // Nature
+    static BushTicberry = 'assets/image/gamemap/bush/bush_ticberry'
+    static Tree = 'assets/image/gamemap/trees/tree1'
 
     // Projectiles
     static ProjectileBullet = 'assets/image/weapons/projectiles/bullet'

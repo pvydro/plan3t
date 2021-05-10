@@ -1,7 +1,7 @@
 import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Entity } from '../network/rooms/Entity'
-import { Flogger } from '../service/Flogger'
+import { Flogger, importantLog } from '../service/Flogger'
 import { EntitySynchronizer } from './EntitySynchronizer'
 import { IPlayerSynchronizerAssertionService, PlayerSynchronizerAssertionService } from './PlayerSynchronizerAssertionService'
 import { exists } from '../utils/Utils'
@@ -65,8 +65,7 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
             }
 
         } else {
-            Flogger.color('ivory')
-            Flogger.log('EntitySynchronizerAssertionService', 'Setting new synchronizable', 'sessionId', sessionId)
+            importantLog('EntitySynchronizerAssertionService', 'Setting new synchronizable', 'sessionId', sessionId)
             
             this.synchronizables.set(sessionId, entity)
         }

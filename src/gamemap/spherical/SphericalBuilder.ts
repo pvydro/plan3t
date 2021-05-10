@@ -8,6 +8,7 @@ import { SphericalTile, SphericalTileColorData } from './tile/SphericalTile'
 import { SphericalTileHelper } from './tile/SphericalTileHelper'
 import { IVector2 } from '../../engine/math/Vector2'
 import { SphericalPoint } from './SphericalPoint'
+import { ISphericalNatureBuilder, SphericalNatureBuilder } from './nature/SphericalNatureBuilder'
 
 export interface ISphericalBuilder {
     buildSphericalFromData(data: ISphericalData): Promise<SphericalResponse>
@@ -15,14 +16,16 @@ export interface ISphericalBuilder {
 
 export interface SphericalResponse {
     tileLayer: Container
+    natureLayer?: Container
     collisionRects: Rect[]
 }
 
 export class SphericalBuilder implements ISphericalBuilder {
+    constructor() {
 
-    constructor() {}
+    }
 
-    async buildSphericalFromData(data: SphericalData) {
+    async buildSphericalFromData(data: SphericalData): Promise<SphericalResponse> {
         Flogger.log('SphericalBuilder', 'buildSphericalFromData')
 
         const tileLayer = new Container()
@@ -49,12 +52,13 @@ export class SphericalBuilder implements ISphericalBuilder {
             }
         }
 
-        // Construct collision layer
         const collisionRects = this.buildCollisionRectanglesFromData(data)
+        const natureLayer = await SphericalNatureBuilder.buildNatureFromData(data)
 
         return {
             tileLayer,
-            collisionRects
+            natureLayer,
+            collisionRects,
         }
     }
 

@@ -1,0 +1,24 @@
+import { Assets, AssetUrls } from '../../../../asset/Assets'
+import { Sprite } from '../../../../engine/display/Sprite'
+import { INature, Nature, NatureOptions } from '../Nature'
+
+export interface ITree extends INature {
+
+}
+
+export interface TreeOptions extends NatureOptions {
+
+}
+
+export class Tree extends Nature implements ITree {
+    sprite: Sprite
+    
+    constructor(options?: TreeOptions) {
+        super(options)
+
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.Tree))
+        
+        this.sprite = new Sprite({ texture })
+        this.addChild(this.sprite)
+    }
+}

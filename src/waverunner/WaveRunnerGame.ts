@@ -4,7 +4,7 @@ import { CreatureType } from '../creature/Creature'
 import { Enemy } from '../enemy/Enemy'
 import { EnemyManager, IEnemyManager } from '../manager/enemymanager/EnemyManager'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
-import { Flogger, log } from '../service/Flogger'
+import { Flogger, importantLog, log } from '../service/Flogger'
 import { CreatureSpawner, ICreatureSpawner } from '../spawner/creaturespawner/CreatureSpawner'
 import { IWave, Wave } from './Wave'
 
@@ -22,8 +22,7 @@ export class WaveRunnerGame implements IWaveRunnerGame {
     }
 
     beginWaveRunner() {
-        Flogger.color('tomato')
-        log('WaveRunnerGame', 'beginWaveRunner')
+        importantLog('WaveRunnerGame', 'beginWaveRunner')
 
         this.spawner = new CreatureSpawner({
             typeToSpawn: CreatureType.Sorm,

@@ -1,4 +1,4 @@
-import { Flogger, log } from '../../service/Flogger'
+import { importantLog } from '../../service/Flogger'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
 
 export interface IWaveRunnerManager {
@@ -22,8 +22,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     }
 
     async initialize() {
-        Flogger.color('lightsteelblue')
-        log('WaveRunnerManager', 'initialize')
+        importantLog('WaveRunnerManager', 'initialize')
 
         this.currentWaveRunnerGame = new WaveRunnerGame()
         this.currentWaveRunnerGame.beginWaveRunner()

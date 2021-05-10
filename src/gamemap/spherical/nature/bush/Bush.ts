@@ -23,7 +23,6 @@ export class Bush extends Nature implements IBush {
         const texture = BushHelper.getTextureForBushType(options.type)
 
         this.sprite = new Sprite({ texture })
-
         this.addChild(this.sprite)
     }
 }

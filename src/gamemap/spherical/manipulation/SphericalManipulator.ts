@@ -24,7 +24,7 @@ export class SphericalManipulator implements ISphericalManipulator {
 
         canvas = trimCanvas(canvas)
 
-        canvas.style.transform = 'scale(4) translate(200px, 200px)'
+        // canvas.style.transform = 'scale(4) translate(200px, 200px)'
         // canvas.style.border = '1px dashed blue'
         document.body.appendChild(canvas)
 

@@ -12,10 +12,10 @@ export interface NatureOptions extends UIContainerOptions {
 export class Nature extends Container implements INature {
     _interactiveNature: boolean = false
 
-    constructor(options: NatureOptions) {
+    constructor(options?: NatureOptions) {
         super()
 
-        this._interactiveNature = options.interactiveNature ?? false
+        this._interactiveNature = (options && options.interactiveNature) ?? false
     }
 
     get interactiveNature() {

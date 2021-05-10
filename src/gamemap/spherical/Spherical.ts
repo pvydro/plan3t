@@ -5,6 +5,7 @@ import { SphericalBiome, SphericalData } from './SphericalData'
 import { CollisionDebugger } from '../../engine/collision/CollisionDebugger'
 import { Rect } from '../../engine/math/Rect'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
+import { exists } from '../../utils/Utils'
 
 export interface ISpherical extends IGameMapContainer {
 
@@ -15,10 +16,11 @@ export class Spherical extends GameMapContainer implements ISpherical {
     collisionRects: Rect[] 
     collisionDebugger: CollisionDebugger
     tileLayer?: Container
+    natureLayer?: Container
 
     data: SphericalData
     biome: SphericalBiome
-    dimension: Dimension
+    _dimension: Dimension
 
     constructor(data: SphericalData) {
         super()
@@ -26,7 +28,7 @@ export class Spherical extends GameMapContainer implements ISpherical {
         this.builder = new SphericalBuilder()
         this.data = data
         this.biome = data.biome
-        this.dimension = data.dimension    
+        this._dimension = data.dimension
     }
 
     initializeMap(): Promise<void> {
@@ -37,9 +39,11 @@ export class Spherical extends GameMapContainer implements ISpherical {
         return new Promise((resolve) => {
             this.builder.buildSphericalFromData(this.data).then((response: SphericalResponse) => {
                 this.tileLayer = response.tileLayer
+                this.natureLayer = response.natureLayer
                 this.collisionRects = response.collisionRects
-        
-                this.addChild(this.tileLayer)
+
+                if (exists(this.natureLayer)) this.addChild(this.natureLayer)
+                if (exists(this.tileLayer)) this.addChild(this.tileLayer)
 
                 super.initializeMap()
 
@@ -50,5 +54,9 @@ export class Spherical extends GameMapContainer implements ISpherical {
 
     demolish() {
         
+    }
+
+    get dimension() {
+        return this._dimension
     }
 }
