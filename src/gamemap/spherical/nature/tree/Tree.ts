@@ -19,6 +19,7 @@ export class Tree extends Nature implements ITree {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.Tree))
         
         this.sprite = new Sprite({ texture })
+        this.sprite.anchor.set(0.5, 1)
         this.addChild(this.sprite)
     }
 }

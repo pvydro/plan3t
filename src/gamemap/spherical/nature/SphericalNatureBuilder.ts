@@ -36,27 +36,22 @@ export class SphericalNatureBuilder implements ISphericalNatureBuilder {
         
         for (var i = 0; i < totalTrees; i++) {
             const tree = new Tree()
-            const treeX = 360//240
-            const treeTileX = treeX / SphericalHelper.getTileSize()
+            const treeTileX = 30
             const sphericalHeight = data.dimension.height
-            let treeY = 0
+            const x = treeTileX * SphericalHelper.getTileSize()
+            let y = 0
 
-            for (var j = 0; j < sphericalHeight; j++) {
+            for (var j = sphericalHeight; j > 0; j--) {
                 const point = data.getPointAt(treeTileX, j)
 
                 if (point && point.isSolid()) {
-                    treeY = j
+                    y = j
                 }
             }
 
-            tree.pos = {
-                x: treeX - tree.halfWidth,
-                y: treeY - tree.height
-            }
+            tree.pos = { x, y }
             
             trees.push(tree)
-            // data.getPointAt
-            // tree.x = 240
         }
 
         return trees
