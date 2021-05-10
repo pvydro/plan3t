@@ -234,9 +234,9 @@ export class Camera implements ICamera {
         // TODO: Temporary
         InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
             if (event.which === Key.DownArrow) {
-                this.setZoom(this.zoom - 0.5)
+                this.setZoom(this._zoom / 1.5)
             } else if (event.which === Key.UpArrow) {
-                this.setZoom(this.zoom + 0.1)
+                this.setZoom(this._zoom + 0.1)
             }
         })
     }

@@ -2,6 +2,7 @@ import { Graphix, IGraphix } from '../../engine/display/Graphix'
 import { UIComponent } from '../../ui/UIComponent'
 import { IUIContainer, UIContainer } from '../../ui/UIContainer'
 import { GameWindow } from '../../utils/Constants'
+import { UIDefaults } from '../../utils/Defaults'
 import { ICamera } from '../Camera'
 import { CameraLayer } from '../CameraStage'
 
@@ -17,7 +18,7 @@ export class CameraLetterboxPlugin extends UIComponent {
     boxColor: number = 0x080808
 
     constructor(camera: ICamera) {
-        super()
+        super({ filters: UIDefaults.UIScreenDefaultFilters })
 
         this._boxes = [
             this._bottomBox = new Graphix(),

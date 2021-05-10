@@ -19,11 +19,15 @@ export class SphericalTileDarkener implements ISphericalTileDarkener {
     darknessDepth: number = 0
     darknessTints: number[] = [
         0xededed, 
-        0xdbdbdb,
+        // 0xdbdbdb,
         0xbababa,
-        0xadadad,
+        // 0xadadad,
         0x969696,
-        0x858585
+        0x858585,
+        0x666666,
+        // 0x333333,
+        // 0x000000,
+        // 0x2b2b2b
         // 0xe6e6e6, 
         // 0xdedede, 
         // 0xd6d6d6
@@ -48,10 +52,9 @@ export class SphericalTileDarkener implements ISphericalTileDarkener {
     async calculateDepthBasedOnSurroundings() {
         const data = this.tile.data
         const pointPos = { x: this.tile.point.x, y: this.tile.point.y }
-        const maximumDepth = 5
+        const maximumDepth = this.darknessTints.length - 1
         const depthBreakpoint = 0//1
         let currentDepth = 0
-
 
         for (let i = maximumDepth; i > 0; i--) {
             const newI = i + depthBreakpoint
