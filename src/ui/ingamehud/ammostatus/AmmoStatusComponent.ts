@@ -84,8 +84,6 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
 
     reposition(addListener?: boolean) {
         super.reposition(addListener)
-
-        console.log('%cStatusReposition','background-color: red; font-size: 300%')
         const topMargin = UIDefaults.DefaultBleedPastBorderMargin //- UIDefaults.UIEdgePadding
 
         this.position.x = UIDefaults.UIEdgePadding,

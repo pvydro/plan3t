@@ -1,5 +1,6 @@
 import { Fonts } from '../asset/Fonts'
 import { Easing } from '../engine/display/tween/TweenEasing'
+import { Filters } from './Filters'
 import { ISmallToLargeSort } from './UtilInterfaces'
 
 export abstract class Defaults {
@@ -12,6 +13,12 @@ export abstract class UIDefaults {
     static UIScale: number = 5
     static UIMargin: number = 4
     static UIEdgePadding: number = 42
+    static UIScreenDefaultFilters: PIXI.Filter[] = [
+        Filters.getColorMatrixFilter({
+            vintage: true,
+            polaroid: true
+        })
+    ]
 
     static UIBleedPastBorderMargins: ISmallToLargeSort = {
         small: 8, mdSmall: 12, lgSmall: 14,

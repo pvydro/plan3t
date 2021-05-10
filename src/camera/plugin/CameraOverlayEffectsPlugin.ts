@@ -1,6 +1,7 @@
 import { Flogger } from '../../service/Flogger'
 import { ICamera } from '../Camera'
 import { CRTFilter, GlitchFilter } from 'pixi-filters'
+import { Filters } from '../../utils/Filters'
 
 export interface ICameraOverlayEffectsPlugin {
 
@@ -18,7 +19,10 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
     initializeOverlayGraphics() {
         Flogger.log('CameraOverlayEffectsPlugin', 'initializeOverlayGraphics')
 
-        const colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
+        const colorMatrixFilter = Filters.getColorMatrixFilter({
+            vintage: true,
+            polaroid: true
+        })
         const crtFilter = new CRTFilter({
             curvature: 2.5,
             noise: 0.01,
@@ -26,8 +30,16 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
             lineContrast: 0.05
         })
         
-        colorMatrixFilter.polaroid(true)
+        // colorMatrixFilter.greyscale(0.35, false)
+        // colorMatrixFilter.vintage(true)
+        // colorMatrixFilter.polaroid(true)    
+        // colorMatrixFilter.desaturate()
+        // colorMatrixFilter.night(0.35, true)
         
+        // this.camera.viewport.filters = [
+        //     crtFilter,
+        //     colorMatrixFilter
+        // ]
         this.camera.stage.filters = [
             crtFilter,
             colorMatrixFilter

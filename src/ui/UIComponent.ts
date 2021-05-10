@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IShowHide } from '../interface/IShowHide'
@@ -25,6 +26,7 @@ export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
 
 export interface UIComponentOptions extends UIContainerOptions {
     borderOptions?: UIComponentBorderOptions
+    filters?: PIXI.Filter[]
 }
 
 export class UIComponent extends UIContainer implements IUIComponent {
@@ -39,6 +41,9 @@ export class UIComponent extends UIContainer implements IUIComponent {
                 this.border = new UIComponentBorder(options.borderOptions)
 
                 this.addChild(this.border)
+            }
+            if (options.filters) {
+                this.filters = options.filters
             }
         }
     }

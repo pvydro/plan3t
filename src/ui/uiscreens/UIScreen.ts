@@ -21,6 +21,8 @@ export class UIScreen extends UIComponent implements IUIScreen {
     backgroundGraphic?: Graphix
 
     constructor(options?: UIScreenOptions) {
+        options = options ?? {}
+        options.filters = options.filters ?? UIDefaults.UIScreenDefaultFilters
         super(options)
 
         if (options !== undefined) {

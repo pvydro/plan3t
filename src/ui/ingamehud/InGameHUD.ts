@@ -27,13 +27,13 @@ export interface IInGameHUD extends IUpdatable, IReposition {
 
 export class InGameHUD extends UIScreen implements IInGameHUD {
     private static Instance: InGameHUD
-    _initialized: boolean = false
+    _initialized: boolean
     hudContainer: UIContainer
     crosshair: Crosshair
     ammoStatus: AmmoStatusComponent
     hotbar: HUDInventoryHotbar
     healthBar: HealthBar
-    queuedHealthBars: OverheadHealthBar[] = []
+    queuedHealthBars: OverheadHealthBar[]
     inventory: InGameInventory
     // respawnScreen: RespawnScreen
     inGameMenu: InGameMenu
@@ -47,11 +47,17 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     private constructor() {
+        // const colorMatrixFilter = 
+        // colorMatrixFilter.vintage(true)
+        // colorMatrixFilter.polaroid(true)
+
         super({
-            shouldFillWindow: true 
+            shouldFillWindow: true
         })
 
         // this.respawnScreen = new RespawnScreen()
+        this._initialized = false
+        this.queuedHealthBars = []
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
