@@ -1,3 +1,4 @@
+import { Assets } from '../../../asset/Assets'
 import { Container } from '../../../engine/display/Container'
 import { log } from '../../../service/Flogger'
 import { SphericalData } from '../SphericalData'
@@ -9,6 +10,8 @@ export interface ISphericalNatureBuilder {
 }
 
 export class SphericalNatureBuilder implements ISphericalNatureBuilder {
+    static totalTrees: number = 3
+
     constructor() {
         
     }
@@ -32,11 +35,14 @@ export class SphericalNatureBuilder implements ISphericalNatureBuilder {
         log('SphericalNatureBuilder', 'buildTreesFromData')
 
         const trees = []
-        const totalTrees = 1
+        const minimumTreeDistance = 10
+        const maximumTreeDistance = 10
+        const startX = Math.floor(Math.random() * maximumTreeDistance)
         
-        for (var i = 0; i < totalTrees; i++) {
-            const tree = new Tree()
-            const treeTileX = 30
+        for (var i = 0; i < this.totalTrees; i++) {
+            const tree = new Tree({ treeUrl: this.findTreeAssetUrlForIndex(i) })
+            const randomTreeDistance = Math.floor(Math.random() * (maximumTreeDistance * i)) + minimumTreeDistance
+            const treeTileX = startX + randomTreeDistance
             const sphericalHeight = data.dimension.height
             const x = treeTileX * SphericalHelper.getTileSize()
             let y = 0
@@ -45,7 +51,7 @@ export class SphericalNatureBuilder implements ISphericalNatureBuilder {
                 const point = data.getPointAt(treeTileX, j)
 
                 if (point && point.isSolid()) {
-                    y = j
+                    y = j * SphericalHelper.getTileSize()
                 }
             }
 
@@ -55,5 +61,12 @@ export class SphericalNatureBuilder implements ISphericalNatureBuilder {
         }
 
         return trees
+    }
+
+    static findTreeAssetUrlForIndex(index: number) {
+        index = index > this.totalTrees - 1 ? (this.totalTrees - 1) : index
+        const treeUrl = Assets.BaseImageDir + '/gamemap/trees/tree' + index
+
+        return treeUrl
     }
 }

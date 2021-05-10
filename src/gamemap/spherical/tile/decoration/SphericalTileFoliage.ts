@@ -16,16 +16,16 @@ export class SphericalTileFoliage extends Sprite implements ISphericalTileFoliag
 
     constructor(options: SphericalTileFoliageOptions) {
 
-        const textureDir = SphericalTileFoliage.findFoliageDirForTile(options.tile)
+        const textureDir = SphericalTileFoliage.findFoliageAssetUrlForTile(options.tile)
         const texture = PIXI.Texture.from(Assets.get(textureDir))
 
         super({ texture })
     }
 
-    static findFoliageDirForTile(tile: SphericalTile) {
+    private static findFoliageAssetUrlForTile(tile: SphericalTile) {
         const chosenFoliage = NumberUtils.getRandomIntegerBetween(0, SphericalTileFoliage.TotalFoliages)
-        const tileDir = Assets.TileDir + tile.biome + '/foliage' + chosenFoliage
+        const assetUrl = Assets.TileDir + tile.biome + '/foliage' + chosenFoliage
 
-        return tileDir
+        return assetUrl
     }
 }

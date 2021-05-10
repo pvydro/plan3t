@@ -137,7 +137,7 @@ export class Camera implements ICamera {
             this.x = this._target.x + this.offset.x + this.extraXOffset
                 + this.mouseOffset.x + this.instantOffset.x
             this.y = this._target.y + this.offset.y
-                + this.mouseOffset.y + this.instantOffset.y - (GameWindow.topMarginHeight / this._zoom)
+                + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
         }
         
         Camera.Zero = this.toScreen({ x: 0, y: 0 })

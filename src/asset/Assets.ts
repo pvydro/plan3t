@@ -7,8 +7,8 @@ export class Assets {
     private static _imagesStartLoading: boolean = false
     private static _imagesFinishedLoading: boolean = false
 
-    static TileDir = 'assets/image/gamemap/tiles/'
-    static BASE_IMAGE_DIR: string = 'assets/image'
+    static BaseImageDir: string = 'assets/image'
+    static TileDir = Assets.BaseImageDir + '/gamemap/tiles/'
 
     private constructor() {}
 
@@ -138,7 +138,7 @@ export class AssetUrls {
 
     // Nature
     static BushTicberry = 'assets/image/gamemap/bush/bush_ticberry'
-    static Tree = 'assets/image/gamemap/trees/tree1'
+    static TreeDefault = 'assets/image/gamemap/trees/tree1'
 
     // Projectiles
     static ProjectileBullet = 'assets/image/weapons/projectiles/bullet'

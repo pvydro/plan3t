@@ -16,7 +16,7 @@ export class WeaponHelper {
         const details: any = WeaponHelper.getWeaponDetailsByName(name)
 
         const suff = suffix ?? ''
-        const url = Assets.BASE_IMAGE_DIR + '/weapons/' + details.dir + '/' + name.toLowerCase() + suff
+        const url = Assets.BaseImageDir + '/weapons/' + details.dir + '/' + name.toLowerCase() + suff
         const texture = PIXI.Texture.from(Assets.get(url))
 
         return texture

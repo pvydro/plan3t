@@ -7,7 +7,7 @@ export interface ITree extends INature {
 }
 
 export interface TreeOptions extends NatureOptions {
-
+    treeUrl?: string
 }
 
 export class Tree extends Nature implements ITree {
@@ -16,7 +16,8 @@ export class Tree extends Nature implements ITree {
     constructor(options?: TreeOptions) {
         super(options)
 
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.Tree))
+        const url = options.treeUrl ?? AssetUrls.TreeDefault
+        const texture = PIXI.Texture.from(Assets.get(url))
         
         this.sprite = new Sprite({ texture })
         this.sprite.anchor.set(0.5, 1)
