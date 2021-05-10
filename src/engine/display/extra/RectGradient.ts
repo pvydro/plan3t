@@ -1,4 +1,3 @@
-import { rect } from '../../../utils/Utils'
 import { FourWayDirection } from '../../math/Direction'
 import { IRect } from '../../math/Rect'
 import { Container } from '../Container'

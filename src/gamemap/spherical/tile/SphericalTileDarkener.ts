@@ -1,6 +1,3 @@
-import { ColorUtils } from '../../../utils/ColorUtils'
-import { NumberUtils } from '../../../utils/NumberUtils'
-import { SphericalHelper } from '../SphericalHelper'
 import { SphericalPoint } from '../SphericalPoint'
 import { SphericalTile } from './SphericalTile'
 
