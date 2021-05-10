@@ -63,13 +63,14 @@ export class PlayerLight extends Container implements IPlayerLight {
 
     constructLights() {
         const totalWidth = GameWindow.width / 20//4
-
+        
+        const ambientLightSize = 256
+        const ambientLightAlphaDistance = 0.1125
         const ambientLight = new Light({
             texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_VIGNETTE_BORDER)),
             shouldJitter: true,
             maximumJitterAmount: 5
         })
-        const ambientLightSize = 256
 
         ambientLight.alpha = 0.25
         ambientLight.width = ambientLightSize
@@ -87,7 +88,7 @@ export class PlayerLight extends Container implements IPlayerLight {
 
             light.width = size
             light.height = size
-            light.alpha = 0.08 * i
+            light.alpha = ambientLightAlphaDistance * i
 
             this.lights.push(light)
             this.hardLights.push(light)

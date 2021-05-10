@@ -39,11 +39,9 @@ export class CameraLetterboxPlugin extends UIComponent {
 
         for (var i in this.boxes) {
             const box = this.boxes[i]
-
             box.beginFill(this.boxColor)
             box.drawRect(0, 0, windowWidth, GameWindow.topMarginHeight)
             box.endFill()
-
             this.addChild(box)
         }
 

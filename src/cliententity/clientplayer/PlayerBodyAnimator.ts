@@ -89,7 +89,7 @@ export class PlayerBodyAnimator implements IPlayerBodyAnimator {
         // Jumping animation
         this.jumpingSprite = new AnimatedSprite({
             sheet: jumpingSheet.animations['tile'],
-            animationSpeed: 0.05,
+            animationSpeed: 0.1,
             loop: false
         })
         this.jumpingSprite.anchor.set(0.5, 0.5)
