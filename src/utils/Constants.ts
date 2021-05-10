@@ -1,7 +1,7 @@
 import { IDimension } from '../engine/math/Dimension'
 
 export class GameWindow {
-    private static _marginPercent = 0.125
+    private static _marginPercent = 0.175//125
     private static _width =  window.innerWidth
     private static _height = window.innerHeight * (1.0 - (GameWindow._marginPercent * 2))
     private static _topMargin = window.innerHeight * GameWindow._marginPercent

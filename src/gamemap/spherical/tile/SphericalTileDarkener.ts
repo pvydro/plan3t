@@ -17,8 +17,8 @@ export class SphericalTileDarkener implements ISphericalTileDarkener {
     darknessTints: number[] = [
         0xededed, 
         // 0xdbdbdb,
-        0xbababa,
-        // 0xadadad,
+        // 0xbababa,
+        0xadadad,
         0x969696,
         0x858585,
         0x666666,

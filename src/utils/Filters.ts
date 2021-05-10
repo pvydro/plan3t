@@ -7,6 +7,7 @@ interface ColorMatrixFilterOptions {
     desaturate?: boolean
     greyscale?: number
     night?: number
+    brightness?: number
 }
 
 export class Filters {
@@ -15,6 +16,7 @@ export class Filters {
     static getColorMatrixFilter(options: ColorMatrixFilterOptions) {
         const filter = new PIXI.filters.ColorMatrixFilter()
 
+        if (exists(options.brightness)) filter.brightness(options.brightness, true)
         if (exists(options.greyscale)) filter.greyscale(options.greyscale, true)
         if (options.desaturate) filter.desaturate()
         if (options.vintage) filter.vintage(true)
