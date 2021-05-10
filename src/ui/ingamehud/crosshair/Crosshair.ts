@@ -5,6 +5,7 @@ import { Graphix } from '../../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { IUpdatable } from '../../../interface/IUpdatable'
+import { GameWindow } from '../../../utils/Constants'
 import { UIComponent } from '../../UIComponent'
 import { CrosshairCursor, ICrosshairCursor } from './CrosshairCursor'
 
@@ -65,7 +66,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
     followMouse() {
         InputProcessor.on(InputEvents.MouseMove, (ev) => {
             this.mousePos.x = ev.clientX
-            this.mousePos.y = ev.clientY
+            this.mousePos.y = ev.clientY - GameWindow.topMarginHeight
         })
     }
 

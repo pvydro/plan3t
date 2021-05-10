@@ -22,7 +22,8 @@ export class UIScreen extends UIComponent implements IUIScreen {
 
     constructor(options?: UIScreenOptions) {
         options = options ?? {}
-        options.filters = options.filters ?? UIDefaults.UIScreenDefaultFilters
+        options.filters = options.filters === null ? []
+            : (options.filters ?? UIDefaults.UIScreenDefaultFilters)
         super(options)
 
         if (options !== undefined) {

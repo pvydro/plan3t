@@ -16,7 +16,7 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
 
     constructor() {
         super({
-            filters: []
+            filters: null
         })
 
         this.animator = new RespawnScreenAnimator({ screen: this })
