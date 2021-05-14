@@ -26,7 +26,7 @@ export class PlayerController implements IPlayerController {
 
     playerCrouchDivisor: number = 1.75
     playerWalkingSpeed: number = 1
-    playerSprintMultiplier: number = 1.25
+    playerSprintMultiplier: number = 1.5
     playerJumpingHeight: number = 5
     floorFriction = 5
 

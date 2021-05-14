@@ -35,9 +35,9 @@ export class SphericalNatureBuilder implements ISphericalNatureBuilder {
         log('SphericalNatureBuilder', 'buildTreesFromData')
 
         const trees = []
-        const minimumTreeDistance = 10
+        const minimumTreeDistance = 15
         const maximumTreeDistance = 10
-        const startX = Math.floor(Math.random() * maximumTreeDistance)
+        const startX = Math.floor(Math.random() * minimumTreeDistance)
         
         for (var i = 0; i < this.totalTrees; i++) {
             const tree = new Tree({ treeUrl: this.findTreeAssetUrlForIndex(i) })

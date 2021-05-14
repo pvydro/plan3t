@@ -28,7 +28,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
             curvature: 2.5,
             noise: 0.01,
             lineWidth: 3,
-            lineContrast: 0.05
+            lineContrast: 0.025
         })
         
         // colorMatrixFilter.greyscale(0.35, false)
