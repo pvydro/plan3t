@@ -13,6 +13,7 @@ import { Fonts } from '../asset/Fonts'
 import { Tween } from '../engine/display/tween/Tween'
 import { LoadingScreen } from '../ui/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
+import { Sounds } from '../asset/Sounds'
 
 export interface IGame {
     bootstrap(): Promise<void>
@@ -49,6 +50,7 @@ export class Game implements IGame {
         await Assets.loadImages()
         await Fonts.loadFonts()
         await Spritesheets.loadSpritesheets()
+        await Sounds.loadSounds()
         await Tween.initializePlugins()
         
         await this.clientManager.initialize()

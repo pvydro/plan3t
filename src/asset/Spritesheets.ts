@@ -2,7 +2,9 @@ import * as PIXI from 'pixi.js'
 import { Flogger } from '../service/Flogger'
 
 export class SpritesheetUrls {
-    private constructor() {}
+    private constructor() {
+
+    }
 
     static PlayerBodyWalking = 'assets/image/player/body/body_walking.json'
     static PlayerBodyJumping = 'assets/image/player/body/body_jumping.json'
@@ -15,7 +17,9 @@ export class Spritesheets {
     private static _spritesheetsStartedLoading: boolean = false
     private static _spritesheetsFinishedLoading: boolean = false
 
-    private constructor() {}
+    private constructor() {
+        
+    }
 
     static async loadSpritesheets() {
         Flogger.log('Spritesheets', 'loadSpritesheets')

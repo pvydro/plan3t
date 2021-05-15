@@ -1,4 +1,5 @@
 import { TweenLite } from 'gsap/all'
+import { SoundUrls } from '../asset/Sounds'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
 import { WeaponStateFormatter } from '../cliententity/clientplayer/state/WeaponStateFormatter'
 import { Container } from '../engine/display/Container'
@@ -6,7 +7,8 @@ import { Sprite } from '../engine/display/Sprite'
 import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { IVector2 } from '../engine/math/Vector2'
-import { Flogger } from '../service/Flogger'
+import { SoundManager } from '../manager/soundmanager/SoundManager'
+import { Flogger, log } from '../service/Flogger'
 import { ProjectileType } from './projectile/Bullet'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
@@ -129,6 +131,7 @@ export class Weapon extends Container implements IWeapon {
                 this.effects.addMuzzleFlash()
                 this.fireBullet()
                 this.applyRecoil()
+                this.shootSound()
                 this.effects.applyScreenEffects()
                 this.sendServerShootMessage()
 
@@ -149,6 +152,12 @@ export class Weapon extends Container implements IWeapon {
         }
 
         return this.currentShootPromise
+    }
+
+    shootSound() {
+        log('Weapon', 'shootSound')
+
+        SoundManager.playSound(SoundUrls.GunshotA)
     }
 
     fireBullet() {

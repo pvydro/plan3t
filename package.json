@@ -40,6 +40,7 @@
   "dependencies": {
     "@colyseus/monitor": "^0.11.0",
     "@colyseus/social": "^0.10.0",
+    "@pixi/sound": "^4.0.2",
     "colyseus": "^0.14.0",
     "colyseus.js": "^0.14.0",
     "eventemitter3": "^4.0.7",

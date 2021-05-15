@@ -4,13 +4,15 @@ import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/t
 import { Flogger } from '../service/Flogger'
 
 export class Assets {
-    private static _imagesStartLoading: boolean = false
+    private static _imagesStartedLoading: boolean = false
     private static _imagesFinishedLoading: boolean = false
 
     static BaseImageDir: string = 'assets/image'
     static TileDir = Assets.BaseImageDir + '/gamemap/tiles/'
 
-    private constructor() {}
+    private constructor() {
+
+    }
 
     static async loadImages() {
         Flogger.log('Assets', 'loadImages')
@@ -18,10 +20,10 @@ export class Assets {
         await Assets.loadAllTileImages()
         
         return new Promise((resolve, reject) => {
-            if (Assets._imagesStartLoading) {
+            if (Assets._imagesStartedLoading) {
                 return
             }
-            Assets._imagesStartLoading = true
+            Assets._imagesStartedLoading = true
 
             try {
                 const assetKeys = Object.values(AssetUrls)
@@ -54,7 +56,7 @@ export class Assets {
         Flogger.log('Assets', 'loadAllTileImages')
 
         return new Promise((resolve, reject) => {
-            if (Assets._imagesStartLoading) {
+            if (Assets._imagesStartedLoading) {
                 return
             }
             
@@ -116,8 +118,9 @@ export class Assets {
 }
 
 export class AssetUrls {
+    private constructor() {
 
-    private constructor() {}
+    }
 
     static PlayerIdle = 'assets/image/player/body/body-idle'
     static PlayerHeadHumanDefault = 'assets/image/player/head/head-default'
