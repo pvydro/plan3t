@@ -26,7 +26,8 @@ export class LoadingScreen extends UIScreen implements ILoadingScreen {
 
     private constructor() {
         super({
-            background: { backgroundColor: 0x101010 }
+            background: { backgroundColor: 0x101010 },
+            filters: []
         })
 
         this.animator = new LoadingScreenAnimator({ screen: this })

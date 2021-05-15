@@ -2,8 +2,9 @@ import { AssetUrls } from '../../../asset/Assets'
 import { log } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
-import { UIButton, UIButtonType } from '../../uibutton/UIButton'
-
+import { UIButton, UIButtonState, UIButtonType } from '../../uibutton/UIButton'
+import { CrosshairState } from '../crosshair/Crosshair'
+import { InGameHUD } from '../InGameHUD'
 export interface IPauseButton {
 
 }
@@ -14,7 +15,7 @@ export class PauseButton extends UIButton implements IPauseButton {
             type: UIButtonType.Tap,
             background: {
                 idle: AssetUrls.PauseButton
-            },
+            }
         })
     }
 
@@ -24,15 +25,31 @@ export class PauseButton extends UIButton implements IPauseButton {
         super.trigger()
     }
 
+    async hover() {
+        if (this.state !== UIButtonState.Hovered) {
+            InGameHUD.getInstance().requestCrosshairState(CrosshairState.Cursor)
+        }
+        
+        super.hover()
+    }
+
+    async unhover() {
+        if (this.state !== UIButtonState.Idle) {
+            InGameHUD.getInstance().requestCrosshairState(CrosshairState.Gameplay)
+        }
+
+        super.unhover()
+    }
+
     reposition(addListeners?: boolean) {
         super.reposition(addListeners)
 
-        const rightMargin = UIDefaults.UIMargin * UIDefaults.UIScale
+        const rightMargin = UIDefaults.UIEdgePadding
         const scaledWidth = this.backgroundWidth * UIDefaults.UIScale
 
         this.pos = {
             x: GameWindow.fullWindowWidth - rightMargin - scaledWidth,
-            y: -(scaledWidth / 2)
+            y: -UIDefaults.UIBleedPastBorderMargins.small
         }
     }
 }
