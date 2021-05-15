@@ -2,6 +2,7 @@ import { Game } from '../main/Game'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/GameStateManager'
+import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { log } from '../service/Flogger'
 
@@ -22,6 +23,7 @@ export abstract class GameState implements IGameState {
     roomManager: IRoomManager
     clientManager: IClientManager
     gameMapManager: IGameMapManager
+    musicManager: IMusicManager
     
     constructor(options: GameStateOptions) {
         this.id = options.id ?? GameStateID.Empty
@@ -33,6 +35,7 @@ export abstract class GameState implements IGameState {
             clientManager: this.clientManager,
             gameMapManager: this.gameMapManager
         })
+        this.musicManager = MusicManager.getInstance()
     }
 
     async initialize() {

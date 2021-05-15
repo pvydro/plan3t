@@ -1,5 +1,7 @@
+import { Sound } from '@pixi/sound'
 import { GameStateID } from '../manager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
+import { SongKeyCodes } from '../musicplaylist/SongKeyCodes'
 import { asyncTimeout } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
 import { GameStateOptions, IGameState } from './GameState'
@@ -16,7 +18,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             game: options.game,
             id: GameStateID.WaveRunnerGame
         })
-
     }
 
     async initialize() {
@@ -25,6 +26,10 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
         asyncTimeout(500).then(() => {
             this.waveManager = WaveRunnerManager.getInstance()
             this.waveManager.initialize()
+
+            this.musicManager.fetchSong(SongKeyCodes.Midas).then((sound: Sound) => {
+                sound.play()
+            })
         })
     }
 }

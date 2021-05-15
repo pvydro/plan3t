@@ -41,7 +41,12 @@ export class Sounds {
     }
 
     static add(soundKey: string) {
+        return sound.add(soundKey, soundKey)
+    }
+
+    static addAndPlay(soundKey: string) {
         sound.add(soundKey, soundKey)
+        sound.play(soundKey)
     }
 
     static async play(soundKey: string, options?: PlaySoundOptions) {
@@ -50,7 +55,7 @@ export class Sounds {
                 log('Tried to play sound but muted')
             } else {
                 const playedSound = await sound.play(soundKey)
-                
+
                 if (options) {
                     if (options.volume) {
                         playedSound.volume = options.volume

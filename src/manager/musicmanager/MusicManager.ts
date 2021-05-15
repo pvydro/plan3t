@@ -1,11 +1,17 @@
-export interface IMusicManager {
+import { Sound } from '@pixi/sound'
+import { Sounds } from '../../asset/Sounds'
+import { SongKeyCodes } from '../../musicplaylist/SongKeyCodes'
+import { log } from '../../service/Flogger'
 
+export interface IMusicManager {
+    fetchSong(keyCode: SongKeyCodes): Promise<Sound>
 }
 
 export class MusicManager implements IMusicManager {
     private static Instance: IMusicManager
+    private static MusicUrl: string = 'https://paydro.dev/musik/'
 
-    static getInstance(): IMusicManager {
+    static getInstance() {
         if (!this.Instance) {
             this.Instance = new MusicManager()
         }
@@ -15,5 +21,12 @@ export class MusicManager implements IMusicManager {
 
     private constructor() {
 
+    }
+    
+    async fetchSong(keyCode: SongKeyCodes) {
+        const songUrl = MusicManager.MusicUrl + keyCode + '.wav'
+        log('MusicManager', 'fetchSong', 'songUrl', songUrl)
+
+        return Sounds.add(songUrl)
     }
 }

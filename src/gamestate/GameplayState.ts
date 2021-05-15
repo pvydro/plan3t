@@ -47,6 +47,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
         await asyncTimeout(1500)
         this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
+        // this.musicManager.
 
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
