@@ -1,7 +1,7 @@
 import { IDimension } from '../engine/math/Dimension'
 
 export class GameWindow {
-    private static _marginPercent = 0.175//125
+    private static _marginPercent = 0.15//125
     private static _width =  window.innerWidth
     private static _height = window.innerHeight * (1.0 - (GameWindow._marginPercent * 2))
     private static _topMargin = window.innerHeight * GameWindow._marginPercent
@@ -48,7 +48,7 @@ export class DebugConstants {
     static ShowPlayerMessengerLogs: boolean = false
     static ShowCameraProjectionDebug: boolean = false
     static ShowPlayerSynchDebug: boolean = false
-    static ShowCollisionDebug: boolean = false
+    static ShowCollisionDebug: boolean = true
     static ShowInteractiveContainerDebug: boolean = true
 }
 

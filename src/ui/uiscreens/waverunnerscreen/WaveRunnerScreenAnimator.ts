@@ -1,21 +1,20 @@
 import { Animator, IAnimator } from '../../../engine/display/Animator'
 import { Tween } from '../../../engine/display/tween/Tween'
-import { IShowHide } from '../../../interface/IShowHide'
-import { IRespawnScreen, RespawnScreen } from './RespawnScreen'
+import { IWaveRunnerScreen } from './WaveRunnerScreen'
 const AnimTimes = require('../../../json/AnimTimes.json')
 
-export interface IRespawnScreenAnimator extends IAnimator, IShowHide {
-    forceHide(): void
+export interface IWaveRunnerScreenAnimator extends IAnimator {
+    screen: IWaveRunnerScreen
 }
 
-export interface RespawnScreenAnimatorOptions {
-    screen: IRespawnScreen
+export interface WaveRunnerScreenAnimatorOptions {
+    screen: IWaveRunnerScreen
 }
 
-export class RespawnScreenAnimator extends Animator implements IRespawnScreenAnimator {
-    screen: IRespawnScreen
+export class WaveRunnerScreenAnimator extends Animator {
+    screen: IWaveRunnerScreen
 
-    constructor(options: RespawnScreenAnimatorOptions) {
+    constructor(options: WaveRunnerScreenAnimatorOptions) {
         super()
 
         this.screen = options.screen
@@ -50,8 +49,7 @@ export class RespawnScreenAnimator extends Animator implements IRespawnScreenAni
     get alphaTargets() {
         return [
             // this.screen.darkener,
-            this.screen.respawnHeader,
-            this.screen.respawnButton
+            this.screen
         ]
     }
 }

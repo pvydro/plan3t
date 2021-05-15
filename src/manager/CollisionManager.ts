@@ -1,11 +1,10 @@
 import { GravityEntity } from '../cliententity/GravityEntity'
 import { IEnemy } from '../enemy/Enemy'
-import { IRect, Rect } from '../engine/math/Rect'
+import { Rect } from '../engine/math/Rect'
 import { GameMap } from '../gamemap/GameMap'
-import { GlobalScale } from '../utils/Constants'
 import { Bullet } from '../weapon/projectile/Bullet'
-import { EnemyManager, IEnemyManager } from './enemymanager/EnemyManager'
-import { EntityManager, IEntityManager } from './entitymanager/EntityManager'
+import { IEnemyManager } from './enemymanager/EnemyManager'
+import { EntityManager } from './entitymanager/EntityManager'
 
 export interface ICollisionManager {
     checkEntityCollision(entity: GravityEntity): GravityEntity
@@ -108,11 +107,14 @@ export class CollisionManager implements ICollisionManager {
     private checkSideCollision(entity: GravityEntity, collisionRect: Rect): boolean {
         const entityBounds = entity.boundsWithVelocity
 
-        if (entity.middleY > collisionRect.y) {
-            if (Rect.intersects(entityBounds, collisionRect)) {
-                return true
-            }
-        }
+        
+
+        // if (entity.middleY > collisionRect.y) {
+        //     if (Rect.intersects(entityBounds, collisionRect)) {
+        //         return true
+        //     }
+        // }
+
         // if (collisionRect.y <= (entity.y + (entityBounds.height / 2))) {
         //     if (entity.rightX + entity.xVel >= collisionRect.x) {
         //         // const difference = collisionRect.x - entity.rightX

@@ -27,7 +27,9 @@ export class RespawnHeader extends UIText implements IRespawnHeader {
         
     }
 
-    reposition() {
+    reposition(addListeners?: boolean) {
+        super.reposition(addListeners)
+        
         this.position.set(UIDefaults.UIEdgePadding, UIDefaults.UIEdgePadding)
     }
 

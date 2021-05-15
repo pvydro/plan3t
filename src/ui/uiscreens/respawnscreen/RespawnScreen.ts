@@ -1,11 +1,12 @@
-import { UIButton } from '../../uibutton/UIButton'
+import { IUIButton, UIButton } from '../../uibutton/UIButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
 import { RespawnButton } from './RespawnButton'
-import { RespawnHeader } from './RespawnHeader'
+import { IRespawnHeader, RespawnHeader } from './RespawnHeader'
 import { IRespawnScreenAnimator, RespawnScreenAnimator } from './RespawnScreenAnimator'
 
 export interface IRespawnScreen extends IUIScreen {
-
+    respawnHeader: IRespawnHeader
+    respawnButton: IUIButton
 }
 
 export class RespawnScreen extends UIScreen implements IRespawnScreen {
