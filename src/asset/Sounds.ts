@@ -1,5 +1,10 @@
 import { sound } from '@pixi/sound'
-import { Flogger, importantLog } from '../service/Flogger'
+import { Flogger, importantLog, log } from '../service/Flogger'
+import { SoundDefaults } from '../utils/Defaults'
+
+export interface PlaySoundOptions {
+    volume?: number
+}
 
 export class Sounds {
     private static _soundsStartedLoading: boolean = false
@@ -35,9 +40,23 @@ export class Sounds {
         })
     }
 
-    static play(soundKey: string) {
+    static add(soundKey: string) {
+        sound.add(soundKey, soundKey)
+    }
+
+    static async play(soundKey: string, options?: PlaySoundOptions) {
         try {
-            sound.play(soundKey)
+            if (SoundDefaults.soundsMuted) {
+                log('Tried to play sound but muted')
+            } else {
+                const playedSound = await sound.play(soundKey)
+                
+                if (options) {
+                    if (options.volume) {
+                        playedSound.volume = options.volume
+                    }
+                }
+            }
         } catch (error) {
             Flogger.error('Error playing sound', 'soundKey', soundKey, 'erorr', error)
         }

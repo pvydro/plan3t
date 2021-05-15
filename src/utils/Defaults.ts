@@ -28,6 +28,11 @@ export abstract class UIDefaults {
     static DefaultBleedPastBorderMargin: number = UIDefaults.UIBleedPastBorderMargins.mid
 }
 
+export const SoundDefaults = {
+    soundsMuted: false,
+    musicMuted: false
+}
+
 export const TextDefaults = {
     fontFamily: Fonts.FontDefault.family,
     fontSize: 64,

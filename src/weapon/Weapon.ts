@@ -1,5 +1,5 @@
 import { TweenLite } from 'gsap/all'
-import { SoundUrls } from '../asset/Sounds'
+import { Sounds, SoundUrls } from '../asset/Sounds'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
 import { WeaponStateFormatter } from '../cliententity/clientplayer/state/WeaponStateFormatter'
 import { Container } from '../engine/display/Container'
@@ -157,7 +157,7 @@ export class Weapon extends Container implements IWeapon {
     shootSound() {
         log('Weapon', 'shootSound')
 
-        SoundManager.playSound(SoundUrls.GunshotA)
+        Sounds.play(SoundUrls.GunshotA, { volume: 0.25 })
     }
 
     fireBullet() {
