@@ -1,5 +1,5 @@
-import { functionExists } from '../../utils/Utils'
-import { IUIButton, UIButton } from './UIButton'
+import { functionExists } from '../../../utils/Utils'
+import { UIButton } from '../UIButton'
 
 export interface IUIButtonDarkenerPlugin {
 

@@ -2,11 +2,14 @@ import { Assets } from '../../asset/Assets'
 import { Graphix } from '../../engine/display/Graphix'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
+import { IDimension } from '../../engine/math/Dimension'
 import { IVector2 } from '../../engine/math/Vector2'
+import { Constants, DebugConstants } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
-import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './UIButtonDarkenerPlugin'
+import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './plugins/UIButtonDarkenerPlugin'
+import { UIButtonDebuggerPlugin } from './plugins/UIButtonDebuggerPlugin'
 
 export enum UIButtonState {
     Idle, Hovered, Triggered
@@ -20,6 +23,8 @@ export enum UIButtonType {
 }
 
 export interface IUIButton extends IUIComponent {
+    dimension: IDimension
+
     hover(): Promise<any>
     pressDown(): Promise<any>
     release(): Promise<any>
@@ -61,7 +66,9 @@ export class UIButton extends UIComponent implements IUIButton {
     type: UIButtonType
     isPushed: boolean = false
     listenersAdded: boolean = false
+
     plugins: any[] = []
+    debuggerPlugin: UIButtonDebuggerPlugin
 
     extendedOnHold?: Function
     extendedOnTrigger?: Function
@@ -82,9 +89,12 @@ export class UIButton extends UIComponent implements IUIButton {
         if (options.darkenerPluginOptions) {
             this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerPluginOptions))
         }
+        if (DebugConstants.ShowUIButtonDebug) {
+            this.plugins.push(this.debuggerPlugin = new UIButtonDebuggerPlugin(this))
+        }
 
-        this.applyMouseListeners(options.addClickListeners ?? true)
         this.applyBackgroundTexture(options)
+        this.applyMouseListeners(options.addClickListeners ?? true)
         this.applyText(options)
     }
 
@@ -154,20 +164,20 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     applyMouseListeners(addClickListeners?: boolean) {
-        this.interactive = true
+        this.backgroundSprite.interactive = true
 
-        this.on('pointerover', () => {
+        this.backgroundSprite.on('pointerover', () => {
             this.hover()
         })
-        this.on('pointerout', () => {
+        this.backgroundSprite.on('pointerout', () => {
             this.unhover()
         })
 
         if (addClickListeners) {
-            this.on('pointerdown', () => {
+            this.backgroundSprite.on('pointerdown', () => {
                 this.pressDown()
             })
-            this.on('pointerup', () => {
+            this.backgroundSprite.on('pointerup', () => {
                 this.release()
             })
         }
@@ -210,6 +220,10 @@ export class UIButton extends UIComponent implements IUIButton {
     applyBackgroundTexture(options: UIButtonOptions) {
         const background: UIButtonBackgroundOptions = options.background
         const anchor = options.anchor
+
+        if (this.debuggerPlugin) {
+            this.addChild(this.debuggerPlugin)
+        }
         
         if (background !== undefined) {
             if (background.idle !== undefined) {
@@ -234,6 +248,10 @@ export class UIButton extends UIComponent implements IUIButton {
             } else if (background.graphic !== undefined) {
                 this.backgroundGraphic = background.graphic
             }
+        }
+
+        if (this.debuggerPlugin) {
+            this.debuggerPlugin.initialize()
         }
     }
 
@@ -296,6 +314,10 @@ export class UIButton extends UIComponent implements IUIButton {
 
     get backgroundHeight() {
         return this.backgroundSprite ? this.backgroundSprite.height : 0
+    }
+
+    get dimension() {
+        return { width: this.backgroundWidth, height: this.backgroundHeight }
     }
 
     get halfWidth() {

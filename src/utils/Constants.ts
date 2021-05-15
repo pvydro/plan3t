@@ -50,6 +50,7 @@ export class DebugConstants {
     static ShowPlayerSynchDebug: boolean = false
     static ShowCollisionDebug: boolean = false
     static ShowInteractiveContainerDebug: boolean = true
+    static ShowUIButtonDebug: boolean = false
 }
 
 export class AIDebugConstants {
