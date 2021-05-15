@@ -26,6 +26,11 @@ export abstract class UIDefaults {
         large: 32, mdLarge: 42, lgLarge: 48
     }
     static DefaultBleedPastBorderMargin: number = UIDefaults.UIBleedPastBorderMargins.mid
+
+}
+
+export const TimeDefaults = {
+    CrosshairStateSwapDelay: 500
 }
 
 export const SoundDefaults = {

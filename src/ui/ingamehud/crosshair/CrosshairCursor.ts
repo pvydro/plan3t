@@ -53,7 +53,7 @@ export class CrosshairCursor implements ICrosshairCursor {
             this.nodeOne.rotation += (nodeOneTarget.rotation - this.nodeOne.rotation) / rotationDivisor
             this.nodeTwo.rotation += (nodeTwoTarget.rotation - this.nodeTwo.rotation) / rotationDivisor
             this.nodeThree.rotation += (nodeThreeTarget.rotation - this.nodeThree.rotation) / rotationDivisor
-            this.nodeThree.skew.x += (nodeThreeTarget.skewX - this.nodeThree.skew.x) / magnetizeDivisor
+            this.nodeThree.skew.x += (nodeThreeTarget.skewX - this.nodeThree.skew.x) / rotationDivisor
         } else {
             // Position
             this.nodeOne.x += (0 - this.nodeOne.x) / magnetizeDivisor

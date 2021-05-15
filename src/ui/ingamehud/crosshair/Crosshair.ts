@@ -15,6 +15,7 @@ export interface ICrosshair extends IUpdatable {
     nodeThree: Graphix
     nodes: Graphix[]
     state: CrosshairState
+    setStateWithDelay(value: CrosshairState, delay: number): void
 }
 
 export enum CrosshairState {
@@ -25,6 +26,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
     private static Instance: Crosshair
     
     _state: CrosshairState = CrosshairState.Gameplay
+    stateSetTimer: number
     pointerCursor: ICrosshairCursor
 
     mousePos: IVector2 = Vector2.Zero
@@ -40,7 +42,6 @@ export class Crosshair extends UIComponent implements ICrosshair {
     nodeThree: Graphix = this.constructNode()
     nodes: Graphix[] = [ this.nodeOne, this.nodeTwo, this.nodeThree ]
     nodeDistance: number = 3
-
     
     static getInstance() {
         if (Crosshair.Instance === undefined) {
@@ -157,7 +158,25 @@ export class Crosshair extends UIComponent implements ICrosshair {
         this.alpha = 0
     }
 
+    setStateWithDelay(state: CrosshairState, delay: number) {
+        this.resetStateSetTimer()
+
+        this.stateSetTimer = window.setTimeout(() => {
+            this.stateSetTimer = undefined
+            this.state = state
+        }, delay)
+    }
+
+    resetStateSetTimer() {
+        if (this.stateSetTimer) {
+            window.clearTimeout(this.stateSetTimer)
+            this.stateSetTimer = undefined
+        }
+    }
+
     set state(value: CrosshairState) {
+        this.resetStateSetTimer()
+
         this._state = value
     }
 

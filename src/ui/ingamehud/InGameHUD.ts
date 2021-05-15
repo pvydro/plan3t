@@ -4,6 +4,7 @@ import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
+import { TimeDefaults, UIDefaults } from '../../utils/Defaults'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
@@ -118,11 +119,17 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.y = GameWindow.y
     }
 
-    requestCrosshairState(state: CrosshairState) {
+    requestCrosshairState(state: CrosshairState, delay?: number) {
         Flogger.log('InGameHUD', 'requestCrosshairState', 'state', CrosshairState[state])
 
         if (this.crosshair.state !== state) {
-            this.crosshair.state = state
+            if (state === CrosshairState.Gameplay || delay !== undefined) {
+                const d = delay ?? TimeDefaults.CrosshairStateSwapDelay
+
+                this.crosshair.setStateWithDelay(state, d)
+            } else {
+                this.crosshair.state = state
+            }
         }
     }
 
@@ -133,9 +140,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         if (this.inGameMenu) {
             await this.inGameMenu.showScreen(id)
         }
-        setTimeout(() => {
-            this.crosshair.state = CrosshairState.Cursor
-        }, 250)
+
+        this.requestCrosshairState(CrosshairState.Gameplay, 250)
     }
 
     async closeMenuScreen(id: InGameScreenID) {
@@ -144,7 +150,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         await this.inGameMenu.hideScreen(id)
         await this.showHUDComponents()
 
-        this.crosshair.state = CrosshairState.Gameplay
+        this.requestCrosshairState(CrosshairState.Gameplay)
     }
 
     async hideHUDComponents() {
