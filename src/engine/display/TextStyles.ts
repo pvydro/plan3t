@@ -12,25 +12,25 @@ export class TextStyles {
     static Menu: ITextStyles = {
         HeaderSmall: {
             fontSize: scaleFontSize(8),
-            fontFamily: Fonts.Font.family,
+            fontFamily: Fonts.FontDefault.family,
         },
         HeaderMedium: {
             fontSize: scaleFontSize(16),
-            fontFamily: Fonts.Font.family,
+            fontFamily: Fonts.FontDefault.family,
         },
         HeaderBig: {
             fontSize: scaleFontSize(24),
-            fontFamily: Fonts.Font.family,
+            fontFamily: Fonts.FontDefault.family,
         }
     }
     static TextParticle: TextSpriteStyle = {
         fontSize: scaleFontSize(16),
-        fontFamily: Fonts.Font.family,
+        fontFamily: Fonts.FontDefault.family,
         color: 0xFFFFFF
     }
     static KeyTooltip: TextSpriteStyle = {
         fontSize: scaleFontSize(12),
-        fontFamily: Fonts.Font.family,
+        fontFamily: Fonts.FontDefault.family,
         color: 0xFFFFFF
     }
 }

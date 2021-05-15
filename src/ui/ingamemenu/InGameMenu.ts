@@ -35,7 +35,8 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     
     private constructor() {
         super({
-            shouldFillWindow: true
+            shouldFillWindow: true,
+            filters: []
         })
 
         this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })

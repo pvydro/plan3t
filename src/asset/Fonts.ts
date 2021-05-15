@@ -5,9 +5,9 @@ export class Fonts {
     private static _fontsStartedLoading: boolean = false
     private static _fontsFinishedLoading: boolean = false
     static FontStrong: any = new FontFaceObserver('Pixel')
-    static Font: any = new FontFaceObserver('iPU')
+    static FontDefault: any = new FontFaceObserver('iPU')
     private static _fonts = [
-        Fonts.FontStrong, Fonts.Font
+        Fonts.FontStrong, Fonts.FontDefault
     ]
     
     

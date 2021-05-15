@@ -1,3 +1,4 @@
+import { Fonts } from '../../../asset/Fonts'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { UIText } from '../../UIText'
 
@@ -10,7 +11,11 @@ export class WaveRunnerHeader extends UIComponent implements IWaveRunnerHeader {
         super()
 
         const waveRunnerText = new UIText({
-            text: 'WaveRunner'
+            text: 'WaveRunner',
+            uppercase: true,
+            style: {
+                fontFamily: Fonts.FontDefault.family
+            }
         })
 
         this.addChild(waveRunnerText)

@@ -29,7 +29,7 @@ export abstract class UIDefaults {
 }
 
 export const TextDefaults = {
-    fontFamily: Fonts.Font.family,
+    fontFamily: Fonts.FontDefault.family,
     fontSize: 64,
     color: 0xFFFFFF,
     rescale: 0.5

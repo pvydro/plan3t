@@ -14,7 +14,7 @@ export class RespawnHeader extends UIText implements IRespawnHeader {
         super({
             text: 'YOU DIED',
             style: {
-                fontFamily: Fonts.Font.family,
+                fontFamily: Fonts.FontDefault.family,
                 fontSize: 64,
             }
         })

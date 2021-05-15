@@ -26,7 +26,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
                 offsetY: 3,
                 alpha: 0.5,
                 style: {
-                    fontFamily: Fonts.Font.family,
+                    fontFamily: Fonts.FontDefault.family,
                     fontSize: 18,
                     color: 0x000000
                 }
