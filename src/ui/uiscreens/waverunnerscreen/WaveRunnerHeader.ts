@@ -20,8 +20,4 @@ export class WaveRunnerHeader extends UIComponent implements IWaveRunnerHeader {
 
         this.addChild(waveRunnerText)
     }
-
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
-    }
 }

@@ -57,6 +57,8 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
             // this.inGameInventory,
             // this.beamMeUpScreen
         ]
+
+        this.reposition(true)
     }
 
     async showScreen(id: InGameScreenID) {
@@ -111,5 +113,15 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
         }
 
         return screen
+    }
+
+    reposition(addListeners?: boolean) {
+        super.reposition(addListeners)
+
+        for (const i in this.allScreens) {
+            const screen = this.allScreens[i]
+
+            screen.reposition(addListeners)
+        }
     }
 }

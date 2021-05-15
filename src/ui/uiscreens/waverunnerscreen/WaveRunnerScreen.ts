@@ -21,15 +21,14 @@ export class WaveRunnerScreen extends UIScreen implements IWaveRunnerScreen {
         this.animator = new WaveRunnerScreenAnimator({ screen: this })
 
         this.addChild(this.header)
-        this.reposition(true)
     }
 
     reposition(addListeners?: boolean) {
         super.reposition(addListeners)
 
-        const padding = UIDefaults.UIBleedPastBorderMargins.mid
+        const padding = UIDefaults.UIBleedPastBorderMargins.mdLarge
         const headerX = GameWindow.width - this.header.width - padding
-        const headerY = GameWindow.height - padding
+        const headerY = GameWindow.fullWindowHeight - padding - this.header.height
 
         this.header.pos = { x: headerX, y: headerY }
     }
