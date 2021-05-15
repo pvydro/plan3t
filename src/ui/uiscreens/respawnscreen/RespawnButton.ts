@@ -2,7 +2,7 @@ import { AssetUrls } from '../../../asset/Assets'
 import { Fonts } from '../../../asset/Fonts'
 import { IReposition } from '../../../interface/IReposition'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
-import { Flogger } from '../../../service/Flogger'
+import { log } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { InGameHUD } from '../../ingamehud/InGameHUD'
@@ -37,23 +37,19 @@ export class RespawnButton extends UIButton implements IRespawnButton {
             darkenerPluginOptions: {
                 hoverTint: 0xdbdbdb,
                 clickTint: 0x969696
-            },
-            onTrigger: () => {
-                this.triggerRespawn()
             }
         })
 
         this.reposition(true)
     }
 
-    triggerRespawn() {
-        Flogger.log('RespawnButton', 'triggerRespawn')
+    trigger() {
+        log('RespawnButton', 'trigger')
 
-        const hud = InGameHUD.getInstance()
-        const roomManager = RoomManager.getInstance()
+        super.trigger()
 
-        hud.closeMenuScreen(InGameScreenID.RespawnScreen)
-        roomManager.requestClientPlayerRespawn()
+        InGameHUD.getInstance().closeMenuScreen(InGameScreenID.RespawnScreen)
+        RoomManager.getInstance().requestClientPlayerRespawn()
     }
 
     reposition(addListener?: boolean) {

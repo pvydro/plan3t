@@ -4,7 +4,6 @@ import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
-import { UIDefaults } from '../../utils/Defaults'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
@@ -15,6 +14,7 @@ import { Crosshair, CrosshairState } from './crosshair/Crosshair'
 import { HealthBar } from './healthbar/HealthBar'
 import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 import { HUDInventoryHotbar } from './inventoryhotbar/HUDInventoryHotbar'
+import { PauseButton } from './pausebutton/PauseButton'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     initializeHUD(): Promise<void>
@@ -35,7 +35,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     healthBar: HealthBar
     queuedHealthBars: OverheadHealthBar[]
     inventory: InGameInventory
-    // respawnScreen: RespawnScreen
+    pauseButton: PauseButton
     inGameMenu: InGameMenu
 
     static getInstance() {
@@ -47,15 +47,10 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     private constructor() {
-        // const colorMatrixFilter = 
-        // colorMatrixFilter.vintage(true)
-        // colorMatrixFilter.polaroid(true)
-
         super({
             shouldFillWindow: true
         })
 
-        // this.respawnScreen = new RespawnScreen()
         this._initialized = false
         this.queuedHealthBars = []
         this.crosshair = Crosshair.getInstance()
@@ -63,8 +58,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.ammoStatus = new AmmoStatusComponent()
         this.hotbar = new HUDInventoryHotbar()
         this.inventory = new InGameInventory()
+        this.pauseButton = new PauseButton()
         this.inGameMenu = InGameMenu.getInstance()
-        this.reposition(true)
 
         // Temp
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
@@ -82,6 +77,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this.addChild(this.hotbar)
             this.addChild(this.inGameMenu)
             this.addChild(this.crosshair)
+            this.addChild(this.pauseButton)
 
             this.queuedHealthBars = []
             // this.respawnScreen.forceHide()
@@ -94,7 +90,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         })
     }
     
-    update(): void {
+    update() {
         super.update()
 
         this.crosshair.update()
@@ -117,6 +113,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         this.hotbar.reposition(false)
         this.ammoStatus.reposition(false)
+        this.pauseButton.reposition(false)
 
         this.y = GameWindow.y
     }
@@ -153,17 +150,20 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     async hideHUDComponents() {
         await this.hotbar.hide()
         await this.ammoStatus.hide()
+        await this.pauseButton.hide()
     }
 
     async showHUDComponents() {
         await this.hotbar.show()
         await this.ammoStatus.show()
+        await this.pauseButton.show()
     }
 
     applyScale() {
         const toScale: UIComponent[] = [
             this.healthBar, this.ammoStatus,
-            this.hotbar, this.inventory
+            this.hotbar, this.inventory,
+            this.pauseButton
         ]
 
         this.inGameMenu.applyScale()

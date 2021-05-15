@@ -187,6 +187,7 @@ export class AssetUrls {
     static OVERHEAD_HEALTHB_BAR_BG = 'assets/image/ui/ingamehud/overheadhealthbar'
     static OVERHEAD_HEALTHB_BAR_FILL = 'assets/image/ui/ingamehud/overheadhealthbarfill'
     static HOTBAR_BG = 'assets/image/ui/ingamehud/hotbar/hotbarbg'
+    static PauseButton = 'assets/image/ui/ingamehud/pausebutton'
 
     // UI
     static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'

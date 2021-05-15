@@ -5,7 +5,7 @@ import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/dis
 import { IVector2 } from '../../engine/math/Vector2'
 import { Defaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
-import { IUIComponent, UIComponent } from '../UIComponent'
+import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './UIButtonDarkenerPlugin'
 
 export enum UIButtonState {
@@ -37,7 +37,7 @@ export interface UIButtonTextOptions extends TextSpriteOptions {
     offsetY?: number
 }
 
-export interface UIButtonOptions {
+export interface UIButtonOptions extends UIComponentOptions {
     type: UIButtonType
     text?: UIButtonTextOptions
     background?: UIButtonBackgroundOptions
@@ -70,11 +70,7 @@ export class UIButton extends UIComponent implements IUIButton {
     extendedOnRelease?: Function
 
     constructor(options: UIButtonOptions) {
-        super({
-            borderOptions: {
-                borderWidth: 1
-            }
-        })
+        super(options)
 
         this.type = options.type
         this.extendedOnHold = options.onHold
@@ -236,9 +232,7 @@ export class UIButton extends UIComponent implements IUIButton {
                     if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
                 }
             } else if (background.graphic !== undefined) {
-                this._backgroundGraphic = background.graphic
-
-                this.addChild(this._backgroundGraphic)
+                this.backgroundGraphic = background.graphic
             }
         }
     }
