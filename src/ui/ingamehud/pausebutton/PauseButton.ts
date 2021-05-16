@@ -1,4 +1,5 @@
 import { AssetUrls } from '../../../asset/Assets'
+import { FourWayDirection } from '../../../engine/math/Direction'
 import { log } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
@@ -18,7 +19,8 @@ export class PauseButton extends UIButton implements IPauseButton {
             },
             tooltipOptions: {
                 text: 'Pause',
-                uppercase: true
+                uppercase: true,
+                side: FourWayDirection.Left
             }
         })
     }

@@ -46,6 +46,7 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
 
     applyScale() {
         const toScale = [
+            this.respawnHeader,
             this.respawnButton
         ]
 

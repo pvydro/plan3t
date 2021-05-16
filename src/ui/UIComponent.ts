@@ -22,8 +22,10 @@ export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
     isShown: boolean
     middleX: number
     middleY: number
-    bottomY: number
-    topY: number
+    bottom: number
+    top: number
+    left: number
+    right: number
 
     forceHide(): void
     demolish(): void
@@ -81,19 +83,27 @@ export class UIComponent extends UIContainer implements IUIComponent {
         return this._isShown
     }
 
+    get left() {
+        return 0
+    }
+
     get middleX() {
         return 0 + this.halfWidth
+    }
+
+    get right() {
+        return 0 + this.width
+    }
+
+    get top() {
+        return 0
     }
 
     get middleY() {
         return 0 + this.halfHeight
     }
 
-    get bottomY() {
+    get bottom() {
         return 0 + this.height
-    }
-
-    get topY() {
-        return 0
     }
 }

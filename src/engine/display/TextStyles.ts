@@ -1,5 +1,5 @@
 import { Fonts } from '../../asset/Fonts'
-import { TextSpriteStyle } from './TextSprite'
+import { TextSpriteAlign, TextSpriteStyle } from './TextSprite'
 
 export interface ITextStyles {
     [ key: string ]: TextSpriteStyle
@@ -13,15 +13,16 @@ export class TextStyles {
     static Menu: ITextStyles = {
         HeaderSmall: {
             fontSize: scaleFontSize(8),
-            fontFamily: Fonts.FontDefault.family,
+            fontFamily: Fonts.FontDefault.family
         },
         HeaderMedium: {
             fontSize: scaleFontSize(16),
-            fontFamily: Fonts.FontDefault.family,
+            fontFamily: Fonts.FontDefault.family
         },
         HeaderBig: {
             fontSize: scaleFontSize(24),
             fontFamily: Fonts.FontDefault.family,
+            uppercase: true
         }
     }
 
@@ -33,6 +34,7 @@ export class TextStyles {
         TooltipMedium: {
             fontSize: scaleFontSize(12),
             fontFamily: Fonts.FontDefault.family,
+            align: TextSpriteAlign.Center
         }
     }
 

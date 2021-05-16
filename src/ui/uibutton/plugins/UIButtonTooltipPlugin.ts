@@ -21,7 +21,7 @@ export interface UIButtonToolipOptions extends TextSpriteOptions {
 export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonTooltipPlugin {
     button: IUIButton
     tooltipOptions: UIButtonToolipOptions
-    textSprite?: UIText
+    textComponent?: UIText
     basePosition: IVector2 = new Vector2(0, 0)
 
     constructor(button: IUIButton, options: UIButtonToolipOptions) {
@@ -32,23 +32,27 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     }
 
     initialize() {
-        this.textSprite = new UIText(this.tooltipOptions)
-        this.addChild(this.textSprite)
+        this.textComponent = new UIText(this.tooltipOptions)
+        this.addChild(this.textComponent)
 
         if (this.direction === FourWayDirection.Down || this.direction === FourWayDirection.Up) {
-            this.basePosition.x = this.button.middleX - this.textSprite.halfTextWidth
+            this.basePosition.x = this.button.middleX - this.textComponent.halfTextWidth
+        } else {
+            this.basePosition.y = this.button.middleY - this.textComponent.halfTextHeight
         }
         
         switch (this.direction) {
             case FourWayDirection.Down:
-                this.basePosition.y = this.button.bottomY - this.textSprite.textHeight + UIDefaults.UIMargin
+                this.basePosition.y = this.button.bottom - this.textComponent.textHeight + UIDefaults.UIMargin
                 break
             case FourWayDirection.Up:
-                this.basePosition.y = this.button.topY - this.textSprite.textHeight - UIDefaults.UIMargin
+                this.basePosition.y = this.button.top - this.textComponent.textHeight - UIDefaults.UIMargin
                 break
             case FourWayDirection.Left:
+                this.basePosition.x = this.button.left - this.textComponent.textWidth - UIDefaults.UIMargin
                 break
             case FourWayDirection.Right:
+                this.basePosition.x = this.button.right + UIDefaults.UIMargin
                 break
         }
 
@@ -58,29 +62,14 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     reposition() {
         super.reposition()
 
-        if (this.textSprite) {
+        if (this.textComponent) {
             let newX = this.basePosition.x
             let newY = this.basePosition.y
-
-            // if (this.direction === FourWayDirection.Down || this.direction === FourWayDirection.Up) {
-            //     newX = this.button.middleX - this.textSprite.halfTextWidth
-            // }
-
-            // switch (this.direction) {
-            //     case FourWayDirection.Down:
-            //         break
-            //     case FourWayDirection.Up:
-            //         break
-            //     case FourWayDirection.Left:
-            //         break
-            //     case FourWayDirection.Right:
-            //         break
-            // }
 
             newX += this.xOffset
             newY += this.yOffset
 
-            this.textSprite.position.set(newX, newY)
+            this.textComponent.position.set(newX, newY)
         }
     }
 

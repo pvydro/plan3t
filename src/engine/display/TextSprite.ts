@@ -17,11 +17,11 @@ export interface ITextSprite extends IDemolishable {
 }
 
 export interface TextSpriteOptions {
-    text: string
-    align?: TextSpriteAlign
     uppercase?: boolean
     style?: TextSpriteStyle
     anchor?: IVector2 | number
+    text: string
+    align?: TextSpriteAlign
 }
 
 export interface TextSpriteStyle {
@@ -29,6 +29,8 @@ export interface TextSpriteStyle {
     fontSize?: number
     color?: number
     rescale?: number
+    align?: TextSpriteAlign
+    uppercase?: boolean
 }
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
@@ -37,12 +39,13 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     rescale: number
 
     constructor(options: TextSpriteOptions) {
-        const text = options.uppercase === true ? options.text.toUpperCase() : options.text
+        const uppercase = (options.uppercase ?? options.style.uppercase) ?? false
+        const text = uppercase ? options.text.toUpperCase() : options.text
         const fontFamily = (options.style && options.style.fontFamily) ?? TextDefaults.fontFamily
         const fontSize = (options.style && options.style.fontSize) ?? scaleFontSize(TextDefaults.fontSize)
         const fill = (options.style && options.style.color) ?? TextDefaults.color
         const rescale = (options.style && options.style.rescale) ?? scaleRescale(TextDefaults.rescale)
-        const align = (options.align as string) ?? 'center'
+        const align = options.style.align ? options.style.align : (options.align) ?? 'center'
         const wordWrap = false
         const style = new PIXI.TextStyle({ fontFamily, fontSize, fill, align, wordWrap })
         

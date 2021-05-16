@@ -15,7 +15,7 @@ export class RespawnHeader extends UIComponent implements IRespawnHeader {
         super()
 
         const text = new UIText({
-            text: 'YOU DIED',
+            text: 'You died',
             style: TextStyles.Menu.HeaderBig,
             anchor: 0
         })

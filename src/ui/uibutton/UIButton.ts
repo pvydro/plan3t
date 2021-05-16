@@ -210,14 +210,9 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     applyBackgroundTexture(options: UIButtonOptions) {
-        const background: UIButtonBackgroundOptions = options.background
-        // const anchor = options.anchor
+        if (options.background !== undefined) {
+            const background = options.background
 
-        if (this.debuggerPlugin) {
-            this.addChild(this.debuggerPlugin)
-        }
-        
-        if (background !== undefined) {
             if (background.idle !== undefined) {
                 const idle = PIXI.Texture.from(Assets.get(background.idle))
                 const hovered = background.hovered ? PIXI.Texture.from(Assets.get(background.hovered)) : undefined
@@ -250,6 +245,7 @@ export class UIButton extends UIComponent implements IUIButton {
         }
         if (this.debuggerPlugin) {
             this.debuggerPlugin.initialize()
+            this.addChildAt(this.debuggerPlugin, 0)
         }
     }
 
@@ -334,7 +330,11 @@ export class UIButton extends UIComponent implements IUIButton {
         return this.textSprite ? this.textSprite.textHeight : 0
     }
 
-    get bottomY() {
-        return this.backgroundSprite.height
+    get bottom() {
+        return this.backgroundHeight
+    }
+
+    get right() {
+        return this.backgroundWidth
     }
 }

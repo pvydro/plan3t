@@ -53,6 +53,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
 
         this.allScreens = [
             this.respawnScreen,
+            this.waveRunnerScreen,
             this.waveRunnerScreen
             // this.inGameInventory,
             // this.beamMeUpScreen
