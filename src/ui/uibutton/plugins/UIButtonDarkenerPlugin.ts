@@ -1,5 +1,5 @@
 import { functionExists } from '../../../utils/Utils'
-import { UIButton } from '../UIButton'
+import { IUIButton } from '../UIButton'
 
 export interface IUIButtonDarkenerPlugin {
 
@@ -15,12 +15,12 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
     buttonExtendedOnHold: Function
     buttonExtendedOnMouseOut: Function
     buttonExtendedOnRelease: Function
-    button: UIButton
+    button: IUIButton
 
     hoverTint: number
     clickTint: number
 
-    constructor(button: UIButton, options: UIButtonDarkenerPluginOptions) {
+    constructor(button: IUIButton, options: UIButtonDarkenerPluginOptions) {
         this.button = button
 
         this.hoverTint = options.hoverTint
@@ -38,22 +38,26 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
     }
 
     onHover() {
-        this.button.backgroundSprite.tint = this.hoverTint
+        this.backgroundSprite.tint = this.hoverTint
         if (functionExists(this.buttonExtendedHover)) this.buttonExtendedHover()
     }
 
     onHold() {
-        this.button.backgroundSprite.tint = this.clickTint
+        this.backgroundSprite.tint = this.clickTint
         if (functionExists(this.buttonExtendedOnHold)) this.buttonExtendedOnHold()
     }
     
     onMouseOut() {
-        this.button.backgroundSprite.tint = 0xFFFFFF
+        this.backgroundSprite.tint = 0xFFFFFF
         if (functionExists(this.buttonExtendedOnMouseOut)) this.buttonExtendedOnMouseOut()
     }
 
     onRelease() {
-        this.button.backgroundSprite.tint = this.hoverTint
+        this.backgroundSprite.tint = this.hoverTint
         if (functionExists(this.buttonExtendedOnRelease)) this.buttonExtendedOnRelease()
+    }
+
+    get backgroundSprite() {
+        return this.button.background.backgroundSprite
     }
 }

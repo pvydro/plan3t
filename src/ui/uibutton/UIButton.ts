@@ -11,7 +11,7 @@ import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions as UIButtonDarkenerOptions } from './plugins/UIButtonDarkenerPlugin'
 import { UIButtonDebuggerPlugin } from './plugins/UIButtonDebuggerPlugin'
 import { UIButtonToolipOptions, UIButtonTooltipPlugin } from './plugins/UIButtonTooltipPlugin'
-import { UIButtonBackground } from './UIButtonBackground'
+import { IUIButtonBackground, UIButtonBackground } from './UIButtonBackground'
 
 export enum UIButtonState {
     Idle, Hovered, Triggered
@@ -26,6 +26,12 @@ export enum UIButtonType {
 
 export interface IUIButton extends IUIComponent {
     dimension: IDimension
+    background: IUIButtonBackground
+    extendedOnHold?: Function
+    extendedOnTrigger?: Function
+    extendedOnHover?: Function
+    extendedOnMouseOut?: Function
+    extendedOnRelease?: Function
 
     hover(): Promise<any>
     pressDown(): Promise<any>

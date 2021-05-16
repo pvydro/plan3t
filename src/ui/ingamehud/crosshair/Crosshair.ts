@@ -162,7 +162,6 @@ export class Crosshair extends UIComponent implements ICrosshair {
         this.resetStateSetTimer()
 
         this.stateSetTimer = window.setTimeout(() => {
-            this.stateSetTimer = undefined
             this.state = state
         }, delay)
     }

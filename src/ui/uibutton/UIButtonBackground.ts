@@ -1,11 +1,10 @@
 import { Assets } from '../../asset/Assets'
 import { Container } from '../../engine/display/Container'
-import { Graphix } from '../../engine/display/Graphix'
-import { Sprite } from '../../engine/display/Sprite'
+import { ISprite, Sprite } from '../../engine/display/Sprite'
 import { IUIButton, UIButtonBackgroundOptions } from './UIButton'
 
 export interface IUIButtonBackground {
-
+    backgroundSprite: ISprite
 }
 
 export interface UIButtonBackgroundContainerOptions {
@@ -72,20 +71,7 @@ export class UIButtonBackground extends Container {
         this.addChild(this._backgroundSpriteTriggered)
     }
 
-    // set backgroundGraphic(value: Graphix) {
-    //     if (this._backgroundGraphic !== undefined) {
-    //         this.removeChild(this._backgroundGraphic)
-    //     }
-
-    //     this._backgroundGraphic = value
-    //     this.addChild(this._backgroundGraphic)
-    // }
-
     get backgroundSprite() {
         return this._backgroundSprite
     }
-
-    // get backgroundGraphic() {
-    //     return this._backgroundGraphic
-    // }
 }

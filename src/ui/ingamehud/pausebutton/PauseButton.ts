@@ -20,7 +20,8 @@ export class PauseButton extends UIButton implements IPauseButton {
             tooltipOptions: {
                 text: 'Pause',
                 uppercase: true,
-                side: FourWayDirection.Left
+                side: FourWayDirection.Left,
+                showOnHover: true
             }
         })
     }

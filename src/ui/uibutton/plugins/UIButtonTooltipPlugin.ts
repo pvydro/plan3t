@@ -16,6 +16,7 @@ export interface UIButtonToolipOptions extends TextSpriteOptions {
     xOffset?: number
     yOffset?: number
     side?: FourWayDirection
+    showOnHover?: boolean
 }
 
 export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonTooltipPlugin {
@@ -56,7 +57,30 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
                 break
         }
 
+        if (this.tooltipOptions.showOnHover) {
+            this.forceHide()
+
+            this.button.extendedOnHover = () => {
+                this.show()
+            }
+            this.button.extendedOnMouseOut = () => {
+                this.hide()
+            }
+        }
+
         this.reposition()
+    }
+
+    async show() {
+        super.show()
+        
+        this.alpha = 1
+    }
+
+    async hide() {
+        super.hide()
+
+        this.alpha = 0
     }
 
     reposition() {

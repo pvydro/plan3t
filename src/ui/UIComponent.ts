@@ -57,6 +57,7 @@ export class UIComponent extends UIContainer implements IUIComponent {
 
     forceHide() {
         this._isShown = false
+        this.alpha = 0
     }
 
     reposition(addListener?: boolean) {
