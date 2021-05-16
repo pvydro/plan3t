@@ -9,7 +9,10 @@ export interface IMusicManager {
 
 export class MusicManager implements IMusicManager {
     private static Instance: IMusicManager
-    private static MusicUrl: string = 'https://storage.googleapis.com/www.paydro.dev/musik/'//'https://paydro.dev/musik/'
+    private static MusicUrl: string = 'http://storage.googleapis.com/www.paydinfull.com/musik/'
+    // 'http://www.paydinfull.com/musik/' 
+    //'http://storage.googleapis.com/www.paydro.dev/musik/'
+    //'https://paydro.dev/musik/'
 
     static getInstance() {
         if (!this.Instance) {

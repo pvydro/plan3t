@@ -27,7 +27,7 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             this.waveManager = WaveRunnerManager.getInstance()
             this.waveManager.initialize()
 
-            this.musicManager.fetchSong(SongKeyCodes.Midas).then((sound: Sound) => {
+            this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
                 sound.play()
             })
         })

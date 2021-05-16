@@ -26,6 +26,10 @@ export class UIButtonNudgePlugin implements IUIButtonNudgePlugin {
         button.extendedOnRelease = () => {
             this.releaseNudge()
         }
+
+        button.extendedOnMouseOut = () => {
+            this.releaseNudge()
+        }
     }
 
     applyNudge() {

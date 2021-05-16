@@ -26,7 +26,7 @@ export class PauseButton extends UIButton implements IPauseButton {
                 xOffset: 4
             },
             nudgeOptions: {
-                yNudgeOnClick: 6
+                yNudgeOnClick: 4
             }
         })
     }

@@ -11,7 +11,7 @@ import { SphericalData } from './spherical/SphericalData'
 import { GameMapContainer } from './GameMapContainer'
 import { Homeshipical } from './homeship/Homeshipical'
 import { Camera } from '../camera/Camera'
-import { CameraLayer, CameraStageBackground } from '../camera/CameraStage'
+import { CameraLayer, CameraStageBackgroundType } from '../camera/CameraStage'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
@@ -53,7 +53,7 @@ export class GameMap extends Container implements IGameMap {
 
         // await this.sky.configure({ allBlack: true })
         // await this.sky.configure()
-        this.camera.stage.setBackground(CameraStageBackground.BlueSky)
+        this.camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
 
         await this.applyGameMapContainer(homeship)
     }
@@ -74,7 +74,7 @@ export class GameMap extends Container implements IGameMap {
 
         // await this.sky.configure()
         // this.camera.stage.setBackground(this.sky)
-        this.camera.stage.setBackground(CameraStageBackground.BlueSky)
+        this.camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
         await this.applyGameMapContainer(spherical)
     }
 

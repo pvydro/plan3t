@@ -9,7 +9,7 @@ import { log, loudLog } from '../service/Flogger'
 import { GameWindow } from '../utils/Constants'
 import { ICamera, Camera } from './Camera'
 
-export enum CameraStageBackground {
+export enum CameraStageBackgroundType {
     BlueSky = 'BlueSky',
     Black = 'Blackout'
 }
@@ -33,7 +33,7 @@ export const CameraLayer = {
 }
 
 export interface ICameraStage extends IUpdatable, IReposition {
-    setBackground(background: CameraStageBackground): void
+    setBackground(background: CameraStageBackgroundType): void
 }
 
 export interface CameraStageOptions {
@@ -145,18 +145,18 @@ export class CameraStage extends Container implements ICameraStage {
         }
     }
 
-    setBackground(background: CameraStageBackground) {
+    setBackground(background: CameraStageBackgroundType) {
         log('CameraStage', 'setBackground', 'background', background)
 
         this.backgroundContainer.clearChildren()
 
-        if (background === CameraStageBackground.BlueSky) {
+        if (background === CameraStageBackgroundType.BlueSky) {
             const backgroundSprite = new Sprite({
                 texture: PIXI.Texture.from(Assets.get(AssetUrls.SkyDawn))
             })
 
             this.backgroundContainer.addChild(backgroundSprite)
-        } else if (background === CameraStageBackground.Black) {
+        } else if (background === CameraStageBackgroundType.Black) {
             
         }
 
