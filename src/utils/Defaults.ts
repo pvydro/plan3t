@@ -10,7 +10,7 @@ export abstract class Defaults {
 }
 
 export abstract class UIDefaults {
-    static UIScale: number = 5
+    static UIScale: number = 6//5
     static UIMargin: number = 4
     static UIEdgePadding: number = 42
     static UIScreenDefaultFilters: PIXI.Filter[] = [

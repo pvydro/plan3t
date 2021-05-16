@@ -57,7 +57,7 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
                 this.basePosition.y = this.button.top - this.textComponent.textHeight - UIDefaults.UIMargin - offset
                 break
             case FourWayDirection.Left:
-                this.basePosition.x = this.button.left - this.textComponent.halfTextWidth - UIDefaults.UIMargin - offset
+                this.basePosition.x = this.button.left - this.textComponent.textWidth - UIDefaults.UIMargin - offset
                 break
             case FourWayDirection.Right:
                 this.basePosition.x = this.button.right + UIDefaults.UIMargin - offset
@@ -65,8 +65,8 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
         }
 
         if (this.tooltipOptions.showOnHover) {
-            const offsetX = FourWayDirection.isHorizontal(this.direction) ? this.swipeTween.offset / 2 : 0
-            const offsetY = FourWayDirection.isVertical(this.direction) ? this.swipeTween.offset / 2 : 0
+            const offsetX = this.tooltipOptions.xOffset + (FourWayDirection.isHorizontal(this.direction) ? this.swipeTween.offset / 2 : 0)
+            const offsetY = this.tooltipOptions.yOffset + (FourWayDirection.isVertical(this.direction) ? this.swipeTween.offset / 2 : 0)
 
             this.textComponent.forceHide()
 

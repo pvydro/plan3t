@@ -75,7 +75,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         return new Promise((resolve, reject) => {
             this.addChild(this.ammoStatus)
-            this.addChild(this.hotbar)
+            // this.addChild(this.hotbar)
             this.addChild(this.inGameMenu)
             this.addChild(this.crosshair)
             this.addChild(this.pauseButton)
@@ -96,7 +96,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         this.crosshair.update()
         this.ammoStatus.update()
-        this.hotbar.update()
+        // this.hotbar.update()
         this.inventory.update()
     }
 

@@ -21,7 +21,9 @@ export class PauseButton extends UIButton implements IPauseButton {
                 text: 'Pause',
                 uppercase: true,
                 side: FourWayDirection.Left,
-                showOnHover: true
+                showOnHover: true,
+                yOffset: -2,
+                xOffset: 4
             }
         })
     }

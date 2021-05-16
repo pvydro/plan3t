@@ -32,7 +32,7 @@ export class TextStyles {
             fontFamily: Fonts.FontDefault.family,
         },
         TooltipMedium: {
-            fontSize: scaleFontSize(12),
+            fontSize: scaleFontSize(10),
             fontFamily: Fonts.FontDefault.family,
             align: TextSpriteAlign.Center
         }

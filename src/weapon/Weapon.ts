@@ -8,6 +8,7 @@ import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { IVector2 } from '../engine/math/Vector2'
 import { Flogger, log } from '../service/Flogger'
+import { Crosshair, CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { ProjectileType } from './projectile/Bullet'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
@@ -120,6 +121,7 @@ export class Weapon extends Container implements IWeapon {
 
     async shoot(): Promise<void> {
         if (this.state === WeaponState.Loaded
+        && Crosshair.getInstance().state === CrosshairState.Gameplay
         && !this.currentShootPromise) {
             this.currentShootPromise = new Promise((resolve) => {
                 if (!this.ammunition.checkAmmunition()) {
