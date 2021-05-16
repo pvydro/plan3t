@@ -16,24 +16,33 @@ import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
 
 export interface IGame {
-    bootstrap(): Promise<void>
     view: any
     renderer: PIXI.Renderer
     camera: Camera
     cameraViewport: Viewport
+
+    bootstrap(): Promise<void>
 }
 
 export class Game implements IGame {
+    private static Instance: IGame
     _application: PIXI.Application
     _clientCamera: Camera
     _clientManager: IClientManager
     _entityManager: IEntityManager
     _particleManager: ParticleManager
     _loadingScreen: LoadingScreen
-
     gameLoop: IGameLoop
 
-    constructor() {
+    static getInstance() {
+        if (!this.Instance) {
+            this.Instance = new Game()
+        }
+
+        return this.Instance
+    }
+
+    private constructor() {
         this.instantiateApplication()
 
         const game = this

@@ -7,7 +7,7 @@ import { GameWindow } from '../../utils/Constants'
 window.PIXI = PIXI
 global.PIXI = PIXI
 
-const game: IGame = new Game()
+const game: IGame = Game.getInstance()
 let isFullscreen = false
 
 // Startup

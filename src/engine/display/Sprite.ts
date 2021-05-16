@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../interface/IDemolishable'
+import { Game } from '../../main/Game'
 import { IDimension } from '../math/Dimension'
 import { IRect } from '../math/Rect'
 import { Graphix } from './Graphix'
@@ -26,6 +27,11 @@ export class Sprite extends PIXI.Sprite implements ISprite {
     overlayGraphic?: Graphix
 
     constructor(options: SpriteOptions) {
+        if (options.texture instanceof Graphix) {
+            const gfxTexture = options.texture as Graphix
+            options.texture = Game.getInstance().renderer.generateTexture(gfxTexture, 1, 1)
+        }
+
         super(options.texture)
 
         if (options.dimension) {
@@ -34,7 +40,6 @@ export class Sprite extends PIXI.Sprite implements ISprite {
         if (options.includeOverlay !== undefined) {
             this.initializeOverlayGraphics(options.includeOverlay)
         }
-
     }
 
     initializeOverlayGraphics(options: SpriteOverlayOptions) {

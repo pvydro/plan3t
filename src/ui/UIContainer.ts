@@ -36,7 +36,7 @@ export class UIContainer extends Container implements IUIContainer {
         this.applyContainerEmptyFill()
     }
 
-    update(): void {
+    update() {
         if (this._shouldFillWindow) {
             if (this._containerWidth !== GameWindow.width
             || this._containerHeight !== GameWindow.height) {
