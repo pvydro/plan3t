@@ -158,7 +158,7 @@ export class Weapon extends Container implements IWeapon {
     shootSound() {
         log('Weapon', 'shootSound')
 
-        Sounds.play(SoundUrls.GunshotA, { volume: 0.0125 })
+        Sounds.play(SoundUrls.GunshotA, { volume: 0.125 })
     }
 
     fireBullet() {

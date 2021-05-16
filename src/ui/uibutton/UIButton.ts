@@ -7,6 +7,7 @@ import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions as UIButtonDarkenerOptions } from './plugins/UIButtonDarkenerPlugin'
 import { UIButtonDebuggerPlugin } from './plugins/UIButtonDebuggerPlugin'
+import { UIButtonNudgeOptions, UIButtonNudgePlugin } from './plugins/UIButtonNudgePlugin'
 import { UIButtonToolipOptions, UIButtonTooltipPlugin } from './plugins/UIButtonTooltipPlugin'
 import { IUIButtonBackground, UIButtonBackground } from './UIButtonBackground'
 
@@ -54,6 +55,7 @@ export interface UIButtonOptions extends UIComponentOptions {
     addClickListeners?: boolean
     darkenerOptions?: UIButtonDarkenerOptions
     tooltipOptions?: UIButtonToolipOptions
+    nudgeOptions?: UIButtonNudgeOptions
 
     onHold?: () => void
     onTrigger?: () => void
@@ -216,6 +218,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
     loadPlugins(options: UIButtonOptions) {
         if (options.darkenerOptions)            this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerOptions))
+        if (options.nudgeOptions)               this.plugins.push(new UIButtonNudgePlugin(this, options.nudgeOptions))
         if (options.tooltipOptions)             this.plugins.push(this.tooltipPlugin = new UIButtonTooltipPlugin(this, options.tooltipOptions))
         if (DebugConstants.ShowUIButtonDebug)   this.plugins.push(this.debuggerPlugin = new UIButtonDebuggerPlugin(this))
     }

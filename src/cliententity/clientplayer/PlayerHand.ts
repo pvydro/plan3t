@@ -128,8 +128,6 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
 
     setTargetRotation(targetRotation: number) {
-        console.log('setTargetRotation')
-
         this.rotation = targetRotation
     }
 

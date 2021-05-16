@@ -127,6 +127,8 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     private applyDefaults(options: UIButtonToolipOptions): UIButtonToolipOptions {
         options.style = options.style ?? TextStyles.UIButton.TooltipMedium
         options.side = options.side ?? FourWayDirection.Down
+        options.xOffset = options.xOffset ?? 0
+        options.yOffset = options.yOffset ?? 0
 
         return options
     }
@@ -136,11 +138,11 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     }
 
     get xOffset() {
-        return this.tooltipOptions.xOffset ?? 0
+        return this.tooltipOptions.xOffset
     }
 
     get yOffset() {
-        return this.tooltipOptions.yOffset ?? 0
+        return this.tooltipOptions.yOffset
     }
 
     get swipeTween() {
