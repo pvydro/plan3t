@@ -1,5 +1,6 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { Fonts } from '../../../asset/Fonts'
+import { TextStyles } from '../../../engine/display/TextStyles'
 import { IReposition } from '../../../interface/IReposition'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { log } from '../../../service/Flogger'
@@ -17,26 +18,22 @@ export class RespawnButton extends UIButton implements IRespawnButton {
     constructor() {
         super({
             type: UIButtonType.Tap,
-            anchor: {
-                x: 1, y: 1
-            },
             text: {
                 text: 'Respawn',
                 uppercase: true,
-                offsetY: 3,
+                offsetY: -3,
                 alpha: 0.5,
-                style: {
-                    fontFamily: Fonts.FontDefault.family,
-                    fontSize: 18,
-                    color: 0x000000
-                }
+                style: TextStyles.MetalButton.Medium,
             },
             background: {
                 idle: AssetUrls.MID_BUTTON_METAL
             },
-            darkenerPluginOptions: {
+            darkenerOptions: {
                 hoverTint: 0xdbdbdb,
                 clickTint: 0x969696
+            },
+            tooltipOptions: {
+                text: 'RESPAWN',
             }
         })
 
@@ -55,7 +52,12 @@ export class RespawnButton extends UIButton implements IRespawnButton {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        this.x = GameWindow.width - UIDefaults.UIEdgePadding
-        this.y = GameWindow.height - UIDefaults.UIEdgePadding
+        const scaledWidth = this.backgroundWidth * UIDefaults.UIScale
+
+        this.pos = {
+            x: GameWindow.width - UIDefaults.UIEdgePadding - scaledWidth ,
+            y: GameWindow.height - UIDefaults.UIEdgePadding
+
+        }
     }
 }

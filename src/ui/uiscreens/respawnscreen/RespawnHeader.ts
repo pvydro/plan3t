@@ -1,25 +1,26 @@
-import { IUIComponent } from '../../UIComponent'
+import { IUIComponent, UIComponent } from '../../UIComponent'
 import { Fonts } from '../../../asset/Fonts'
 import { UIText } from '../../UIText'
 import { UIDefaults } from '../../../utils/Defaults'
+import { TextStyles } from '../../../engine/display/TextStyles'
 
 export interface IRespawnHeader extends IUIComponent {
     
 }
 
-export class RespawnHeader extends UIText implements IRespawnHeader {
+export class RespawnHeader extends UIComponent implements IRespawnHeader {
     _isShown: boolean
 
     constructor() {
-        super({
-            text: 'YOU DIED',
-            style: {
-                fontFamily: Fonts.FontDefault.family,
-                fontSize: 64,
-            }
-        })
+        super()
 
-        this.anchor.set(0, 0)
+        const text = new UIText({
+            text: 'YOU DIED',
+            style: TextStyles.Menu.HeaderBig,
+            anchor: 0
+        })
+        
+        this.addChild(text)
         this.reposition()
     }
 

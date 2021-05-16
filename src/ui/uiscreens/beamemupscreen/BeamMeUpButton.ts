@@ -1,6 +1,6 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { Fonts } from '../../../asset/Fonts'
-import { Flogger } from '../../../service/Flogger'
+import { Flogger, log } from '../../../service/Flogger'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
 export interface IBeamMeUpButton extends IUIButton {
@@ -11,9 +11,6 @@ export class BeamMeUpButton extends UIButton implements IBeamMeUpButton {
     constructor() {
         super({
             type: UIButtonType.Tap,
-            anchor: {
-                x: 0, y: 0
-            },
             text: {
                 text: 'Beam me down',
                 uppercase: true,
@@ -26,15 +23,16 @@ export class BeamMeUpButton extends UIButton implements IBeamMeUpButton {
             background: {
                 idle: AssetUrls.MID_BUTTON_METAL
             },
-            darkenerPluginOptions: {
+            darkenerOptions: {
                 hoverTint: 0xdbdbdb,
                 clickTint: 0x969696
-            },
-            onTrigger: () => {}
+            }
         })
     }
 
-    triggerBeamMeDown() {
-        Flogger.log('BeamMeUpButton', 'beamMeDown')
+    trigger() {
+        log('BeamMeUpButton', 'beamMeDown')
+
+        super.trigger()
     }
 }

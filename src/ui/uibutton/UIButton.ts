@@ -8,8 +8,9 @@ import { Constants, DebugConstants } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
-import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions } from './plugins/UIButtonDarkenerPlugin'
+import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions as UIButtonDarkenerOptions } from './plugins/UIButtonDarkenerPlugin'
 import { UIButtonDebuggerPlugin } from './plugins/UIButtonDebuggerPlugin'
+import { UIButtonToolipOptions, UIButtonTooltipPlugin } from './plugins/UIButtonTooltipPlugin'
 
 export enum UIButtonState {
     Idle, Hovered, Triggered
@@ -47,8 +48,9 @@ export interface UIButtonOptions extends UIComponentOptions {
     text?: UIButtonTextOptions
     background?: UIButtonBackgroundOptions
     addClickListeners?: boolean
-    anchor?: IVector2
-    darkenerPluginOptions?: UIButtonDarkenerPluginOptions
+    darkenerOptions?: UIButtonDarkenerOptions
+    tooltipOptions?: UIButtonToolipOptions
+
     onHold?: () => void
     onTrigger?: () => void
     onHover?: () => void
@@ -69,6 +71,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
     plugins: any[] = []
     debuggerPlugin: UIButtonDebuggerPlugin
+    tooltipPlugin: UIButtonTooltipPlugin
 
     extendedOnHold?: Function
     extendedOnTrigger?: Function
@@ -86,14 +89,9 @@ export class UIButton extends UIComponent implements IUIButton {
         this.extendedOnMouseOut = options.onMouseOut
         this.extendedOnRelease = options.onRelease
 
-        if (options.darkenerPluginOptions) {
-            this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerPluginOptions))
-        }
-        if (DebugConstants.ShowUIButtonDebug) {
-            this.plugins.push(this.debuggerPlugin = new UIButtonDebuggerPlugin(this))
-        }
-
+        this.loadPlugins(options)
         this.applyBackgroundTexture(options)
+        this.applyPluginInternals(options)
         this.applyMouseListeners(options.addClickListeners ?? true)
         this.applyText(options)
     }
@@ -198,12 +196,6 @@ export class UIButton extends UIComponent implements IUIButton {
             const startY = -(this.textHeight / 2) + this.halfHeight
 
             this.textSprite.position.set(0, startY)
-            if (options.anchor !== undefined) {
-                if (options.anchor.x === 1) {
-                    this.textSprite.position.set(-this.backgroundWidth, -this.backgroundHeight)
-                }
-            }
-
             this.textSprite.alpha = textOptions.alpha ?? 1
             this.textSprite.y += offsetY
 
@@ -219,7 +211,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
     applyBackgroundTexture(options: UIButtonOptions) {
         const background: UIButtonBackgroundOptions = options.background
-        const anchor = options.anchor
+        // const anchor = options.anchor
 
         if (this.debuggerPlugin) {
             this.addChild(this.debuggerPlugin)
@@ -239,17 +231,23 @@ export class UIButton extends UIComponent implements IUIButton {
                 if (triggered !== undefined && background.triggered !== background.hovered) {
                     this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
                 }
-    
-                if (anchor !== undefined) {
-                    this._backgroundSprite.anchor.set(anchor.x, anchor.y)
-                    if (this._backgroundSpriteHovered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
-                    if (this._backgroundSpriteTriggered) this.backgroundSpriteHovered.anchor.set(anchor.x, anchor.y)
-                }
             } else if (background.graphic !== undefined) {
                 this.backgroundGraphic = background.graphic
             }
         }
+    }
 
+    loadPlugins(options: UIButtonOptions) {
+        if (options.darkenerOptions)            this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerOptions))
+        if (options.tooltipOptions)             this.plugins.push(this.tooltipPlugin = new UIButtonTooltipPlugin(this, options.tooltipOptions))
+        if (DebugConstants.ShowUIButtonDebug)   this.plugins.push(this.debuggerPlugin = new UIButtonDebuggerPlugin(this))
+    }
+
+    applyPluginInternals(options: UIButtonOptions) {
+        if (this.tooltipPlugin) {
+            this.tooltipPlugin.initialize()
+            this.addChild(this.tooltipPlugin)
+        }
         if (this.debuggerPlugin) {
             this.debuggerPlugin.initialize()
         }
@@ -334,5 +332,9 @@ export class UIButton extends UIComponent implements IUIButton {
 
     get textHeight() {
         return this.textSprite ? this.textSprite.textHeight : 0
+    }
+
+    get bottomY() {
+        return this.backgroundSprite.height
     }
 }

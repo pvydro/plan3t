@@ -9,6 +9,7 @@ const _textScaleMultiplier = 4
 
 export class TextStyles {
     static TextRescaleMultiplier: number = _textScaleMultiplier
+
     static Menu: ITextStyles = {
         HeaderSmall: {
             fontSize: scaleFontSize(8),
@@ -23,15 +24,36 @@ export class TextStyles {
             fontFamily: Fonts.FontDefault.family,
         }
     }
+
+    static UIButton: ITextStyles = {
+        TooltipSmall: {
+            fontSize: scaleFontSize(6),
+            fontFamily: Fonts.FontDefault.family,
+        },
+        TooltipMedium: {
+            fontSize: scaleFontSize(12),
+            fontFamily: Fonts.FontDefault.family,
+        }
+    }
+
     static TextParticle: TextSpriteStyle = {
         fontSize: scaleFontSize(16),
         fontFamily: Fonts.FontDefault.family,
         color: 0xFFFFFF
     }
+
     static KeyTooltip: TextSpriteStyle = {
         fontSize: scaleFontSize(12),
         fontFamily: Fonts.FontDefault.family,
         color: 0xFFFFFF
+    }
+
+    static MetalButton: ITextStyles = {
+        Medium: {
+            fontFamily: Fonts.FontDefault.family,
+            fontSize: scaleFontSize(18),
+            color: 0x000000
+        }
     }
 }
 

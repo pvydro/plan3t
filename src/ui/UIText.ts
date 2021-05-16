@@ -1,7 +1,6 @@
-import { TextSprite, TextSpriteOptions } from '../engine/display/TextSprite'
-import { IUIComponent } from './UIComponent'
+import { ITextSprite, TextSprite, TextSpriteOptions } from '../engine/display/TextSprite'
 
-export interface IUIText extends IUIComponent {
+export interface IUIText extends ITextSprite {
 
 }
 
@@ -17,6 +16,7 @@ export class UIText extends TextSprite implements IUIText {
     }
     
     update(): void {
+        
     }
 
     forceHide() {

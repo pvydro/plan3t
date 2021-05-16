@@ -9,4 +9,16 @@ export class WaveCounterComponent extends UIComponent implements IWaveCounterCom
     constructor() {
         super()
     }
+
+    async show() {
+        super.show()
+
+        this.alpha = 1
+    }
+
+    async hide() {
+        super.hide()
+
+        this.alpha = 0
+    }
 }

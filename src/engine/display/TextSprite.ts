@@ -21,6 +21,7 @@ export interface TextSpriteOptions {
     align?: TextSpriteAlign
     uppercase?: boolean
     style?: TextSpriteStyle
+    anchor?: IVector2 | number
 }
 
 export interface TextSpriteStyle {
@@ -31,8 +32,8 @@ export interface TextSpriteStyle {
 }
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
-    style: PIXI.TextStyle
     _textDimensions: IDimension
+    style: PIXI.TextStyle
     rescale: number
 
     constructor(options: TextSpriteOptions) {
@@ -50,8 +51,14 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         this.style = style
         this.rescale = rescale
         this._textDimensions = PIXI.TextMetrics.measureText(text, style)
+        this.scale.set(rescale, rescale)
 
-        this.scale.set(rescale, rescale)        
+        if (options.anchor !== undefined) {
+            const anc = typeof options.anchor === 'number'
+                ? { x: options.anchor, y: options.anchor } : options.anchor
+
+            this.anchor.set(anc.x, anc.y)
+        }
     }
     
     get textWidth() {

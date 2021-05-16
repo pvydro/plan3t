@@ -15,6 +15,10 @@ export class PauseButton extends UIButton implements IPauseButton {
             type: UIButtonType.Tap,
             background: {
                 idle: AssetUrls.PauseButton
+            },
+            tooltipOptions: {
+                text: 'Pause',
+                uppercase: true
             }
         })
     }
