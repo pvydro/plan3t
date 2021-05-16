@@ -1,12 +1,14 @@
+import { Animator, IAnimator } from '../../../engine/display/Animator'
 import { TextSpriteOptions } from '../../../engine/display/TextSprite'
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { FourWayDirection } from '../../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
-import { UIDefaults } from '../../../utils/Defaults'
+import { AnimDefaults, UIDefaults } from '../../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../../UIComponent'
-import { IUIContainer, UIContainer } from '../../UIContainer'
 import { UIText } from '../../UIText'
 import { IUIButton } from '../UIButton'
+import { Tween } from '../../../engine/display/tween/Tween'
+import { PredefinedTweens } from '../../../engine/display/tween/PredefinedTweens'
 
 export interface IUIButtonTooltipPlugin extends IUIComponent {
     initialize(): void
@@ -24,12 +26,15 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     tooltipOptions: UIButtonToolipOptions
     textComponent?: UIText
     basePosition: IVector2 = new Vector2(0, 0)
+    animator: IAnimator
+    showAnimation?: TweenLite
 
     constructor(button: IUIButton, options: UIButtonToolipOptions) {
         super()
 
         this.button = button
         this.tooltipOptions = this.applyDefaults(options)
+        this.animator = new Animator()
     }
 
     initialize() {
@@ -41,24 +46,36 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
         } else {
             this.basePosition.y = this.button.middleY - this.textComponent.halfTextHeight
         }
+
+        const offset = this.tooltipOptions.showOnHover ? this.swipeTween.offset : 0
         
         switch (this.direction) {
             case FourWayDirection.Down:
-                this.basePosition.y = this.button.bottom - this.textComponent.textHeight + UIDefaults.UIMargin
+                this.basePosition.y = this.button.bottom - this.textComponent.textHeight + UIDefaults.UIMargin - offset
                 break
             case FourWayDirection.Up:
-                this.basePosition.y = this.button.top - this.textComponent.textHeight - UIDefaults.UIMargin
+                this.basePosition.y = this.button.top - this.textComponent.textHeight - UIDefaults.UIMargin - offset
                 break
             case FourWayDirection.Left:
-                this.basePosition.x = this.button.left - this.textComponent.textWidth - UIDefaults.UIMargin
+                this.basePosition.x = this.button.left - this.textComponent.halfTextWidth - UIDefaults.UIMargin - offset
                 break
             case FourWayDirection.Right:
-                this.basePosition.x = this.button.right + UIDefaults.UIMargin
+                this.basePosition.x = this.button.right + UIDefaults.UIMargin - offset
                 break
         }
 
         if (this.tooltipOptions.showOnHover) {
-            this.forceHide()
+            const offsetX = FourWayDirection.isHorizontal(this.direction) ? this.swipeTween.offset / 2 : 0
+            const offsetY = FourWayDirection.isVertical(this.direction) ? this.swipeTween.offset / 2 : 0
+
+            this.textComponent.forceHide()
+
+            this.showAnimation = Tween.to(this.textComponent, {
+                alpha: 1,
+                x: this.basePosition.x + offsetX,
+                y: this.basePosition.y + offsetY,
+                duration: AnimDefaults.duration,
+            })
 
             this.button.extendedOnHover = () => {
                 this.show()
@@ -74,13 +91,23 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     async show() {
         super.show()
         
-        this.alpha = 1
+        if (this.showAnimation) {
+            this.animator.currentAnimation = this.showAnimation
+            this.animator.play()
+        } else {
+            this.alpha = 1
+        }
     }
 
     async hide() {
         super.hide()
 
-        this.alpha = 0
+        if (this.showAnimation) {
+            this.animator.currentAnimation = this.showAnimation
+            this.animator.playInReverse(0)
+        } else {
+            this.alpha = 0
+        }
     }
 
     reposition() {
@@ -98,7 +125,7 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     }
 
     private applyDefaults(options: UIButtonToolipOptions): UIButtonToolipOptions {
-        options.style = options.style ?? TextStyles.UIButton.TooltipSmall
+        options.style = options.style ?? TextStyles.UIButton.TooltipMedium
         options.side = options.side ?? FourWayDirection.Down
 
         return options
@@ -114,5 +141,9 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
 
     get yOffset() {
         return this.tooltipOptions.yOffset ?? 0
+    }
+
+    get swipeTween() {
+        return PredefinedTweens.Swipe
     }
 }

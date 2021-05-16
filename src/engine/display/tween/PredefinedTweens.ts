@@ -2,14 +2,13 @@ import { TweenOptions } from './Tween'
 import { Easing } from './TweenEasing'
 
 export interface IPredefinedTween extends TweenOptions {
-    offsetY?: number
-    offsetX?: number
+    offset?: number
 }
 
 export class PredefinedTweens {
-    static SwipeUp: IPredefinedTween = {
+    static Swipe: IPredefinedTween = {
         duration: 0.5,
-        offsetY: 6,
+        offset: 6,
         ease: Easing.Power4EaseOut
     }
 }

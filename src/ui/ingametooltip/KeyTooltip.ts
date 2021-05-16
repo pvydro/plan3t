@@ -30,7 +30,7 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
     constructor(options: KeyTooltipOptions) {
         const texture = PIXI.Texture.from(Assets.get(AssetUrls.TOOLTIP_KEY))
         const keyText = options.text.text
-        const swipeUpAnim = PredefinedTweens.SwipeUp
+        const swipeAnim = PredefinedTweens.Swipe
 
         options.backgroundSprite = new Sprite({ texture })
         options.text = {
@@ -41,22 +41,22 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
         super(options)
 
         this.originalY = this.tooltipContainer.y
-        this.tooltipContainer.y = swipeUpAnim.offsetY
+        this.tooltipContainer.y = swipeAnim.offset
 
         this.showAnimation = Tween.to(this.tooltipContainer, {
             y: this.originalY,
-            duration: swipeUpAnim.duration,
-            ease: swipeUpAnim.ease,
+            duration: swipeAnim.duration,
+            ease: swipeAnim.ease,
             alpha: 1,
         })
         this.hideAnimation = Tween.to(this.tooltipContainer, {
-            y: this.originalY + swipeUpAnim.offsetY,
-            duration: swipeUpAnim.duration,
-            ease: swipeUpAnim.ease,
+            y: this.originalY + swipeAnim.offset,
+            duration: swipeAnim.duration,
+            ease: swipeAnim.ease,
             alpha: 0
         })
         this.usedAnimation = Tween.to(this.tooltipContainer, {
-            y: this.originalY - swipeUpAnim.offsetY,
+            y: this.originalY - swipeAnim.offset,
             duration: 1,
             ease: Easing.EaseInQuint,
             alpha: 0

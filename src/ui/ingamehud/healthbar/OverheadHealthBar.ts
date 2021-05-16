@@ -35,7 +35,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     constructor(options: OverheadHealthBarOptions) {
         super()
         const ogX = this.x
-        const swipeUpAnim = PredefinedTweens.SwipeUp
+        const swipeUpAnim = PredefinedTweens.Swipe
 
         this.player = options.player
 
@@ -66,7 +66,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
             duration: swipeUpAnim.duration,
             ease: swipeUpAnim.ease,
             alpha: 0,
-            y: this.backgroundSprite.y - swipeUpAnim.offsetY
+            y: this.backgroundSprite.y - swipeUpAnim.offset
         })
 
         // Hit shine animation

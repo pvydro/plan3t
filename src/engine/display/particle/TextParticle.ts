@@ -31,9 +31,9 @@ export class TextParticle extends Particle implements ITextParticle {
         })
         super(options)
 
-        const swipeUpAnim = PredefinedTweens.SwipeUp
+        const swipeUpAnim = PredefinedTweens.Swipe
         
-        this.fadeUpAmount = options.fadeUpAmount ?? -swipeUpAnim.offsetY
+        this.fadeUpAmount = options.fadeUpAmount ?? -swipeUpAnim.offset
         this.fadeOutDivisor = options.fadeOutDivisor ?? 10
         this.alpha = options.startAlpha ?? 1
 
@@ -44,7 +44,7 @@ export class TextParticle extends Particle implements ITextParticle {
         const self = this
         const int = { interpolation: 0 }
         const fadeOutBreakpoint = options.fadeOutBreakpoint ?? 0.75
-        const swipeUpAnim = PredefinedTweens.SwipeUp
+        const swipeUpAnim = PredefinedTweens.Swipe
 
         this.exitAnimation = Tween.to(int, {
             interpolation: 1,

@@ -21,6 +21,7 @@ export class UIText extends TextSprite implements IUIText {
 
     forceHide() {
         this.alpha = 0
+        this._isShown = false
     }
 
     async show() {
