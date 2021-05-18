@@ -102,8 +102,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     jump() {
-        if (this.isDead) return
-
+        // if (this.isDead) return
         this.target.jump()
     }
 
@@ -124,13 +123,15 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     checkIfReachedNode(): boolean {
+        if (this.isDead) return true
+
         if (this.currentNode === undefined) return true
 
         let hasReached = false
         const distance = this.target.x - this.currentNode.x
 
         if (Math.abs(distance) < 1) {
-        this.clearCurrentNode()
+            this.clearCurrentNode()
             this.currentState = GroundPatherState.Idle
 
             hasReached = true
@@ -140,7 +141,10 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     decideIfContinueOrStop() {
-        if (this.isDead) return
+        if (this.isDead) {
+            this.stop()
+            return
+        }
 
         const shouldStop: boolean = (Math.random() > 0.5)
 
@@ -163,13 +167,11 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     stopForSomeTime() {
         this.stop()
-
-        const randomStopTime = Math.random() * this.idleTimeRange
-
         this.clearIdleTimeout()
-
+        
         if (this.isDead) return
-
+        const randomStopTime = Math.random() * this.idleTimeRange
+        
         this.idleTimeout = window.setTimeout(() => {
             this.idleTimeout = undefined
             this.currentState = GroundPatherState.Idle
@@ -184,6 +186,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     die() {
+        this._isDead = true
         this.clearIdleTimeout()
         this.clearCurrentNode()
         this.stop()
@@ -204,7 +207,9 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         if (this._currentGroundRect !== value) {
             this._currentGroundRect = value
 
-            this.findPointOnCurrentGround()
+            if (!this.isDead) {
+                this.findPointOnCurrentGround()
+            }
         }
     }
 

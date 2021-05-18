@@ -90,10 +90,10 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     async die() {
         if (this.isDead) return
 
+        this._isDead = true
+
         this.organismState = GravityOrganismState.Dead
         this.showDyingSprite()
-
-        // this.jump(this.jumpHeight / 2)
         this.yVel = -(this.jumpHeight / 2)
         
         await asyncTimeout(2000)

@@ -5,7 +5,6 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { Camera } from '../camera/Camera'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
-import { asyncTimeout } from '../utils/Utils'
 
 export interface IEnemy extends ITravelkinCreature {
 
@@ -36,6 +35,8 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     }
 
     takeDamage(damage: number | Bullet) {
+        if (this.isDead) return
+
         super.takeDamage(damage)
 
         const camera = Camera.getInstance()
