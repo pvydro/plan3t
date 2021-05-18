@@ -9,7 +9,8 @@ import { Sprite } from '../Sprite'
 import { TextSprite } from '../TextSprite'
 
 export interface IParticle extends IUpdatable, IDemolishable {
-
+    sprite?: Sprite | AnimatedSprite | TextSprite | Graphix
+    hasBeenRemoved: boolean
 }
 
 export interface ParticleOptions extends AnimationOptions, ParticlePositioningOptions {
@@ -26,6 +27,7 @@ export interface ParticlePositioningOptions {
 
 export class Particle extends Container implements IParticle {
     sprite?: Sprite | AnimatedSprite | TextSprite | Graphix
+    hasBeenRemoved: boolean = false
 
     constructor(options: ParticleOptions) {
         super()
@@ -64,7 +66,6 @@ export class Particle extends Container implements IParticle {
     demolish(): void {
         ParticleManager.getInstance().removeParticle(this)
         if (this.sprite) {
-            this.sprite.destroy()
             delete this.sprite
         }
     }

@@ -1,5 +1,6 @@
 import { GameLoop } from '../../../gameloop/GameLoop'
 import { ICanDie } from '../../../interface/ICanDie'
+import { ParticleManager } from '../../../manager/particlemanager/ParticleManager'
 import { IRect } from '../../math/Rect'
 import { Graphix } from '../Graphix'
 import { IParticle, Particle, ParticleOptions } from './Particle'
@@ -29,14 +30,16 @@ export class GravityParticle extends Particle implements IGravityParticle {
     ySpreadRange: number
 
     constructor(options: GravityParticleOptions) {
-        const genericColor = options.color ?? 0xb8b8b8
         const negative = (Math.random() > 0.5) === true
-        const dustSize = 2
-        const dustSquare = new Graphix()
-        dustSquare.beginFill(genericColor)
-        dustSquare.drawRect(0, 0, dustSize, dustSize)
-        dustSquare.endFill()
-        options.sprite = dustSquare
+        if (options.sprite === undefined) {
+            const genericColor = options.color ?? 0xb8b8b8
+            const dustSize = 2
+            const dustSquare = new Graphix()
+            dustSquare.beginFill(genericColor)
+            dustSquare.drawRect(0, 0, dustSize, dustSize)
+            dustSquare.endFill()
+            options.sprite = dustSquare
+        }
         super(options)
         
         this.xSpreadRange = 1
@@ -99,5 +102,10 @@ export class GravityParticle extends Particle implements IGravityParticle {
 
     die() {
         this.dead = true
+    }
+
+    demolish() {
+        ParticleManager.getInstance().removeParticle(this)
+        delete this.sprite
     }
 }
