@@ -44,9 +44,9 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     }
     
     setSprites(sprites: CreatureSprites) {
-        const idleSprite = sprites.idleSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.idleSpriteDef.sprite) : undefined
-        const walkingSprite = sprites.walkingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.walkingSpriteDef.sprite) : undefined
-        const dyingSprite = sprites.dyingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.dyingSpriteDef.sprite) : undefined
+        const idleSprite = sprites.idleSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.idleSpriteDef) : undefined
+        const walkingSprite = sprites.walkingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.walkingSpriteDef) : undefined
+        const dyingSprite = sprites.dyingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.dyingSpriteDef) : undefined
         
         if (idleSprite)     idleSprite.anchor.x = 0.5
         if (walkingSprite)  walkingSprite.anchor.x = 0.5
@@ -89,13 +89,15 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
         }
     }
 
-    convertToSpriteOrAnimatedSprite(spr: Sprite | Spritesheet): Sprite | AnimatedSprite {
+    convertToSpriteOrAnimatedSprite(spriteDefinition: CreatureSpriteDefinition): Sprite | AnimatedSprite {
+        const spr = spriteDefinition.sprite
+        const animationSpeed = (spriteDefinition.animationOptions && spriteDefinition.animationOptions.animationSpeed) ?? 0.25
         let convertedSprite: any = !spr ? undefined : (spr as Sprite)
 
         if (spr instanceof Spritesheet) {
             convertedSprite = new AnimatedSprite({
                 sheet: (spr as Spritesheet).animation,
-                animationSpeed: 0.25
+                animationSpeed
             })
         }
 

@@ -1,5 +1,4 @@
 import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
-import { GravityOrganismState } from '../../cliententity/gravityorganism/GravityOrganism'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
