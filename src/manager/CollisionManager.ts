@@ -68,7 +68,8 @@ export class CollisionManager implements ICollisionManager {
         const enemies = EntityManager.getInstance().enemyManager.enemies
 
         enemies.forEach((enemy: IEnemy) => {
-            if (!enemy.isDead && enemy.boundingBox && entity.boundingBox) {
+            if (//!enemy.isDead && 
+                enemy.boundingBox && entity.boundingBox) {
                 if (Rect.intersects(enemy.boundsWithPosition, entity.boundsWithPosition)) {
                     hit = true
 
