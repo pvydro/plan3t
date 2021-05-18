@@ -1,4 +1,5 @@
 import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
+import { GravityOrganismState } from '../../cliententity/gravityorganism/GravityOrganism'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Sprite } from '../../engine/display/Sprite'
 import { trimArray } from '../../utils/Utils'
@@ -18,6 +19,7 @@ export interface ITravelkinCreature extends ICreature {
     ai: IGroundPatherAI
     movementState: TravelkinMovementState
     walkSpeed: number
+    isDead: boolean
     showIdleSprite(): void
     showWalkingSprite(): void
 }

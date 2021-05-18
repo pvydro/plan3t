@@ -1,3 +1,4 @@
+import { GravityOrganismState } from '../../cliententity/gravityorganism/GravityOrganism'
 import { Direction } from '../../engine/math/Direction'
 import { Rect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
@@ -16,6 +17,7 @@ export interface IGroundPatherAI extends IAI, IUpdatable {
     findNewGround(): void
     checkIfReachedNode(): boolean
     stopForSomeTime(): void
+    stop(): void
     decideIfContinueOrStop(): void
     jump(): void
 }
@@ -61,7 +63,9 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
             this.currentGroundRect = this.target.currentGroundRect
         }
 
-        if (this.currentState === GroundPatherState.Wandering
+        if (this.target.organismState == GravityOrganismState.Dead) {
+            this.stop()
+        } else if (this.currentState === GroundPatherState.Wandering
         && this.currentNode === undefined) {
             this.currentState = GroundPatherState.Idle
         }
@@ -156,10 +160,8 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     stopForSomeTime() {
         // log('GroundPatherAI', 'stopForSomeTime')
-        
-        if (this.currentState === GroundPatherState.Stopped) return
 
-        this.currentState = GroundPatherState.Stopped
+        this.stop()
 
         const randomStopTime = Math.random() * this.idleTimeRange
 
@@ -171,6 +173,12 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
             this.idleTimeout = undefined
             this.currentState = GroundPatherState.Idle
         }, this.idleTimeRange + randomStopTime)  
+    }
+
+    stop() {
+        if (this.currentState === GroundPatherState.Stopped) return
+
+        this.currentState = GroundPatherState.Stopped
     }
 
     set currentGroundRect(value: Rect) {

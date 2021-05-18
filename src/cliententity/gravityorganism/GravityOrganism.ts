@@ -9,6 +9,7 @@ export interface IGravityOrganism extends IGravityEntity {
     totalHealth: number
     healthPercentage: number
     organismState: GravityOrganismState
+    isDead: boolean
     jump(): void
     takeDamage(damage: number | Bullet): void
 }
@@ -40,11 +41,12 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         })
     }
 
-    jump() {
+    jump(jumpHeight?: number) {
         if (!this.isOnGround) return
+        const jh = jumpHeight ?? this.jumpHeight
 
         this.onGround = false
-        this.yVel = -this.jumpHeight
+        this.yVel = -jumpHeight
     }
 
     takeDamage(damage: number | Bullet) {
@@ -65,6 +67,10 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         log('GravityOrganism', 'die')
 
         this.organismState = GravityOrganismState.Dead
+    }
+
+    get isDead() {
+        return (this.organismState === GravityOrganismState.Dead)
     }
     
     get currentHealth() {
