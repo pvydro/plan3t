@@ -1,8 +1,8 @@
 import { Darkener } from '../../engine/display/lighting/Darkener'
-import { BeamMeUpScreen } from '../uiscreens/beamemupscreen/BeamMeUpScreen'
-import { RespawnScreen } from '../uiscreens/respawnscreen/RespawnScreen'
-import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
-import { WaveRunnerScreen } from '../uiscreens/waverunnerscreen/WaveRunnerScreen'
+import { BeamMeUpScreen } from '../uiscreen/beamemupscreen/BeamMeUpScreen'
+import { RespawnScreen } from '../uiscreen/respawnscreen/RespawnScreen'
+import { IUIScreen, UIScreen } from '../uiscreen/UIScreen'
+import { WaveRunnerScreen } from '../uiscreen/waverunnerscreen/WaveRunnerScreen'
 import { InGameInventory } from './ingameinventory/InGameInventory'
 
 export enum InGameScreenID {

@@ -2,7 +2,7 @@ import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
-import { IUIScreen, UIScreen } from '../uiscreens/UIScreen'
+import { IUIScreen, UIScreen } from '../uiscreen/UIScreen'
 import { LoadingIcon } from './LoadingIcon'
 import { ILoadingScreenAnimator, LoadingScreenAnimator } from './LoadingScreenAnimator'
 

@@ -5,7 +5,7 @@ import { Flogger } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../../UIComponent'
-import { UIScreen } from '../../uiscreens/UIScreen'
+import { UIScreen } from '../../uiscreen/UIScreen'
 
 export interface IInGameInventory extends IUIComponent {
 
