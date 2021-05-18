@@ -30,10 +30,11 @@ export class HealthController extends Emitter implements IHealthController {
     }
 
     takeDamage(damageAmount: number): void {
+        if (this.isDead) return
+        
         log('HealthController', 'takeDamage', 'damageAmount', damageAmount)
 
         this.currentHealth -= damageAmount
-
         this.checkDeath()
     }
 

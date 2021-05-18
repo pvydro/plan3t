@@ -12,7 +12,7 @@ export interface EntityKnockbackOptions {
 }
 
 export class EntityKnockbackPlugin extends EntityPlugin implements IEntityKnockbackPlugin {
-    private static DefaultKnockback: number = 5
+    private static DefaultKnockback: number = 2
 
     constructor(options: EntityPluginOptions) {
         super(options)

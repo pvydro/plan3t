@@ -9,6 +9,7 @@ export interface AINode extends IVector2 {
 export interface IAI {
     target: IGravityEntity
     initialize(): void
+    die(): void
 }
 
 export interface AIOptions {
@@ -17,6 +18,7 @@ export interface AIOptions {
 
 export abstract class AI implements IAI {
     _gravityOrganism: IGravityOrganism
+    _isDead: boolean
 
     constructor(options: AIOptions) {
         this._gravityOrganism = options.gravityOrganism
@@ -26,7 +28,15 @@ export abstract class AI implements IAI {
 
     }
 
+    die() {
+        this._isDead = true
+    }
+
     get target() {
         return this._gravityOrganism
+    }
+
+    get isDead() {
+        return this._isDead
     }
 }

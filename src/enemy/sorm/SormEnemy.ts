@@ -29,7 +29,10 @@ export class SormEnemy extends Enemy implements ISormEnemy {
             type: CreatureType.Sorm,
             sprites: {
                 idleSpriteDef: { sprite: idleSprite },
-                dyingSpriteDef: { sprite: dyingSheet },
+                dyingSpriteDef: {
+                    sprite: dyingSheet,
+                    animationOptions: { animationSpeed: 0.5 }
+                },
                 walkingSpriteDef: {
                     sprite: walkingSheet,
                     animationOptions: {

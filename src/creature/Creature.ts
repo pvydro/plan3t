@@ -73,6 +73,8 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     }
 
     takeDamage(damage: number | Bullet) {
+        if (this.isDead) return
+        
         this.flash()
 
         if (damage instanceof Bullet) {
@@ -91,17 +93,22 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         this.organismState = GravityOrganismState.Dead
         this.showDyingSprite()
 
-        this.jump(this.jumpHeight / 2)
+        // this.jump(this.jumpHeight / 2)
+        this.yVel = -(this.jumpHeight / 2)
         
         await asyncTimeout(2000)
         await super.die()
     }
 
     showIdleSprite() {
+        if (this.isDead) return
+
         this.spriteStore.showSprite(this.idleSprite)
     }
 
     showWalkingSprite() {
+        if (this.isDead) return
+
         this.spriteStore.showSprite(this.walkingSprite)
     }
 
@@ -126,6 +133,8 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     }
 
     set organismState(value: GravityOrganismState) {
+        if (this.isDead) return
+
         if (value === GravityOrganismState.Dead && !this.isDead) {
             this.spriteStore.showSprite(this.spriteStore.dyingSprite)
         }

@@ -27,7 +27,8 @@ export enum GroundPatherState {
     Idle = 'Idle',
     Stopped = 'Stopped',
     Following = 'Following',
-    Scared = 'Scared'
+    Scared = 'Scared',
+    Dead = 'Dead'
 }
 
 export interface GroundPatherOptions extends AIOptions {
@@ -59,26 +60,26 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         this.debugger.update()
         this.jumper.update()
 
-        if (this._currentGroundRect !== this.target.currentGroundRect) {
-            this.currentGroundRect = this.target.currentGroundRect
-        }
-
-        if (this.target.organismState === GravityOrganismState.Dead) {
+        if (!this.isDead) {
+            if (this._currentGroundRect !== this.target.currentGroundRect) {
+                this.currentGroundRect = this.target.currentGroundRect
+            }
+            
+            if (this.currentState === GroundPatherState.Wandering && this.currentNode === undefined) {
+                this.currentState = GroundPatherState.Idle
+            } else if (this.currentState === GroundPatherState.Idle && this.currentNode === undefined && this.currentGroundRect !== undefined) {
+                this.decideIfContinueOrStop()
+            }
+        } else {
             this.stop()
-        } else if (this.currentState === GroundPatherState.Wandering
-        && this.currentNode === undefined) {
-            this.currentState = GroundPatherState.Idle
-        } else if (this.currentState === GroundPatherState.Idle
-        && this.currentNode === undefined && this.currentGroundRect !== undefined) {
-            // this.findNewPoint()
-            this.decideIfContinueOrStop()
+            this.currentState = GroundPatherState.Dead
         }
     }
 
     findPointOnCurrentGround() {
         // log('GroundPatherAI', 'findPointOnCurrentGround')
 
-        if (this.currentGroundRect === undefined) return
+        if (this.isDead || this.currentGroundRect === undefined) return
 
         const direction = this.target.direction
         const currentGroundY = this.currentGroundRect.y
@@ -101,6 +102,8 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     jump() {
+        if (this.isDead) return
+
         this.target.jump()
     }
 
@@ -110,6 +113,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
     findNewPoint() {
         // log('GroundPatherAI', 'findNewPoint')
+        if (this.isDead) return
 
         this.currentState = GroundPatherState.Wandering
 
@@ -136,7 +140,11 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     decideIfContinueOrStop() {
+        if (this.isDead) return
+
         const shouldStop: boolean = (Math.random() > 0.5)
+
+        this.clearIdleTimeout()
 
         if (shouldStop) {
             this.stopForSomeTime()
@@ -160,6 +168,8 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
 
         this.clearIdleTimeout()
 
+        if (this.isDead) return
+
         this.idleTimeout = window.setTimeout(() => {
             this.idleTimeout = undefined
             this.currentState = GroundPatherState.Idle
@@ -171,6 +181,13 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         this.clearCurrentNode()
         
         this.currentState = GroundPatherState.Stopped
+    }
+
+    die() {
+        this.clearIdleTimeout()
+        this.clearCurrentNode()
+        this.stop()
+        super.die()
     }
 
     private clearIdleTimeout() {
@@ -200,6 +217,8 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     set currentState(value: GroundPatherState) {
+        if (this.isDead) return
+
         // When destination reached, continue walking, or stop
         if (this.currentState !== value
         && value === GroundPatherState.Idle) {

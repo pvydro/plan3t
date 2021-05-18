@@ -52,6 +52,8 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
 
     takeDamage(damage: number | Bullet) {
         log('GravityOrganism', 'takeDamage', 'damageAmount')
+
+        if (this.isDead) return
         
         let dmg = damage as number
         

@@ -4,7 +4,7 @@ import { IDimension } from '../math/Dimension'
 import { IVector2 } from '../math/Vector2'
 import { Graphix } from './Graphix'
 import { ISprite } from './Sprite'
-import { ISpritesheet, Spritesheet } from './spritesheet/Spritesheet'
+import { Spritesheet } from './spritesheet/Spritesheet'
 
 export interface IAnimatedSprite extends ISprite {
     anchor: IVector2
