@@ -13,7 +13,7 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
     didInteract: boolean
 
     constructor() {
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.HSM_BEAM_ME_UP))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.HomeshipModuleBeamMeUp))
         const sprite = new Sprite({ texture })
 
         super({

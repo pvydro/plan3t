@@ -67,7 +67,7 @@ export class PlayerLight extends Container implements IPlayerLight {
         const ambientLightSize = 256
         const ambientLightAlphaDistance = 0.1125
         const ambientLight = new Light({
-            texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_VIGNETTE_BORDER)),
+            texture: PIXI.Texture.from(Assets.get(AssetUrls.LightVignetteBorder)),
             shouldJitter: true,
             maximumJitterAmount: 5
         })
@@ -80,7 +80,7 @@ export class PlayerLight extends Container implements IPlayerLight {
 
         for (let i = 0; i < this.totalLights; i++) {
             const light = new Light({
-                texture: PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG)),
+                texture: PIXI.Texture.from(Assets.get(AssetUrls.LightHardLg)),
                 shouldJitter: true,
                 maximumJitterAmount: 2
             })

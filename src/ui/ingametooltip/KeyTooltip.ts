@@ -28,7 +28,7 @@ export class KeyTooltip extends InGameTooltip implements IKeyTooltip {
     originalY: number
 
     constructor(options: KeyTooltipOptions) {
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.TOOLTIP_KEY))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.TooltipKey))
         const keyText = options.text.text
         const swipeAnim = PredefinedTweens.Swipe
 

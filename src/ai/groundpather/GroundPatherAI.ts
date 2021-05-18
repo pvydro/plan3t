@@ -126,7 +126,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         const distance = this.target.x - this.currentNode.x
 
         if (Math.abs(distance) < 1) {
-            this.clearCurrentNode()
+        this.clearCurrentNode()
             this.currentState = GroundPatherState.Idle
 
             hasReached = true

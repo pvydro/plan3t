@@ -21,7 +21,7 @@ export class HUDInventoryHotbar extends UIComponent implements IHUDInventoryHotb
     constructor() {
         super()
 
-        const texture = PIXI.Texture.from(Assets.get(AssetUrls.HOTBAR_BG))
+        const texture = PIXI.Texture.from(Assets.get(AssetUrls.HotbarBg))
 
         this.playerInventory = new ClientPlayerInventory.getInstance()
         this.backgroundSprite = new Sprite({ texture })

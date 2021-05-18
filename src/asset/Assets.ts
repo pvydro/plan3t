@@ -147,6 +147,8 @@ export class AssetUrls {
     static ProjectileBullet = 'assets/image/weapons/projectiles/bullet'
 
     // Particles
+    static KillSkull = 'assets/image/particles/killskull/killskull'
+
     static MUZZLE_FLASH_A_0 = 'assets/image/particles/muzzleflash/a/0'
     static MUZZLE_FLASH_A_1 = 'assets/image/particles/muzzleflash/a/1'
     static MUZZLE_FLASH_A_2 = 'assets/image/particles/muzzleflash/a/2'
@@ -173,29 +175,29 @@ export class AssetUrls {
     static SMALL_BLAST_3 = 'assets/image/particles/smallblast/smallblast_3'
 
     // Lights
-    static LIGHT_HARD_LG = 'assets/image/lights/lighthardlg'
-    static LIGHT_VIGNETTE_BORDER = 'assets/image/lights/vignetteborder'
+    static LightHardLg = 'assets/image/lights/lighthardlg'
+    static LightVignetteBorder = 'assets/image/lights/vignetteborder'
 
     // Passive Creatures
-    static PASSIVE_CREATURE_HORNET = 'assets/image/creature/swamphornet/swamphornet'
-    static PASSIVE_CREATURE_KOINI = 'assets/image/creature/koini/koini_idle'
+    static PassiveCreatureHornet = 'assets/image/creature/swamphornet/swamphornet'
+    static PassiveCreatureKoini = 'assets/image/creature/koini/koini_idle'
 
     // InGameHUD
-    static HEALTH_BAR_BG = 'assets/image/ui/ingamehud/healthbarbg'
-    static HEALTH_BAR_FILL = 'assets/image/ui/ingamehud/healthbarfill'
+    static HealthBarBg = 'assets/image/ui/ingamehud/healthbarbg'
+    static HealthBarFill = 'assets/image/ui/ingamehud/healthbarfill'
     static AMMO_STATUS_BG = 'assets/image/ui/ingamehud/ammostatusbg'
-    static OVERHEAD_HEALTHB_BAR_BG = 'assets/image/ui/ingamehud/overheadhealthbar'
-    static OVERHEAD_HEALTHB_BAR_FILL = 'assets/image/ui/ingamehud/overheadhealthbarfill'
-    static HOTBAR_BG = 'assets/image/ui/ingamehud/hotbar/hotbarbg'
+    static OverheadHealthBarBg = 'assets/image/ui/ingamehud/overheadhealthbar'
+    static OverheadHealthBarFill = 'assets/image/ui/ingamehud/overheadhealthbarfill'
+    static HotbarBg = 'assets/image/ui/ingamehud/hotbar/hotbarbg'
     static PauseButton = 'assets/image/ui/ingamehud/pausebutton'
 
     // UI
-    static MID_BUTTON_METAL = 'assets/image/ui/generic/midbuttonmetal'
-    static HOLO_BUTTON_BG = 'assets/image/ui/generic/holobuttonbg'
-    static IGI_TOP = 'assets/image/ui/ingameinventory/container-top'
-    static TOOLTIP_KEY = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
+    static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
+    static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
+    static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'
+    static TooltipKey = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
 
     // Homeship
-    static HOME_SHIP = 'assets/image/gamemap/homeship/homeship_bg'
-    static HSM_BEAM_ME_UP = 'assets/image/gamemap/homeship/modules/beammeup'
+    static Homeship = 'assets/image/gamemap/homeship/homeship_bg'
+    static HomeshipModuleBeamMeUp = 'assets/image/gamemap/homeship/modules/beammeup'
 }

@@ -19,7 +19,7 @@ export class InGameInventory extends UIScreen implements IInGameInventory {
     constructor() {
         super()
 
-        const barTexuture = PIXI.Texture.from(Assets.get(AssetUrls.IGI_TOP))
+        const barTexuture = PIXI.Texture.from(Assets.get(AssetUrls.InGameInventoryTop))
 
         this.topBarSprite = new Sprite({ texture: barTexuture })
         this.bottomBarSprite = new Sprite({ texture: barTexuture })

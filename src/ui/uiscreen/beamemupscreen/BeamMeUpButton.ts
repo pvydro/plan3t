@@ -21,7 +21,7 @@ export class BeamMeUpButton extends UIButton implements IBeamMeUpButton {
                 }
             },
             background: {
-                idle: AssetUrls.MID_BUTTON_METAL
+                idle: AssetUrls.ButtonMetalMd
             },
             darkenerOptions: {
                 hoverTint: 0xdbdbdb,

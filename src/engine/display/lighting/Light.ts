@@ -32,7 +32,7 @@ export class Light extends Container implements ILight {
     constructor(options?: LightOptions) {
         super()
 
-        const texture = (options && options.texture) ? options.texture : PIXI.Texture.from(Assets.get(AssetUrls.LIGHT_HARD_LG))
+        const texture = (options && options.texture) ? options.texture : PIXI.Texture.from(Assets.get(AssetUrls.LightHardLg))
         
         this.sprite = new Sprite({ texture })
         this.sprite.blendMode = PIXI.BLEND_MODES.ADD

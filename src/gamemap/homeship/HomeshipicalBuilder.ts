@@ -23,7 +23,7 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
 
     async buildLocalHomeshipical(): Promise<HomeshipicalRespone> {
         const tileLayer = new Container()
-        const homeshipTexture = PIXI.Texture.from(Assets.get(AssetUrls.HOME_SHIP))
+        const homeshipTexture = PIXI.Texture.from(Assets.get(AssetUrls.Homeship))
         const homeshipSprite = new Sprite({ texture: homeshipTexture })
         const collisionRects = this.buildCollisionRectsFromHomeshipical(homeshipSprite)
         

@@ -39,13 +39,13 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
 
         this.player = options.player
 
-        const backgroundTexture = PIXI.Texture.from(Assets.get(AssetUrls.OVERHEAD_HEALTHB_BAR_BG))
+        const backgroundTexture = PIXI.Texture.from(Assets.get(AssetUrls.OverheadHealthBarBg))
         this.backgroundSprite = new Sprite({
             texture: backgroundTexture
         })
         this.backgroundSprite.anchor.set(0.5, 0.5)
 
-        const fillTexture = PIXI.Texture.from(Assets.get(AssetUrls.OVERHEAD_HEALTHB_BAR_FILL))
+        const fillTexture = PIXI.Texture.from(Assets.get(AssetUrls.OverheadHealthBarFill))
         this.fillSprite = new Sprite({
             texture: fillTexture,
             includeOverlay: {

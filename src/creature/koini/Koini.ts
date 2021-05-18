@@ -10,7 +10,7 @@ export interface IKoini extends ITravelkinCreature {
 
 export class Koini extends TravelkinCreature implements IKoini {
     constructor() {
-        const idleTexture = PIXI.Texture.from(Assets.get(AssetUrls.PASSIVE_CREATURE_KOINI))
+        const idleTexture = PIXI.Texture.from(Assets.get(AssetUrls.PassiveCreatureKoini))
 
         super({
             type: CreatureType.Koini,

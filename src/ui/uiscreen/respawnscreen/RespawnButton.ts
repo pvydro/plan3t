@@ -26,7 +26,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
                 style: TextStyles.MetalButton.Medium,
             },
             background: {
-                idle: AssetUrls.MID_BUTTON_METAL
+                idle: AssetUrls.ButtonMetalMd
             },
             darkenerOptions: {
                 hoverTint: 0xdbdbdb,
