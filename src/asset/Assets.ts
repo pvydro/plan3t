@@ -147,7 +147,7 @@ export class AssetUrls {
     static ProjectileBullet = 'assets/image/weapons/projectiles/bullet'
 
     // Particles
-    static KillSkull = 'assets/image/particles/killskull/killskull'
+    static KillSkullParticle = 'assets/image/particles/killskull/killskull'
 
     static MUZZLE_FLASH_A_0 = 'assets/image/particles/muzzleflash/a/0'
     static MUZZLE_FLASH_A_1 = 'assets/image/particles/muzzleflash/a/1'

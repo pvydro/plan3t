@@ -2,6 +2,7 @@ import { Container } from 'pixi.js'
 import { BloodGroupParticleOptions } from '../../engine/display/particle/BloodParticle'
 import { DustParticle, DustParticleOptions } from '../../engine/display/particle/DustParticle'
 import { GravityParticle, GravityParticleOptions } from '../../engine/display/particle/GravityParticle'
+import { KillSkullParticle } from '../../engine/display/particle/KillSkullParticle'
 import { IParticle, Particle } from '../../engine/display/particle/Particle'
 import { TextParticle } from '../../engine/display/particle/TextParticle'
 import { TextParticleOptions } from '../../engine/display/particle/TextParticle'
@@ -77,6 +78,12 @@ export class ParticleManager implements IParticleManager {
             this.container.addChild(particle)
             this.particles.add(particle)
         }
+    }
+
+    addDeathSkullParticle(options: GravityParticleOptions) {
+        const killSkullParticle = new KillSkullParticle(options)
+
+        this.addParticle(killSkullParticle)
     }
 
     addParticle(particle: Particle, container?: Container) {

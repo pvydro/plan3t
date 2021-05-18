@@ -11,6 +11,7 @@ export interface IGravityParticle extends IParticle, ICanDie {
 export interface GravityParticleOptions extends ParticleOptions {
     color?: number
     totalParticles?: number
+    weight?: number
 }
 
 export class GravityParticle extends Particle implements IGravityParticle {
