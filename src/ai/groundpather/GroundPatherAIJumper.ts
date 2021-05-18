@@ -2,7 +2,7 @@ import { Direction } from '../../engine/math/Direction'
 import { IRect, Rect } from '../../engine/math/Rect'
 import { GameMap } from '../../gamemap/GameMap'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { IGroundPatherAI } from './GroundPatherAI'
+import { GroundPatherState, IGroundPatherAI } from './GroundPatherAI'
 
 export interface IGroundPatherAIJumper extends IUpdatable {
     sensor: IRect
@@ -35,21 +35,23 @@ export class GroundPatherAIJumper implements IGroundPatherAIJumper {
     }
 
     update() {
-        for (var i in this.groundRects) {
-            const rect = this.groundRects[i]
-            const target = this.groundPather.target
-            const direction = this.groundPather.target.direction
-
-            if (rect.middleY < target.bottomY) {
-                if (target.middleX - this.sensorRect.halfWidth < rect.right
-                // && target.middleX - this.sensorRect.halfWidth
-                && target.leftX > rect.left
-                && direction === Direction.Left) {  // Approaching from left
-                    this.jump()
-                } else if (target.middleX + this.sensorRect.halfWidth > rect.x
-                && target.middleX + this.sensorRect.halfWidth < rect.right
-                && direction === Direction.Right) {  // Approaching from right
-                    this.jump()
+        if (this.groundPather.currentState !== GroundPatherState.Stopped
+        && this.groundPather.currentState !== GroundPatherState.Idle) {
+            for (var i in this.groundRects) {
+                const rect = this.groundRects[i]
+                const target = this.groundPather.target
+                const direction = this.groundPather.target.direction
+    
+                if (rect.middleY < target.bottomY) {
+                    if (target.middleX - this.sensorRect.halfWidth < rect.right
+                    && target.leftX > rect.left
+                    && direction === Direction.Left) {  // Approaching from left
+                        this.jump()
+                    } else if (target.middleX + this.sensorRect.halfWidth > rect.x
+                    && target.middleX + this.sensorRect.halfWidth < rect.right
+                    && direction === Direction.Right) {  // Approaching from right
+                        this.jump()
+                    }
                 }
             }
         }

@@ -55,7 +55,9 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
     }
 
     update() {
-        this.ai.update()
+        if (!this.isDead) {
+            this.ai.update()
+        }
         this.movementController.update()
         
         super.update()

@@ -28,6 +28,7 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
     healthController: IHealthController
     jumpHeight: number
     _organismState: GravityOrganismState = GravityOrganismState.Alive
+    _isDead: boolean = false
 
     constructor(options?: GravityOrganismOptions) {
         super(options)
@@ -66,11 +67,12 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
     async die() {
         log('GravityOrganism', 'die')
 
+        this._isDead = true
         this.organismState = GravityOrganismState.Dead
     }
 
     get isDead() {
-        return (this.organismState === GravityOrganismState.Dead)
+        return this._isDead
     }
     
     get currentHealth() {
