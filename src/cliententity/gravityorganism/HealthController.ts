@@ -5,6 +5,7 @@ import { Emitter, IEmitter } from '../../utils/Emitter'
 export interface IHealthController extends IEmitter {
     totalHealth: number
     currentHealth: number
+    isDead: boolean
     takeDamage(damageAmount: number): void
     suicide(): void
     resetHealth(): void
@@ -17,6 +18,7 @@ export interface HealthControllerOptions {
 export class HealthController extends Emitter implements IHealthController {
     totalHealth: number
     currentHealth: number
+    isDead: boolean = false
 
     constructor(options: HealthControllerOptions) {
         super()
@@ -42,17 +44,21 @@ export class HealthController extends Emitter implements IHealthController {
     }
 
     resetHealth(): void {
+        this.isDead = false
+
         this.currentHealth = this.totalHealth
     }
 
     protected die() {
         log('HealthController', 'die')
 
+        this.isDead = true
+
         this.emit(Events.Death)
     }
 
     private checkDeath() {
-        if (this.currentHealth <= 0) {
+        if (!this.isDead && this.currentHealth <= 0) {
             this.currentHealth = 0
 
             this.die()

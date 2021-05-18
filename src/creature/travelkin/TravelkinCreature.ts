@@ -115,7 +115,10 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
     }
 
     async die() {
+        if (this.movementState === TravelkinMovementState.Dead) return
+
         this.movementState = TravelkinMovementState.Dead
+        this.ai.stop()
 
         await super.die()
     }

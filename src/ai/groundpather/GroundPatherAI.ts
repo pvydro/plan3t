@@ -23,11 +23,11 @@ export interface IGroundPatherAI extends IAI, IUpdatable {
 }
 
 export enum GroundPatherState {
-    Wandering,
-    Idle,
-    Stopped,
-    Following,
-    Scared
+    Wandering = 'Wandering',
+    Idle = 'Idle',
+    Stopped = 'Stopped',
+    Following = 'Following',
+    Scared = 'Scared'
 }
 
 export interface GroundPatherOptions extends AIOptions {
@@ -63,13 +63,12 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
             this.currentGroundRect = this.target.currentGroundRect
         }
 
-        if (this.target.organismState == GravityOrganismState.Dead) {
+        if (this.target.organismState === GravityOrganismState.Dead) {
             this.stop()
         } else if (this.currentState === GroundPatherState.Wandering
         && this.currentNode === undefined) {
             this.currentState = GroundPatherState.Idle
-        }
-         else if (this.currentState === GroundPatherState.Idle
+        } else if (this.currentState === GroundPatherState.Idle
         && this.currentNode === undefined && this.currentGroundRect !== undefined) {
             // this.findNewPoint()
             this.decideIfContinueOrStop()
@@ -127,7 +126,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         const distance = this.target.x - this.currentNode.x
 
         if (Math.abs(distance) < 1) {
-            this.currentNode = undefined
+            this.clearCurrentNode()
             this.currentState = GroundPatherState.Idle
 
             hasReached = true
@@ -137,8 +136,6 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     decideIfContinueOrStop() {
-        // log('GroundPatherAI', 'decideIfContinueOrStop')
-
         const shouldStop: boolean = (Math.random() > 0.5)
 
         if (shouldStop) {
@@ -149,8 +146,6 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     decideDirection(): Direction {
-        // log('GroundPatherAI', 'decideDirection')
-
         const direction = (Math.random() > 0.5) ? Direction.Left : Direction.Right
 
         this.target.direction = direction
@@ -159,15 +154,11 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     stopForSomeTime() {
-        // log('GroundPatherAI', 'stopForSomeTime')
-
         this.stop()
 
         const randomStopTime = Math.random() * this.idleTimeRange
 
-        if (this.idleTimeout) {
-            window.clearTimeout(this.idleTimeout)
-        }
+        this.clearIdleTimeout()
 
         this.idleTimeout = window.setTimeout(() => {
             this.idleTimeout = undefined
@@ -176,9 +167,20 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
     }
 
     stop() {
-        if (this.currentState === GroundPatherState.Stopped) return
-
+        this.clearIdleTimeout()
+        this.clearCurrentNode()
+        
         this.currentState = GroundPatherState.Stopped
+    }
+
+    private clearIdleTimeout() {
+        if (this.idleTimeout) {
+            window.clearTimeout(this.idleTimeout)
+        }
+    }
+
+    private clearCurrentNode() {
+        this.currentNode = undefined
     }
 
     set currentGroundRect(value: Rect) {
