@@ -57,12 +57,12 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     }
 
     async die() {
-        await super.die()
-
         ParticleManager.getInstance().addDeathSkullParticle({
             position: { x: this.x, y: this.y },
             positionRandomization: { randomizationRange: 8 }
         })
+        await super.die()
+
 
         const enemyManager = EntityManager.getInstance().enemyManager
         enemyManager.removeEnemy(this)

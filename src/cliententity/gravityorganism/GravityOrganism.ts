@@ -46,7 +46,7 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         const jh = jumpHeight ?? this.jumpHeight
 
         this.onGround = false
-        this.yVel = -jumpHeight
+        this.yVel = -jh
     }
 
     takeDamage(damage: number | Bullet) {

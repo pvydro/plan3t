@@ -15,6 +15,7 @@ export interface GravityParticleOptions extends ParticleOptions {
     weight?: number
     yVelAcceleration?: number
     minStartYVel?: number
+    minimumLifespan?: number
 }
 
 export class GravityParticle extends Particle implements IGravityParticle {
@@ -52,7 +53,7 @@ export class GravityParticle extends Particle implements IGravityParticle {
         this.ySpreadRange = 3
         this.onGround = false
         this.hasBounced = false
-        this.minimumLifespan = 60
+        this.minimumLifespan = options.minimumLifespan ?? 60
         this.lifespanRandomizationRange = 20
         this.weight = options.weight ?? 1
         this.lifespanCountdown = this.minimumLifespan + Math.random() * this.lifespanRandomizationRange
