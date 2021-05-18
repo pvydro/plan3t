@@ -26,6 +26,7 @@ export interface CreatureSprites {
 }
 
 export class CreatureSpriteStore extends Container implements ICreatureSpriteStore {
+    _currentlyShown: any = undefined
     _idleSprite?: Sprite | AnimatedSprite
     _walkingSprite?: Sprite | AnimatedSprite
     _dyingSprite?: Sprite | AnimatedSprite
@@ -70,7 +71,10 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     }
 
     showSprite(value: AnimatedSprite | Sprite) {
+        if (this._currentlyShown === value) return
+
         this.hideAllExcept(value)
+        this._currentlyShown = value
 
         if (this.isAnimatedSprite(value)) {
             const animatedSpriteValue = value as AnimatedSprite
@@ -92,12 +96,13 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     convertToSpriteOrAnimatedSprite(spriteDefinition: CreatureSpriteDefinition): Sprite | AnimatedSprite {
         const spr = spriteDefinition.sprite
         const animationSpeed = (spriteDefinition.animationOptions && spriteDefinition.animationOptions.animationSpeed) ?? 0.25
+        const loop = (spriteDefinition.animationOptions && spriteDefinition.animationOptions.loop) ?? false
         let convertedSprite: any = !spr ? undefined : (spr as Sprite)
 
         if (spr instanceof Spritesheet) {
             convertedSprite = new AnimatedSprite({
                 sheet: (spr as Spritesheet).animation,
-                animationSpeed
+                animationSpeed, loop
             })
         }
 

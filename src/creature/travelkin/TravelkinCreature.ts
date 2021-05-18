@@ -22,8 +22,6 @@ export interface ITravelkinCreature extends ICreature {
     movementState: TravelkinMovementState
     walkSpeed: number
     isDead: boolean
-    showIdleSprite(): void
-    showWalkingSprite(): void
 }
 
 export interface TravelkinCreatureOptions extends CreatureOptions {

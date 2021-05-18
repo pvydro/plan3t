@@ -16,6 +16,9 @@ export interface ICreature extends IGravityOrganism {
     walkingSpriteAnimated: AnimatedSprite
     interact(): void
     flipAllSprites(): void
+    showIdleSprite(): void
+    showWalkingSprite(): void
+    showDyingSprite(): void
 }
 
 export interface CreatureOptions extends GravityOrganismOptions {
@@ -29,23 +32,19 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     spriteStore: CreatureSpriteStore    
 
     constructor(options: CreatureOptions) {
-        const idleSprite = (options.sprites && options.sprites.idleSpriteDef
-            && options.sprites.idleSpriteDef.sprite)
+        const idleSprite = (options.sprites.idleSpriteDef && options.sprites.idleSpriteDef.sprite)
 
         options.plugins = options.plugins ?? {}
         options.addDebugRectangle = options.addDebugRectangle ?? true
         options.boundingBoxAnchor = options.boundingBoxAnchor ?? { x: 0.5, y: 0 }
+        options.plugins = { addFlashPlugin: true, addKnockbackPlugin: true }
         if (idleSprite as Sprite) {
             options.boundingDimensions = options.boundingDimensions ?? {
                 width: (idleSprite as Sprite).width,
                 height: (idleSprite as Sprite).height
             }
         }
-        options.plugins = {
-            addFlashPlugin: true,
-            addKnockbackPlugin: true
-        }
-        
+
         super(options)
 
         this.entityId = 'Creature' + Creature.CreatureIdIteration++
@@ -54,11 +53,11 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         this.addChild(this.spriteStore)
 
         // TODO: FIXME TMP
-        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
-            if (event.which === Key.G) {
-                this.flash()
-            }
-        })
+        // InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
+        //     if (event.which === Key.G) {
+        //         this.flash()
+        //     }
+        // })
     }
 
     update() {
@@ -78,7 +77,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
         if (damage instanceof Bullet) {
             const bullet = damage as Bullet
-            let direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
+            const direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
 
             this.knockback({ direction })
         }
@@ -90,6 +89,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         if (this.isDead) return
 
         this.organismState = GravityOrganismState.Dead
+        this.showDyingSprite()
 
         this.jump(this.jumpHeight / 2)
         
@@ -104,6 +104,11 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     showWalkingSprite() {
         this.spriteStore.showSprite(this.walkingSprite)
     }
+
+    showDyingSprite() {
+        this.spriteStore.showSprite(this.dyingSprite)
+    }
+
     flipAllSprites() {
         this.sprite.flipX()
     }

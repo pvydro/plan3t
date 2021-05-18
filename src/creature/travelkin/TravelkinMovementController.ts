@@ -25,23 +25,29 @@ export class TravelkinMovementController implements ITravelkinMovementController
         const movementState = this.travelkin.movementState
         const direction = this.travelkin.direction
         const targetXVel = this.travelkin.walkSpeed * direction
+        
+        if (movementState === TravelkinMovementState.Dead) {
 
-        switch (movementState) {
-            case TravelkinMovementState.Walking:
+            this.travelkin.comeToStop()
+            this.travelkin.showDyingSprite()
 
-                this.travelkin.xVel += (targetXVel - this.travelkin.xVel) / 3
-
-                break
-            case TravelkinMovementState.Dead:
-            case TravelkinMovementState.Idle:
-
-                this.travelkin.comeToStop()
-            
-                break
-        }
-
-        if (this.travelkin.ai.checkIfReachedNode()) {
-            this.travelkin.movementState = TravelkinMovementState.Idle
+        } else {
+            switch (movementState) {
+                case TravelkinMovementState.Walking:
+    
+                    this.travelkin.xVel += (targetXVel - this.travelkin.xVel) / 3
+    
+                    break
+                case TravelkinMovementState.Idle:
+    
+                    this.travelkin.comeToStop()
+                
+                    break
+            }
+    
+            if (this.travelkin.ai.checkIfReachedNode()) {
+                this.travelkin.movementState = TravelkinMovementState.Idle
+            }
         }
     }
 

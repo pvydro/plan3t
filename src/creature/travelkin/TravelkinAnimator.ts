@@ -37,6 +37,9 @@ export class TravelkinAnimator extends Animator implements ITravelkinAnimator {
 
     updateAnimationState() {
         switch (this.travelkin.movementState) {
+            case TravelkinMovementState.Dead:
+                this.travelkin.showDyingSprite()
+                break
             case TravelkinMovementState.Idle:
                 this.travelkin.showIdleSprite()
                 break
