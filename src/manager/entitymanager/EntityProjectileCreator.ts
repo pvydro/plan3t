@@ -26,6 +26,7 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
             rotation, velocity,
             entityManager: this.entityManager
         })
+        
         bullet.sprite.anchor.set(0.5, 0.5)
         bullet.x = x
         bullet.y = y

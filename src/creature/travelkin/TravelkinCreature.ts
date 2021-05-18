@@ -1,10 +1,13 @@
 import { GroundPatherAI, IGroundPatherAI } from '../../ai/groundpather/GroundPatherAI'
 import { GravityOrganismState } from '../../cliententity/gravityorganism/GravityOrganism'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
+import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
+import { Spritesheet } from '../../engine/display/spritesheet/Spritesheet'
 import { trimArray } from '../../utils/Utils'
 import { Bullet } from '../../weapon/projectile/Bullet'
 import { ICreature, Creature, CreatureOptions } from '../Creature'
+import { CreatureSpriteStore } from '../CreatureSpriteStore'
 import { ITravelkinAnimator, TravelkinAnimator } from './TravelkinAnimator'
 import { ITravelkinMovementController, TravelkinMovementController } from './TravelkinMovementController'
 
@@ -26,36 +29,42 @@ export interface ITravelkinCreature extends ICreature {
 
 export interface TravelkinCreatureOptions extends CreatureOptions {
     walkSpeed?: number
-    walkingSheet?: PIXI.Spritesheet
+    walkingSheet?: Spritesheet
 }
 
 export class TravelkinCreature extends Creature implements ITravelkinCreature {
     _movementState: TravelkinMovementState = TravelkinMovementState.NotSet
-    walkingSprite: AnimatedSprite
+    // walkingSprite: AnimatedSprite
     animator: ITravelkinAnimator
     walkSpeed: number
     ai: IGroundPatherAI
     movementController: ITravelkinMovementController
-    currentShown?: AnimatedSprite | Sprite
+    currentShown?: AnimatedSprite | Sprite | Container
 
     constructor(options: TravelkinCreatureOptions) {
         super(options)
 
         const travelkin = this
 
+        this.spriteStore = new CreatureSpriteStore({
+            idleSprite: options.idleSprite,
+            walkingSprite: options.walkingSheet,
+            dyingSprite: options.dyingSheet
+        })
         this.walkSpeed = options.walkSpeed ?? 5
         this.ai = new GroundPatherAI({ gravityOrganism: travelkin })
         this.animator = new TravelkinAnimator({
-            travelkin,
-            walkingSheet: options.walkingSheet ?? undefined
+            travelkin, // TODO This one below 
+            // walkingSprite: this.spriteStore.walkingSprite ?? undefined//options.walkingSheet ?? undefined
         })
         this.movementController = new TravelkinMovementController({ travelkin })
 
+        this.addChild(this.spriteStore)
         // Add walkingsprite if walkingsheet was passed through
-        if (options.walkingSheet) {
-            this.walkingSprite = this.animator.walkingSprite
-            this.addChild(this.walkingSprite)
-        }
+        // if (options.walkingSheet) {
+        //     this.walkingSprite = this.animator.walkingSprite
+        //     this.addChild(this.walkingSprite)
+        // }
     }
 
     update() {
@@ -66,46 +75,59 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
     }
 
     showIdleSprite() {
-        if (this.currentShown !== this.sprite) {
-            this.currentShown = this.sprite
-        }
+        this.spriteStore.showSprite(this.idleSprite)
+        // if (this.currentShown !== this.sprite) {
+        //     this.currentShown = this.sprite
+        // }
 
-        this.hideAllExcept(this.sprite)
+        // this.hideAllExcept(this.sprite)
     }
 
     showWalkingSprite() {
-        if (this.walkingSprite) {
-            if (this.currentShown !== this.walkingSprite) {
-                this.walkingSprite.gotoAndPlay(0)
-                this.currentShown = this.walkingSprite
-            }
+        this.spriteStore.showSprite(this.walkingSprite)
+        // if (this.walkingSprite) {
+        //     if (this.currentShown !== this.walkingSprite) {
+        //         if (this.walkingSpriteAnimated) this.walkingSpriteAnimated.gotoAndPlay(0)
+
+        //         this.currentShown = this.walkingSprite
+        //     }
     
-            this.hideAllExcept(this.walkingSprite)
-            this.walkingSprite.play()
-        }
+        //     // this.hideAllExcept(this.walkingSprite)
+        //     this.spriteStore.showSprite(this.walkingSprite)
+
+        //     if (this.walkingSpriteAnimated) {
+        //         this.walkingSpriteAnimated.play()
+        //     }
+        // }
     }
 
     getAllSprites() {
-        return trimArray(this.sprite, this.walkingSprite)
+        return trimArray(this.idleSprite, this.walkingSprite, this.dyingSprite)
     }
 
-    hideAllExcept(shownSprite: any) {
-        const hideable = this.getAllSprites()
+    // hideAllExcept(shownSprite: any) {
+    //     const hideable = this.getAllSprites()
 
-        for (var i in hideable) {
-            const hideElement = hideable[i]
+    //     for (var i in hideable) {
+    //         const hideElement = hideable[i]
 
-            if (hideElement !== shownSprite) {
-                hideElement.alpha = 0
-            }
-        }
+    //         if (hideElement !== undefined && hideElement !== shownSprite) {
+    //             hideElement.alpha = 0
+    //         }
+    //     }
 
-        shownSprite.alpha = 1
-    }
+    //     if (shownSprite === undefined) {
+    //         shownSprite = this.idleSprite
+    //         shownSprite.alpha = 1
+    //     } else {
+    //         shownSprite.alpha = 1
+    //     }
+    // }
 
     flipAllSprites() {
-        this.sprite.flipX()
+        if (this.sprite) this.sprite.flipX()
         if (this.walkingSprite) this.walkingSprite.flipX()
+        if (this.dyingSprite) this.dyingSprite.flipX()
     }
 
     takeDamage(damage: number | Bullet) {

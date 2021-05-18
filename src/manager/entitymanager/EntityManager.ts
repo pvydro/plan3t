@@ -12,11 +12,11 @@ import { EntitySynchronizer, IEntitySynchronizer } from '../../synchronizer/Enti
 import { EntityProjectileCreator, IEntityProjectileCreator } from './EntityProjectileCreator'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { EntityCreatureCreator, IEntityCreatureCreator } from './EntityCreatureCreator'
-import { CreatureType } from '../../creature/Creature'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Key } from 'ts-keycode-enum'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { EnemyManager, IEnemyManager } from '../enemymanager/EnemyManager'
+import { CreatureType } from '../../creature/CreatureType'
 
 export interface LocalEntity {
     serverEntity?: Entity

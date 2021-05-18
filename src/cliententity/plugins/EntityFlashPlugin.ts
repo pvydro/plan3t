@@ -1,4 +1,4 @@
-import { ISprite } from '../../engine/display/Sprite'
+import { ISprite, Sprite } from '../../engine/display/Sprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { log } from '../../service/Flogger'
 import { EntityPlugin, EntityPluginOptions, IEntityPlugin } from './EntityPlugin'
@@ -23,13 +23,20 @@ export class EntityFlashPlugin extends EntityPlugin implements IEntityFlashPlugi
     constructor(options: EntityFlashPluginOptions) {
         super(options)
 
-        this.spritesToFlash = this.entity.getAllSprites()
+        // this.spritesToFlash = this.entity.getAllSprites()
+        // for (const i in this.entity.getAllSprites()) {
+        //     const spr = this.entity.getAllSprites()[i]
+
+        //     if (spr instanceof Sprite) {
+        //         this.spritesToFlash.push(spr)
+        //     }
+        // }
     }
 
     update() {
-        if (this.spritesToFlash.length !== this.entity.getAllSprites().length) {
-            this.spritesToFlash = this.entity.getAllSprites()
-        }
+        // if (this.spritesToFlash.length !== this.entity.getAllSprites().length) {
+            // this.spritesToFlash = this.entity.getAllSprites()
+        // }
     }
 
     flash(options?: EntityFlashOptions) {

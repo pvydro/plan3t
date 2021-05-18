@@ -1,7 +1,8 @@
 import { SormEnemy } from '../enemy/sorm/SormEnemy'
-import { Creature, CreatureType } from '../creature/Creature'
+import { Creature } from '../creature/Creature'
 import { Koini } from '../creature/koini/Koini'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
+import { CreatureType } from '../creature/CreatureType'
 
 export class CreatureFactory {
     private constructor() {

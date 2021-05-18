@@ -5,6 +5,7 @@ import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { DebugConstants, GameWindow } from '../../utils/Constants'
+import { Camera } from '../../camera/Camera'
 
 export interface IPlayerController {
     update(): void
@@ -156,9 +157,10 @@ export class PlayerController implements IPlayerController {
 
     changeDirectionBasedOnMouse() {
         const projectedPlayerPos = {
-            x: GameWindow.width / 2,
+            x: (GameWindow.width / 2) - this.player.body.width,
             y: GameWindow.height / 2
         }
+        // const projectedPlayerPos = Camera.toScreen({ x: this.player.middleX, y: this.player.middleY })
 
         if (this.mousePos.x < projectedPlayerPos.x) {
             this.player.direction = Direction.Left

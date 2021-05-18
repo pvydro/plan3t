@@ -1,7 +1,8 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Camera } from '../../camera/Camera'
 import { Sprite } from '../../engine/display/Sprite'
-import { ICreature, Creature, CreatureType } from '../Creature'
+import { ICreature, Creature } from '../Creature'
+import { CreatureType } from '../CreatureType'
 
 export interface IPassiveHornet extends ICreature {
 

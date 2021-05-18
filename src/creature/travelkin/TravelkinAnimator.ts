@@ -1,34 +1,36 @@
-import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
+import { Sprite } from 'pixi.js'
 import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
 import { Animator, IAnimator } from '../../engine/display/Animator'
+import { Spritesheet } from '../../engine/display/spritesheet/Spritesheet'
 import { ITravelkinCreature, TravelkinMovementState } from './TravelkinCreature'
 
 export interface ITravelkinAnimator extends IAnimator {
-    walkingSprite: AnimatedSprite
+    walkingSprite: AnimatedSprite | Sprite
     walkingSheet?: PIXI.Spritesheet
     updateAnimationState(): void
 }
 
 export interface TravelkinAnimatorOptions {
     travelkin: ITravelkinCreature
-    walkingSheet?: PIXI.Spritesheet
+    walkingSprite?: AnimatedSprite | Sprite
 }
 
 export class TravelkinAnimator extends Animator implements ITravelkinAnimator {
     travelkin: ITravelkinCreature
-    walkingSprite: AnimatedSprite
+    walkingSprite: AnimatedSprite | Sprite
 
     constructor(options: TravelkinAnimatorOptions) {
         super()
 
         this.travelkin = options.travelkin
 
-        if (options.walkingSheet && options.walkingSheet.animations) {
-            this.walkingSprite = new AnimatedSprite({
-                sheet: options.walkingSheet.animations['tile'],
-                animationSpeed: 0.25,
-                loop: true
-            })
+        if (options.walkingSprite && options.walkingSprite) {
+            this.walkingSprite = options.walkingSprite
+            // new AnimatedSprite({
+            //     sheet: options.walkingSheet,
+            //     animationSpeed: 0.25,
+            //     loop: true
+            // })
             this.walkingSprite.anchor.set(0.5, 0)
         }
     }

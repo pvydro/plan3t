@@ -11,6 +11,7 @@ export class SpritesheetUrls {
     static PlayerBodyDying = 'assets/image/player/body/body_dying.json'
 
     static SormWalking = 'assets/image/enemy/sorm/sorm_walking.json'
+    static SormDying = 'assets/image/enemy/sorm/sorm_dying.json'
 }
 
 export class Spritesheets {

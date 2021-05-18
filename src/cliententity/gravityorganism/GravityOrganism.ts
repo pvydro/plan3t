@@ -27,7 +27,7 @@ export enum GravityOrganismState {
 export class GravityOrganism extends GravityEntity implements IGravityOrganism {
     healthController: IHealthController
     jumpHeight: number
-    organismState: GravityOrganismState = GravityOrganismState.Alive
+    _organismState: GravityOrganismState = GravityOrganismState.Alive
 
     constructor(options?: GravityOrganismOptions) {
         super(options)
@@ -83,5 +83,13 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
 
     get healthPercentage() {
         return this.currentHealth / this.totalHealth
+    }
+
+    set organismState(value: GravityOrganismState) {
+        this._organismState = value
+    }
+
+    get organismState() {
+        return this._organismState
     }
 }

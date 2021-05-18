@@ -1,6 +1,6 @@
 import { Key } from 'ts-keycode-enum'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { CreatureType } from '../../creature/Creature'
+import { CreatureType } from '../../creature/CreatureType'
 import { CreatureFactory } from '../../factory/CreatureFactory'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { log } from '../../service/Flogger'

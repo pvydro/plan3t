@@ -17,8 +17,8 @@ export interface IClientEntity extends IContainer, IUpdatable {
     type: string
     position: IVector2
     entityId: string
-    sprite: ISprite
-    getAllSprites(): ISprite[]
+    sprite: ISprite | IContainer
+    getAllSprites(): (Container | Sprite)[]
 }
 
 export enum EntityType {
@@ -40,7 +40,7 @@ export interface IClientEntityPlugins {
 
 export interface ClientEntityOptions {
     entity?: Entity
-    sprite?: Sprite
+    sprite?: Sprite | Container
     plugins?: IClientEntityPluginOptions
 }
 
@@ -50,7 +50,7 @@ export class ClientEntity extends Container implements IClientEntity {
     protected _yVel: number = 0
     name: string = 'ClientEntity'
     entityId: string
-    sprite: Sprite
+    _sprite: Sprite | Container
     entity?: Entity
     x: number
     y: number
@@ -61,9 +61,10 @@ export class ClientEntity extends Container implements IClientEntity {
         super()
 
         if (options) {
-            this.entity = options.entity
-            this.sprite = options.sprite
             const entity = this
+            
+            this.entity = options.entity
+            this._sprite = options.sprite
 
             // Plugins
             if (options.plugins) {
@@ -103,7 +104,7 @@ export class ClientEntity extends Container implements IClientEntity {
         }
     }
 
-    getAllSprites() {
+    getAllSprites(): (Container | Sprite)[] {
         return [ this.sprite ]
     }
 
@@ -134,5 +135,9 @@ export class ClientEntity extends Container implements IClientEntity {
     set dimension(value: IDimension) {
         this.width = value.width
         this.height = value.height
+    }
+
+    get sprite() {
+        return (this._sprite as Sprite)
     }
 }

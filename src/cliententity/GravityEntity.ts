@@ -182,19 +182,19 @@ export class GravityEntity extends ClientEntity {
     }
 
     get rightX() {
-        return this.x + this.halfWidth
+        return this.x + this.width
     }
 
     get leftX() {
-        return this.x - this.halfWidth
+        return this.x
     }
 
     get middleY() {
-        return this.y
+        return this.y + this.halfWidth
     }
 
     get middleX() {
-        return this.x
+        return this.x + this.halfWidth
     }
 
     get xVel() {

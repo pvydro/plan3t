@@ -1,7 +1,7 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
 import { Direction } from '../../engine/math/Direction'
-import { CreatureType } from '../Creature'
+import { CreatureType } from '../CreatureType'
 import { ITravelkinCreature, TravelkinCreature } from '../travelkin/TravelkinCreature'
 
 export interface IKoini extends ITravelkinCreature {

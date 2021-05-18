@@ -1,6 +1,6 @@
 import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
-import { CreatureType } from '../creature/Creature'
+import { CreatureType } from '../creature/CreatureType'
 import { Enemy } from '../enemy/Enemy'
 import { EnemyManager, IEnemyManager } from '../manager/enemymanager/EnemyManager'
 import { EntityManager } from '../manager/entitymanager/EntityManager'

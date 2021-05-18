@@ -1,7 +1,8 @@
 import { create } from 'colyseus/lib/MatchMaker'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
-import { Creature, CreatureType } from '../../creature/Creature'
+import { Creature } from '../../creature/Creature'
+import { CreatureType } from '../../creature/CreatureType'
 import { CreatureFactory } from '../../factory/CreatureFactory'
 import { IEntityManager } from './EntityManager'
 
