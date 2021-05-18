@@ -73,16 +73,16 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     }
 
     takeDamage(damage: number | Bullet) {
-        if (this.isDead) return
-        
         this.flash()
-
+        
         if (damage instanceof Bullet) {
             const bullet = damage as Bullet
             const direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
 
             this.knockback({ direction })
         }
+
+        if (this.isDead) return
 
         super.takeDamage(damage)
     }
@@ -94,7 +94,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
         this.organismState = GravityOrganismState.Dead
         this.showDyingSprite()
-        this.yVel = -(this.jumpHeight / 2)
+        this.yVel = (this.jumpHeight / 2)
         
         await asyncTimeout(2000)
         await super.die()

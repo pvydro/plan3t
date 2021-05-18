@@ -31,7 +31,9 @@ export class SormEnemy extends Enemy implements ISormEnemy {
                 idleSpriteDef: { sprite: idleSprite },
                 dyingSpriteDef: {
                     sprite: dyingSheet,
-                    animationOptions: { animationSpeed: 0.5 }
+                    animationOptions: {
+                        animationSpeed: 0.175
+                    }
                 },
                 walkingSpriteDef: {
                     sprite: walkingSheet,
