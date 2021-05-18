@@ -14,9 +14,13 @@ export class Koini extends TravelkinCreature implements IKoini {
 
         super({
             type: CreatureType.Koini,
-            idleSprite: new Sprite({ texture: idleTexture }),
             walkSpeed: 1,
-            weight: 0.5
+            weight: 0.5,
+            sprites: {
+                idleSpriteDef: {
+                    sprite: new Sprite({ texture: idleTexture })
+                }
+            }
         })
         
         this._direction = Math.random() > 0.5 ? Direction.Right : Direction.Left

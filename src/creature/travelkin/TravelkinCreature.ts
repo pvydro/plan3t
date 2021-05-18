@@ -34,7 +34,6 @@ export interface TravelkinCreatureOptions extends CreatureOptions {
 
 export class TravelkinCreature extends Creature implements ITravelkinCreature {
     _movementState: TravelkinMovementState = TravelkinMovementState.NotSet
-    // walkingSprite: AnimatedSprite
     animator: ITravelkinAnimator
     walkSpeed: number
     ai: IGroundPatherAI
@@ -46,25 +45,16 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
 
         const travelkin = this
 
-        this.spriteStore = new CreatureSpriteStore({
-            idleSprite: options.idleSprite,
-            walkingSprite: options.walkingSheet,
-            dyingSprite: options.dyingSheet
-        })
+        this.spriteStore = new CreatureSpriteStore(options.sprites)
         this.walkSpeed = options.walkSpeed ?? 5
         this.ai = new GroundPatherAI({ gravityOrganism: travelkin })
         this.animator = new TravelkinAnimator({
             travelkin, // TODO This one below 
-            // walkingSprite: this.spriteStore.walkingSprite ?? undefined//options.walkingSheet ?? undefined
+            walkingSprite: this.spriteStore.walkingSprite ?? undefined
         })
         this.movementController = new TravelkinMovementController({ travelkin })
 
         this.addChild(this.spriteStore)
-        // Add walkingsprite if walkingsheet was passed through
-        // if (options.walkingSheet) {
-        //     this.walkingSprite = this.animator.walkingSprite
-        //     this.addChild(this.walkingSprite)
-        // }
     }
 
     update() {
@@ -74,60 +64,12 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
         super.update()
     }
 
-    showIdleSprite() {
-        this.spriteStore.showSprite(this.idleSprite)
-        // if (this.currentShown !== this.sprite) {
-        //     this.currentShown = this.sprite
-        // }
-
-        // this.hideAllExcept(this.sprite)
-    }
-
-    showWalkingSprite() {
-        this.spriteStore.showSprite(this.walkingSprite)
-        // if (this.walkingSprite) {
-        //     if (this.currentShown !== this.walkingSprite) {
-        //         if (this.walkingSpriteAnimated) this.walkingSpriteAnimated.gotoAndPlay(0)
-
-        //         this.currentShown = this.walkingSprite
-        //     }
-    
-        //     // this.hideAllExcept(this.walkingSprite)
-        //     this.spriteStore.showSprite(this.walkingSprite)
-
-        //     if (this.walkingSpriteAnimated) {
-        //         this.walkingSpriteAnimated.play()
-        //     }
-        // }
-    }
-
     getAllSprites() {
         return trimArray(this.idleSprite, this.walkingSprite, this.dyingSprite)
     }
 
-    // hideAllExcept(shownSprite: any) {
-    //     const hideable = this.getAllSprites()
-
-    //     for (var i in hideable) {
-    //         const hideElement = hideable[i]
-
-    //         if (hideElement !== undefined && hideElement !== shownSprite) {
-    //             hideElement.alpha = 0
-    //         }
-    //     }
-
-    //     if (shownSprite === undefined) {
-    //         shownSprite = this.idleSprite
-    //         shownSprite.alpha = 1
-    //     } else {
-    //         shownSprite.alpha = 1
-    //     }
-    // }
-
     flipAllSprites() {
-        if (this.sprite) this.sprite.flipX()
-        if (this.walkingSprite) this.walkingSprite.flipX()
-        if (this.dyingSprite) this.dyingSprite.flipX()
+        this.spriteStore.flipAllSprites()
     }
 
     takeDamage(damage: number | Bullet) {

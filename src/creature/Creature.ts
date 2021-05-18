@@ -8,7 +8,7 @@ import { Rect } from '../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { asyncTimeout } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
-import { CreatureSpriteStore } from './CreatureSpriteStore'
+import { CreatureSprites, CreatureSpriteStore } from './CreatureSpriteStore'
 import { CreatureType } from './CreatureType'
 
 export interface ICreature extends IGravityOrganism {
@@ -20,9 +20,7 @@ export interface ICreature extends IGravityOrganism {
 
 export interface CreatureOptions extends GravityOrganismOptions {
     type: CreatureType
-    idleSprite?: Sprite
-    dyingSheet?: Sprite | Spritesheet
-    walkingSheet?: Sprite | Spritesheet
+    sprites: CreatureSprites
 }
 
 export abstract class Creature extends GravityOrganism implements ICreature {
@@ -31,14 +29,17 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     spriteStore: CreatureSpriteStore    
 
     constructor(options: CreatureOptions) {
-        // options.sprite = options.idleSprite
-        // options.sprite.anchor.x = 0.5
+        const idleSprite = (options.sprites && options.sprites.idleSpriteDef
+            && options.sprites.idleSpriteDef.sprite)
+
         options.plugins = options.plugins ?? {}
         options.addDebugRectangle = options.addDebugRectangle ?? true
         options.boundingBoxAnchor = options.boundingBoxAnchor ?? { x: 0.5, y: 0 }
-        options.boundingDimensions = options.boundingDimensions ?? {
-            width: options.idleSprite.width,
-            height: options.idleSprite.height
+        if (idleSprite as Sprite) {
+            options.boundingDimensions = options.boundingDimensions ?? {
+                width: (idleSprite as Sprite).width,
+                height: (idleSprite as Sprite).height
+            }
         }
         options.plugins = {
             addFlashPlugin: true,
@@ -48,26 +49,9 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         super(options)
 
         this.entityId = 'Creature' + Creature.CreatureIdIteration++
-        this.spriteStore = new CreatureSpriteStore({
-            idleSprite: options.idleSprite,
-            walkingSprite: options.walkingSheet,
-            dyingSprite: options.dyingSheet
-        })
+        this.spriteStore = new CreatureSpriteStore(options.sprites)
 
         this.addChild(this.spriteStore)
-        
-        if (options.dyingSheet) {
-
-            // if (options.dyingSheet instanceof Sprite) {
-            //     this.spriteStore.dyingSprite = (options.dyingSheet as Sprite)
-            // } else if (options.dyingSheet instanceof PIXI.Spritesheet) {
-            //     this.spriteStore.dyingSprite = new AnimatedSprite({
-            //         sheet: options.dyingSheet,
-            //         animationSpeed: 0.25
-            //     })
-            // }
-
-        }
 
         // TODO: FIXME TMP
         InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
@@ -113,6 +97,13 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         await super.die()
     }
 
+    showIdleSprite() {
+        this.spriteStore.showSprite(this.idleSprite)
+    }
+
+    showWalkingSprite() {
+        this.spriteStore.showSprite(this.walkingSprite)
+    }
     flipAllSprites() {
         this.sprite.flipX()
     }

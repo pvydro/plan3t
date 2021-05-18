@@ -31,7 +31,7 @@ export class TravelkinAnimator extends Animator implements ITravelkinAnimator {
             //     animationSpeed: 0.25,
             //     loop: true
             // })
-            this.walkingSprite.anchor.set(0.5, 0)
+            // this.walkingSprite.anchor.set(0.5, 0)
         }
     }
 

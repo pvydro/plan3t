@@ -24,7 +24,17 @@ export class SormEnemy extends Enemy implements ISormEnemy {
 
         super({
             type: CreatureType.Sorm,
-            idleSprite, walkingSheet, dyingSheet,
+            sprites: {
+                idleSpriteDef: { sprite: idleSprite },
+                dyingSpriteDef: { sprite: dyingSheet },
+                walkingSpriteDef: {
+                    sprite: walkingSheet,
+                    animationOptions: {
+                        animationSpeed: 0.25,
+                        loop: true
+                    }
+                },
+            },
             walkSpeed: 1, weight: 0.5,
             boundingDimensions: { width, height },
             boundingBoxAnchor: { x: 0.5, y: 0 }

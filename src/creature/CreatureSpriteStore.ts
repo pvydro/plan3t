@@ -1,8 +1,9 @@
-import { AnimatedSprite } from '../engine/display/AnimatedSprite'
+import { AnimatedSprite, AnimationOptions } from '../engine/display/AnimatedSprite'
 import { Container, IContainer } from '../engine/display/Container'
 import { ISprite, Sprite } from '../engine/display/Sprite'
 import { Spritesheet } from '../engine/display/spritesheet/Spritesheet'
 import { loudLog } from '../service/Flogger'
+import { trimArray } from '../utils/Utils'
 
 export interface ICreatureSpriteStore extends IContainer {
     idleSprite: Sprite | AnimatedSprite
@@ -13,10 +14,15 @@ export interface ICreatureSpriteStore extends IContainer {
     showSprite(value: AnimatedSprite | Sprite): void
 }
 
+export interface CreatureSpriteDefinition {
+    sprite: Sprite | Spritesheet
+    animationOptions?: AnimationOptions
+}
+
 export interface CreatureSprites {
-    idleSprite?: Sprite | Spritesheet
-    walkingSprite?: Sprite | Spritesheet
-    dyingSprite?: Sprite | Spritesheet
+    idleSpriteDef?: CreatureSpriteDefinition
+    walkingSpriteDef?: CreatureSpriteDefinition
+    dyingSpriteDef?: CreatureSpriteDefinition
 }
 
 export class CreatureSpriteStore extends Container implements ICreatureSpriteStore {
@@ -38,10 +44,9 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     }
     
     setSprites(sprites: CreatureSprites) {
-        // const spriteVals = Object.values(sprites)
-        const idleSprite = this.convertToSpriteOrAnimatedSprite(sprites.idleSprite)
-        const walkingSprite = this.convertToSpriteOrAnimatedSprite(sprites.walkingSprite)
-        const dyingSprite = this.convertToSpriteOrAnimatedSprite(sprites.dyingSprite)
+        const idleSprite = sprites.idleSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.idleSpriteDef.sprite) : undefined
+        const walkingSprite = sprites.walkingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.walkingSpriteDef.sprite) : undefined
+        const dyingSprite = sprites.dyingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.dyingSpriteDef.sprite) : undefined
         
         if (idleSprite)     idleSprite.anchor.x = 0.5
         if (walkingSprite)  walkingSprite.anchor.x = 0.5
@@ -55,6 +60,12 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
         if (this._walkingSprite)  this.addChild(this._walkingSprite)
         if (this._dyingSprite)    this.addChild(this._dyingSprite)
 
+        this._allSprites = trimArray(
+            this._idleSprite,
+            this._walkingSprite,
+            this._dyingSprite
+        )
+
         this.hideAllExcept(this.idleSprite)
     }
 
@@ -62,15 +73,12 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
         this.hideAllExcept(value)
 
         if (this.isAnimatedSprite(value)) {
-            loudLog('Is Animated sprite!');
-
-            this.walkingSpriteAnimated.play()
+            const animatedSpriteValue = value as AnimatedSprite
+            
+            if (animatedSpriteValue) {
+                animatedSpriteValue.play()
+            }
         }
-        // this.hideAllSprites()
-
-        // if (value) {
-        //     value.alpha = 1
-        // }
     }
 
     hideAllSprites() {

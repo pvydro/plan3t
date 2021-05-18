@@ -22,8 +22,12 @@ export class PassiveHornet extends Creature implements IPassiveHornet {
             type: CreatureType.PassiveHornet,
             horizontalFriction: 0,
             weight: 0,
-            idleSprite: new Sprite({ texture: PIXI.Texture.from(Assets.get(AssetUrls.PassiveCreatureHornet)) }),
-            boundingBoxAnchor: { x: 0.5, y: 0 }
+            boundingBoxAnchor: { x: 0.5, y: 0 },
+            sprites: {
+                idleSpriteDef: {
+                    sprite: new Sprite({ texture: PIXI.Texture.from(Assets.get(AssetUrls.PassiveCreatureHornet)) }),
+                }
+            },
         })
     }
     
