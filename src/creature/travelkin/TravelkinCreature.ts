@@ -10,7 +10,8 @@ import { ITravelkinMovementController, TravelkinMovementController } from './Tra
 export enum TravelkinMovementState {
     NotSet,
     Idle,
-    Walking
+    Walking,
+    Dead
 }
 
 export interface ITravelkinCreature extends ICreature {
@@ -109,6 +110,12 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
         this.ai.decideIfContinueOrStop()
 
         super.takeDamage(damage)
+    }
+
+    async die() {
+        this.movementState = TravelkinMovementState.Dead
+
+        await super.die()
     }
 
     get movementState() {

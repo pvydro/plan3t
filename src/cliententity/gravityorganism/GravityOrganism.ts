@@ -8,6 +8,7 @@ export interface IGravityOrganism extends IGravityEntity {
     currentHealth: number
     totalHealth: number
     healthPercentage: number
+    organismState: GravityOrganismState
     jump(): void
     takeDamage(damage: number | Bullet): void
 }
@@ -17,9 +18,15 @@ export interface GravityOrganismOptions extends GravityEntityOptions {
     jumpHeight?: number
 }
 
+export enum GravityOrganismState {
+    Alive = 'Alive',
+    Dead = 'Dead'
+}
+
 export class GravityOrganism extends GravityEntity implements IGravityOrganism {
     healthController: IHealthController
     jumpHeight: number
+    organismState: GravityOrganismState = GravityOrganismState.Alive
 
     constructor(options?: GravityOrganismOptions) {
         super(options)
@@ -56,6 +63,8 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
 
     async die() {
         log('GravityOrganism', 'die')
+
+        this.organismState = GravityOrganismState.Dead
     }
     
     get currentHealth() {

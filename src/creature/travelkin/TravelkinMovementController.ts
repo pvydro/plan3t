@@ -32,6 +32,7 @@ export class TravelkinMovementController implements ITravelkinMovementController
                 this.travelkin.xVel += (targetXVel - this.travelkin.xVel) / 3
 
                 break
+            case TravelkinMovementState.Dead:
             case TravelkinMovementState.Idle:
 
                 this.travelkin.comeToStop()

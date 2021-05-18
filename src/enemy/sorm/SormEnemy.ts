@@ -10,6 +10,7 @@ export interface ISormEnemy extends IEnemy {
 }
 
 export class SormEnemy extends Enemy implements ISormEnemy {
+    name: 'Sorm'
     _boundingBox?: Rect
 
     constructor() {

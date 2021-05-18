@@ -1,9 +1,10 @@
 import { Key } from 'ts-keycode-enum'
-import { GravityOrganism, GravityOrganismOptions, IGravityOrganism } from '../cliententity/gravityorganism/GravityOrganism'
+import { GravityOrganism, GravityOrganismOptions, GravityOrganismState, IGravityOrganism } from '../cliententity/gravityorganism/GravityOrganism'
 import { Sprite } from '../engine/display/Sprite'
 import { Direction } from '../engine/math/Direction'
 import { Rect } from '../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
+import { asyncTimeout } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
 
 export interface ICreature extends IGravityOrganism {
@@ -69,6 +70,13 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         }
 
         super.takeDamage(damage)
+    }
+
+    async die() {
+        this.organismState = GravityOrganismState.Dead
+        
+        await asyncTimeout(2000)
+        await super.die()
     }
 
     flipAllSprites() {

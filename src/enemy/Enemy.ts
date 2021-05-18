@@ -4,8 +4,8 @@ import { ITravelkinCreature, TravelkinCreature, TravelkinCreatureOptions } from 
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { Camera } from '../camera/Camera'
-import { Flogger } from '../service/Flogger'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
+import { asyncTimeout } from '../utils/Utils'
 
 export interface IEnemy extends ITravelkinCreature {
 
@@ -57,10 +57,9 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     }
 
     async die() {
-        const enemyManager = EntityManager.getInstance().enemyManager
-
         await super.die()
-        enemyManager.removeEnemy(this)
 
+        const enemyManager = EntityManager.getInstance().enemyManager
+        enemyManager.removeEnemy(this)
     }
 }

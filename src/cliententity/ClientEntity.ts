@@ -48,6 +48,7 @@ export class ClientEntity extends Container implements IClientEntity {
     static CurrentIDIteration: number = 0
     protected _xVel: number = 0
     protected _yVel: number = 0
+    name: string = 'ClientEntity'
     entityId: string
     sprite: Sprite
     entity?: Entity
@@ -55,7 +56,6 @@ export class ClientEntity extends Container implements IClientEntity {
     y: number
     type: EntityType
     plugins: IClientEntityPlugins = {}
-    name: string = 'ClientEntity'
 
     constructor(options?: ClientEntityOptions) {
         super()
