@@ -94,9 +94,6 @@ export class ParticleManager implements IParticleManager {
     }
 
     removeParticle(particle: Particle, container?: Container) {
-        if (particle.hasBeenRemoved) return
-
-        particle.hasBeenRemoved = true
         const cont = container ?? this.container
         cont.removeChild(particle)
 

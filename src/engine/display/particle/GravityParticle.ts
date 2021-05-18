@@ -13,15 +13,12 @@ export interface GravityParticleOptions extends ParticleOptions {
     color?: number
     totalParticles?: number
     weight?: number
-    yVelAcceleration?: number
-    minStartYVel?: number
 }
 
 export class GravityParticle extends Particle implements IGravityParticle {
     dead: boolean
     xVel: number
     yVel: number
-    yVelAcceleration: number
     onGround: boolean
     currentGroundRect?: IRect
     hasBounced: boolean
@@ -31,16 +28,13 @@ export class GravityParticle extends Particle implements IGravityParticle {
     calculatedStartYVel: number
     xSpreadRange: number
     ySpreadRange: number
-    weight: number
 
     constructor(options: GravityParticleOptions) {
         const negative = (Math.random() > 0.5) === true
-        const minimumStartYVel = options.minStartYVel ?? 0
         if (options.sprite === undefined) {
             const genericColor = options.color ?? 0xb8b8b8
             const dustSize = 2
             const dustSquare = new Graphix()
-
             dustSquare.beginFill(genericColor)
             dustSquare.drawRect(0, 0, dustSize, dustSize)
             dustSquare.endFill()
@@ -53,13 +47,11 @@ export class GravityParticle extends Particle implements IGravityParticle {
         this.onGround = false
         this.hasBounced = false
         this.minimumLifespan = 60
-        this.weight = options.weight ?? 1
         this.lifespanRandomizationRange = 20
         this.lifespanCountdown = this.minimumLifespan + Math.random() * this.lifespanRandomizationRange
         this.xVel = Math.random() * this.xSpreadRange
         this.calculatedStartYVel = -Math.random() * this.ySpreadRange
-        this.yVelAcceleration = options.yVelAcceleration
-        this.yVel = minimumStartYVel + this.calculatedStartYVel * this.weight
+        this.yVel = this.calculatedStartYVel
 
         if (negative) {
             this.xVel *= -1
@@ -79,8 +71,7 @@ export class GravityParticle extends Particle implements IGravityParticle {
         }
 
         // Physics
-        if (this.onGround === false) this.yVel += (this.yVelAcceleration)
-
+        if (this.onGround === false) this.yVel += 0.2
         this.xVel += (0 - this.xVel) / 10
         this.x += this.xVel
         this.y += this.yVel
