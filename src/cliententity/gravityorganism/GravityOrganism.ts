@@ -42,8 +42,8 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         })
     }
 
-    jump(jumpHeight?: number) {
-        if (!this.isOnGround) return
+    jump(jumpHeight?: number, bypassOnGround: boolean = false) {
+        if (!this.isOnGround && !bypassOnGround) return
         const jh = jumpHeight ?? this.jumpHeight
 
         this.onGround = false

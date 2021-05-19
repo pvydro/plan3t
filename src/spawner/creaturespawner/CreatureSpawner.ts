@@ -53,7 +53,7 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
         const camera = Camera.getInstance()
         const player = camera.target
         const direction: Direction = Math.random() > 0.5 ? Direction.Left : Direction.Right
-        const xOffset = direction === Direction.Right ? camera.viewport.width : -10
+        const xOffset = direction === Direction.Right ? camera.viewport.width : 10
         const x = camera.viewport.x + xOffset
         const y = player.y
 
