@@ -6,6 +6,7 @@ import { EnemyManager, IEnemyManager } from '../manager/enemymanager/EnemyManage
 import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { Flogger, importantLog, log } from '../service/Flogger'
 import { CreatureSpawner, ICreatureSpawner } from '../spawner/creaturespawner/CreatureSpawner'
+import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { IWave, Wave } from './Wave'
 
 export interface IWaveRunnerGame {
@@ -39,7 +40,8 @@ export class WaveRunnerGame implements IWaveRunnerGame {
                 this.spawner.spawn()
             }
         })
-        
         this.wave.startSpawnIntervals()
+
+        InGameHUD.getInstance().loadWave(this.wave)
     }
 }

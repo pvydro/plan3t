@@ -5,6 +5,7 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { TimeDefaults, UIDefaults } from '../../utils/Defaults'
+import { IWave } from '../../waverunner/Wave'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
@@ -16,6 +17,7 @@ import { HealthBar } from './healthbar/HealthBar'
 import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 import { HUDInventoryHotbar } from './inventoryhotbar/HUDInventoryHotbar'
 import { PauseButton } from './pausebutton/PauseButton'
+import { WaveRunnerCounter } from './waverunnercounter/WaveRunnerCounter'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     initializeHUD(): Promise<void>
@@ -24,11 +26,13 @@ export interface IInGameHUD extends IUpdatable, IReposition {
     // closeRespawnScreen(): Promise<void>
     requestMenuScreen(id: InGameScreenID): Promise<void>
     requestCrosshairState(state: CrosshairState): void
+    loadWave(wave: IWave): void
 }
 
 export class InGameHUD extends UIScreen implements IInGameHUD {
     private static Instance: InGameHUD
     _initialized: boolean
+    _waveUIInitialized: boolean
     hudContainer: UIContainer
     crosshair: Crosshair
     ammoStatus: AmmoStatusComponent
@@ -38,6 +42,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     inventory: InGameInventory
     pauseButton: PauseButton
     inGameMenu: InGameMenu
+    waveRunnerCounter?: WaveRunnerCounter
 
     static getInstance() {
         if (!this.Instance) {
@@ -57,10 +62,11 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
-        this.hotbar = new HUDInventoryHotbar()
-        this.inventory = new InGameInventory()
+        this.waveRunnerCounter = new WaveRunnerCounter()
         this.pauseButton = new PauseButton()
         this.inGameMenu = InGameMenu.getInstance()
+        // this.hotbar = new HUDInventoryHotbar()
+        // this.inventory = new InGameInventory()
 
         // Temp
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
@@ -73,7 +79,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     async initializeHUD(): Promise<void> {
         Flogger.log('InGameHUD', 'initializeHUD')
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.addChild(this.ammoStatus)
             // this.addChild(this.hotbar)
             this.addChild(this.inGameMenu)
@@ -81,8 +87,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this.addChild(this.pauseButton)
 
             this.queuedHealthBars = []
-            // this.respawnScreen.forceHide()
             this.inGameMenu.forceHide()
+            // this.respawnScreen.forceHide()
             this.applyScale()
             this.reposition(true)
             this._initialized = true
@@ -90,32 +96,41 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             resolve()
         })
     }
+
+    initializeWaveHUD() {
+        Flogger.log('InGameHUD', 'initializeWaveHUD')
+
+        if (!this._waveUIInitialized) {
+            this._waveUIInitialized = true
+            
+            this.addChild(this.waveRunnerCounter)
+        }
+
+    }
     
+    loadWave(wave: IWave) {
+        Flogger.log('InGameHUD', 'loadWave')
+
+        this.initializeWaveHUD()
+    }
+
+
     update() {
         super.update()
 
         this.crosshair.update()
         this.ammoStatus.update()
+        // this.inventory.update()
         // this.hotbar.update()
-        this.inventory.update()
     }
 
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        // Health bar
-        // this.healthBar.position.x = GameWindow.width - UIDefaults.UIEdgePadding
-        // this.healthBar.position.y = GameWindow.height - UIDefaults.UIEdgePadding
-        // - (this.healthBar.backgroundSprite.height * UIDefaults.UIScale)
-
-        // Ammo status
-        // this.ammoStatus.position.x = 
-        // this.ammoStatus.position.y = 
-
-        this.hotbar.reposition(false)
+        // this.hotbar.reposition(false)
         this.ammoStatus.reposition(false)
         this.pauseButton.reposition(false)
-
+        this.waveRunnerCounter.reposition(false)
         this.y = GameWindow.y
     }
 
@@ -154,22 +169,22 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     async hideHUDComponents() {
-        await this.hotbar.hide()
         await this.ammoStatus.hide()
         await this.pauseButton.hide()
+        // await this.hotbar.hide()
     }
 
     async showHUDComponents() {
-        await this.hotbar.show()
         await this.ammoStatus.show()
         await this.pauseButton.show()
+        // await this.hotbar.show()
     }
 
     applyScale() {
         const toScale: UIComponent[] = [
             this.healthBar, this.ammoStatus,
-            this.hotbar, this.inventory,
-            this.pauseButton
+            this.pauseButton, this.waveRunnerCounter
+            // this.hotbar, this.inventory,
         ]
 
         this.inGameMenu.applyScale()
