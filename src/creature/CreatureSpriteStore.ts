@@ -2,7 +2,6 @@ import { AnimatedSprite, AnimationOptions } from '../engine/display/AnimatedSpri
 import { Container, IContainer } from '../engine/display/Container'
 import { ISprite, Sprite } from '../engine/display/Sprite'
 import { Spritesheet } from '../engine/display/spritesheet/Spritesheet'
-import { loudLog } from '../service/Flogger'
 import { trimArray } from '../utils/Utils'
 
 export interface ICreatureSpriteStore extends IContainer {

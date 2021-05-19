@@ -29,15 +29,15 @@ export interface CreatureOptions extends GravityOrganismOptions {
 export abstract class Creature extends GravityOrganism implements ICreature {
     static CreatureIdIteration: number = 0
     entityId: string
-    spriteStore: CreatureSpriteStore    
+    spriteStore: CreatureSpriteStore
 
     constructor(options: CreatureOptions) {
         const idleSprite = (options.sprites.idleSpriteDef && options.sprites.idleSpriteDef.sprite)
 
-        options.plugins = options.plugins ?? {}
         options.addDebugRectangle = options.addDebugRectangle ?? true
         options.boundingBoxAnchor = options.boundingBoxAnchor ?? { x: 0.5, y: 0 }
-        options.plugins = { addFlashPlugin: true, addKnockbackPlugin: true }
+        options.plugins = options.plugins ?? { addFlashPlugin: true, addKnockbackPlugin: true }
+
         if (idleSprite as Sprite) {
             options.boundingDimensions = options.boundingDimensions ?? {
                 width: (idleSprite as Sprite).width,

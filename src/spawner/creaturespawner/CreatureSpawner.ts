@@ -1,6 +1,9 @@
 import { Key } from 'ts-keycode-enum'
+import { Camera } from '../../camera/Camera'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { CreatureType } from '../../creature/CreatureType'
+import { Direction } from '../../engine/math/Direction'
+import { IVector2 } from '../../engine/math/Vector2'
 import { CreatureFactory } from '../../factory/CreatureFactory'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { log } from '../../service/Flogger'
@@ -31,16 +34,30 @@ export class CreatureSpawner extends Spawner implements ICreatureSpawner {
     }
 
     spawn() {
+        log('CreatureSpawner', 'spawn', 'type', this.typeToSpawn)
+        
         const type = this.typeToSpawn
-        log('CreatureSpawner', 'spawn', 'type', type)
-        const player = ClientPlayer.getInstance()
-        const x = player.x
-        const y = player.y - 128
         const creature = CreatureFactory.createCreatureForType(type)
 
-        creature.pos = { x, y }
+        creature.pos = CreatureSpawner.getSpawnPoint()
         
         super.spawn(creature)
+    }
+
+    /**
+     * Fetches a randomized spawn point outside of camera boundaries
+     * 
+     * @param options 
+     */
+    static getSpawnPoint(options?: any): IVector2 {
+        const camera = Camera.getInstance()
+        const player = camera.target
+        const direction: Direction = Math.random() > 0.5 ? Direction.Left : Direction.Right
+        const xOffset = direction === Direction.Right ? camera.viewport.width : -10
+        const x = camera.viewport.x + xOffset
+        const y = player.y
+
+        return { x, y }
     }
 
     /**

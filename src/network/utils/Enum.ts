@@ -1,8 +1,3 @@
-export enum Direction {
-    Left = -1,
-    Right = 1
-}
-
 export enum PlayerBodyState {
     Idle = 0,
     Walking = 1
