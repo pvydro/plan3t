@@ -1,4 +1,5 @@
 import { importantLog } from '../../service/Flogger'
+import { IWave, Wave } from '../../waverunner/Wave'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
 
 export interface IWaveRunnerManager {
@@ -6,7 +7,7 @@ export interface IWaveRunnerManager {
 }
 
 export class WaveRunnerManager implements IWaveRunnerManager {
-    static Instance: IWaveRunnerManager
+    private static Instance: IWaveRunnerManager
     currentWaveRunnerGame: IWaveRunnerGame
 
     static getInstance() {
@@ -26,5 +27,20 @@ export class WaveRunnerManager implements IWaveRunnerManager {
 
         this.currentWaveRunnerGame = new WaveRunnerGame()
         this.currentWaveRunnerGame.beginWaveRunner()
+        this.currentWaveRunnerGame.loadWave(this.getNextWave())
+    }
+
+    getNextWave(): IWave {
+        const wave = new Wave({
+            onSpawn: () => {
+                this.currentWaveRunnerGame.spawner.spawn()
+            }
+        })
+
+        return wave
+    }
+
+    get currentWave() {
+        return this.currentWaveRunnerGame.currentWave
     }
 }

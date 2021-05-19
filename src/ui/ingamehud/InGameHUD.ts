@@ -104,6 +104,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this._waveUIInitialized = true
             
             this.addChild(this.waveRunnerCounter)
+
+            this.waveRunnerCounter.show()
         }
 
     }

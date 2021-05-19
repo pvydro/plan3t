@@ -41,11 +41,13 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
     reposition(addListeners?: boolean) {
         super.reposition(addListeners)
 
+        const oneScaled = (1 / UIDefaults.UIScale)
+
         this.position.set(UIDefaults.UIEdgePadding, -UIDefaults.UIBleedPastBorderMargins.mdMid)
-        this.waveLabel.y = this.header.y - this.header.textHeight - (1 / UIDefaults.UIScale)
+        this.waveLabel.y = this.header.y - this.header.textHeight - oneScaled
 
         this.waveNumberLabel.x = this.waveLabel.x + this.waveLabel.textWidth
-        this.waveNumberLabel.y = this.waveLabel.y - this.waveNumberLabel.textHeight + this.waveLabel.height
+        this.waveNumberLabel.y = this.waveLabel.y - this.waveNumberLabel.textHeight + this.waveLabel.height + (oneScaled * 4)
     }
 
     async show() {
