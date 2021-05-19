@@ -11,6 +11,7 @@ export interface IWaveRunnerCounter extends IUIComponent {
 export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter {
     header: UIText
     waveLabel: UIText
+    waveNumberLabel: UIText
     
     constructor() {
         super()
@@ -21,13 +22,18 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
             style: TextStyles.Menu.HeaderSmall
         })
         this.waveLabel = new UIText({
-            text: 'Wave 0',
+            text: 'Wave',
             uppercase: true,
             style: TextStyles.Menu.HeaderSmallMd
+        })
+        this.waveNumberLabel = new UIText({
+            text: '0',
+            style: TextStyles.WaveCounterNumber
         })
 
         this.addChild(this.header)
         this.addChild(this.waveLabel)
+        this.addChild(this.waveNumberLabel)
 
         this.forceHide()
     }
@@ -36,8 +42,10 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
         super.reposition(addListeners)
 
         this.position.set(UIDefaults.UIEdgePadding, -UIDefaults.UIBleedPastBorderMargins.mdMid)
-
         this.waveLabel.y = this.header.y - this.header.textHeight - (1 / UIDefaults.UIScale)
+
+        this.waveNumberLabel.x = this.waveLabel.x + this.waveLabel.textWidth
+        this.waveNumberLabel.y = this.waveLabel.y - this.waveNumberLabel.textHeight + this.waveLabel.height
     }
 
     async show() {

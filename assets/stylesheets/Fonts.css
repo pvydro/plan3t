@@ -7,3 +7,8 @@
     font-family: iPU;
     src: url('../fonts/ipixelu.ttf') format('truetype')
 }
+
+@font-face {
+    font-family: Origami Mommy;
+    src: url('../fonts//origa.ttf') format('truetype')
+}

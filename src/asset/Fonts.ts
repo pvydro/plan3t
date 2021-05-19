@@ -6,6 +6,7 @@ export class Fonts {
     private static _fontsFinishedLoading: boolean = false
     static FontStrong: any = new FontFaceObserver('Pixel')
     static FontDefault: any = new FontFaceObserver('iPU')
+    static FontOutline: any = new FontFaceObserver('Origami Mommy')
     private static _fonts = [
         Fonts.FontStrong, Fonts.FontDefault
     ]

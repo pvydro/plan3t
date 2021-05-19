@@ -61,6 +61,12 @@ export class TextStyles {
             color: 0x000000
         }
     }
+
+    static WaveCounterNumber: TextSpriteStyle = {
+        fontFamily: Fonts.FontOutline.family,
+        fontSize: scaleFontSize(18),
+        color: 0xFFFFFF
+    }
 }
 
 /**
