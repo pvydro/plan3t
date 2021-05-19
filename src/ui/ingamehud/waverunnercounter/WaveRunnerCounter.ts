@@ -50,6 +50,10 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
         this.waveNumberLabel.y = this.waveLabel.y - this.waveNumberLabel.textHeight + this.waveLabel.height + (oneScaled * 4)
     }
 
+    setWaveValue(waveIndex: number) {
+        this.waveNumberLabel.text = waveIndex.toString()
+    }
+
     async show() {
         this.alpha = 1
     }

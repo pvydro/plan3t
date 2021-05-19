@@ -48,7 +48,7 @@ export class WaveRunnerGame implements IWaveRunnerGame {
 
         wave.startSpawnIntervals()
 
-        InGameHUD.getInstance().loadWave(this.currentWave)
+        // InGameHUD.getInstance().loadWave(this.currentWave)
     }
 
     get spawner() {

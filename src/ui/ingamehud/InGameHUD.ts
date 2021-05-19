@@ -20,13 +20,14 @@ import { PauseButton } from './pausebutton/PauseButton'
 import { WaveRunnerCounter } from './waverunnercounter/WaveRunnerCounter'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
+    waveRunnerCounter?: WaveRunnerCounter
     initializeHUD(): Promise<void>
     hideHUDComponents(): Promise<void>
-    // requestRespawnScreen(): Promise<void>
-    // closeRespawnScreen(): Promise<void>
     requestMenuScreen(id: InGameScreenID): Promise<void>
     requestCrosshairState(state: CrosshairState): void
     loadWave(wave: IWave): void
+    // requestRespawnScreen(): Promise<void>
+    // closeRespawnScreen(): Promise<void>
 }
 
 export class InGameHUD extends UIScreen implements IInGameHUD {
@@ -42,7 +43,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     inventory: InGameInventory
     pauseButton: PauseButton
     inGameMenu: InGameMenu
-    waveRunnerCounter?: WaveRunnerCounter
+    waveRunnerCounter: WaveRunnerCounter
 
     static getInstance() {
         if (!this.Instance) {
@@ -85,6 +86,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this.addChild(this.inGameMenu)
             this.addChild(this.crosshair)
             this.addChild(this.pauseButton)
+            this.addChild(this.waveRunnerCounter)
 
             this.queuedHealthBars = []
             this.inGameMenu.forceHide()
@@ -96,24 +98,11 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             resolve()
         })
     }
-
-    initializeWaveHUD() {
-        Flogger.log('InGameHUD', 'initializeWaveHUD')
-
-        if (!this._waveUIInitialized) {
-            this._waveUIInitialized = true
-            
-            this.addChild(this.waveRunnerCounter)
-
-            this.waveRunnerCounter.show()
-        }
-
-    }
     
     loadWave(wave: IWave) {
         Flogger.log('InGameHUD', 'loadWave')
 
-        this.initializeWaveHUD()
+        this.waveRunnerCounter.show()
     }
 
 
