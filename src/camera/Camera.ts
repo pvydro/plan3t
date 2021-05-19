@@ -49,7 +49,7 @@ export interface ICamera extends IUpdatable, IReposition {
 
 export class Camera implements ICamera {
     private static Instance: Camera
-    private baseZoom: number = 3
+    private baseZoom: number = 3.5
     private baseWidth: number = 1280
     static Zero: Vector2 = Vector2.Zero
     static Mouse: Vector2 = Vector2.Zero

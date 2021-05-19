@@ -43,7 +43,7 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
 
         const oneScaled = (1 / UIDefaults.UIScale)
 
-        this.position.set(UIDefaults.UIEdgePadding, -UIDefaults.UIBleedPastBorderMargins.mdMid)
+        this.position.set(UIDefaults.UIEdgePadding, -5)// -UIDefaults.UIBleedPastBorderMargins.mdMid)
         this.waveLabel.y = this.header.y - this.header.textHeight - oneScaled
 
         this.waveNumberLabel.x = this.waveLabel.x + this.waveLabel.textWidth

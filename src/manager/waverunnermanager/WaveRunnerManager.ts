@@ -51,9 +51,9 @@ export class WaveRunnerManager implements IWaveRunnerManager {
             }
         })
         
+        this.hud.waveRunnerCounter.setWaveValue(this.currentWaveIndex)
         this.hud.loadWave(this.currentWave)
         this.currentWaveRunnerGame.loadWave(wave)
-        this.hud.waveRunnerCounter.setWaveValue(this.currentWaveIndex)
 
         return wave
     }
