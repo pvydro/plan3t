@@ -15,6 +15,10 @@ export class TextStyles {
             fontSize: scaleFontSize(8),
             fontFamily: Fonts.FontDefault.family
         },
+        HeaderSmallMd: {
+            fontSize: scaleFontSize(12),
+            fontFamily: Fonts.FontDefault.family
+        },
         HeaderMedium: {
             fontSize: scaleFontSize(16),
             fontFamily: Fonts.FontDefault.family

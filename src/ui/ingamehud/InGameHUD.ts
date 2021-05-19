@@ -172,12 +172,20 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         await this.ammoStatus.hide()
         await this.pauseButton.hide()
         // await this.hotbar.hide()
+
+        if (this.waveRunnerCounter) {
+            await this.waveRunnerCounter.hide()
+        }
     }
 
     async showHUDComponents() {
         await this.ammoStatus.show()
         await this.pauseButton.show()
         // await this.hotbar.show()
+
+        if (this.waveRunnerCounter) {
+            await this.waveRunnerCounter.show()
+        }
     }
 
     applyScale() {
