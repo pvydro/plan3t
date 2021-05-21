@@ -16,14 +16,15 @@ export class BuildingBuilder implements IBuildingBuilder {
 
     async buildBuilding(options: MapBuildingOptions): Promise<GameMapContainerBuilderResponse> {
         const tileLayer = new Container()
-        // const background = MapBuilderHelper.getBackgroundAssetForType(options.type)
+        const backgroundTexture = MapBuildingHelper.getBackgroundAssetForType(options.type)
+        const backgroundSprite = new Sprite({ texture: backgroundTexture })
         const floorTexture = MapBuildingHelper.getFloorAssetForType(options.type)
         const floorSprite = new Sprite({ texture: floorTexture })
-        floorSprite.y = 180
-        
+        floorSprite.y = 128//180
         const collisionRects = this.buildCollisionRectsForFloor(floorSprite)
         // floorSprite.position.y = background.height - floorSprite.height
 
+        tileLayer.addChild(backgroundSprite)
         tileLayer.addChild(floorSprite)
 
         return { tileLayer, collisionRects }
@@ -32,7 +33,7 @@ export class BuildingBuilder implements IBuildingBuilder {
     private buildCollisionRectsForFloor(floorSprite: ISprite): Rect[] {
         const groundRect = new Rect({
             x: 0, y: floorSprite.y,//250,
-            width: floorSprite.width,
+            width: 240,//floorSprite.width,
             height: 42
         })
 

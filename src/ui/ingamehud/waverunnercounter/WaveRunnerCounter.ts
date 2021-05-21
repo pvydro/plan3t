@@ -1,3 +1,4 @@
+
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { Constants } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
@@ -10,7 +11,7 @@ export interface IWaveRunnerCounter extends IUIComponent {
 
 export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter {
     header: UIText
-    waveLabel: UIText
+    // waveLabel: UIText
     waveNumberLabel: UIText
     
     constructor() {
@@ -21,18 +22,18 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
             uppercase: true,
             style: TextStyles.Menu.HeaderSmall
         })
-        this.waveLabel = new UIText({
-            text: 'Wave',
-            uppercase: true,
-            style: TextStyles.Menu.HeaderSmallMd
-        })
+        // this.waveLabel = new UIText({
+        //     text: 'Wave',
+        //     uppercase: true,
+        //     style: TextStyles.Menu.HeaderSmallMd
+        // })
         this.waveNumberLabel = new UIText({
             text: '0',
             style: TextStyles.WaveCounterNumber
         })
 
         this.addChild(this.header)
-        this.addChild(this.waveLabel)
+        // this.addChild(this.waveLabel)
         this.addChild(this.waveNumberLabel)
 
         this.forceHide()
@@ -44,10 +45,13 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
         const oneScaled = (1 / UIDefaults.UIScale)
 
         this.position.set(UIDefaults.UIEdgePadding, -5)// -UIDefaults.UIBleedPastBorderMargins.mdMid)
-        this.waveLabel.y = this.header.y - this.header.textHeight - oneScaled
+        // this.waveLabel.y = this.header.y - this.header.textHeight - oneScaled
 
-        this.waveNumberLabel.x = this.waveLabel.x + this.waveLabel.textWidth
-        this.waveNumberLabel.y = this.waveLabel.y - this.waveNumberLabel.textHeight + this.waveLabel.height + (oneScaled * 4)
+        // this.waveNumberLabel.x = this.waveLabel.x + this.waveLabel.textWidth
+        // this.waveNumberLabel.y = this.waveLabel.y - this.waveNumberLabel.textHeight + this.waveLabel.height + (oneScaled * 4)
+
+        this.waveNumberLabel.x = this.header.x - (oneScaled * 3)
+        this.waveNumberLabel.y = this.header.y - (this.header.textHeight * 1.5) - oneScaled
     }
 
     setWaveValue(waveIndex: number) {

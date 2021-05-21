@@ -10,7 +10,7 @@ export class MapBuildingHelper {
         return new MapBuilding({ type })
     }
 
-    static getBackgroundUrlForType(type: MapBuildingType): PIXI.Texture {
+    static getBackgroundAssetForType(type: MapBuildingType): PIXI.Texture {
         const url = Assets.BaseImageDir + '/gamemap/mapbuilding/' + type + '/background'
 
         return PIXI.Texture.from(Assets.get(url))
