@@ -64,6 +64,7 @@ export class Camera implements ICamera {
     _y: number = 0
     extraXOffset: number = 0
     extraYOffset: number = 0
+    baseYOffset: number = -24
     offsetEaseDamping: number = 20
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero
@@ -172,7 +173,7 @@ export class Camera implements ICamera {
         const viewportMiddleX = this.width / 2
         const viewportMiddleY = this.height / 2
         const offsetX = (mouseX - viewportMiddleX) / 20
-        const offsetY = (mouseY - viewportMiddleY) / 15
+        const offsetY = ((mouseY - viewportMiddleY) / 15) + this.baseYOffset
         
         this.targetMouseOffset.x = offsetX
         this.targetMouseOffset.y = offsetY

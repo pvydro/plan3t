@@ -20,7 +20,7 @@ export class BuildingBuilder implements IBuildingBuilder {
         const backgroundSprite = new Sprite({ texture: backgroundTexture })
         const floorTexture = MapBuildingHelper.getFloorAssetForType(options.type)
         const floorSprite = new Sprite({ texture: floorTexture })
-        floorSprite.y = 128//180
+        floorSprite.y = 138//142
         const collisionRects = this.buildCollisionRectsForFloor(floorSprite)
         
         tileLayer.addChild(backgroundSprite)
