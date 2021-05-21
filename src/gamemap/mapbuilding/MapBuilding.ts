@@ -13,6 +13,7 @@ export interface IMapBuilding extends IGameMapContainer {
 }
 
 export interface MapBuildingOptions {
+    type: MapBuildingType
     isInfinite?: boolean
 }
 
