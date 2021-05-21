@@ -78,7 +78,7 @@ export class Game implements IGame {
         this._application = new PIXI.Application({
             width: GameWindow.fullWindowWidth,
             height: GameWindow.fullWindowHeight,
-            backgroundColor: 0x0c0c0c,
+            backgroundColor: 0x080808,//0x0c0c0c,
             antialias: false,
             view: gameCanvas
         })

@@ -22,10 +22,12 @@ export class BuildingBuilder implements IBuildingBuilder {
         const floorSprite = new Sprite({ texture: floorTexture })
         floorSprite.y = 128//180
         const collisionRects = this.buildCollisionRectsForFloor(floorSprite)
-        // floorSprite.position.y = background.height - floorSprite.height
-
+        
         tileLayer.addChild(backgroundSprite)
         tileLayer.addChild(floorSprite)
+        
+        backgroundSprite.x = 12//floorTexture.width / 2// - backgroundSprite.halfWidth
+        // floorSprite.position.y = background.height - floorSprite.height
 
         return { tileLayer, collisionRects }
     }
