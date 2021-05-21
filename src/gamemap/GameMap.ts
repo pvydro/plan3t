@@ -11,9 +11,12 @@ import { GameMapContainer } from './GameMapContainer'
 import { Homeshipical } from './homeship/Homeshipical'
 import { Camera } from '../camera/Camera'
 import { CameraStageBackgroundType } from '../camera/CameraStage'
+import { MapBuildingType } from './mapbuilding/MapBuilding'
+import { MapBuildingHelper } from './mapbuilding/MapBuildingHelper'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
+    initializeBuilding(type: MapBuildingType): Promise<void>
     demolish(): void
     collidableRects: Rect[]
 }
@@ -57,8 +60,14 @@ export class GameMap extends Container implements IGameMap {
         await this.applyGameMapContainer(homeship)
     }
 
+    async initializeBuilding(type: MapBuildingType) {
+        const building = MapBuildingHelper.getMapBuildingForType(type)
+
+        await this.applyGameMapContainer(building)
+    }
+
     // TODO: Seed
-    async initializeRandomSpherical(): Promise<void> {
+    async initializeRandomSpherical() {
         log('GameMap', 'initializeRandomSpherical')
 
         const randomSphericalData = await GameMapHelper.getRandomSphericalData()

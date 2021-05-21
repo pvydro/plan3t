@@ -1,6 +1,7 @@
 import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
 import { GameMap } from '../gamemap/GameMap'
+import { MapBuildingType } from '../gamemap/mapbuilding/MapBuilding'
 import { SphericalData } from '../gamemap/spherical/SphericalData'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
@@ -11,6 +12,7 @@ export interface IGameMapManager extends IUpdatable {
     initialize(sphericalData?: SphericalData): Promise<void>
     initializeRandomSpherical(): Promise<void>
     initializeHomeship(): Promise<void>
+    initializeBuilding(type: MapBuildingType): Promise<void>
 }
 
 export class GameMapManager implements IGameMapManager {
@@ -48,6 +50,13 @@ export class GameMapManager implements IGameMapManager {
         await this.initialize()
         
         return this._gameMap.initializeRandomSpherical()
+    }
+
+    async initializeBuilding(type: MapBuildingType) {
+        await this.initialize()
+
+        return this._gameMap.initializeBuilding(type)
+        // const building
     }
 
     update() {

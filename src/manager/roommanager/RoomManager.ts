@@ -15,6 +15,7 @@ import { Player } from '../../network/rooms/Player'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Spherical } from '../../gamemap/spherical/Spherical'
+import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -132,15 +133,22 @@ export class RoomManager implements IRoomManager {
     }
 
     async createMapAndSendToRoom(): Promise<void> {
-        await this.gameMapManager.initializeRandomSpherical()
+        
+        const temporarilyLoadBuilding = true
+        
+        if (temporarilyLoadBuilding) {
+            await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
+        } else {
+            await this.gameMapManager.initializeRandomSpherical()
 
-        const currentSpherical = this.gameMapManager.gameMap.currentMap as Spherical
-
-        if (currentSpherical) {
-            const currentData = currentSpherical.data
-
-            if (currentData) {
-                this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+            const currentSpherical = this.gameMapManager.gameMap.currentMap as Spherical
+    
+            if (currentSpherical) {
+                const currentData = currentSpherical.data
+    
+                if (currentData) {
+                    this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+                }
             }
         }
     }

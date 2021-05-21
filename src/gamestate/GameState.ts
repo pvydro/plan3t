@@ -5,6 +5,7 @@ import { GameStateID } from '../manager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { log } from '../service/Flogger'
+import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 
 export interface IGameState {
     initialize(): Promise<void>
@@ -20,6 +21,7 @@ export interface GameStateOptions {
 export abstract class GameState implements IGameState {
     id: GameStateID
     game: Game
+    inGameHUD: InGameHUD
     roomManager: IRoomManager
     clientManager: IClientManager
     gameMapManager: IGameMapManager
@@ -36,6 +38,7 @@ export abstract class GameState implements IGameState {
             gameMapManager: this.gameMapManager
         })
         this.musicManager = MusicManager.getInstance()
+        this.inGameHUD = InGameHUD.getInstance()
     }
 
     async initialize() {

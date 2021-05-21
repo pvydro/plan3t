@@ -1,4 +1,4 @@
-import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
+import { GameMapContainer, GameMapContainerBuilderResponse, IGameMapContainer } from '../GameMapContainer'
 import { BuildingBuilder, IBuildingBuilder } from './BuildingBuilder'
 
 export enum MapBuildingType {
@@ -31,9 +31,16 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
     initializeMap(): Promise<void> {
         return new Promise((resolve) => {
 
-            super.initializeMap()
+            this.builder.buildBuilding(this.buildingOptions).then((response: GameMapContainerBuilderResponse) => {
+                this.tileLayer = response.tileLayer
+                this.collisionRects = response.collisionRects
 
-            resolve()
+                this.addChild(this.tileLayer)
+                
+                super.initializeMap()
+
+                resolve()
+            })
         })
     }
 }

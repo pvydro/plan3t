@@ -19,7 +19,6 @@ export interface IGameplayState extends IGameState {
 
 export class GameplayState extends GameState implements IGameplayState {
     ambientLight: GameplayAmbientLight
-    inGameHUD: InGameHUD
     hornet: PassiveHornet
 
     constructor(options: GameStateOptions) {
@@ -30,7 +29,6 @@ export class GameplayState extends GameState implements IGameplayState {
 
         this.ambientLight = new GameplayAmbientLight()
         this.hornet = new PassiveHornet()
-        this.inGameHUD = InGameHUD.getInstance()
     }
     
     async initialize() {
