@@ -44,9 +44,9 @@ export class Sounds {
         return sound.add(soundKey, soundKey)
     }
 
-    static addAndPlay(soundKey: string) {
+    static async addAndPlay(soundKey: string) {
         sound.add(soundKey, soundKey)
-        sound.play(soundKey)
+        await Sounds.play(soundKey)
     }
 
     static async play(soundKey: string, options?: PlaySoundOptions) {

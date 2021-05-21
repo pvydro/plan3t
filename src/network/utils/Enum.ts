@@ -8,3 +8,8 @@ export enum PlayerLegsState {
     Crouched = 1,
     Jumping = 2
 }
+
+export enum Direction {
+    Left = -1,
+    Right = 1
+}
