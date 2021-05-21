@@ -34,7 +34,7 @@ export class BuildingBuilder implements IBuildingBuilder {
 
     private buildCollisionRectsForFloor(floorSprite: ISprite): Rect[] {
         const groundRect = new Rect({
-            x: 0, y: floorSprite.y,//250,
+            x: 0, y: floorSprite.y + 2,//250,
             width: 240,//floorSprite.width,
             height: 42
         })
