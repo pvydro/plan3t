@@ -1,17 +1,16 @@
 import { GameMapHelper } from './GameMapHelper'
 import { IDemolishable } from '../interface/IDemolishable'
-import { Flogger, log } from '../service/Flogger'
+import { logError, log } from '../service/Flogger'
 import { Spherical } from './spherical/Spherical'
 import { Container } from '../engine/display/Container'
 import { GlobalScale } from '../utils/Constants'
 import { Rect } from '../engine/math/Rect'
-import { GameMapSky } from './GameMapSky'
 import { IUpdatable } from '../interface/IUpdatable'
 import { SphericalData } from './spherical/SphericalData'
 import { GameMapContainer } from './GameMapContainer'
 import { Homeshipical } from './homeship/Homeshipical'
 import { Camera } from '../camera/Camera'
-import { CameraLayer, CameraStageBackgroundType } from '../camera/CameraStage'
+import { CameraStageBackgroundType } from '../camera/CameraStage'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
@@ -88,8 +87,8 @@ export class GameMap extends Container implements IGameMap {
                 this.addChild(this.currentMap)
 
                 resolve()
-            }).catch((error) => {
-                Flogger.error('GameMap', 'Error applying GameMapContainer', 'error', error)
+            }).catch((e) => {
+                logError('GameMap', 'Error applying GameMapContainer', 'error', e)
 
                 reject()
             })

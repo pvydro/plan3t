@@ -66,6 +66,10 @@ export function log(message: string, ...object: any) {
   return Flogger.log(message, ...object)
 }
 
+export function logError(message: string, ...object: any) {
+  return Flogger.error(message, ...object)
+}
+
 export function loudLog(message: string, ...object: any) {
   console.log(`%c${message}: ${JSON.stringify(object)}`, 'font-size: 200%; color: tomato')
 }

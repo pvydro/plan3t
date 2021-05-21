@@ -3,25 +3,21 @@ import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Rect } from '../../engine/math/Rect'
 import { Flogger } from '../../service/Flogger'
+import { GameMapContainerBuilderResponse } from '../GameMapContainer'
 import { SphericalHelper } from '../spherical/SphericalHelper'
-import { HomeshipicalRespone, IHomeshipical } from './Homeshipical'
+import { IHomeshipical } from './Homeshipical'
 
 export interface IHomeshipicalBuilder {
-    buildLocalHomeshipical(): Promise<HomeshipicalRespone>
-}
-
-export interface HomeshipicalBuilderOptions {
-    homeship: IHomeshipical
+    buildLocalHomeshipical(): Promise<GameMapContainerBuilderResponse>
 }
 
 export class HomeshipicalBuilder implements IHomeshipicalBuilder {
     
-    constructor(options: HomeshipicalBuilderOptions) {
-        const homeship = options.homeship
+    constructor() {
 
     }
 
-    async buildLocalHomeshipical(): Promise<HomeshipicalRespone> {
+    async buildLocalHomeshipical(): Promise<GameMapContainerBuilderResponse> {
         const tileLayer = new Container()
         const homeshipTexture = PIXI.Texture.from(Assets.get(AssetUrls.Homeship))
         const homeshipSprite = new Sprite({ texture: homeshipTexture })

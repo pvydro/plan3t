@@ -1,6 +1,6 @@
 import { Container } from '../../engine/display/Container'
 import { IRect } from '../../engine/math/Rect'
-import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
+import { GameMapContainer, GameMapContainerBuilderResponse, IGameMapContainer } from '../GameMapContainer'
 import { SphericalResponse } from '../spherical/SphericalBuilder'
 import { HomeshipicalBuilder, IHomeshipicalBuilder } from './HomeshipicalBuilder'
 import { HomeshipicalModuleBuilder, IHomeshipicalModuleBuilder } from './HomeshipicalModuleBuilder'
@@ -9,9 +9,6 @@ import { HomeshipicalModule } from './modules/HomeshipicalModule'
 
 export interface IHomeshipical extends IGameMapContainer {
     groundRect: IRect
-}
-
-export interface HomeshipicalRespone extends SphericalResponse {
 }
 
 export class Homeshipical extends GameMapContainer implements IHomeshipical {
@@ -35,7 +32,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
 
         const homeship = this
 
-        this.builder = new HomeshipicalBuilder({ homeship })
+        this.builder = new HomeshipicalBuilder()
         this.moduleBuilder = new HomeshipicalModuleBuilder({ homeship })
         this.outline = new HomeshipicalOutline({ homeship })
     }
@@ -54,7 +51,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
         }
 
         return new Promise((resolve) => {
-            this.builder.buildLocalHomeshipical().then((response: HomeshipicalRespone) => {
+            this.builder.buildLocalHomeshipical().then((response: GameMapContainerBuilderResponse) => {
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
                 const moduleResponse = this.moduleBuilder.buildHomeshipicalModules()

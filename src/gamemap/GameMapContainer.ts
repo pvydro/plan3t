@@ -11,9 +11,15 @@ export interface IGameMapContainer extends IContainer, IUpdatable {
     clearMap(): void
 }
 
-export class GameMapContainer extends Container implements IGameMapContainer {
+export interface GameMapContainerBuilderResponse {
+    tileLayer: Container
+    natureLayer?: Container
     collisionRects: Rect[]
+}
+
+export class GameMapContainer extends Container implements IGameMapContainer {
     collisionDebugger: CollisionDebugger
+    collisionRects: Rect[]
     tileLayer?: Container
 
     constructor() {

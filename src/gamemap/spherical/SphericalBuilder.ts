@@ -9,15 +9,14 @@ import { SphericalTileHelper } from './tile/SphericalTileHelper'
 import { IVector2 } from '../../engine/math/Vector2'
 import { SphericalPoint } from './SphericalPoint'
 import { ISphericalNatureBuilder, SphericalNatureBuilder } from './nature/SphericalNatureBuilder'
+import { GameMapContainerBuilderResponse } from '../GameMapContainer'
 
 export interface ISphericalBuilder {
     buildSphericalFromData(data: ISphericalData): Promise<SphericalResponse>
 }
 
-export interface SphericalResponse {
-    tileLayer: Container
-    natureLayer?: Container
-    collisionRects: Rect[]
+export interface SphericalResponse extends GameMapContainerBuilderResponse {
+    
 }
 
 export class SphericalBuilder implements ISphericalBuilder {

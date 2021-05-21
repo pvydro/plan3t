@@ -4,6 +4,7 @@ import { importantLog, log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { IWave, Wave } from '../../waverunner/Wave'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
+import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
 
 export interface IWaveRunnerManager {
     initialize(): Promise<void>
@@ -13,6 +14,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     private static Instance: IWaveRunnerManager
     currentWaveRunnerGame: IWaveRunnerGame
     currentWaveIndex: number = 0
+    levelManager: IWaveLevelManager
     hud: IInGameHUD
 
     static getInstance() {
@@ -36,6 +38,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     async initialize() {
         importantLog('WaveRunnerManager', 'initialize')
 
+        this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
         this.currentWaveRunnerGame.beginWaveRunner()
     }
