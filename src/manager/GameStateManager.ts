@@ -42,6 +42,7 @@ export class GameStateManager implements IGameStateManager {
     }
 
     private constructor() {
+        
     }
 
     initialize() {

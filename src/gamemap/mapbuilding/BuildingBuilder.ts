@@ -1,5 +1,6 @@
 import { Container } from '../../engine/display/Container'
-import { Sprite } from '../../engine/display/Sprite'
+import { ISprite, Sprite } from '../../engine/display/Sprite'
+import { Rect } from '../../engine/math/Rect'
 import { GameMapContainerBuilderResponse } from '../GameMapContainer'
 import { MapBuildingOptions, MapBuildingType } from './MapBuilding'
 import { MapBuildingHelper } from './MapBuildingHelper'
@@ -18,17 +19,23 @@ export class BuildingBuilder implements IBuildingBuilder {
         // const background = MapBuilderHelper.getBackgroundAssetForType(options.type)
         const floorTexture = MapBuildingHelper.getFloorAssetForType(options.type)
         const floorSprite = new Sprite({ texture: floorTexture })
+        const collisionRects = this.buildCollisionRectsForFloor(floorSprite)
 
         floorSprite.position.y = 180
         // floorSprite.position.y = background.height - floorSprite.height
 
         tileLayer.addChild(floorSprite)
 
-        return {
-            tileLayer,
-            collisionRects: []
-        }
+        return { tileLayer, collisionRects }
     }
 
-    // private buildCollisionRectsFromBuilding
+    private buildCollisionRectsForFloor(floorSprite: ISprite): Rect[] {
+        const groundRect = new Rect({
+            x: 0, y: 250,
+            width: 180,//floorSprite.width,
+            height: 42
+        })
+
+        return [ groundRect ]
+    }
 }

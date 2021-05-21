@@ -6,12 +6,11 @@ import { GameStateID } from '../manager/GameStateManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 import { log } from '../service/Flogger'
-import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
-import { asyncTimeout } from '../utils/Utils'
+import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -20,6 +19,8 @@ export interface IGameplayState extends IGameState {
 export class GameplayState extends GameState implements IGameplayState {
     ambientLight: GameplayAmbientLight
     hornet: PassiveHornet
+    player: ClientPlayer
+
 
     constructor(options: GameStateOptions) {
         super({
@@ -33,12 +34,12 @@ export class GameplayState extends GameState implements IGameplayState {
     
     async initialize() {
         const particleManager = ParticleManager.getInstance()
-        const player = this.entityManager.createOfflinePlayer()
-
-        this.camera.follow(player)
+        
+        this.player = this.entityManager.createOfflinePlayer()
+        this.camera.follow(this.player)
         this.inGameHUD.showHUDComponents()
 
-        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
+        this.cameraStage.addChildAtLayer(this.player, CameraLayer.Players)
         this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
         this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
         this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
@@ -52,7 +53,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.roomManager.initializeRoom().then(async (room: Room) => {
             log('GameplayState', 'Room initialized')
 
-            player.pos = {
+            this.player.pos = {
                 x: 512,
                 y: -256
             }

@@ -68,9 +68,6 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                     sessionId: options.sessionId
                 })
                 player = this._currentClientPlayer
-
-                player.x = 512
-                player.y = -64  // TODO Get the positioning out of here
             }
         } else {
             player = new ClientPlayer({ entity: options.entity })

@@ -133,7 +133,6 @@ export class RoomManager implements IRoomManager {
     }
 
     async createMapAndSendToRoom(): Promise<void> {
-        
         const temporarilyLoadBuilding = true
         
         if (temporarilyLoadBuilding) {

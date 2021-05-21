@@ -2,7 +2,7 @@ import { Assets, AssetUrls } from '../../asset/Assets'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Rect } from '../../engine/math/Rect'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { GameMapContainerBuilderResponse } from '../GameMapContainer'
 import { SphericalHelper } from '../spherical/SphericalHelper'
 import { IHomeshipical } from './Homeshipical'
@@ -25,7 +25,6 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
         
         tileLayer.addChild(homeshipSprite)
 
-
         return {
             tileLayer,
             collisionRects
@@ -33,7 +32,7 @@ export class HomeshipicalBuilder implements IHomeshipicalBuilder {
     }
 
     private buildCollisionRectsFromHomeshipical(homeshipSprite: Sprite): Rect[] {
-        Flogger.log('HomeshipicalBuilder', 'buildCollisionRectsFromHomeshipical')
+        log('HomeshipicalBuilder', 'buildCollisionRectsFromHomeshipical')
 
         const collisionRects = []
         const groundTiles = 3
