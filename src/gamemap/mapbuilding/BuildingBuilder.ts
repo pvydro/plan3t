@@ -19,9 +19,9 @@ export class BuildingBuilder implements IBuildingBuilder {
         // const background = MapBuilderHelper.getBackgroundAssetForType(options.type)
         const floorTexture = MapBuildingHelper.getFloorAssetForType(options.type)
         const floorSprite = new Sprite({ texture: floorTexture })
+        floorSprite.y = 180
+        
         const collisionRects = this.buildCollisionRectsForFloor(floorSprite)
-
-        floorSprite.position.y = 180
         // floorSprite.position.y = background.height - floorSprite.height
 
         tileLayer.addChild(floorSprite)
@@ -31,8 +31,8 @@ export class BuildingBuilder implements IBuildingBuilder {
 
     private buildCollisionRectsForFloor(floorSprite: ISprite): Rect[] {
         const groundRect = new Rect({
-            x: 0, y: 250,
-            width: 180,//floorSprite.width,
+            x: 0, y: floorSprite.y,//250,
+            width: floorSprite.width,
             height: 42
         })
 

@@ -11,6 +11,7 @@ export interface IHomeshipical extends IGameMapContainer {
     groundRect: IRect
 }
 
+// TODO: Extend MapBuilding instead of GameMapContainer
 export class Homeshipical extends GameMapContainer implements IHomeshipical {
     private static Instance: Homeshipical
     builder: IHomeshipicalBuilder
@@ -52,18 +53,18 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
 
         return new Promise((resolve) => {
             this.builder.buildLocalHomeshipical().then((response: GameMapContainerBuilderResponse) => {
-                const moduleResponse = this.moduleBuilder.buildHomeshipicalModules()
-
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
+                const moduleResponse = this.moduleBuilder.buildHomeshipicalModules()
                 this.moduleLayer = moduleResponse.moduleContainer
                 this.modules = moduleResponse.modules
 
-                this.addChild(this.tileLayer)
-                this.addChild(this.outline)
-                this.addChild(this.moduleLayer)
-                
-                this.outline.initialize()
+                if (this.tileLayer) this.addChild(this.tileLayer)
+                if (this.moduleLayer) this.addChild(this.moduleLayer)
+                if (this.outline) {
+                    this.addChild(this.outline)
+                    this.outline.initialize()
+                }
 
                 super.initializeMap()
                 

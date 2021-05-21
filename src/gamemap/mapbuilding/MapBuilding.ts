@@ -43,4 +43,8 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
             })
         })
     }
+    
+    get groundRect() {
+        return this.collisionRects[0]
+    }
 }
