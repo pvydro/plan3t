@@ -38,7 +38,7 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
     }
 
     update() {
-        for (var i in this.modules) {
+        for (const i in this.modules) {
             const m = this.modules[i]
 
             m.update()
@@ -52,9 +52,10 @@ export class Homeshipical extends GameMapContainer implements IHomeshipical {
 
         return new Promise((resolve) => {
             this.builder.buildLocalHomeshipical().then((response: GameMapContainerBuilderResponse) => {
+                const moduleResponse = this.moduleBuilder.buildHomeshipicalModules()
+
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
-                const moduleResponse = this.moduleBuilder.buildHomeshipicalModules()
                 this.moduleLayer = moduleResponse.moduleContainer
                 this.modules = moduleResponse.modules
 

@@ -1,12 +1,30 @@
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
+import { BuildingBuilder, IBuildingBuilder } from './BuildingBuilder'
+
+export enum MapBuildingType {
+    Dojo = 'dojo',
+    Castle = 'castle',
+    ModernHome = 'modernhome',
+    Warehouse = 'warehouse'
+}
 
 export interface IMapBuilding extends IGameMapContainer {
 
 }
 
+export interface MapBuildingOptions {
+    isInfinite?: boolean
+}
+
 export class MapBuilding extends GameMapContainer implements IMapBuilding {
-    constructor() {
+    buildingOptions: MapBuildingOptions
+    builder: IBuildingBuilder
+
+    constructor(options: MapBuildingOptions) {
         super()
+        
+        this.buildingOptions = options
+        this.builder = new BuildingBuilder()
     }
 
     initializeMap(): Promise<void> {
