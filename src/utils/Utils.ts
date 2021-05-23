@@ -1,3 +1,4 @@
+import { IDimension } from '../engine/math/Dimension'
 import { IRect } from '../engine/math/Rect'
 
 export function exists(item): boolean {
@@ -44,6 +45,10 @@ export function rect(x: number, y: number, width: number, height: number): IRect
     return { x, y, width, height }
 }
 
+export function dimension(width: number, height: number): IDimension {
+    return { width, height }
+}
+ 
 export function asyncTimeout(time: number) {
     return new Promise(resolve => setTimeout(resolve, time))
 }
