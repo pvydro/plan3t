@@ -6,4 +6,5 @@ export enum CreatureType {
     // Enemies
     FlyingEye = 'FlyingEye',
     Sorm = 'Sorm',
+    Nenj = 'Nenj'
 }

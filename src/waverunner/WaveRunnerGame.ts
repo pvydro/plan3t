@@ -1,5 +1,6 @@
 import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
+import { Creature } from '../creature/Creature'
 import { CreatureType } from '../creature/CreatureType'
 import { Enemy } from '../enemy/Enemy'
 import { IEnemyManager } from '../manager/enemymanager/EnemyManager'
@@ -28,7 +29,7 @@ export class WaveRunnerGame implements IWaveRunnerGame {
         importantLog('WaveRunnerGame', 'beginWaveRunner')
 
         this._spawner = new CreatureSpawner({
-            typeToSpawn: CreatureType.Sorm,
+            typeToSpawn: CreatureType.Nenj,//CreatureType.Sorm,     //  TODO: MULTIPLE
             onSpawn: (enemy: Enemy) => {
                 log('WaveRunnerGame', 'spawner.onSpawn', 'entityId', (enemy && enemy.entityId) ?? 'Not defined')
 
