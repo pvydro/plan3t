@@ -19,7 +19,7 @@ export class WaveLevelManager implements IWaveLevelManager {
         
         const type = this.findNewLevelType()
 
-        this.gameMapManager.transitionToMap(type)
+        await this.gameMapManager.transitionToMap(type)
     }
 
     private findNewLevelType(): MapBuildingType {

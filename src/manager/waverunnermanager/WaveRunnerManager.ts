@@ -49,9 +49,9 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     async registerNextWave() {
         log('WaveRunnerManager', 'registerNextWave', 'prevWave', this.currentWaveIndex)
 
-        await this.hud.showHUDComponents(false)
+        this.hud.showHUDComponents(false)
         await this.levelManager.transitionToNewLevel()
-        await this.hud.showHUDComponents(true)
+        this.hud.showHUDComponents(true)
 
         this.currentWaveIndex++
 

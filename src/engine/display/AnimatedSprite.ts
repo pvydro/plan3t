@@ -30,17 +30,13 @@ export class AnimatedSprite extends PIXI.AnimatedSprite implements IAnimatedSpri
         let data = options.sheet ?? []
 
         if (options.sheet instanceof Spritesheet) {
-
             data = options.sheet.animation
-
         } else if (!options.sheet && options.textureUrls && options.textureUrls.length > 0) {
-
             for (let i = 0; i < options.textureUrls.length; i++) {
                 let texture = PIXI.Texture.from(Assets.get(options.textureUrls[i]))
                 
                 data.push(texture)
             }
-
         }
         
         super(data)

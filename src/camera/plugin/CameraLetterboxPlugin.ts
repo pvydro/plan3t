@@ -17,10 +17,10 @@ export interface ICameraLetterboxPlugin extends IUIContainer {
 export class CameraLetterboxPlugin extends UIComponent {
     _boxes: Graphix[]
     _gradients: RectGradient[]
-    boxColor: number = 0x080808
+    boxColor: number = 0x000000//0x080808
 
     constructor(camera: ICamera) {
-        super({ filters: UIDefaults.UIScreenDefaultFilters })
+        super()
 
         const windowWidth = GameWindow.fullWindowWidth
         const gradientRect = rect(0, 0, GameWindow.fullWindowWidth, 24)
