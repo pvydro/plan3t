@@ -73,7 +73,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         await Game.showLoadingScreen(true)
 
         this.ambientLight.demolish()
-        await this.inGameHUD.hideHUDComponents()
+        await this.inGameHUD.showHUDComponents(false)
 
         super.exit()
     }

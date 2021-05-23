@@ -1,4 +1,5 @@
 import { log } from '../service/Flogger'
+import { AmmoStatusComponent } from './ingamehud/ammostatus/AmmoStatusComponent'
 import { PauseButton } from './ingamehud/pausebutton/PauseButton'
 import { UIComponent } from './UIComponent'
 import { UIComponentType } from './UIComponentCreator'
@@ -18,8 +19,11 @@ export class UIComponentFactory {
         let uicomponent
 
         switch (type) {
-            case UIComponentType.PauseButton:
+            case UIComponentType.HUDPauseButton:
                 uicomponent = new PauseButton()
+                break
+            case UIComponentType.HUDAmmoStatus:
+                uicomponent = new AmmoStatusComponent()
                 break
         }
 

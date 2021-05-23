@@ -5,7 +5,8 @@ import { IUIComponent, UIComponent } from './UIComponent'
 import { IUIComponentFactory, UIComponentFactory } from './UIComponentFactory'
 
 export enum UIComponentType {
-    PauseButton = 'PauseButton',
+    HUDPauseButton = 'HUDPauseButton',
+    HUDAmmoStatus = 'HUDAmmoStatus'
 }
 
 export interface IUIComponentCreator {

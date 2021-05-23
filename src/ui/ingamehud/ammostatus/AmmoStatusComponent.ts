@@ -39,6 +39,8 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
 
         this.weaponLabel.reposition(false)
         this.counterComponent.reposition(false)
+
+        this.refreshClientLoadout()
     }
 
     update() {
