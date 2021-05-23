@@ -21,6 +21,7 @@ export interface GameLoopOptions {
 
 export class GameLoop implements IGameLoop {
     static Delta: number = 1
+    static CustomDelta: number = 1
     _initialized: boolean = false
     _shouldLoop: boolean = true
     clientManager?: IClientManager
@@ -53,7 +54,7 @@ export class GameLoop implements IGameLoop {
     }
 
     gameLoop() {
-        GameLoop.Delta = PIXI.Ticker.shared.deltaTime
+        GameLoop.Delta = (PIXI.Ticker.shared.deltaTime * GameLoop.CustomDelta)
 
         // Update all ClientEntities
         if (this.entityManager && this.gravityManager) {

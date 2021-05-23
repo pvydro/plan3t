@@ -4,6 +4,7 @@ import { Container, IContainer } from '../engine/display/Container'
 import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { Rect } from '../engine/math/Rect'
+import { GameLoop } from '../gameloop/GameLoop'
 import { IUpdatable } from '../interface/IUpdatable'
 import { log } from '../service/Flogger'
 import { DebugConstants } from '../utils/Constants'
@@ -76,12 +77,15 @@ export class GameMapContainer extends Container implements IGameMapContainer {
 
                 await asyncTimeout(this.transitionOutSpacing)
             }
-
         }
+
+        GameLoop.CustomDelta = 1
     }
 
     async transitionOut(outElements?: PositionAndAlphaAnimateable[]) {
         log('GameMapContainer', 'transitionOut')
+
+        GameLoop.CustomDelta = 0
         
         const swipeOutDistance = -2.4
 
