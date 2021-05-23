@@ -1,5 +1,14 @@
 import { TweenLite } from 'gsap/src/all'
 
+export interface PositionAnimateable {
+    x: number
+    y: number
+}
+
+export interface PositionAndAlphaAnimateable extends PositionAnimateable {
+    alpha: number
+}
+
 export interface IAnimator {
     currentAnimation: TweenLite
     play(): Promise<any>

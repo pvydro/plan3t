@@ -1,5 +1,7 @@
+import { log } from '../../service/Flogger'
 import { GameMapContainer, GameMapContainerBuilderResponse, IGameMapContainer } from '../GameMapContainer'
-import { BuildingBuilder, IBuildingBuilder } from './BuildingBuilder'
+import { BuildingBuilder, BuildingBuilderResponse, IBuildingBuilder } from './BuildingBuilder'
+import { IMapBuildingAnimator, MapBuildingAnimator } from './MapBuildingAnimator'
 
 export enum MapBuildingType {
     Dojo = 'dojo',
@@ -9,7 +11,7 @@ export enum MapBuildingType {
 }
 
 export interface IMapBuilding extends IGameMapContainer {
-
+    type: MapBuildingType
 }
 
 export interface MapBuildingOptions {
@@ -20,20 +22,26 @@ export interface MapBuildingOptions {
 export class MapBuilding extends GameMapContainer implements IMapBuilding {
     buildingOptions: MapBuildingOptions
     builder: IBuildingBuilder
+    animator!: IMapBuildingAnimator
+    type: MapBuildingType
 
     constructor(options: MapBuildingOptions) {
         super()
         
         this.buildingOptions = options
+        this.type = options.type
         this.builder = new BuildingBuilder()
     }
 
     initializeMap(): Promise<void> {
         return new Promise((resolve) => {
-
-            this.builder.buildBuilding(this.buildingOptions).then((response: GameMapContainerBuilderResponse) => {
+            this.builder.buildBuilding(this.buildingOptions).then((response: BuildingBuilderResponse) => {
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
+                this.animator = new MapBuildingAnimator({
+                    floorSprite: response.floorSprite,
+                    backgroundSprite: response.backgroundSprite
+                })
 
                 this.addChild(this.tileLayer)
                 
@@ -42,6 +50,12 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                 resolve()
             })
         })
+    }
+    
+    async transitionOut() {
+        log('MapBuilding', 'transitionOut', 'type', this.type)
+
+        await super.transitionOut(this.animator.getTransitionOutElements())
     }
     
     get groundRect() {

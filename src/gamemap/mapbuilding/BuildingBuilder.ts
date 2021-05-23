@@ -6,7 +6,13 @@ import { MapBuildingOptions, MapBuildingType } from './MapBuilding'
 import { MapBuildingHelper } from './MapBuildingHelper'
 
 export interface IBuildingBuilder {
-    buildBuilding(options: MapBuildingOptions): Promise<GameMapContainerBuilderResponse>
+    buildBuilding(options: MapBuildingOptions): Promise<BuildingBuilderResponse>
+}
+
+export interface BuildingBuilderResponse extends GameMapContainerBuilderResponse {
+    floorSprite: ISprite
+    backgroundSprite: ISprite
+    // ceilingSprite: ISprite
 }
 
 export class BuildingBuilder implements IBuildingBuilder {
@@ -14,7 +20,7 @@ export class BuildingBuilder implements IBuildingBuilder {
 
     }
 
-    async buildBuilding(options: MapBuildingOptions): Promise<GameMapContainerBuilderResponse> {
+    async buildBuilding(options: MapBuildingOptions): Promise<BuildingBuilderResponse> {
         const tileLayer = new Container()
         const backgroundTexture = MapBuildingHelper.getBackgroundAssetForType(options.type)
         const backgroundSprite = new Sprite({ texture: backgroundTexture })
@@ -29,7 +35,7 @@ export class BuildingBuilder implements IBuildingBuilder {
         backgroundSprite.x = 12//floorTexture.width / 2// - backgroundSprite.halfWidth
         // floorSprite.position.y = background.height - floorSprite.height
 
-        return { tileLayer, collisionRects }
+        return { tileLayer, collisionRects, backgroundSprite, floorSprite }
     }
 
     private buildCollisionRectsForFloor(floorSprite: ISprite): Rect[] {

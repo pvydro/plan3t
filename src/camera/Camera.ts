@@ -17,6 +17,7 @@ import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/Came
 import { GameWindow } from '../utils/Constants'
 import { CameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
 import { IReposition } from '../interface/IReposition'
+import { PositionAnimateable } from '../engine/display/Animator'
 
 export interface ICameraTarget {
     x: number
@@ -214,7 +215,7 @@ export class Camera implements ICamera {
         this.stage.scale.set(resizeZoom, resizeZoom)
     }
 
-    toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {
+    toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {
         const newX = (point.x / this.zoom)
             - (this.stage.x / this.zoom)
         const newY = (point.y / this.zoom)
@@ -248,7 +249,7 @@ export class Camera implements ICamera {
         this._target = undefined
     }
 
-    static toScreen(point: Vector2 | PIXI.ObservablePoint | { x: number, y: number }) {
+    static toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {
         return Camera.getInstance().toScreen(point)
     }
 

@@ -1,8 +1,10 @@
+import { Key } from 'ts-keycode-enum'
 import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
 import { GameMap } from '../gamemap/GameMap'
 import { MapBuildingType } from '../gamemap/mapbuilding/MapBuilding'
 import { SphericalData } from '../gamemap/spherical/SphericalData'
+import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
 import { ClientManager, IClientManager } from './ClientManager'
@@ -13,6 +15,7 @@ export interface IGameMapManager extends IUpdatable {
     initializeRandomSpherical(): Promise<void>
     initializeHomeship(): Promise<void>
     initializeBuilding(type: MapBuildingType): Promise<void>
+    transitionToMap(type: MapBuildingType): Promise<void>
 }
 
 export class GameMapManager implements IGameMapManager {
@@ -38,6 +41,12 @@ export class GameMapManager implements IGameMapManager {
         if (sphericalData !== undefined) {
             this._gameMap.initializePremadeSpherical(sphericalData)
         }
+
+        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
+            if (event.which === Key.N) {
+                this.transitionToMap(MapBuildingType.Dojo)
+            }
+        })
     }
 
     async initializeHomeship() {
@@ -57,6 +66,10 @@ export class GameMapManager implements IGameMapManager {
 
         return this._gameMap.initializeBuilding(type)
         // const building
+    }
+
+    async transitionToMap(type: MapBuildingType) {
+        return this._gameMap.transitionToMap(type)
     }
 
     update() {

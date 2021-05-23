@@ -17,6 +17,7 @@ import { MapBuildingHelper } from './mapbuilding/MapBuildingHelper'
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
     initializeBuilding(type: MapBuildingType): Promise<void>
+    transitionToMap(type: MapBuildingType): Promise<void>
     demolish(): void
     collidableRects: Rect[]
 }
@@ -102,6 +103,13 @@ export class GameMap extends Container implements IGameMap {
                 reject()
             })
         })
+    }
+
+    async transitionToMap(type: MapBuildingType) {
+        log('GameMap', 'transitionToMap', 'type', type)
+
+        await this.currentMap.transitionOut()
+        await this.initializeBuilding(type)
     }
 
     private clearCurrentMap() {
