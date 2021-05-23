@@ -70,7 +70,7 @@ export class TextStyles {
 
     static NextWaveHeader: TextSpriteStyle = {
         fontFamily: Fonts.FontNarrow.family,
-        fontSize: scaleFontSize(24),
+        fontSize: scaleFontSize(16),
         color: 0xFFFFFF
     }
 }
