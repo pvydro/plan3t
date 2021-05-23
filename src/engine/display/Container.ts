@@ -26,10 +26,26 @@ export class Container extends PIXI.Container implements IContainer {
     }
 
     clearChildren() {
-        this.children.forEach((child) => {
+        for (var i in this.children) {
+            const child = this.children[i]
+
             this.removeChild(child)
             child.destroy()
-        })
+        }
+    }
+
+    hasChild(child: any) {
+        let contains = false
+
+        for (var i in this.children) {
+            const childToCheckAgainst = this.children[i]
+
+            if (child === childToCheckAgainst) {
+                contains = true
+            }
+        }
+
+        return contains
     }
 
     set pos(value: IVector2) {

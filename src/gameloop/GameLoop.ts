@@ -20,10 +20,10 @@ export interface GameLoopOptions {
 }
 
 export class GameLoop implements IGameLoop {
+    static ShouldLoop: boolean = true
     static Delta: number = 1
     static CustomDelta: number = 1
     _initialized: boolean = false
-    _shouldLoop: boolean = true
     clientManager?: IClientManager
     particleManager?: ParticleManager
     tooltipManager?: TooltipManager
@@ -40,51 +40,51 @@ export class GameLoop implements IGameLoop {
 
     startGameLoop(options?: GameLoopOptions) {
         Flogger.log('GameLoop', 'startGameLoop')
+        GameLoop.ShouldLoop = true
 
         this.assignOptions(options)
-
-        this._shouldLoop = true
+        
         requestAnimationFrame(this.gameLoop.bind(this))
     }
 
     stopGameLoop() {
         Flogger.log('GameLoop', 'stopGameLoop')
 
-        this._shouldLoop = false
+        GameLoop.ShouldLoop = false
     }
 
     gameLoop() {
         GameLoop.Delta = (PIXI.Ticker.shared.deltaTime * GameLoop.CustomDelta)
 
-        // Update all ClientEntities
-        if (this.entityManager && this.gravityManager) {
-            this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
-                const clientEntity = localEntity.clientEntity
+        if (GameLoop.ShouldLoop) {
+            // Update all ClientEntities
+            if (this.entityManager && this.gravityManager) {
+                this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
+                    const clientEntity = localEntity.clientEntity
 
-                if (exists(clientEntity)) {
-                    if (typeof clientEntity.update === 'function') {
-                        clientEntity.update()
+                    if (exists(clientEntity)) {
+                        if (typeof clientEntity.update === 'function') {
+                            clientEntity.update()
+                        }
+                        
+                        // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+                        this.gravityManager.applyVelocityToEntity(clientEntity)
                     }
-                    
-                    // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
-                    this.gravityManager.applyVelocityToEntity(clientEntity)
-                }
-            })
+                })
+            }
+
+            // Update camera & client manager
+            if (this.clientManager !== undefined) {
+                this.clientManager.clientCamera.update()
+            }
+
+            // Update current state
+            this.clientManager.update()
+            this.particleManager.update()
+            this.tooltipManager.update()
         }
 
-        // Update camera & client manager
-        if (this.clientManager !== undefined) {
-            this.clientManager.clientCamera.update()
-        }
-
-        // Update current state
-        this.clientManager.update()
-        this.particleManager.update()
-        this.tooltipManager.update()
-
-        if (this._shouldLoop) {
-            requestAnimationFrame(this.gameLoop.bind(this))
-        }
+        requestAnimationFrame(this.gameLoop.bind(this))
     }
 
     assignOptions(options: GameLoopOptions) {

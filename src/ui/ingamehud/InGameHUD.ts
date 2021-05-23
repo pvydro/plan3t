@@ -9,6 +9,8 @@ import { IWave } from '../../waverunner/Wave'
 import { InGameInventory } from '../ingamemenu/ingameinventory/InGameInventory'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 import { UIComponent } from '../UIComponent'
+import { IUIComponentCreator, UIComponentCreator, UIComponentType } from '../UIComponentCreator'
+import { UIComponentFactory } from '../UIComponentFactory'
 import { UIContainer } from '../UIContainer'
 import { UIScreen } from '../uiscreen/UIScreen'
 import { AmmoStatusComponent } from './ammostatus/AmmoStatusComponent'
@@ -44,6 +46,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     pauseButton: PauseButton
     inGameMenu: InGameMenu
     waveRunnerCounter: WaveRunnerCounter
+    creator: IUIComponentCreator
 
     static getInstance() {
         if (!this.Instance) {
@@ -60,11 +63,13 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         this._initialized = false
         this.queuedHealthBars = []
+
+        this.creator = new UIComponentCreator()
         this.crosshair = Crosshair.getInstance()
         this.healthBar = new HealthBar()
         this.ammoStatus = new AmmoStatusComponent()
         this.waveRunnerCounter = new WaveRunnerCounter()
-        this.pauseButton = new PauseButton()
+        // this.pauseButton = new PauseButton()
         this.inGameMenu = InGameMenu.getInstance()
         // this.hotbar = new HUDInventoryHotbar()
         // this.inventory = new InGameInventory()
@@ -85,8 +90,10 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             // this.addChild(this.hotbar)
             this.addChild(this.inGameMenu)
             this.addChild(this.crosshair)
-            this.addChild(this.pauseButton)
+            // this.addChild(this.pauseButton)
             this.addChild(this.waveRunnerCounter)
+
+            this.addComponent(UIComponentType.PauseButton)
 
             this.queuedHealthBars = []
             this.inGameMenu.forceHide()
@@ -115,13 +122,48 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         // this.hotbar.update()
     }
 
+    async addComponent(type: UIComponentType) {
+        const component = this.creator.getComponentForType(type)
+
+        
+        if (component) {
+            if (!this.hasChild(component)) {
+                this.addChild(component)
+            }
+
+            component.reposition()
+            this.applyScale([ component ])
+    
+            if (typeof component.show === 'function') {
+                await component.show()
+            }
+        }
+    }
+
+    async removeComponent(type: UIComponentType) {
+        const component = this.creator.getComponentForType(type)
+
+        if (this.hasChild(component)) {
+            this.removeChild(component)
+        }
+
+        this.creator.deleteComponentForType(type)
+    }
+
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
         // this.hotbar.reposition(false)
         this.ammoStatus.reposition(false)
-        this.pauseButton.reposition(false)
+        // this.pauseButton.reposition(false)
         this.waveRunnerCounter.reposition(false)
+
+        for (const i in this.creator.allComponents) {
+            const component = this.creator.allComponents[i]
+
+            component.reposition(false)
+        }
+
         this.y = GameWindow.y
     }
 
@@ -171,7 +213,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
     async showHUDComponents() {
         await this.ammoStatus.show()
-        await this.pauseButton.show()
+        // await this.pauseButton.show()
         // await this.hotbar.show()
 
         if (this.waveRunnerCounter) {
@@ -179,10 +221,11 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         }
     }
 
-    applyScale() {
-        const toScale: UIComponent[] = [
+    applyScale(toScaleCustom?: UIComponent[]) {
+        const toScale: UIComponent[] = toScaleCustom ?? [
             this.healthBar, this.ammoStatus,
-            this.pauseButton, this.waveRunnerCounter
+            // this.pauseButton,
+            this.waveRunnerCounter
             // this.hotbar, this.inventory,
         ]
 

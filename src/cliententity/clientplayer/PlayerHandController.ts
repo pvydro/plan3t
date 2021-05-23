@@ -55,7 +55,7 @@ export class PlayerHandController implements IPlayerHandController {
         if (this.playerHand.player.direction === Direction.Left) {
             targetHorizontalOffset *= -1
         }
-
+ 
         this.horizontalOffset += (targetHorizontalOffset - this.horizontalOffset) / this.crouchOffsetDamping
         this.verticalOffset += (targetVerticalOffset - this.verticalOffset) / this.crouchOffsetDamping
 
@@ -71,8 +71,8 @@ export class PlayerHandController implements IPlayerHandController {
         const playerX = projectedPlayerPos.x + this.player.body.halfWidth
         const playerY = projectedPlayerPos.y
         const recoilRandomizer = this.playerHand.equippedWeapon ? this.playerHand.equippedWeapon.recoilRandomizer : 0
-        const angle = Math.atan2(this.mousePos.y - playerY, this.mousePos.x - playerX
-            + this.player.body.halfWidth)
+        const angle = (Math.atan2(this.mousePos.y - playerY, this.mousePos.x - playerX
+            + this.player.body.halfWidth))
         const halfACircleInRadians = 3.14159
         
         recoilRotation *= recoilRandomizer

@@ -7,6 +7,7 @@ import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { GameWindow } from '../../../utils/Constants'
 import { UIComponent } from '../../UIComponent'
+import { CrosshairAnimator, ICrosshairAnimator } from './CrosshairAnimator'
 import { CrosshairCursor, ICrosshairCursor } from './CrosshairCursor'
 
 export interface ICrosshair extends IUpdatable {
@@ -28,6 +29,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
     _state: CrosshairState = CrosshairState.Gameplay
     stateSetTimer: number
     pointerCursor: ICrosshairCursor
+    animator: ICrosshairAnimator
 
     mousePos: IVector2 = Vector2.Zero
     mouseDistance: IVector2 = Vector2.Zero
@@ -52,8 +54,10 @@ export class Crosshair extends UIComponent implements ICrosshair {
 
     private constructor() {
         super()
+        const crosshair = this
 
-        this.pointerCursor = new CrosshairCursor({ crosshair: this })
+        this.pointerCursor = new CrosshairCursor({ crosshair })
+        this.animator = new CrosshairAnimator({ crosshair })
 
         for (const i in this.nodes) {
             const node = this.nodes[i]
@@ -152,6 +156,14 @@ export class Crosshair extends UIComponent implements ICrosshair {
         this.nodeThree.height = 5
 
         this.scale.set(5, 5)
+    }
+
+    async show() {
+        await this.animator.show(true)
+    }
+
+    async hide() {
+        await this.animator.show(false)
     }
 
     forceHide() {

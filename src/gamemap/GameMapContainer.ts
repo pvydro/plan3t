@@ -80,12 +80,14 @@ export class GameMapContainer extends Container implements IGameMapContainer {
         }
 
         GameLoop.CustomDelta = 1
+        GameLoop.ShouldLoop = true
     }
 
     async transitionOut(outElements?: PositionAndAlphaAnimateable[]) {
         log('GameMapContainer', 'transitionOut')
 
         GameLoop.CustomDelta = 0
+        GameLoop.ShouldLoop = false
         
         const swipeOutDistance = -2.4
 
@@ -109,6 +111,8 @@ export class GameMapContainer extends Container implements IGameMapContainer {
                 await asyncTimeout(this.transitionOutSpacing)
             }
         }
+
+        await asyncTimeout(500)
     }
 
     clearMap() {
