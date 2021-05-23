@@ -2,13 +2,11 @@ import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
 import { CreatureType } from '../creature/CreatureType'
 import { Enemy } from '../enemy/Enemy'
-import { EnemyManager, IEnemyManager } from '../manager/enemymanager/EnemyManager'
+import { IEnemyManager } from '../manager/enemymanager/EnemyManager'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
-import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
-import { Flogger, importantLog, log } from '../service/Flogger'
+import { importantLog, log } from '../service/Flogger'
 import { CreatureSpawner, ICreatureSpawner } from '../spawner/creaturespawner/CreatureSpawner'
-import { InGameHUD } from '../ui/ingamehud/InGameHUD'
-import { IWave, Wave } from './Wave'
+import { IWave } from './Wave'
 
 export interface IWaveRunnerGame {
     spawner: ICreatureSpawner
@@ -20,11 +18,9 @@ export interface IWaveRunnerGame {
 export class WaveRunnerGame implements IWaveRunnerGame {
     _spawner: ICreatureSpawner
     currentWave: IWave
-    waveManager: IWaveRunnerManager
     enemyManager: IEnemyManager
 
     constructor() {
-        this.waveManager = WaveRunnerManager.getInstance()
         this.enemyManager = EntityManager.getInstance().enemyManager
     }
 

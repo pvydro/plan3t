@@ -19,11 +19,20 @@ export interface IGameMapManager extends IUpdatable {
 }
 
 export class GameMapManager implements IGameMapManager {
+    private static Instance: IGameMapManager
     _initialized: boolean = false
     _gameMap?: GameMap
     clientManager: IClientManager
 
-    constructor() {
+    static getInstance() {
+        if (!this.Instance) {
+            this.Instance = new GameMapManager()
+        }
+
+        return this.Instance
+    }
+
+    private constructor() {
         this.clientManager = ClientManager.getInstance()
     }
 
@@ -42,13 +51,13 @@ export class GameMapManager implements IGameMapManager {
             this._gameMap.initializePremadeSpherical(sphericalData)
         }
 
-        let dojo = false
-        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
-            if (event.which === Key.N) {
-                this.transitionToMap(dojo ? MapBuildingType.Castle : MapBuildingType.Dojo)
-                dojo = !dojo
-            }
-        })
+        // let dojo = false
+        // InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
+        //     if (event.which === Key.N) {
+        //         this.transitionToMap(dojo ? MapBuildingType.Castle : MapBuildingType.Dojo)
+        //         dojo = !dojo
+        //     }
+        // })
     }
 
     async initializeHomeship() {

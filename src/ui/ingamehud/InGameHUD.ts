@@ -46,9 +46,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     private constructor() {
-        super({
-            shouldFillWindow: true
-        })
+        super()
 
         this._initialized = false
         this.queuedHealthBars = []
@@ -117,7 +115,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
                 this.addChild(component)
             }
 
-            component.reposition()
+            component.reposition(false)
             this.applyScale([ component ])
     
             if (typeof component.show === 'function') {

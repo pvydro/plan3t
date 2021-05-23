@@ -4,6 +4,7 @@ import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
+import { IUIComponentCreator, UIComponentCreator } from '../UIComponentCreator'
 
 export interface IUIScreen extends IUIComponent {
     backgroundGraphic?: Graphix

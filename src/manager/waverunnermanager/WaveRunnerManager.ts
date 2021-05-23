@@ -10,6 +10,7 @@ import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
 
 export interface IWaveRunnerManager {
     initialize(): Promise<void>
+    registerNextWave(): Promise<IWave>
 }
 
 export class WaveRunnerManager implements IWaveRunnerManager {
@@ -45,11 +46,13 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.currentWaveRunnerGame.beginWaveRunner()
     }
 
-    registerNextWave(): IWave {
+    async registerNextWave() {
         log('WaveRunnerManager', 'registerNextWave', 'prevWave', this.currentWaveIndex)
 
-        this.currentWaveIndex++
         
+        await this.levelManager.transitionToNewLevel()
+        this.currentWaveIndex++
+
         const wave = new Wave({
             onSpawn: () => {
                 this.currentWaveRunnerGame.spawner.spawn()
@@ -65,6 +68,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.currentWaveRunnerGame.loadWave(wave)
 
         return wave
+
     }
 
     get currentWave() {
