@@ -146,14 +146,15 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         if (hideHUD) {
             await this.showHUDComponents(false)
         }
-        
+
         const component = await this.addComponent(type)
 
         await asyncTimeout(lifetime)
         await component.hide()
-        await this.showHUDComponents(true)
-        
+
         this.removeComponent(type)
+
+        await this.showHUDComponents(true)
     }
 
     reposition(addListener?: boolean) {

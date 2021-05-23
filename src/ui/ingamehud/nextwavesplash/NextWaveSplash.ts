@@ -33,10 +33,13 @@ export class NextWaveSplash extends UIComponent implements INextWaveSplash {
     }
 
     async show() {
-        await Tween.to(this, { alpha: 1, duration: 0.5, autoplay: true })
+        await Tween.to(this.nextWaveText, { alpha: 1, duration: 0.5, autoplay: true })
+        // this.alpha = 1
     }
 
     async hide() {
-        await Tween.to(this, { alpha: 0, duration: 0.5, autoplay: true })
+        // this.nexalpha = 1
+        await Tween.to(this.nextWaveText, { alpha: 0, duration: 0.5, autoplay: true })
+        // this.alpha = 0
     }
 }
