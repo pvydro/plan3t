@@ -1,5 +1,6 @@
 
 import { TextStyles } from '../../../engine/display/TextStyles'
+import { Tween } from '../../../engine/display/tween/Tween'
 import { Constants } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../../UIComponent'
@@ -59,10 +60,14 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
     }
 
     async show() {
-        this.alpha = 1
+        await Tween.to(this, {
+            alpha: 1, duration: 0.5, autoplay: true
+        })
     }
 
     async hide() {
-        this.alpha = 0
+        await Tween.to(this, {
+            alpha: 0, duration: 0.5, autoplay: true
+        })
     }
 }
