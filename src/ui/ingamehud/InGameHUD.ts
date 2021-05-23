@@ -4,7 +4,8 @@ import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
-import { TimeDefaults } from '../../utils/Defaults'
+import { AnimDefaults, TimeDefaults } from '../../utils/Defaults'
+import { asyncTimeout } from '../../utils/Utils'
 import { IWave } from '../../waverunner/Wave'
 import { InGameScreenID } from '../ingamemenu/InGameMenu'
 import { IUIComponent, UIComponent } from '../UIComponent'
@@ -20,6 +21,8 @@ export interface IInGameHUD extends IUpdatable, IReposition {
     waveRunnerCounter?: WaveRunnerCounter
     initializeHUD(): Promise<void>
     showHUDComponents(shouldShow?: boolean): Promise<void>
+    addComponent(type: UIComponentType): Promise<IUIComponent>
+    addComponentTemporarily(type: UIComponentType, hideHUD?: boolean, lifetime?: number): Promise<void>
     getComponent(type: UIComponentType): IUIComponent
     requestMenuScreen(id: InGameScreenID): Promise<void>
     requestCrosshairState(state: CrosshairState): void
@@ -70,7 +73,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
             this.addComponent(UIComponentType.HUDPauseButton)
             this.addComponent(UIComponentType.HUDAmmoStatus)
-            this.addComponent(UIComponentType.NextWaveSplash)
 
             this.queuedHealthBars = []
             this.reposition(true)
@@ -90,6 +92,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         } else {
             this.addComponent(UIComponentType.HUDWaveCounter)
         }
+
+        this.addComponentTemporarily(UIComponentType.NextWaveSplash, true)
     }
 
 
@@ -123,6 +127,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
                 await component.show()
             }
         }
+
+        return component
     }
 
     async removeComponent(type: UIComponentType) {
@@ -133,6 +139,21 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         }
 
         this.creator.deleteComponentForType(type)
+    }
+
+    async addComponentTemporarily(type: UIComponentType, hideHUD: boolean = false, lifetime: number = 500) {
+        
+        if (hideHUD) {
+            await this.showHUDComponents(false)
+        }
+        
+        const component = await this.addComponent(type)
+
+        await asyncTimeout(lifetime)
+        await component.hide()
+        await this.showHUDComponents(true)
+        
+        this.removeComponent(type)
     }
 
     reposition(addListener?: boolean) {
@@ -187,10 +208,12 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             const component = this.allComponents[i]
 
             if (shouldShow !== false) {
-                await component.show()
+                component.show()
             } else {
-                await component.hide()
+                component.hide()
             }
+
+            await asyncTimeout(AnimDefaults.casecadeSpacing)
         }
     }
 

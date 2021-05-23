@@ -8,6 +8,7 @@ import { GameLoop } from '../gameloop/GameLoop'
 import { IUpdatable } from '../interface/IUpdatable'
 import { log } from '../service/Flogger'
 import { DebugConstants } from '../utils/Constants'
+import { AnimDefaults } from '../utils/Defaults'
 import { asyncTimeout } from '../utils/Utils'
 
 export interface IGameMapContainer extends IContainer, IUpdatable {
@@ -29,7 +30,6 @@ export class GameMapContainer extends Container implements IGameMapContainer {
     collisionDebugger: CollisionDebugger
     collisionRects: Rect[]
     tileLayer?: Container
-    transitionOutSpacing: number = 125
 
     constructor() {
         super()
@@ -75,7 +75,7 @@ export class GameMapContainer extends Container implements IGameMapContainer {
                     autoplay: true
                 })
 
-                await asyncTimeout(this.transitionOutSpacing)
+                await asyncTimeout(AnimDefaults.casecadeSpacing)
             }
         }
 
@@ -108,7 +108,7 @@ export class GameMapContainer extends Container implements IGameMapContainer {
                     }
                 })
 
-                await asyncTimeout(this.transitionOutSpacing)
+                await asyncTimeout(AnimDefaults.casecadeSpacing)
             }
         }
 

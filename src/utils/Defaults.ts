@@ -48,6 +48,7 @@ export const TextDefaults = {
 export const AnimDefaults = {
     autoplay: false,
     duration: 0.5,
+    casecadeSpacing: 125,
     easing: Easing.EaseOutExpo
 }
 
