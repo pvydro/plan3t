@@ -42,9 +42,11 @@ export class GameMapManager implements IGameMapManager {
             this._gameMap.initializePremadeSpherical(sphericalData)
         }
 
+        let dojo = false
         InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
             if (event.which === Key.N) {
-                this.transitionToMap(MapBuildingType.Dojo)
+                this.transitionToMap(dojo ? MapBuildingType.Castle : MapBuildingType.Dojo)
+                dojo = !dojo
             }
         })
     }

@@ -51,6 +51,12 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
             })
         })
     }
+
+    async transitionIn() {
+        log('MapBuilding', 'transitionIn', 'type', this.type)
+
+        await super.transitionIn(this.animator.getTransitionOutElements())
+    }
     
     async transitionOut() {
         log('MapBuilding', 'transitionOut', 'type', this.type)

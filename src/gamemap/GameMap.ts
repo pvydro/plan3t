@@ -39,13 +39,9 @@ export class GameMap extends Container implements IGameMap {
         super()
 
         this.scale.set(GlobalScale, GlobalScale)
-
-        // this.sky = new GameMapSky()
-        // this.addChild(this.sky)
     }
 
     update() {
-        // if (this.sky) this.sky.update()
         if (this.currentMap) this.currentMap.update()
     }
 
@@ -81,13 +77,13 @@ export class GameMap extends Container implements IGameMap {
 
         const spherical = new Spherical(data)
 
-        // await this.sky.configure()
-        // this.camera.stage.setBackground(this.sky)
         this.camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
         await this.applyGameMapContainer(spherical)
     }
 
     applyGameMapContainer(mapContainer: GameMapContainer): Promise<void> {
+        const shouldTransitionIn = (this.currentMap !== undefined)
+
         this.clearCurrentMap()
 
         return new Promise((resolve, reject) => {
@@ -96,7 +92,13 @@ export class GameMap extends Container implements IGameMap {
 
                 this.addChild(this.currentMap)
 
-                resolve()
+                if (shouldTransitionIn) {
+                    this.currentMap.transitionIn().then(() => {
+                        resolve()
+                    })
+                } else {
+                    resolve()
+                }
             }).catch((e) => {
                 logError('GameMap', 'Error applying GameMapContainer', 'error', e)
 
