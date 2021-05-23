@@ -1,8 +1,16 @@
 import { log } from '../service/Flogger'
 import { AmmoStatusComponent } from './ingamehud/ammostatus/AmmoStatusComponent'
+import { HealthBar } from './ingamehud/healthbar/HealthBar'
 import { PauseButton } from './ingamehud/pausebutton/PauseButton'
+import { WaveRunnerCounter } from './ingamehud/waverunnercounter/WaveRunnerCounter'
 import { UIComponent } from './UIComponent'
-import { UIComponentType } from './UIComponentCreator'
+
+export enum UIComponentType {
+    HUDPauseButton = 'HUDPauseButton',
+    HUDAmmoStatus = 'HUDAmmoStatus',
+    HUDWaveCounter = 'HUDWaveCounter',
+    HUDHealthBar = 'HUDHealthBar'
+}
 
 export interface IUIComponentFactory {
     createComponentForType(type: UIComponentType): UIComponent
@@ -24,6 +32,12 @@ export class UIComponentFactory {
                 break
             case UIComponentType.HUDAmmoStatus:
                 uicomponent = new AmmoStatusComponent()
+                break
+            case UIComponentType.HUDWaveCounter:
+                uicomponent = new WaveRunnerCounter()
+                break
+            case UIComponentType.HUDHealthBar:
+                uicomponent = new HealthBar()
                 break
         }
 

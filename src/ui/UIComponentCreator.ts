@@ -2,12 +2,7 @@ import { log } from '../service/Flogger'
 import { exists } from '../utils/Utils'
 import { IInGameHUD } from './ingamehud/InGameHUD'
 import { IUIComponent, UIComponent } from './UIComponent'
-import { IUIComponentFactory, UIComponentFactory } from './UIComponentFactory'
-
-export enum UIComponentType {
-    HUDPauseButton = 'HUDPauseButton',
-    HUDAmmoStatus = 'HUDAmmoStatus'
-}
+import { IUIComponentFactory, UIComponentFactory, UIComponentType } from './UIComponentFactory'
 
 export interface IUIComponentCreator {
     allComponents: IUIComponent[]

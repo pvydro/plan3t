@@ -3,8 +3,9 @@ import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Flogger } from '../../service/Flogger'
 import { AmmoStatusComponent } from '../../ui/ingamehud/ammostatus/AmmoStatusComponent'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
-import { UIComponentType } from '../../ui/UIComponentCreator'
+import { UIComponentType } from '../../ui/UIComponentFactory'
 import { Emitter } from '../../utils/Emitter'
+import { asyncTimeout } from '../../utils/Utils'
 import { IWeapon, Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
 import { ClientPlayer, PlayerConsciousnessState } from './ClientPlayer'
@@ -109,9 +110,11 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         this.currentWeaponStatus = CurrentWeaponStatus.Primary
         this.updateWeaponStatus()
 
-        setTimeout(() => {
-            ammoStatusComponent.refreshClientLoadout()
-        }, 100)
+        if (ammoStatusComponent) {
+            asyncTimeout(100).then(() => {
+                ammoStatusComponent.refreshClientLoadout()
+            })
+        }
     }
 
     holsterWeapon() {

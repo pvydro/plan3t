@@ -2,6 +2,8 @@ import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { importantLog, log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
+import { WaveRunnerCounter } from '../../ui/ingamehud/waverunnercounter/WaveRunnerCounter'
+import { UIComponentType } from '../../ui/UIComponentFactory'
 import { IWave, Wave } from '../../waverunner/Wave'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
 import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
@@ -54,8 +56,12 @@ export class WaveRunnerManager implements IWaveRunnerManager {
             }
         })
         
-        this.hud.waveRunnerCounter.setWaveValue(this.currentWaveIndex)
         this.hud.loadWave(this.currentWave)
+        const waveCounter = this.hud.getComponent(UIComponentType.HUDWaveCounter) as WaveRunnerCounter
+        
+        if (waveCounter) {
+            waveCounter.setWaveValue(this.currentWaveIndex)
+        }
         this.currentWaveRunnerGame.loadWave(wave)
 
         return wave
