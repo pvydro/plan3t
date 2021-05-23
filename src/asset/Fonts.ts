@@ -7,8 +7,10 @@ export class Fonts {
     static FontStrong: any = new FontFaceObserver('Pixel')
     static FontDefault: any = new FontFaceObserver('iPU')
     static FontOutline: any = new FontFaceObserver('Origami Mommy')
+    static FontNarrow: any = new FontFaceObserver('Pixeldown')
     private static _fonts = [
-        Fonts.FontStrong, Fonts.FontDefault, Fonts.FontOutline
+        Fonts.FontStrong, Fonts.FontDefault,
+        Fonts.FontOutline, Fonts.FontNarrow
     ]
     
     

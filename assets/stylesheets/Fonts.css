@@ -12,3 +12,8 @@
     font-family: Origami Mommy;
     src: url('../fonts//origa.ttf') format('truetype')
 }
+
+@font-face {
+    font-family: Pixeldown;
+    src: url('../fonts/pixeldown.ttf') format('truetype')
+}

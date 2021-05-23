@@ -16,15 +16,17 @@ export class NextWaveSplash extends UIComponent implements INextWaveSplash {
 
         this.nextWaveText = new UIText({
             text: 'next wave',
-            style: TextStyles.Menu.HeaderBig
+            style: TextStyles.NextWaveHeader
         })
 
         this.addChild(this.nextWaveText)
     }
 
     reposition(addListeners?: boolean) {
-        this.nextWaveText.x = (GameWindow.width / UIDefaults.UIScale) - this.nextWaveText.textWidth
-        this.nextWaveText.y = (GameWindow.height / 2) / UIDefaults.UIScale
+        const rightMargin = UIDefaults.UIEdgePadding / UIDefaults.UIScale
+
+        this.nextWaveText.x = (GameWindow.width / UIDefaults.UIScale) - this.nextWaveText.textWidth - rightMargin
+        this.nextWaveText.y = ((GameWindow.height / 2) / UIDefaults.UIScale) - this.nextWaveText.halfTextHeight
 
         super.reposition(addListeners)
     }
