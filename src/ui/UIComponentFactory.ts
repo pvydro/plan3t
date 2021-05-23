@@ -1,6 +1,7 @@
 import { log } from '../service/Flogger'
 import { AmmoStatusComponent } from './ingamehud/ammostatus/AmmoStatusComponent'
 import { HealthBar } from './ingamehud/healthbar/HealthBar'
+import { NextWaveSplash } from './ingamehud/nextwavesplash/NextWaveSplash'
 import { PauseButton } from './ingamehud/pausebutton/PauseButton'
 import { WaveRunnerCounter } from './ingamehud/waverunnercounter/WaveRunnerCounter'
 import { UIComponent } from './UIComponent'
@@ -9,7 +10,8 @@ export enum UIComponentType {
     HUDPauseButton = 'HUDPauseButton',
     HUDAmmoStatus = 'HUDAmmoStatus',
     HUDWaveCounter = 'HUDWaveCounter',
-    HUDHealthBar = 'HUDHealthBar'
+    HUDHealthBar = 'HUDHealthBar',
+    NextWaveSplash = 'NextWaveSplash'
 }
 
 export interface IUIComponentFactory {
@@ -38,6 +40,9 @@ export class UIComponentFactory {
                 break
             case UIComponentType.HUDHealthBar:
                 uicomponent = new HealthBar()
+                break
+            case UIComponentType.NextWaveSplash:
+                uicomponent = new NextWaveSplash()
                 break
         }
 

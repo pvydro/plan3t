@@ -1,6 +1,7 @@
 import { GradientOutline } from '../../engine/display/lighting/GradientOutline'
 import { log } from '../../service/Flogger'
 import { GameMapContainer, GameMapContainerBuilderResponse, IGameMapContainer } from '../GameMapContainer'
+import { SphericalHelper } from '../spherical/SphericalHelper'
 import { BuildingBuilder, BuildingBuilderResponse, IBuildingBuilder } from './BuildingBuilder'
 import { IMapBuildingAnimator, MapBuildingAnimator } from './MapBuildingAnimator'
 
@@ -44,16 +45,18 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                     floorSprite: response.floorSprite,
                     backgroundSprite: response.backgroundSprite
                 })
-                this.outline = new GradientOutline({
-                    // targetElement: this.tileLayer,
-                    targetDimension: { width: 256, height: 128 },
-                    gradientWidth: 32,
-                    offsetWidth: 12,
-                    rayAlpha: 0.25
-                })
                 
                 this.addChild(this.tileLayer)
-                this.addChild(this.outline)
+
+                // this.outline = new GradientOutline({
+                //     // targetElement: this.tileLayer,
+                //     targetDimension: { width: this.width, height: this.height },
+                //     gradientWidth: 32,
+                //     offsetWidth: 12,
+                //     rayAlpha: 0.25
+                // })
+                // console.log('%cWH: ' + this.width + ', ' + this.height, 'font-size: 400%; background-color: orange')
+                // this.addChild(this.outline)
                 
                 super.initializeMap()
 

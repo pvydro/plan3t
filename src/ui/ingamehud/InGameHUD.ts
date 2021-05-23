@@ -70,6 +70,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
             this.addComponent(UIComponentType.HUDPauseButton)
             this.addComponent(UIComponentType.HUDAmmoStatus)
+            this.addComponent(UIComponentType.NextWaveSplash)
 
             this.queuedHealthBars = []
             this.reposition(true)
