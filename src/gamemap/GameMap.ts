@@ -50,8 +50,6 @@ export class GameMap extends Container implements IGameMap {
 
         const homeship = Homeshipical.getInstance()
 
-        // await this.sky.configure({ allBlack: true })
-        // await this.sky.configure()
         this.camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
 
         await this.applyGameMapContainer(homeship)
@@ -60,6 +58,7 @@ export class GameMap extends Container implements IGameMap {
     async initializeBuilding(type: MapBuildingType) {
         const building = MapBuildingHelper.getMapBuildingForType(type)
 
+        
         await this.applyGameMapContainer(building)
     }
 

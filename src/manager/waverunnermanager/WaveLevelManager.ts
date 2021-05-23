@@ -1,7 +1,4 @@
-import { Key } from 'ts-keycode-enum'
-import { GameMapContainer } from '../../gamemap/GameMapContainer'
 import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
-import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { log } from '../../service/Flogger'
 import { GameMapManager, IGameMapManager } from '../GameMapManager'
 
@@ -15,14 +12,6 @@ export class WaveLevelManager implements IWaveLevelManager {
 
     constructor() {
         this.gameMapManager = GameMapManager.getInstance()
-
-        InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
-            if (event.which === Key.N) {
-                this.transitionToNewLevel()
-                // this.transitionToMap(dojo ? MapBuildingType.Castle : MapBuildingType.Dojo)
-                // dojo = !dojo
-            }
-        })
     }
 
     async transitionToNewLevel() {

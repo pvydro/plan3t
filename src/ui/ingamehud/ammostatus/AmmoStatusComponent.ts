@@ -1,6 +1,7 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { ISprite, Sprite } from '../../../engine/display/Sprite'
+import { log } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { IWeapon } from '../../../weapon/Weapon'
@@ -95,15 +96,20 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     }
 
     async show() {
-        super.show()
+        log('AmmoStatusComponent', 'show')
 
-        return this.animator.show()
+        await this.animator.show()
+        this.alpha = 1
+
+        super.show()
     }
     
     async hide() {
-        super.hide()
+        log('AmmoStatusComponent', 'hide')
 
-        return this.animator.hide()
+        await this.animator.hide()
+        
+        // super.hide()
     }
 
     get backgroundSprite() {

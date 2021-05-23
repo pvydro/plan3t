@@ -1,7 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Key } from 'ts-keycode-enum'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { Fonts } from '../../asset/Fonts'
 import { Sprite } from '../../engine/display/Sprite'
 import { TextSprite, TextSpriteAlign } from '../../engine/display/TextSprite'
 import { InGameTooltip, InGameTooltipOptions } from './InGameTooltip'

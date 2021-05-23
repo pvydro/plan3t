@@ -50,14 +50,6 @@ export class GameMapManager implements IGameMapManager {
         if (sphericalData !== undefined) {
             this._gameMap.initializePremadeSpherical(sphericalData)
         }
-
-        // let dojo = false
-        // InputProcessor.on(InputEvents.KeyDown, (event: KeyboardEvent) => {
-        //     if (event.which === Key.N) {
-        //         this.transitionToMap(dojo ? MapBuildingType.Castle : MapBuildingType.Dojo)
-        //         dojo = !dojo
-        //     }
-        // })
     }
 
     async initializeHomeship() {

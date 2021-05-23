@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js'
-import { Fonts } from '../../asset/Fonts'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { TextDefaults } from '../../utils/Defaults'
 import { IDimension } from '../math/Dimension'
@@ -7,9 +6,9 @@ import { IVector2, Vector2 } from '../math/Vector2'
 import { scaleFontSize, scaleRescale, TextStyles } from './TextStyles'
 
 export enum TextSpriteAlign {
-    Left = 'left',
-    Center = 'center',
-    Right = 'right'
+    Left = 'Left',
+    Center = 'Center',
+    Right = 'Right'
 }
 
 export interface ITextSprite extends IDemolishable {

@@ -49,8 +49,10 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     async registerNextWave() {
         log('WaveRunnerManager', 'registerNextWave', 'prevWave', this.currentWaveIndex)
 
-        
+        await this.hud.showHUDComponents(false)
         await this.levelManager.transitionToNewLevel()
+        await this.hud.showHUDComponents(true)
+
         this.currentWaveIndex++
 
         const wave = new Wave({
@@ -66,6 +68,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
             waveCounter.setWaveValue(this.currentWaveIndex)
         }
         this.currentWaveRunnerGame.loadWave(wave)
+
 
         return wave
 

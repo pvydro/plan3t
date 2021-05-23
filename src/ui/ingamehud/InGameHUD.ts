@@ -137,8 +137,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        for (const i in this.creator.allComponents) {
-            const component = this.creator.allComponents[i]
+        for (const i in this.allComponents) {
+            const component = this.allComponents[i]
 
             component.reposition(false)
         }
@@ -185,7 +185,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         for (const i in this.allComponents) {
             const component = this.allComponents[i]
 
-            if (shouldShow) {
+            if (shouldShow !== false) {
                 await component.show()
             } else {
                 await component.hide()

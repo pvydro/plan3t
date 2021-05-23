@@ -1,8 +1,9 @@
+import { Animator, IAnimator } from '../../../engine/display/Animator'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { IShowHide } from '../../../interface/IShowHide'
 import { IAmmoStatusComponent } from './AmmoStatusComponent'
 
-export interface IAmmoStatusAnimator extends IShowHide {
+export interface IAmmoStatusAnimator extends IAnimator, IShowHide {
     
 }
 
@@ -10,29 +11,31 @@ export interface AmmoStatusAnimatorOptions {
     ammoStatus: IAmmoStatusComponent
 }
 
-export class AmmoStatusAnimator implements IAmmoStatusAnimator {
+export class AmmoStatusAnimator extends Animator implements IAmmoStatusAnimator {
     ammoStatus: IAmmoStatusComponent
     hideAnim: TweenLite
     showAnim: TweenLite
 
     constructor(options: AmmoStatusAnimatorOptions) {
-        this.ammoStatus = options.ammoStatus
+        super()
 
-        this.showAnim = Tween.to(this.ammoStatus, {
-            alpha: 1
+        this.showAnim = Tween.to(options.ammoStatus, {
+            alpha: 1,
+            duration: 0.5
         })
-        this.hideAnim = Tween.to(this.ammoStatus, {
-            alpha: 0
+        this.hideAnim = Tween.to(options.ammoStatus, {
+            alpha: 0,
+            duration: 0.5
         })
     }
 
     async show() {
-        this.showAnim.restart()
-        await this.showAnim.play()
+        this.currentAnimation = this.showAnim
+        await this.play()
     }
 
     async hide() {
-        this.hideAnim.restart()
-        await this.hideAnim.play()
+        this.currentAnimation = this.hideAnim
+        await this.play()
     }
 }
