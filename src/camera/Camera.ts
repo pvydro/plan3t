@@ -135,7 +135,7 @@ export class Camera implements ICamera {
             this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
             this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
             this.offset.y += ((this.transformOffset.y) - this.offset.y) / this.offsetEaseDamping
-                
+
             this.x = this._target.x + this.offset.x + this.extraXOffset
                 + this.mouseOffset.x + this.instantOffset.x
             this.y = this._target.y + this.offset.y
@@ -279,11 +279,11 @@ export class Camera implements ICamera {
 
     set x(value: number) {
         const newValue = -value * this.zoom
-        this.stage.x = newValue + (this.width / 2)
+        this.stage.targetX = newValue + (this.width / 2)
     }
 
     set y(value: number) {
         const newValue = -value * this.zoom
-        this.stage.y = newValue + (this.height / 2)
+        this.stage.targetY = newValue + (this.height / 2)
     }
 }

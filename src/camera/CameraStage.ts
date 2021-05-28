@@ -5,7 +5,7 @@ import { Dimension, IDimension } from '../engine/math/Dimension'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IUpdatable } from '../interface/IUpdatable'
-import { log, loudLog } from '../service/Flogger'
+import { log } from '../service/Flogger'
 import { GameWindow } from '../utils/Constants'
 import { ICamera, Camera } from './Camera'
 
@@ -33,6 +33,8 @@ export const CameraLayer = {
 }
 
 export interface ICameraStage extends IUpdatable, IReposition {
+    targetX: number
+    targetY: number
     setBackground(background: CameraStageBackgroundType): void
 }
 
@@ -46,6 +48,8 @@ export class CameraStage extends Container implements ICameraStage {
     backgroundContainer?: Container
     layers: Container[] = []
     camera: ICamera
+    targetX: number = 0
+    targetY: number = 0
 
     constructor(options: CameraStageOptions) {
         super()
@@ -63,6 +67,9 @@ export class CameraStage extends Container implements ICameraStage {
             this.backgroundContainer.x = zeroProjected.x
             this.backgroundContainer.y = zeroProjected.y
         }
+
+        this.x += (this.targetX - this.x) / 20
+        this.y += (this.targetY - this.y) / 20
     }
 
     private createLayerContainers() {
