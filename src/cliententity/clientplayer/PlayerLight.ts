@@ -75,7 +75,6 @@ export class PlayerLight extends Container implements IPlayerLight {
             delayUntilOn
         })
 
-        ambientLight.alpha = 0
         ambientLight.width = ambientLightSize
         ambientLight.height = ambientLightSize
 
@@ -93,14 +92,15 @@ export class PlayerLight extends Container implements IPlayerLight {
 
             light.width = size
             light.height = size
-            light.alpha = 0
 
             this.lights.push(light)
             this.hardLights.push(light)
-            this.addChild(light)
         }
 
-        this.addChild(ambientLight)
+        this.lights.forEach((light: Light) => {
+            light.alpha = 0
+            this.addChild(light)
+        })
     }
 
     disableHardLights() {

@@ -28,7 +28,8 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
             curvature: 2.5,
             noise: 0.01,
             lineWidth: 3,
-            lineContrast: 0.025
+            lineContrast: 0.025,
+            vignetting: 0
         })
         
         // colorMatrixFilter.greyscale(0.35, false)
@@ -41,6 +42,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         //     crtFilter,
         //     colorMatrixFilter
         // ]
+
         this.camera.stage.filters = [
             crtFilter,
             colorMatrixFilter

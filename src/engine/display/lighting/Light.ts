@@ -74,7 +74,7 @@ export class Light extends Container implements ILight {
 
         if (this.isOn) {
             if (!this.hasReachedTargetAlpha && this.targetAlpha !== undefined) {
-                this.alpha += 0.001//(this.targetAlpha - this.alpha) / 20
+                this.alpha += ((this.targetAlpha - this.alpha) / 20) / 5
     
                 if (this.alpha > this.targetAlpha - 0.001) {
                     this.alpha = this.targetAlpha
