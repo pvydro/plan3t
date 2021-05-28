@@ -23,7 +23,7 @@ export class CameraLetterboxPlugin extends UIComponent {
         super()
 
         const windowWidth = GameWindow.fullWindowWidth
-        const gradientRect = rect(0, 0, GameWindow.fullWindowWidth, 48)//24)
+        const gradientRect = rect(0, 0, GameWindow.fullWindowWidth, 48)
         const gradientOptions = {
             definition: { rect: gradientRect, direction: FourWayDirection.Down },
             totalGradientRays: 5,

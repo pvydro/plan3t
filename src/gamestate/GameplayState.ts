@@ -60,7 +60,7 @@ export class GameplayState extends GameState implements IGameplayState {
 
             await asyncTimeout(1000)
 
-            this.player = this.entityManager.createOfflinePlayer()
+            this.player = this.entityManager.createClientPlayer(undefined, room.id)//this.entityManager.createOfflinePlayer()
             this.cameraStage.addChildAtLayer(this.player, CameraLayer.Players)
             this.camera.follow(this.player)
 

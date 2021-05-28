@@ -17,6 +17,7 @@ import { Key } from 'ts-keycode-enum'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { EnemyManager, IEnemyManager } from '../enemymanager/EnemyManager'
 import { CreatureType } from '../../creature/CreatureType'
+import { CameraLayer } from '../../camera/CameraStage'
 
 export interface LocalEntity {
     serverEntity?: Entity
@@ -29,8 +30,8 @@ export interface IEntityManager extends IUpdatable {
     roomState: PlanetGameState
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
-    createClientPlayer(entity: Entity, sessionId: string): ClientPlayer
-    createEnemyPlayer(entity: Entity, sessionId: string): ClientPlayer
+    createClientPlayer(entity?: Entity, sessionId?: string): ClientPlayer
+    createCoPlayer(entity: Entity, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
     clearClientEntities(): void
     updateEntity(entity: Entity, sessionId: string, changes?: any): void
@@ -129,7 +130,7 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createClientPlayer(entity: Entity, sessionId: string) {
+    createClientPlayer(entity?: Entity, sessionId?: string) {
         log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({
@@ -142,10 +143,15 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createEnemyPlayer(entity: Entity, sessionId: string) {
-        log('EntityManager', 'createEntity', 'sessionId', sessionId)
+    createCoPlayer(entity: Entity, sessionId: string) {
+        log('EntityManager', 'createCoPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer({ entity, sessionId })
+        const player = this.playerCreator.createPlayer({
+            entity, sessionId,
+            isClientPlayer: false
+        })
+
+        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
 
         return player
     }

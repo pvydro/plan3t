@@ -153,10 +153,12 @@ export class RoomManager implements IRoomManager {
     }
 
     addPlayer(entity?: Entity, sessionId?: string) {
+        importantLog('RoomManager', 'addPlayer', 'sessionId', sessionId)
+
         if (RoomManager.isSessionALocalPlayer(sessionId)) {
             this.entityManager.createClientPlayer(entity, sessionId)
         } else {
-            this.entityManager.createEnemyPlayer(entity, sessionId)
+            this.entityManager.createCoPlayer(entity, sessionId)
         }
     
         entity.onChange = (changes) => {
@@ -165,6 +167,8 @@ export class RoomManager implements IRoomManager {
     }
 
     removePlayer(sessionId: string) {
+        importantLog('RoomManager', 'removePlayer', 'sessionId', sessionId)
+
         this.entityManager.removeEntity(sessionId)
     }
 
