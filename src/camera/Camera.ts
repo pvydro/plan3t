@@ -46,6 +46,8 @@ export interface ICamera extends IUpdatable, IReposition {
     target: ICameraTarget
     extraXOffset: number
     extraYOffset: number
+    halfWidth: number
+    halfHeight: number
 }
 
 export class Camera implements ICamera {
@@ -107,13 +109,18 @@ export class Camera implements ICamera {
             this.cameraLetterboxPlugin = new CameraLetterboxPlugin(this)
         ]
 
-
-        this.stage.width = 1080
-        this.stage.height = 720
+        const stageWidth = 1080
+        const stageHeight = 720
+        this.stage.width = stageWidth
+        this.stage.height = stageHeight
+        
         this.viewport.addChild(this.stage)
         this.viewport.addChild(this.cameraFlashPlugin)
         this.viewport.addChild(this.cameraLetterboxPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
+        
+        this.stage.x = -(stageWidth / 2) + (GameWindow.halfWidth)
+        this.stage.y = -(stageHeight / 4)
 
         this.trackMousePosition()
         this.setZoom(this.baseZoom)
@@ -155,7 +162,6 @@ export class Camera implements ICamera {
             })
         }
 
-        this.stage.y = GameWindow.y
         this.resize(GameWindow.width, GameWindow.fullWindowHeight)
     }
 
@@ -275,6 +281,14 @@ export class Camera implements ICamera {
 
     get height() {
         return GameWindow.height
+    }
+
+    get halfWidth() {
+        return this.width / 2
+    }
+
+    get halfHeight() {
+        return this.height / 2
     }
 
     set x(value: number) {

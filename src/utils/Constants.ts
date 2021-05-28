@@ -14,6 +14,14 @@ export class GameWindow {
         return this._height
     }
 
+    static get halfWidth() {
+        return this._width / 2
+    }
+
+    static get halfHeight() {
+        return this._height / 2
+    }
+
     static get fullWindowHeight() {
         return window.innerHeight
     }

@@ -55,9 +55,6 @@ export class GameplayState extends GameState implements IGameplayState {
             const mapWidth = this.gameMapManager.gameMap.width// * this.camera.zoom
             const cameraWidth = this.camera.viewport.width * this.camera.zoom
 
-            this.camera.viewport.x = (mapWidth / 2)// - (cameraWidth / 2)
-            // this.camera.y = 64
-
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             await this.inGameHUD.initializeHUD()
 

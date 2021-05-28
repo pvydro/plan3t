@@ -7,6 +7,7 @@ import { IReposition } from '../interface/IReposition'
 import { IUpdatable } from '../interface/IUpdatable'
 import { log } from '../service/Flogger'
 import { GameWindow } from '../utils/Constants'
+import { exists } from '../utils/Utils'
 import { ICamera, Camera } from './Camera'
 
 export enum CameraStageBackgroundType {
@@ -48,8 +49,8 @@ export class CameraStage extends Container implements ICameraStage {
     backgroundContainer?: Container
     layers: Container[] = []
     camera: ICamera
-    targetX: number = 0
-    targetY: number = 0
+    targetX: number = undefined
+    targetY: number = undefined
 
     constructor(options: CameraStageOptions) {
         super()
@@ -68,8 +69,8 @@ export class CameraStage extends Container implements ICameraStage {
             this.backgroundContainer.y = zeroProjected.y
         }
 
-        this.x += (this.targetX - this.x) / 20
-        this.y += (this.targetY - this.y) / 20
+        if (exists(this.targetX)) this.x += (this.targetX - this.x) / 20
+        if (exists(this.targetY)) this.y += (this.targetY - this.y) / 20
     }
 
     private createLayerContainers() {
