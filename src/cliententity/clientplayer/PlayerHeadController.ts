@@ -21,7 +21,7 @@ export class PlayerHeadController implements IPlayerHeadController {
     player: ClientPlayer
     mousePos: Vector2 = Vector2.Zero
 
-    targetRotation: number
+    targetRotation: number = 0
 
     constructor(options: PlayerHeadControllerOptions) {
         this.playerHead = options.playerHead
@@ -46,10 +46,10 @@ export class PlayerHeadController implements IPlayerHeadController {
         } else if (this.player.bodyState === PlayerBodyState.Walking
         || this.player.bodyState === PlayerBodyState.Sprinting) {
             this.targetRotation = direction === Direction.Right ? 0.1 : -0.1
+        } else if (this._shouldRotateHeadWithMouseMove) {
+            this.rotateHeadWithMouseMove()
         } else {
-            if (this._shouldRotateHeadWithMouseMove) {
-                this.rotateHeadWithMouseMove()
-            }
+            headBobRotation = 0
         }
 
         if (this.player.direction === Direction.Left) {
