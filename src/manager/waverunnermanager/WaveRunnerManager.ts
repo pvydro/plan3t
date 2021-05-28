@@ -44,6 +44,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
         this.currentWaveRunnerGame.beginWaveRunner()
+        this.registerNextWave()
     }
 
     async registerNextWave() {
@@ -60,6 +61,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
                 this.currentWaveRunnerGame.spawner.spawn()
             }
         })
+        this.currentWaveRunnerGame.loadWave(wave)
         
         this.hud.loadWave(this.currentWave)
         const waveCounter = this.hud.getComponent(UIComponentType.HUDWaveCounter) as WaveRunnerCounter
@@ -67,7 +69,6 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         if (waveCounter) {
             waveCounter.setWaveValue(this.currentWaveIndex)
         }
-        this.currentWaveRunnerGame.loadWave(wave)
 
 
         return wave

@@ -136,7 +136,7 @@ export class RoomManager implements IRoomManager {
         const temporarilyLoadBuilding = true
         
         if (temporarilyLoadBuilding) {
-            await this.gameMapManager.initializeBuilding(MapBuildingType.Castle)//MapBuildingType.Dojo)
+            await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
         } else {
             await this.gameMapManager.initializeRandomSpherical()
 
