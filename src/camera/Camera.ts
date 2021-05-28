@@ -11,7 +11,7 @@ import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugi
 import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
 import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugin'
 import { log } from '../service/Flogger'
-import { exists } from '../utils/Utils'
+import { double, exists } from '../utils/Utils'
 import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
 import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerSynchPlugin'
 import { GameWindow } from '../utils/Constants'
@@ -136,18 +136,21 @@ export class Camera implements ICamera {
                 plugin.update()
             }
         }
-
+        
         if (exists(this._target)) {
-            this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
-            this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
             this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
             this.offset.y += ((this.transformOffset.y) - this.offset.y) / this.offsetEaseDamping
+            this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
+            this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
 
-            this.x = this._target.x + this.offset.x + this.extraXOffset
-                + this.mouseOffset.x + this.instantOffset.x
-            this.y = this._target.y + this.offset.y
+            this.x = this._target.x + this.offset.x + double(this.instantOffset.x)
+                + this.extraXOffset + this.mouseOffset.x
+            this.y = this._target.y + this.offset.y + double(this.instantOffset.y)
                 + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
         }
+
+        this.stage.x += this.instantOffset.x
+        this.stage.y += this.instantOffset.x
         
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })

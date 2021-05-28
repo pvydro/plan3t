@@ -48,6 +48,10 @@ export function rect(x: number, y: number, width: number, height: number): IRect
 export function dimension(width: number, height: number): IDimension {
     return { width, height }
 }
+
+export function double(value: number): number {
+    return value * 2
+}
  
 export function asyncTimeout(time: number) {
     return new Promise(resolve => setTimeout(resolve, time))

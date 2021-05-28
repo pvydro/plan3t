@@ -10,7 +10,7 @@ export class CameraShakePlugin implements ICameraShakePlugin {
     camera: ICamera
     _targetScreenShakeOffset: IVector2 = Vector2.Zero
     _screenShakeOffset: IVector2 = Vector2.Zero
-    screenShakeDamping: number = 2
+    screenShakeDamping: number = 1.5
     screenShakeRecoveryDamping: number = 5
     maximumShakeAmount: number = 2
 
