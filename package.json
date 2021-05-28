@@ -9,7 +9,8 @@
     "start": "node ./lib/index.js",
     "dev": "nodemon",
     "serve": "npm run dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "custom-clean": "find . -name '.DS_Store' -delete"
   },
   "author": "Endel Dreyer",
   "license": "MIT",
