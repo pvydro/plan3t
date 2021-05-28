@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { IUpdatable } from '../../../interface/IUpdatable'
+import { asyncTimeout, exists } from '../../../utils/Utils'
 import { Vector2 } from '../../math/Vector2'
 import { Container } from '../Container'
 import { Sprite } from '../Sprite'
@@ -15,6 +16,8 @@ export interface LightOptions {
     minimumJitterCooldown?: number
     maximumJitterCooldown?: number
     maximumJitterAmount?: number
+    targetAlpha?: number
+    delayUntilOn?: number
 }
 
 export class Light extends Container implements ILight {
@@ -25,6 +28,10 @@ export class Light extends Container implements ILight {
     minimumJitterCooldown: number = 200
     maximumJitterCooldown: number = 200
     maximumJitterAmount: number = 1
+    delayUntilOn: number = 0
+    targetAlpha?: number
+    _isOn: boolean = true
+    _reachedTargetAlpha: boolean = false
     _localPos: Vector2 = Vector2.Zero
     _targetJitterOffset: Vector2 = Vector2.Zero
     _jitterOffset: Vector2 = Vector2.Zero
@@ -36,6 +43,7 @@ export class Light extends Container implements ILight {
         
         this.sprite = new Sprite({ texture })
         this.sprite.blendMode = PIXI.BLEND_MODES.ADD
+        this.sprite.anchor.set(0.5, 0.5)
 
         this.minimumJitterCooldown = (options && options.minimumJitterCooldown) ? options.minimumJitterCooldown : this.minimumJitterCooldown
         this.maximumJitterCooldown = (options && options.maximumJitterCooldown) ? options.maximumJitterCooldown : this.maximumJitterCooldown
@@ -43,7 +51,19 @@ export class Light extends Container implements ILight {
 
         this.addChild(this.sprite)
 
-        this.sprite.anchor.set(0.5, 0.5)
+        if (options) {
+            if (exists(options.targetAlpha)) {
+                this.targetAlpha = options.targetAlpha
+            }
+            if (exists(options.delayUntilOn)) {
+                this.delayUntilOn = options.delayUntilOn
+                this._isOn = false
+
+                asyncTimeout(this.delayUntilOn).then(() => {
+                    this._isOn = true
+                })
+            }
+        }
     }
 
     update() {
@@ -51,6 +71,17 @@ export class Light extends Container implements ILight {
 
         this.sprite.x = this._localPos.x + this._jitterOffset.x
         this.sprite.y = this._localPos.y + this._jitterOffset.y
+
+        if (this.isOn) {
+            if (!this.hasReachedTargetAlpha && this.targetAlpha !== undefined) {
+                this.alpha += 0.001//(this.targetAlpha - this.alpha) / 20
+    
+                if (this.alpha > this.targetAlpha - 0.001) {
+                    this.alpha = this.targetAlpha
+                    this._reachedTargetAlpha = true
+                }
+            }
+        }
     }
 
     updateShake() {
@@ -70,5 +101,13 @@ export class Light extends Container implements ILight {
 
             this._targetJitterOffset.y = Math.random() * this.maximumJitterAmount
         }
+    }
+
+    get hasReachedTargetAlpha() {
+        return this._reachedTargetAlpha
+    }
+
+    get isOn() {
+        return this._isOn
     }
 }

@@ -65,7 +65,7 @@ export class Camera implements ICamera {
     _y: number = 0
     extraXOffset: number = 0
     extraYOffset: number = 0
-    baseYOffset: number = -24
+    baseYOffset: number = -12//-24
     offsetEaseDamping: number = 20
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero

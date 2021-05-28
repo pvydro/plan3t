@@ -48,11 +48,15 @@ export class GameplayState extends GameState implements IGameplayState {
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
 
+        this.camera.x = -12
+        this.camera.y = 64
+
         this.roomManager.initializeRoom().then(async (room: Room) => {
             log('GameplayState', 'Room initialized')
 
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             await this.inGameHUD.initializeHUD()
+
             await asyncTimeout(1000)
 
             this.player = this.entityManager.createOfflinePlayer()
