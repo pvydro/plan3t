@@ -26,10 +26,10 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
         asyncTimeout(500).then(() => {
             this.waveManager = WaveRunnerManager.getInstance()
             this.waveManager.initialize()
-            this.player.pos = {
-                x: 0,
-                y: this.player.y
-            }
+            // this.player.pos = {
+            //     x: 0,
+            //     y: this.player.y
+            // }
 
             this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
                 sound.play()

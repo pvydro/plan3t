@@ -11,6 +11,7 @@ import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
+import { asyncTimeout } from '../utils/Utils'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -35,11 +36,8 @@ export class GameplayState extends GameState implements IGameplayState {
     async initialize() {
         const particleManager = ParticleManager.getInstance()
         
-        this.player = this.entityManager.createOfflinePlayer()
-        this.camera.follow(this.player)
         this.inGameHUD.showHUDComponents()
 
-        this.cameraStage.addChildAtLayer(this.player, CameraLayer.Players)
         this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
         this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
         this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
@@ -53,13 +51,18 @@ export class GameplayState extends GameState implements IGameplayState {
         this.roomManager.initializeRoom().then(async (room: Room) => {
             log('GameplayState', 'Room initialized')
 
-            this.player.pos = {
-                x: 512,
-                y: -256
-            }
-
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             await this.inGameHUD.initializeHUD()
+            await asyncTimeout(1000)
+
+            this.player = this.entityManager.createOfflinePlayer()
+            this.cameraStage.addChildAtLayer(this.player, CameraLayer.Players)
+            this.camera.follow(this.player)
+
+            // this.player.pos = {
+            //     x: 512,
+            //     y: -256
+            // }
         })
     }
 
