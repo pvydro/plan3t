@@ -1,7 +1,7 @@
 import { Sound } from '@pixi/sound'
 import { GameStateID } from '../manager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
-import { SongKeyCodes } from '../musicplaylist/SongKeyCodes'
+import { SongKeyCodes } from '../music/SongKeyCodes'
 import { asyncTimeout } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
 import { GameStateOptions, IGameState } from './GameState'

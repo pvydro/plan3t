@@ -1,6 +1,6 @@
 import { Sound } from '@pixi/sound'
 import { Sounds } from '../../asset/Sounds'
-import { SongKeyCodes } from '../../musicplaylist/SongKeyCodes'
+import { SongKeyCodes } from '../../music/SongKeyCodes'
 import { log } from '../../service/Flogger'
 
 export interface IMusicManager {
