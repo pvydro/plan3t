@@ -149,10 +149,10 @@ export class ClientPlayer extends GravityOrganism {
         
         this.body.update()
         this.head.update()
+        this.hand.update()
         this.overheadHealthBar.update()
         if (this.light) this.light.update()
         if (this.isClientPlayer) {
-            this.hand.update()
             this.messenger.update()
         }
     }

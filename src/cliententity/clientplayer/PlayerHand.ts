@@ -4,7 +4,7 @@ import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
-import { Flogger } from '../../service/Flogger'
+import { Flogger, loudLog } from '../../service/Flogger'
 import { Weapon } from '../../weapon/Weapon'
 import { WeaponHelper } from '../../weapon/WeaponHelper'
 import { ClientPlayer } from './ClientPlayer'
@@ -131,16 +131,16 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.rotation = targetRotation
     }
 
+    flipAllSprites() {
+        this.scale.x *= -1
+    }
+
     set direction(value: Direction) {
         if (this.currentDirection !== value) {
             this.flipAllSprites()
         }
 
         this.currentDirection = value
-    }
-
-    flipAllSprites() {
-        this.scale.x *= -1
     }
 
     get player() {
