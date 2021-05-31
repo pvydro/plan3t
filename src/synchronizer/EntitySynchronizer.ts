@@ -4,11 +4,12 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { Entity } from '../network/rooms/Entity'
 import { Player } from '../network/rooms/Player'
 import { PlayerBodyState, PlayerLegsState } from '../network/utils/Enum'
-import { Flogger } from '../service/Flogger'
+import { log, VerboseLogging } from '../service/Flogger'
 import { RoomManager } from '../manager/roommanager/RoomManager'
 import { IEntityManager } from '../manager/entitymanager/EntityManager'
 import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
 import { exists } from '../utils/Utils'
+import { WeaponName } from '../weapon/WeaponName'
 
 export interface IEntitySynchronizer extends IUpdatable {
     assertionService: IEntitySynchronizerAssertionService
@@ -35,7 +36,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     }
 
     updateEntity(entity: Entity, sessionId: string, changes?: any) {
-        Flogger.log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId)
+        log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId, VerboseLogging ? 'changes: ' + JSON.stringify(changes) : null)
 
         this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
@@ -52,7 +53,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     }
 
     private updatePlayer(player: Player, sessionId: string, changes?: any) {
-        Flogger.log('EntitySynchronizer', 'updatePlayer', 'sessionId', sessionId)
+        log('EntitySynchronizer', 'updatePlayer', 'sessionId', sessionId)
 
         if (RoomManager.isSessionALocalPlayer(sessionId)) return
         
@@ -69,6 +70,14 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         clientPlayer.walkingDirection = playerState.walkingDirection as Direction
         clientPlayer.bodyState = playerState.bodyState as PlayerBodyState
         clientPlayer.legsState = playerState.legsState as PlayerLegsState
+        
+        // if (clientPlayer.holster.currentWeapon.name
+        // && clientPlayer.holster.currentWeapon.name !== playerState.weaponStatus.name) {
+        //     clientPlayer.holster.setCurrentWeapon(playerState.weaponStatus.name as WeaponName)
+        // }
+        if (player.weaponStatus.name && player.weaponStatus.name !== clientPlayer.holster.currentWeapon.name) {
+            clientPlayer.holster.setCurrentWeapon(playerState.weaponStatus.name as WeaponName)
+        }
     }
 
     get clientEntities() {

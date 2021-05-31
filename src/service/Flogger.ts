@@ -1,5 +1,6 @@
 export class Flogger {
-  public static isLoggingEnabled: boolean = true
+  static isLoggingEnabled: boolean = true
+  static Verbose: boolean = true
   private static _color: string = 'slategray'
   private static tempColor: string = Flogger._color
   private static style = 'color: ' + Flogger._color
@@ -73,3 +74,5 @@ export function logError(message: string, ...object: any) {
 export function loudLog(message: string, ...object: any) {
   console.log(`%c${message}: ${JSON.stringify(object)}`, 'font-size: 200%; color: tomato')
 }
+
+export const VerboseLogging = Flogger.Verbose

@@ -6,12 +6,15 @@ import { Entity } from './Entity'
 class PlayerWeaponStatus extends Schema {
     @type('float64')
     rotation: number = 0
+    @type('string')
+    name: string = ''
 }
 
 export class Player extends Entity {
     @type(PlayerWeaponStatus)
     weaponStatus: PlayerWeaponStatus = new PlayerWeaponStatus({
-        rotation: 0
+        rotation: 0,
+        name: ''
     })
     @type('int32')
     bodyState: PlayerBodyState = PlayerBodyState.Idle

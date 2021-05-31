@@ -13,6 +13,7 @@ export class WeaponStateFormatter {
             ? weapon.playerHolster.player.direction : Direction.Right
 
         const payload: WeaponStatePack = {
+            name: weapon.name,
             rotation: weapon.playerHolster.player.hand.rotation,
             direction,
             bulletX,

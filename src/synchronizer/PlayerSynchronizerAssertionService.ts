@@ -3,7 +3,8 @@ import { PlayerMessenger } from '../cliententity/clientplayer/PlayerMessenger'
 import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
 import { Player } from '../network/rooms/Player'
-import { Flogger } from '../service/Flogger'
+import { Flogger, VerboseLogging } from '../service/Flogger'
+import { WeaponName } from '../weapon/WeaponName'
 import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
 import { PlayerSynchronizerAssertionServiceDebugger } from './PlayerSynchronizerDebugger'
 
@@ -35,11 +36,15 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
     }
 
     applyChangesToSynchronizablePlayer(sessionId: string, player: Player) {
-        Flogger.log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId)
+        Flogger.log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'changes: ' + JSON.stringify(player) : null))
         
         if (player.weaponStatus !== undefined) {
             const rotation = player.weaponStatus.rotation
             const clientEntity = this.entityAssertionService.entitySynchronizer.clientEntities.get(sessionId).clientEntity as ClientPlayer
+
+            if (player.weaponStatus.name && clientEntity.holster.currentWeapon.name !== player.weaponStatus.name) {
+                clientEntity.holster.setCurrentWeapon(player.weaponStatus.name as WeaponName)
+            }
 
             if (clientEntity.hand) {
                 clientEntity.hand.setTargetRotation(rotation)

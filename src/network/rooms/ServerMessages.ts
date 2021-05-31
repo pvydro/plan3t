@@ -22,6 +22,7 @@ export interface NewPlanetMessagePayload {
 }
 
 export interface PlayerPayload extends EntityPayload {
+    weaponName: string
     direction: Direction
     walkingDirection: Direction
     bodyState: PlayerBodyState
@@ -31,6 +32,7 @@ export interface PlayerPayload extends EntityPayload {
 
 export interface WeaponStatusPayload {
     direction: Direction
+    name: string
     rotation: number
     bulletX?: number
     bulletY?: number

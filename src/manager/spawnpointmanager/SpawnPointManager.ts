@@ -1,4 +1,3 @@
-import { Camera } from '../../camera/Camera'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { log } from '../../service/Flogger'
 
@@ -19,8 +18,6 @@ export class SpawnPointManager {
 
             player.pos = newPos
         })
-
-        Camera.getInstance().snapToTarget()
     }
 
     static getPlayerSpawnPoint(player: IClientPlayer) {

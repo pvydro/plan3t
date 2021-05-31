@@ -1,10 +1,9 @@
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
-import { Flogger } from '../../service/Flogger'
+import { log, logError } from '../../service/Flogger'
 import { AmmoStatusComponent } from '../../ui/ingamehud/ammostatus/AmmoStatusComponent'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { UIComponentType } from '../../ui/UIComponentFactory'
-import { Emitter } from '../../utils/Emitter'
 import { asyncTimeout } from '../../utils/Utils'
 import { IWeapon, Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
@@ -21,6 +20,8 @@ export interface WeaponHolsterLoadout {
 }
 
 export interface IPlayerWeaponHolster {
+    primaryWeapon: IWeapon
+    secondaryWeapon: IWeapon
     swapWeapon(): void
     setWeaponStatus(status: CurrentWeaponStatus)
     setCurrentWeapon(name: WeaponName): void
@@ -67,7 +68,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     swapWeapon() {
-        Flogger.log('PlayerWeaponHolster', 'swapWeapon')
+        log('PlayerWeaponHolster', 'swapWeapon')
 
         const weaponStatus = (this.currentWeaponStatus === CurrentWeaponStatus.Primary)
             ? CurrentWeaponStatus.Secondary : CurrentWeaponStatus.Primary
@@ -76,7 +77,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     reloadWeapon() {
-        Flogger.log('PlayerWeaponHolster', 'reloadWeapon')
+        log('PlayerWeaponHolster', 'reloadWeapon')
 
         this.currentWeapon.requestReload()
     }
@@ -118,7 +119,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     holsterWeapon() {
-        Flogger.log('PlayerWeaponHolster', 'holsterWeapon')
+        log('PlayerWeaponHolster', 'holsterWeapon')
 
         this.currentWeaponStatus = CurrentWeaponStatus.None
         this.updateWeaponStatus()
@@ -139,7 +140,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
         try {
             this.player.equipWeapon(this.currentWeapon as Weapon)
         } catch (error) {
-            Flogger.error('PlayerWeaponHolster', 'Failed to equip weapon', 'error', error)
+            logError('PlayerWeaponHolster', 'Failed to equip weapon', 'error', error)
         }
     }
 

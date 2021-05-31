@@ -11,16 +11,15 @@ import { PlayerCollision } from './PlayerCollision'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
 import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
-import { PlayerWeaponHolster } from './PlayerWeaponHolster'
+import { IPlayerWeaponHolster, PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { PlayerHealthController } from './PlayerHealthController'
-import { IVector2, point } from '../../engine/math/Vector2'
+import { point } from '../../engine/math/Vector2'
 import { GravityOrganism, IGravityOrganism } from '../gravityorganism/GravityOrganism'
-import { Camera } from '../../camera/Camera'
 
 export interface IClientPlayer extends IGravityOrganism {
     sessionId: string
@@ -33,6 +32,7 @@ export interface IClientPlayer extends IGravityOrganism {
     emitter: Emitter
     isClientPlayer: boolean
     isOfflinePlayer: boolean
+    holster: IPlayerWeaponHolster
     equipWeapon(weapon: Weapon): void
 }
 

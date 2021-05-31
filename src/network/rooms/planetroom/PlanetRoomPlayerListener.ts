@@ -30,7 +30,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     }
 
     private listenForWeaponStatusChanges() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForRotationChange')
+        Flogger.log('PlanetRoomPlayerListener', 'listenForWeaponStatusChanges')
 
         this.room.onMessage(RoomMessage.PlayerLookAngleChanged, (client: Client, message: WeaponStatusPayload) => {
             Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLookAngleChanged, 'sessionId', client.sessionId, 'message', message)
@@ -112,6 +112,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
         // player.x = payload.x ?? player.x
         // player.bodyState = payload.bodyState
+        player.weaponStatus.name = payload.weaponName
         player.legsState = payload.legsState
         player.direction = payload.direction
         player.walkingDirection = payload.walkingDirection
@@ -121,9 +122,12 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     }
 
     applyWeaponStatusToPlayer(sessionId: string, payload: WeaponStatusPayload) {
+        Flogger.log('PlanetRoomPlayerListener', 'applyWeaponStatusToPlayer', 'payload', payload)
+
         const player = this.getPlayer(sessionId)
 
         player.weaponStatus.rotation = payload.rotation
+        player.weaponStatus.name = payload.name
     }
 
     triggerWeaponShot(sessionId: string, payload: WeaponStatusPayload) {

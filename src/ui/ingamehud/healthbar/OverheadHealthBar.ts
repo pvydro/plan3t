@@ -6,7 +6,6 @@ import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { IUpdatable } from '../../../interface/IUpdatable'
 import { UIComponent } from '../../UIComponent'
 import { ICanDie } from '../../../interface/ICanDie'
-import { Flogger } from '../../../service/Flogger'
 import { PredefinedTweens } from '../../../engine/display/tween/PredefinedTweens'
 
 export interface IOverheadHealthBar extends IUpdatable, ICanDie {
@@ -116,7 +115,7 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     }
 
     private triggerHealthDrop() {
-        this.showFor(500)
+        this.showFor(1000)
 
         this.targetFillPercentage = this.player.healthPercentage
 
