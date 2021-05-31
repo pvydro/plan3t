@@ -110,7 +110,7 @@ export class GameMap extends Container implements IGameMap {
         log('GameMap', 'transitionToMap', 'type', type)
 
         await this.currentMap.transitionOut()
-        await this.initializeBuilding(type)
+        this.initializeBuilding(type)
     }
 
     private clearCurrentMap() {

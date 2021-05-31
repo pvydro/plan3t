@@ -37,6 +37,7 @@ export interface ICamera extends IUpdatable, IReposition {
     shake(amount: number): void
     flash(options: CameraFlashOptions): void
     shakeAndFlash(shakeAmount: number, flashOptions?: EntityFlashOptions): void
+    snapToTarget(): void
     viewport: Viewport
     stage: CameraStage
     offset: IVector2
@@ -143,9 +144,9 @@ export class Camera implements ICamera {
             this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
             this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
 
-            this.x = this._target.x + this.offset.x + double(this.instantOffset.x)
+            this.targetX = this._target.x + this.offset.x + double(this.instantOffset.x)
                 + this.extraXOffset + this.mouseOffset.x
-            this.y = this._target.y + this.offset.y + double(this.instantOffset.y)
+            this.targetY = this._target.y + this.offset.y + double(this.instantOffset.y)
                 + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
         }
 
@@ -258,6 +259,13 @@ export class Camera implements ICamera {
         this._target = undefined
     }
 
+    snapToTarget() {
+        this.x = this._target.x + this.offset.x + double(this.instantOffset.x)
+                + this.extraXOffset + this.mouseOffset.x
+        this.y = this._target.y + this.offset.y + double(this.instantOffset.y)
+            + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
+    }
+
     static toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {
         return Camera.getInstance().toScreen(point)
     }
@@ -296,10 +304,20 @@ export class Camera implements ICamera {
 
     set x(value: number) {
         const newValue = -value * this.zoom
-        this.stage.targetX = newValue + (this.width / 2)
+        this.stage.x = newValue + (this.width / 2)
     }
 
     set y(value: number) {
+        const newValue = -value * this.zoom
+        this.stage.y = newValue + (this.height / 2)
+    }
+
+    set targetX(value: number) {
+        const newValue = -value * this.zoom
+        this.stage.targetX = newValue + (this.width / 2)
+    }
+
+    set targetY(value: number) {
         const newValue = -value * this.zoom
         this.stage.targetY = newValue + (this.height / 2)
     }

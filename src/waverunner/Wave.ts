@@ -17,7 +17,7 @@ export interface WaveOptions {
 export class Wave extends Emitter implements IWave {
     _onSpawn: Function
     totalEnemies: number = 5
-    spawnIntervalTime: number = 2000
+    spawnIntervalTime: number = 500//2000
     startDelayTime: number = 3000
     totalSpawns: number = 0
     waveIndex: number = 0
@@ -39,7 +39,7 @@ export class Wave extends Emitter implements IWave {
             log('Wave', 'startDelayTime Complete')
             
             setInterval(() => {
-                if (this.totalSpawns < this.totalEnemies) {
+                if (this.totalSpawns <= this.totalEnemies) {
                     this.spawnEnemy()
                 }
             }, this.spawnIntervalTime)

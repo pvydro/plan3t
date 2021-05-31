@@ -2,6 +2,7 @@
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { UIDefaults } from '../../../utils/Defaults'
+import { asyncTimeout } from '../../../utils/Utils'
 import { IWave } from '../../../waverunner/Wave'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { UIText } from '../../UIText'
@@ -57,13 +58,15 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
         
         this.waveNumberLabel.x = this.header.x - (margin * 3)
         this.waveNumberLabel.y = this.header.y - (this.header.textHeight * 1.5) - margin
-        this.enemyCounter.y = this.header.y + this.header.halfTextHeight + margin
+        this.enemyCounter.y = this.header.y + this.header.textHeight - this.enemyCounter.enemiesText.halfTextHeight + margin
     }
 
     setWaveValue(wave: IWave) {
-        this.waveNumberLabel.setText(wave.waveIndex.toString())
-        this.enemyCounter.setTotalEnemies(wave.totalEnemies)
-        this._shouldShowEnemyCounter = true
+        asyncTimeout(500).then(() => {
+            this.waveNumberLabel.setText(wave.waveIndex.toString())
+            this.enemyCounter.setTotalEnemies(wave.totalEnemies)
+            this._shouldShowEnemyCounter = true
+        })
     }
 
     async show() {
@@ -72,14 +75,10 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
             this._shouldShowEnemyCounter = false
         }
 
-        await Tween.to(this, {
-            alpha: 1, duration: 0.5, autoplay: true
-        })
+        await Tween.to(this, { alpha: 1, duration: 0.5, autoplay: true })
     }
 
     async hide() {
-        await Tween.to(this, {
-            alpha: 0, duration: 0.5, autoplay: true
-        })
+        await Tween.to(this, { alpha: 0, duration: 0.5, autoplay: true })
     }
 }

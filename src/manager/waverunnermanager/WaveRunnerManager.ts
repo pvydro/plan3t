@@ -7,6 +7,7 @@ import { UIComponentType } from '../../ui/UIComponentFactory'
 import { IWave, Wave } from '../../waverunner/Wave'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
 import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
+import { IWaveSpawnPointManager, WaveSpawnPointManager } from './WaveSpawnPointManager'
 
 export interface IWaveRunnerManager {
     initialize(): Promise<void>
@@ -15,9 +16,10 @@ export interface IWaveRunnerManager {
 
 export class WaveRunnerManager implements IWaveRunnerManager {
     private static Instance: IWaveRunnerManager
+    levelManager: IWaveLevelManager
+    spawnPointManager: IWaveSpawnPointManager
     currentWaveRunnerGame: IWaveRunnerGame
     currentWaveIndex: number = 0
-    levelManager: IWaveLevelManager
     hud: IInGameHUD
 
     static getInstance() {
@@ -42,6 +44,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         importantLog('WaveRunnerManager', 'initialize')
 
         this.levelManager = new WaveLevelManager()
+        this.spawnPointManager = new WaveSpawnPointManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
         this.currentWaveRunnerGame.beginWaveRunner()
         this.registerNextWave()
@@ -50,9 +53,11 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     async registerNextWave() {
         log('WaveRunnerManager', 'registerNextWave', 'prevWave', this.currentWaveIndex)
 
-        // this.hud.showHUDComponents(false)
         await this.levelManager.transitionToNewLevel()
-        // this.hud.showHUDComponents(true)
+
+        if (this.currentWaveIndex === 0) {
+            await this.spawnPlayers()
+        }
 
         this.currentWaveIndex++
 
@@ -74,6 +79,10 @@ export class WaveRunnerManager implements IWaveRunnerManager {
 
         return wave
 
+    }
+
+    async spawnPlayers() {
+        await this.spawnPointManager.applySpawnPointsToPlayers()
     }
 
     get currentWave() {

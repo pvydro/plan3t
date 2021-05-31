@@ -18,8 +18,9 @@ import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { PlayerHealthController } from './PlayerHealthController'
-import { point } from '../../engine/math/Vector2'
+import { IVector2, point } from '../../engine/math/Vector2'
 import { GravityOrganism, IGravityOrganism } from '../gravityorganism/GravityOrganism'
+import { Camera } from '../../camera/Camera'
 
 export interface IClientPlayer extends IGravityOrganism {
     sessionId: string

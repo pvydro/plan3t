@@ -27,7 +27,7 @@ export class WaveEnemyCounter extends UIComponent implements IWaveEnemyCounter {
     }
 
     setTotalEnemies(totalEnemies: number) {
-        this.enemiesText.setText(this.enemiesPrefix + totalEnemies   )
+        this.enemiesText.setText(this.enemiesPrefix + totalEnemies)
     }
 
     async show(options?: ShowOptions) {
@@ -46,7 +46,7 @@ export class WaveEnemyCounter extends UIComponent implements IWaveEnemyCounter {
         await Tween.to(this, {
             alpha: 0, duration: 0.5, autoplay: true
         })
-        
+
         super.hide()
     }
 }
