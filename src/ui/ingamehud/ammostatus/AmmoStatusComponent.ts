@@ -117,7 +117,6 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     }
 
     set currentWeapon(value: IWeapon) {
-        // this.counterComponent.tempTextSprite.text = value.name
         this._currentWeapon = value
     }
 }

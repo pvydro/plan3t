@@ -5,10 +5,12 @@ import { asyncTimeout, exists, functionExists } from '../utils/Utils'
 
 export interface IWave {
     totalEnemies: number
+    waveIndex: number
     startSpawnIntervals()
 }
 
 export interface WaveOptions {
+    waveIndex: number
     onSpawn: Function
 }
 
@@ -18,14 +20,15 @@ export class Wave extends Emitter implements IWave {
     spawnIntervalTime: number = 2000
     startDelayTime: number = 3000
     totalSpawns: number = 0
+    waveIndex: number = 0
 
-    constructor(options?: WaveOptions) {
+    constructor(options: WaveOptions) {
         super()
 
-        if (exists(options)) {
-            if (functionExists(options.onSpawn)) {
-                this._onSpawn = options.onSpawn
-            }
+        this.waveIndex = options.waveIndex
+        
+        if (functionExists(options.onSpawn)) {
+            this._onSpawn = options.onSpawn
         }
     }
 

@@ -12,7 +12,7 @@ export enum TextSpriteAlign {
 }
 
 export interface ITextSprite extends IDemolishable {
-
+    setText(newText: string): void
 }
 
 export interface TextSpriteOptions {
@@ -34,6 +34,7 @@ export interface TextSpriteStyle {
 
 export class TextSprite extends PIXI.Text implements ITextSprite {
     _textDimensions: IDimension
+    uppercase: boolean
     style: PIXI.TextStyle
     rescale: number
 
@@ -52,6 +53,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         
         this.style = style
         this.rescale = rescale
+        this.uppercase = uppercase
         this._textDimensions = PIXI.TextMetrics.measureText(text, style)
         this.scale.set(rescale, rescale)
 
@@ -61,6 +63,12 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
 
             this.anchor.set(anc.x, anc.y)
         }
+    }
+
+    setText(newText: string) {
+        const text = this.uppercase ? newText.toUpperCase() : newText
+        
+        this.text = text
     }
     
     get textWidth() {

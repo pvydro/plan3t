@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
-import { IShowHide } from '../interface/IShowHide'
+import { IShowHide, ShowOptions } from '../interface/IShowHide'
 import { IUpdatable } from '../interface/IUpdatable'
+import { asyncTimeout } from '../utils/Utils'
 import { UIComponentBorder, UIComponentBorderOptions } from './UIComponentBorder'
 import { UIContainer, UIContainerOptions } from './UIContainer'
 
@@ -29,6 +30,7 @@ export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
 
     forceHide(): void
     demolish(): void
+    showFor(time: number, options?: ShowOptions): Promise<void>
 }
 
 export interface UIComponentOptions extends UIContainerOptions {
@@ -71,8 +73,14 @@ export class UIComponent extends UIContainer implements IUIComponent {
     demolish(): void {
         this.destroy()
     }
+
+    async showFor(time: number, showOptions?: ShowOptions) {
+        await this.show(showOptions)
+        await asyncTimeout(time)
+        await this.hide()
+    }
     
-    async show() {
+    async show(options?: ShowOptions) {
         this._isShown = true
     }
 

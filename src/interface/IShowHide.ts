@@ -1,4 +1,8 @@
+export interface ShowOptions {
+    delay?: number
+}
+
 export interface IShowHide {
-    show(): Promise<any>
-    hide(): Promise<any>
+    show(options?: ShowOptions): Promise<any>
+    hide(options?: ShowOptions): Promise<any>
 }

@@ -131,7 +131,7 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
             await this.swipeAnimation.play()
         }
 
-        this.textSprite.text = this.targetName
+        this.textSprite.setText(this.targetName)
 
         this.swipeAnimation = Tween.to(this.textSprite, {
             x: this.originalX,

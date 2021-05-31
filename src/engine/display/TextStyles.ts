@@ -11,6 +11,10 @@ export class TextStyles {
     static TextRescaleMultiplier: number = _textScaleMultiplier
 
     static Menu: ITextStyles = {
+        HeaderSmaller: {
+            fontSize: scaleFontSize(6),
+            fontFamily: Fonts.FontDefault.family
+        },
         HeaderSmall: {
             fontSize: scaleFontSize(8),
             fontFamily: Fonts.FontDefault.family
