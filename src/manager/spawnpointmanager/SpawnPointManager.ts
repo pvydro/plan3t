@@ -1,20 +1,14 @@
 import { Camera } from '../../camera/Camera'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { IVector2 } from '../../engine/math/Vector2'
 import { log } from '../../service/Flogger'
 
-export interface IWaveSpawnPointManager {
-    getPlayerSpawnPoint(player: IClientPlayer): IVector2
-    applySpawnPointsToPlayers(): void
-}
-
-export class WaveSpawnPointManager implements IWaveSpawnPointManager {
-    constructor() {
+export class SpawnPointManager {
+    private constructor() {
 
     }
 
-    applySpawnPointsToPlayers() {
-        log('WaveSpawnPointManager', 'applySpawnPointsToPlayers')
+    static applySpawnPointsToPlayers() {
+        log('SpawnPointManager', 'applySpawnPointsToPlayers')
 
         const players = [
             ClientPlayer.getInstance()
@@ -29,9 +23,19 @@ export class WaveSpawnPointManager implements IWaveSpawnPointManager {
         Camera.getInstance().snapToTarget()
     }
 
-    getPlayerSpawnPoint(player: IClientPlayer) {
+    static getPlayerSpawnPoint(player: IClientPlayer) {
         const x = 124
         const y = player.y
+
+        return { x, y }
+    }
+
+    static getEnemySpawnPoint() {
+        const minimumX = 12
+        const maximumX = 120
+
+        const x = minimumX + (Math.random() * (maximumX - minimumX))
+        const y = -24
 
         return { x, y }
     }

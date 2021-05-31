@@ -1,4 +1,5 @@
 import { ClientEntity } from '../cliententity/ClientEntity'
+import { IVector2 } from '../engine/math/Vector2'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { Events } from '../model/events/Events'
 import { log } from '../service/Flogger'
@@ -8,6 +9,10 @@ import { exists, functionExists } from '../utils/Utils'
 export interface ISpawner {
     spawn(): void
     onSpawn?: Function
+}
+
+export interface SpawnOptions {
+    position?: IVector2
 }
 
 export interface SpawnerOptions {
@@ -35,10 +40,6 @@ export class Spawner extends Emitter implements ISpawner {
         if (this._onSpawn !== undefined) {
             this._onSpawn(entity)
         }
-    }
-
-    private findSpawnLocation() { // TODO: This
-
     }
 
     set onSpawn(value: Function) {

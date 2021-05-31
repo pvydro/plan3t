@@ -12,12 +12,14 @@ export interface IWave {
 export interface WaveOptions {
     waveIndex: number
     onSpawn: Function
+    onComplete: Function
 }
 
 export class Wave extends Emitter implements IWave {
     _onSpawn: Function
+    _onComplete: Function
     totalEnemies: number = 5
-    spawnIntervalTime: number = 500//2000
+    spawnIntervalTime: number = 500
     startDelayTime: number = 3000
     totalSpawns: number = 0
     waveIndex: number = 0
@@ -26,10 +28,8 @@ export class Wave extends Emitter implements IWave {
         super()
 
         this.waveIndex = options.waveIndex
-        
-        if (functionExists(options.onSpawn)) {
-            this._onSpawn = options.onSpawn
-        }
+        this._onSpawn = options.onSpawn
+        this._onComplete = options.onComplete
     }
 
     startSpawnIntervals() {
