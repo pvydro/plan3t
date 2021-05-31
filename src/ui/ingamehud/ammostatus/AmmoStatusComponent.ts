@@ -98,15 +98,15 @@ export class AmmoStatusComponent extends UIComponent implements IAmmoStatusCompo
     async show() {
         log('AmmoStatusComponent', 'show')
 
+        this._isShown = true
         await this.animator.show()
         this.alpha = 1
-
-        super.show()
     }
     
     async hide() {
         log('AmmoStatusComponent', 'hide')
-
+        
+        this._isShown = false
         await this.animator.hide()
         
         // super.hide()

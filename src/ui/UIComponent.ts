@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { Tween } from '../engine/display/tween/Tween'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IShowHide, ShowOptions } from '../interface/IShowHide'
@@ -41,6 +42,7 @@ export interface UIComponentOptions extends UIContainerOptions {
 export class UIComponent extends UIContainer implements IUIComponent {
     _isShown: boolean
     border?: UIComponentBorder
+    _currentShowTimeout: number
 
     constructor(options?: UIComponentOptions) {
         super(options)
@@ -82,10 +84,47 @@ export class UIComponent extends UIContainer implements IUIComponent {
     
     async show(options?: ShowOptions) {
         this._isShown = true
+
+        if (options?.delay) {
+            this.delayShow(options.delay).then(() => {
+                this.show()
+            })
+
+            return
+        }
+
+        await Tween.to(this, { alpha: 1, duration: 0.5, autoplay: true })
     }
 
-    async hide() {
+    async hide(options?: ShowOptions) {
         this._isShown = false
+
+        if (options?.delay) {
+            this.delayShow(options.delay).then(() => {
+                this.hide()
+            })
+
+            return
+        }
+
+        await Tween.to(this, { alpha: 0, duration: 0.5, autoplay: true })
+    }
+
+    protected delayShow(time: number): Promise<void> {
+        return new Promise((resolve) => {
+            this.currentShowTimeout = window.setTimeout(() => {
+                this.currentShowTimeout = undefined
+                resolve()
+            }, time)
+        })
+    }
+
+    private set currentShowTimeout(value: number) {
+        if (this._currentShowTimeout) {
+            window.clearTimeout(this._currentShowTimeout)
+        }
+
+        this._currentShowTimeout = value
     }
 
     get isShown() {

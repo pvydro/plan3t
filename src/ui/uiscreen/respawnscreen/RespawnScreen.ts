@@ -29,13 +29,13 @@ export class RespawnScreen extends UIScreen implements IRespawnScreen {
     }
 
     async show() {
-        super.show()
-        
+        this._isShown = true
+
         return this.animator.show()
     }
     
     async hide() {
-        super.hide()
+        this._isShown = false
         
         return this.animator.hide()
     }

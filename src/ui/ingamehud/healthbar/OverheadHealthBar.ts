@@ -90,6 +90,8 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
                 }).play()
             }
         }).play()
+
+        this.hide({ delay: 1000 })
     }
 
     update() {
@@ -114,6 +116,8 @@ export class OverheadHealthBar extends UIComponent implements IOverheadHealthBar
     }
 
     private triggerHealthDrop() {
+        this.showFor(500)
+
         this.targetFillPercentage = this.player.healthPercentage
 
         this.triggerShineAnimation()

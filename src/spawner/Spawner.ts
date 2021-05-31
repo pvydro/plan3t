@@ -1,6 +1,5 @@
 import { ClientEntity } from '../cliententity/ClientEntity'
 import { IVector2 } from '../engine/math/Vector2'
-import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { Events } from '../model/events/Events'
 import { log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'

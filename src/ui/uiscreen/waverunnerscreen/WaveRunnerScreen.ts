@@ -32,16 +32,4 @@ export class WaveRunnerScreen extends UIScreen implements IWaveRunnerScreen {
 
         this.header.pos = { x: headerX, y: headerY }
     }
-
-    async show() {
-        super.show()
-
-        this.alpha = 1
-    }
-
-    async hide() {
-        super.hide()
-        
-        this.alpha = 0
-    }
 }

@@ -89,7 +89,7 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     }
 
     async show() {
-        super.show()
+        this._isShown = true
         
         if (this.showAnimation) {
             this.animator.currentAnimation = this.showAnimation
@@ -100,7 +100,7 @@ export class UIButtonTooltipPlugin extends UIComponent implements IUIButtonToolt
     }
 
     async hide() {
-        super.hide()
+        this._isShown = false
 
         if (this.showAnimation) {
             this.animator.currentAnimation = this.showAnimation
