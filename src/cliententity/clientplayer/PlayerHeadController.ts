@@ -1,9 +1,10 @@
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
-import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState } from './ClientPlayer'
+import { ClientPlayer } from './ClientPlayer'
 import { PlayerHead } from './PlayerHead'
 import { Vector2 } from '../../engine/math/Vector2'
+import { PlayerBodyState, PlayerConsciousnessState } from './ClientPlayerState'
 
 export interface IPlayerHeadController extends IUpdatable {
 

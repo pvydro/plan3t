@@ -5,8 +5,9 @@ import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { InGameScreenID } from '../../ui/ingamemenu/InGameMenu'
-import { HealthController, HealthControllerOptions, IHealthController } from '../gravityorganism/HealthController'
-import { IClientPlayer, PlayerConsciousnessState } from './ClientPlayer'
+import { HealthController, IHealthController } from '../gravityorganism/HealthController'
+import { IClientPlayer } from './ClientPlayer'
+import { PlayerConsciousnessState } from './ClientPlayerState'
 
 export interface IPlayerHealthController extends IHealthController {
 

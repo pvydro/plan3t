@@ -18,40 +18,15 @@ import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { PlayerHealthController } from './PlayerHealthController'
-import { point } from '../../engine/math/Vector2'
-import { GravityOrganism, IGravityOrganism } from '../gravityorganism/GravityOrganism'
+import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState, PlayerBodyState, PlayerLegsState } from './ClientPlayerState'
 
-export interface IClientPlayer extends IGravityOrganism {
+export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
-    bodyState: PlayerBodyState
-    legsState: PlayerLegsState
-    consciousnessState: PlayerConsciousnessState
-    messenger: IPlayerMessenger
     controller: IPlayerController
     hand: IPlayerHand
     emitter: Emitter
-    isClientPlayer: boolean
-    isOfflinePlayer: boolean
     holster: IPlayerWeaponHolster
     equipWeapon(weapon: Weapon): void
-}
-
-export enum PlayerConsciousnessState {
-    Alive = 0,
-    Dead = 1,
-    Controlled = 2
-}
-
-export enum PlayerBodyState {
-    Idle = 0,
-    Walking = 1,
-    Sprinting = 2
-}
-
-export enum PlayerLegsState {
-    Standing = 0,
-    Crouched = 1,
-    Jumping = 2
 }
 
 export interface ClientPlayerOptions {
@@ -62,19 +37,11 @@ export interface ClientPlayerOptions {
     sessionId?: string
 }
 
-export class ClientPlayer extends GravityOrganism {
+export class ClientPlayer extends ClientPlayerState {
     private static Instance: ClientPlayer
     
     _entityManager?: IEntityManager
-    _clientControl: boolean = false
-    _offlineControl: boolean = false
-    _direction: Direction = Direction.Right
-    _walkingDirection: Direction = Direction.Right
-    _bodyState: PlayerBodyState = PlayerBodyState.Idle
-    _legsState: PlayerLegsState = PlayerLegsState.Standing
-    _consciousnessState: PlayerConsciousnessState = PlayerConsciousnessState.Alive
     sessionId: string = ''
-    messenger: IPlayerMessenger
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
@@ -98,26 +65,19 @@ export class ClientPlayer extends GravityOrganism {
     }
 
     constructor(options: ClientPlayerOptions) {
-        super({
-            horizontalFriction: 5,
-            weight: 0.5,
-            gravityAnchor: point(0, 0.5),
-            jumpHeight: 5
-        })
+        super(options)
         const player = this
 
         if (options.entityManager) this._entityManager = options.entityManager
         if (exists(options.sessionId)) this.sessionId = options.sessionId
-        if (options.clientControl) this._clientControl = true
-        if (options.offlineControl) this._offlineControl = true
-
+        
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
         this.healthController = new PlayerHealthController({ player })
         this.overheadHealthBar = new OverheadHealthBar({ player })
-        this.messenger = new PlayerMessenger({ player })
+        // this.messenger = new PlayerMessenger({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
         if (this.isClientPlayer) {
@@ -183,7 +143,7 @@ export class ClientPlayer extends GravityOrganism {
         this.healthController.resetHealth()
     }
 
-    set direction(value: Direction) {
+    set direction(value: Direction) {        
         const shouldSendMessage = (this._direction !== value)
 
         this._direction = value
@@ -191,7 +151,7 @@ export class ClientPlayer extends GravityOrganism {
         this.head.direction = value
         this.hand.direction = value
 
-        // if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
     }
 
     set walkingDirection(value: Direction) {
@@ -202,62 +162,12 @@ export class ClientPlayer extends GravityOrganism {
         if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
     }
 
-    set onGround(value: boolean) {
-        const shouldSendMessage = (this._onGround !== value)
-
-        this._onGround = value
-
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerLandedOnGround, {
-            includePosition: true
-        })
-    }
-
-    set consciousnessState(value: PlayerConsciousnessState) {
-        const shouldSendMessage = (this._consciousnessState !== value)
-
-        this._consciousnessState = value
-        
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerConciousnessStateChanged)
-    }
-
-    set bodyState(value: PlayerBodyState) {
-        const shouldSendMessage = (this._bodyState !== value)
-
-        this._bodyState = value
-
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
-    }
-
-    set legsState(value: PlayerLegsState) {
-        this._legsState = value
-    }
-
-    get bodyState() {
-        return this._bodyState
-    }
-
-    get legsState() {
-        return this._legsState
-    }
-
-    get consciousnessState() {
-        return this._consciousnessState
-    }
-
     get direction() {
         return this._direction
     }
 
     get walkingDirection() {
         return this._walkingDirection
-    }
-
-    get isClientPlayer() {
-        return this._clientControl
-    }
-
-    get isOfflinePlayer() {
-        return this._offlineControl
     }
 
     get entityManager() {

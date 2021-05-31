@@ -1,4 +1,5 @@
 import { ClientPlayer } from '../ClientPlayer'
+import { ClientPlayerState } from '../ClientPlayerState'
 import { PlayerStatePack } from './PlayerStatePack'
 
 export interface PlayerPackRules {
@@ -9,7 +10,7 @@ export interface PlayerPackRules {
 export class PlayerStateFormatter {
     private constructor() {}
 
-    static convertPlayerToPack(player: ClientPlayer, rules?: PlayerPackRules): PlayerStatePack {
+    static convertPlayerToPack(player: ClientPlayerState, rules?: PlayerPackRules): PlayerStatePack {
         const payload: PlayerStatePack | any = {}
 
         payload.direction = player.direction as number

@@ -1,11 +1,11 @@
 import { Flogger } from '../../service/Flogger'
-import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
+import { ClientPlayer } from './ClientPlayer'
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { DebugConstants, GameWindow } from '../../utils/Constants'
-import { Camera } from '../../camera/Camera'
+import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayerState'
 
 export interface IPlayerController {
     update(): void

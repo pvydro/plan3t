@@ -4,12 +4,11 @@ import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
-import { Flogger, loudLog } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { Weapon } from '../../weapon/Weapon'
 import { WeaponHelper } from '../../weapon/WeaponHelper'
 import { ClientPlayer } from './ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
-import { InputProcessor } from '../../input/InputProcessor'
 
 export interface IPlayerHand extends IUpdatable {
     setWeapon(weapon: Weapon): void
@@ -110,7 +109,8 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
 
     showSecondHand(shouldShow: boolean, handX?: number, handY?: number) {
-        Flogger.log('PlayerHand', 'showSecondHand', 'shouldShow', shouldShow, 'handX', handX, 'handY', handY)
+        log('PlayerHand', 'showSecondHand', 'shouldShow', shouldShow, 'handX', handX, 'handY', handY)
+
         if (shouldShow) {
             this.secondHandSprite.alpha = 1
         } else {

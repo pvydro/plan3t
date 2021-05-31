@@ -20,7 +20,7 @@ export interface TextSpriteOptions {
     style?: TextSpriteStyle
     anchor?: IVector2 | number
     text: string
-    align?: TextSpriteAlign
+    align?: TextSpriteAlign | string
 }
 
 export interface TextSpriteStyle {
@@ -28,7 +28,7 @@ export interface TextSpriteStyle {
     fontSize?: number
     color?: number
     rescale?: number
-    align?: TextSpriteAlign
+    align?: TextSpriteAlign | string
     uppercase?: boolean
 }
 

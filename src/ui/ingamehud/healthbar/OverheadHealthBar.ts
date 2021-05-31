@@ -1,5 +1,5 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
-import { IClientPlayer, PlayerConsciousnessState } from '../../../cliententity/clientplayer/ClientPlayer'
+import { IClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { Sprite } from '../../../engine/display/Sprite'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
@@ -7,6 +7,7 @@ import { IUpdatable } from '../../../interface/IUpdatable'
 import { UIComponent } from '../../UIComponent'
 import { ICanDie } from '../../../interface/ICanDie'
 import { PredefinedTweens } from '../../../engine/display/tween/PredefinedTweens'
+import { PlayerConsciousnessState } from '../../../cliententity/clientplayer/ClientPlayerState'
 
 export interface IOverheadHealthBar extends IUpdatable, ICanDie {
 

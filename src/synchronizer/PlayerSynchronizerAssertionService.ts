@@ -36,7 +36,7 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
     }
 
     applyChangesToSynchronizablePlayer(sessionId: string, player: Player) {
-        Flogger.log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'changes: ' + JSON.stringify(player) : null))
+        Flogger.log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'player: ' + JSON.stringify(player) : null))
         
         if (player.weaponStatus !== undefined) {
             const rotation = player.weaponStatus.rotation

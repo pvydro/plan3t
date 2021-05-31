@@ -1,5 +1,5 @@
 import { Fonts } from '../../asset/Fonts'
-import { TextSpriteAlign, TextSpriteStyle } from './TextSprite'
+import { TextSpriteStyle } from './TextSprite'
 
 export interface ITextStyles {
     [ key: string ]: TextSpriteStyle
@@ -42,7 +42,7 @@ export class TextStyles {
         TooltipMedium: {
             fontSize: scaleFontSize(10),
             fontFamily: Fonts.FontDefault.family,
-            align: TextSpriteAlign.Center
+            align: 'Center'
         }
     }
 

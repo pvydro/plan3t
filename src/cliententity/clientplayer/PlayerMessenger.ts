@@ -5,6 +5,7 @@ import { Flogger } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
 import { Weapon } from '../../weapon/Weapon'
 import { ClientPlayer } from './ClientPlayer'
+import { ClientPlayerState } from './ClientPlayerState'
 import { PlayerPackRules, PlayerStateFormatter } from './state/PlayerStateFormatter'
 import { WeaponStateFormatter } from './state/WeaponStateFormatter'
 import { WeaponStatePack } from './state/WeaponStatePack'
@@ -16,7 +17,7 @@ export interface IPlayerMessenger extends IUpdatable {
 }
 
 export interface PlayerMessengerOptions {
-    player: ClientPlayer
+    player: ClientPlayerState
 }
 
 export class PlayerMessenger implements IPlayerMessenger {
@@ -24,7 +25,7 @@ export class PlayerMessenger implements IPlayerMessenger {
     _isRefreshingWeapon: boolean = false
     weaponRefreshRate: number = 25
     weaponRefreshInterval: number = this.weaponRefreshRate
-    player: ClientPlayer
+    player: ClientPlayerState
 
     constructor(options: PlayerMessengerOptions) {
         this.player = options.player
@@ -71,18 +72,16 @@ export class PlayerMessenger implements IPlayerMessenger {
         if (!this.player.isClientPlayer || this.player.isOfflinePlayer) return
         if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendWeaponStatus')
 
-        const name = this.player.holster.currentWeapon.name
-        const rotation = this.player.hand.rotation
-        const direction = this.player.direction
-        const pack: WeaponStatePack = { name, rotation, direction }
+        // const name = this.player.holster.currentWeapon.name
+        // const rotation = this.player.hand.rotation
+        // const direction = this.player.direction
+        // const pack: WeaponStatePack = { name, rotation, direction }
 
-        if (rotation !== this._lastSentWeaponRotation) {
-            RoomMessenger.send(RoomMessage.PlayerLookAngleChanged, pack)
+        // if (rotation !== this._lastSentWeaponRotation) {
+        //     RoomMessenger.send(RoomMessage.PlayerLookAngleChanged, pack)
 
-            this._lastSentWeaponRotation = rotation
-        }
+        //     this._lastSentWeaponRotation = rotation
+        // }
 
-        // TODO onSpawn sendWeaponLoadout WeaponHolster .toPayloadFormat(),
-        // TODO Send player hand payload
     }
 }

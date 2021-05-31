@@ -6,7 +6,7 @@ import { CameraDebuggerPlugin } from './plugin/CameraDebuggerPlugin'
 import { CameraStage } from './CameraStage'
 import { Viewport } from './Viewport'
 import { CameraFlashOptions, CameraFlashPlugin } from './plugin/CameraFlashPlugin'
-import { ClientPlayer, PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayer'
+import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { CameraOverlayEffectsPlugin, ICameraOverlayEffectsPlugin } from './plugin/CameraOverlayEffectsPlugin'
 import { CameraSwayPlugin, ICameraSwayPlugin } from './plugin/CameraSwayPlugin'
 import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugin'
@@ -18,6 +18,7 @@ import { GameWindow } from '../utils/Constants'
 import { CameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
 import { IReposition } from '../interface/IReposition'
 import { PositionAnimateable } from '../engine/display/Animator'
+import { PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayerState'
 
 export interface ICameraTarget {
     x: number

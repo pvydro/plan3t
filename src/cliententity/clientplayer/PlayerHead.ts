@@ -1,15 +1,14 @@
 import * as PIXI from 'pixi.js'
 import { Power4 } from 'gsap'
-import { RoughEase } from 'gsap/EasePack'
 import { Container } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../asset/Assets'
-import { ClientPlayer, PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayer'
+import { ClientPlayer } from './ClientPlayer'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Direction } from '../../engine/math/Direction'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
 import { Tween } from '../../engine/display/tween/Tween'
-import { Flogger, log } from '../../service/Flogger'
+import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState  } from './ClientPlayerState'
 
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number

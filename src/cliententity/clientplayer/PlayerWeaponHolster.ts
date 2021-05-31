@@ -7,7 +7,8 @@ import { UIComponentType } from '../../ui/UIComponentFactory'
 import { asyncTimeout } from '../../utils/Utils'
 import { IWeapon, Weapon } from '../../weapon/Weapon'
 import { WeaponName } from '../../weapon/WeaponName'
-import { ClientPlayer, PlayerConsciousnessState } from './ClientPlayer'
+import { ClientPlayer } from './ClientPlayer'
+import { PlayerConsciousnessState } from './ClientPlayerState'
 import { IPlayerMessenger } from './PlayerMessenger'
 
 export enum CurrentWeaponStatus {
