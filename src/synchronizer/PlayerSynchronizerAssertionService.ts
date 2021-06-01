@@ -2,7 +2,7 @@ import { ClientPlayer, IClientPlayer } from '../cliententity/clientplayer/Client
 import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
 import { Player } from '../network/rooms/Player'
-import { Flogger, VerboseLogging } from '../service/Flogger'
+import { importantLog, log, VerboseLogging } from '../service/Flogger'
 import { WeaponName } from '../weapon/WeaponName'
 import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
 import { PlayerSynchronizerAssertionServiceDebugger } from './PlayerSynchronizerDebugger'
@@ -35,11 +35,20 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
     }
 
     applyChangesToSynchronizablePlayer(sessionId: string, player: Player) {
-        Flogger.log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'player: ' + JSON.stringify(player) : null))
+        log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'player: ' + JSON.stringify(player) : null))
+
+        const clientEntity = this.entityAssertionService.entitySynchronizer.clientEntities.get(sessionId).clientEntity as ClientPlayer
+        const distanceFromServerX = Math.abs(clientEntity.x - player.x)
+        const distanceToResetBreakpoint = 10
+
+        if (distanceFromServerX > distanceToResetBreakpoint) {
+            importantLog('PlayerSynchronizerService', 'distance greater than breakpoint, force setting')
+
+            clientEntity.x = player.x
+        }
         
         if (player.weaponStatus !== undefined) {
             const rotation = player.weaponStatus.rotation
-            const clientEntity = this.entityAssertionService.entitySynchronizer.clientEntities.get(sessionId).clientEntity as ClientPlayer
 
             if (player.weaponStatus.name && clientEntity.holster.currentWeapon.name !== player.weaponStatus.name) {
                 clientEntity.holster.setCurrentWeapon(player.weaponStatus.name as WeaponName)
