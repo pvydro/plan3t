@@ -1,5 +1,7 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { TextStyles } from '../../../engine/display/TextStyles'
+import { GameWindow } from '../../../utils/Constants'
+import { UIDefaults } from '../../../utils/Defaults'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
 export interface IPlayButton extends IUIButton {
@@ -21,15 +23,20 @@ export class PlayButton extends UIButton implements IPlayButton {
             darkenerOptions: {
                 hoverTint: 0xdbdbdb,
                 clickTint: 0x969696
-            },
-            tooltipOptions: {
-                text: 'PLAY',
             }
-
         })
     }
 
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
+    reposition(addListener?: boolean) {
+        super.reposition(addListener)
+
+        const scaledWidth = this.backgroundWidth * UIDefaults.UIScale
+
+        this.pos = {
+            x: UIDefaults.UIEdgePadding,//GameWindow.width - UIDefaults.UIEdgePadding - scaledWidth ,
+            y: GameWindow.fullWindowHeight
+                - UIDefaults.UIEdgePadding
+                - (this.backgroundHeight * UIDefaults.UIScale)
+        }
     }
 }

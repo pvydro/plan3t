@@ -14,5 +14,21 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.playButton = new PlayButton()
 
         this.addChild(this.playButton)
+        this.applyScale()
+        this.reposition(true)
+    }
+
+    applyScale() {
+        const toScale = [
+            this.playButton
+        ]
+        
+        super.applyScale(toScale)
+    }
+    
+    reposition(addListeners?: boolean) {
+        super.reposition(addListeners)
+
+        this.playButton.reposition(false)
     }
 }

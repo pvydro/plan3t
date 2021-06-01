@@ -23,6 +23,6 @@ export class StartMenuState extends GameState {
         this.camera.cameraLetterboxPlugin.hide()
         this.camera.viewport.addChild(this.startScreen)
 
-        await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)        
+        await Game.showLoadingScreen(false)
     }
 }

@@ -56,7 +56,6 @@ export class RespawnButton extends UIButton implements IRespawnButton {
         this.pos = {
             x: GameWindow.width - UIDefaults.UIEdgePadding - scaledWidth ,
             y: GameWindow.height - UIDefaults.UIEdgePadding
-
         }
     }
 }
