@@ -13,12 +13,11 @@ import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { IPlayerWeaponHolster, PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
-import { IPlayerMessenger, PlayerMessenger } from './PlayerMessenger'
 import { exists } from '../../utils/Utils'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { PlayerHealthController } from './PlayerHealthController'
-import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState, PlayerBodyState, PlayerLegsState } from './ClientPlayerState'
+import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState } from './ClientPlayerState'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
@@ -70,14 +69,13 @@ export class ClientPlayer extends ClientPlayerState {
 
         if (options.entityManager) this._entityManager = options.entityManager
         if (exists(options.sessionId)) this.sessionId = options.sessionId
-        
+
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
         this.holster = new PlayerWeaponHolster({ player })
         this.healthController = new PlayerHealthController({ player })
         this.overheadHealthBar = new OverheadHealthBar({ player })
-        // this.messenger = new PlayerMessenger({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
         if (this.isClientPlayer) {

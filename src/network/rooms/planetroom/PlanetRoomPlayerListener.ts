@@ -27,6 +27,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         this.listenForLegsStateChange()
         this.listenForDirectionChange()
         this.listenForOnGroundChange()
+        this.listenForForceSetPosition()
     }
 
     private listenForWeaponStatusChanges() {
@@ -101,6 +102,19 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
             }
             
             this.applyPlayerPayloadToPlayer(client.sessionId, message)
+        })
+    }
+
+    private listenForForceSetPosition() {
+        Flogger.log('PlanetRoomPlayerListener', 'listenForForceSetPosition')
+
+        this.room.onMessage(RoomMessage.PlayerForceSetPosition, (client: Client, message: PlayerPayload) => {
+            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerForceSetPosition, 'sessionId', client.sessionId, 'message', message)
+
+            const player = this.getPlayer(client.sessionId)
+
+            player.x = message.x
+            player.y = message.y
         })
     }
 

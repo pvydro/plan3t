@@ -1,5 +1,5 @@
 import { Direction } from '../../engine/math/Direction'
-import { point } from '../../engine/math/Vector2'
+import { IVector2, point } from '../../engine/math/Vector2'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { GravityOrganism, IGravityOrganism } from '../gravityorganism/GravityOrganism'
 import { ClientPlayerOptions } from './ClientPlayer'
@@ -57,6 +57,13 @@ export class ClientPlayerState extends GravityOrganism {
         const player = this
 
         this.messenger = new PlayerMessenger({ player })
+    }
+
+    set pos(value: IVector2) {
+        this.position.x = value.x
+        this.position.y = value.y
+
+        this.messenger.send(RoomMessage.PlayerForceSetPosition, { includePosition: true })
     }
 
     set onGround(value: boolean) {

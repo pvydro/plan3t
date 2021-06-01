@@ -9,7 +9,8 @@ export enum RoomMessage {
     PlayerDirectionChanged = 'ePlayerDirectionChanged',
     PlayerLandedOnGround = 'ePlayerLandedOnGround',
     PlayerLookAngleChanged = 'ePlayerLookAngleChanged',
-    PlayerShoot = 'ePlayerShoot'
+    PlayerShoot = 'ePlayerShoot',
+    PlayerForceSetPosition = 'ePlayerForceSetPosition'
 }
 
 export enum ClientMessage {

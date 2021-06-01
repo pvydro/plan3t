@@ -1,5 +1,4 @@
 import { ClientPlayer, IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
-import { PlayerMessenger } from '../cliententity/clientplayer/PlayerMessenger'
 import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
 import { Player } from '../network/rooms/Player'
