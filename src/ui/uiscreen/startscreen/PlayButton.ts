@@ -1,5 +1,6 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { TextStyles } from '../../../engine/display/TextStyles'
+import { GameStateID, GameStateManager } from '../../../manager/GameStateManager'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
@@ -23,6 +24,9 @@ export class PlayButton extends UIButton implements IPlayButton {
             darkenerOptions: {
                 hoverTint: 0xdbdbdb,
                 clickTint: 0x969696
+            },
+            onTrigger: () => {
+                GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
             }
         })
     }
@@ -39,4 +43,6 @@ export class PlayButton extends UIButton implements IPlayButton {
                 - (this.backgroundHeight * UIDefaults.UIScale)
         }
     }
+
+    
 }

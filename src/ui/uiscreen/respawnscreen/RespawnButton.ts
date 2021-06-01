@@ -1,6 +1,5 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { TextStyles } from '../../../engine/display/TextStyles'
-import { IReposition } from '../../../interface/IReposition'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { log } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
