@@ -22,7 +22,6 @@ export class GameplayState extends GameState implements IGameplayState {
     hornet: PassiveHornet
     player: ClientPlayer
 
-
     constructor(options: GameStateOptions) {
         super({
             game: options.game,

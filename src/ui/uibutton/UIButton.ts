@@ -163,23 +163,26 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     applyMouseListeners(addClickListeners?: boolean) {
-        this.interactiveSprite.interactive = true
-
-        this.interactiveSprite.on('pointerover', () => {
-            this.hover()
-        })
-        this.interactiveSprite.on('pointerout', () => {
-            this.unhover()
-        })
-
-        if (addClickListeners) {
-            this.interactiveSprite.on('pointerdown', () => {
-                this.pressDown()
+        if (this.interactiveSprite) {
+            this.interactiveSprite.interactive = true
+    
+            this.interactiveSprite.on('pointerover', () => {
+                this.hover()
             })
-            this.interactiveSprite.on('pointerup', () => {
-                this.release()
+            this.interactiveSprite.on('pointerout', () => {
+                this.unhover()
             })
+    
+            if (addClickListeners) {
+                this.interactiveSprite.on('pointerdown', () => {
+                    this.pressDown()
+                })
+                this.interactiveSprite.on('pointerup', () => {
+                    this.release()
+                })
+            }
         }
+
     }
     
     applyText(options: UIButtonOptions) {

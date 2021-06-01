@@ -1,6 +1,7 @@
 import { GameplayState } from '../gamestate/GameplayState'
 import { GameState, GameStateOptions, IGameState } from '../gamestate/GameState'
 import { HomeshipState } from '../gamestate/HomeshipState'
+import { StartMenuState } from '../gamestate/StartMenuState'
 import { WaveGameState } from '../gamestate/WaveGameState'
 import { IDemolishable } from '../interface/IDemolishable'
 import { Game } from '../main/Game'
@@ -30,7 +31,7 @@ export class GameStateManager implements IGameStateManager {
     private static Instance: IGameStateManager
     _currentState?: IGameState
     _currentStateID: GameStateID
-    _defaultState: GameStateID = GameStateID.WaveRunnerGame // GameStateID.Homeship
+    _defaultState: GameStateID = GameStateID.StartMenu // GameStateID.WaveRunnerGame // GameStateID.Homeship
     game?: Game
 
     static getInstance() {
@@ -101,6 +102,9 @@ export class GameStateManager implements IGameStateManager {
                 break
             case GameStateID.WaveRunnerGame:
                 state = new WaveGameState(options)
+                break
+            case GameStateID.StartMenu:
+                state = new StartMenuState(options)
                 break
                 
         }

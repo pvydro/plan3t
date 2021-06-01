@@ -1,5 +1,4 @@
 import { AssetUrls } from '../../../asset/Assets'
-import { Fonts } from '../../../asset/Fonts'
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { IReposition } from '../../../interface/IReposition'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
@@ -10,7 +9,7 @@ import { InGameHUD } from '../../ingamehud/InGameHUD'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
-export interface IRespawnButton extends IUIButton, IReposition {
+export interface IRespawnButton extends IUIButton {
 
 }
 
