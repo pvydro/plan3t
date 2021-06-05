@@ -193,10 +193,12 @@ export class AssetUrls {
     static PauseButton = 'assets/image/ui/ingamehud/pausebutton'
 
     // UI
+    static ButtonRectDefault = 'assets/image/ui/generic/midbutton'
     static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
     static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
     static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'
     static TooltipKey = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
+    static SharedBackground1 = 'assets/image/ui/misc/sharedbackground/1' 
 
     // Homeship
     static Homeship = 'assets/image/gamemap/homeship/homeship_bg'

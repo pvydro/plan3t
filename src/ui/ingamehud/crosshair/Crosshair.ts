@@ -5,6 +5,7 @@ import { Graphix } from '../../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { IUpdatable } from '../../../interface/IUpdatable'
+import { GameStateID, GameStateManager } from '../../../manager/GameStateManager'
 import { GameWindow } from '../../../utils/Constants'
 import { UIComponent } from '../../UIComponent'
 import { CrosshairAnimator, ICrosshairAnimator } from './CrosshairAnimator'
@@ -99,7 +100,11 @@ export class Crosshair extends UIComponent implements ICrosshair {
             x: this.state === CrosshairState.Cursor ? -3 : 0,
             y: this.state === CrosshairState.Cursor ? 12 : 0
         }
-
+        
+        if (GameStateManager.getCurrentStateID() === GameStateID.StartMenu) {
+            posOffset.y += 152
+        }
+    
         this.positionOffset.x += (posOffset.x - this.positionOffset.x) / positionOffsetDivisor
         this.positionOffset.y += (posOffset.y - this.positionOffset.y) / positionOffsetDivisor
     }

@@ -16,10 +16,10 @@ export class PlayButton extends UIButton implements IPlayButton {
             text: {
                 text: 'Play',
                 uppercase: true,
-                style: TextStyles.MetalButton.Medium,
+                style: TextStyles.DefaultButton.Medium,
             },
             background: {
-                idle: AssetUrls.ButtonMetalMd
+                idle: AssetUrls.ButtonRectDefault
             },
             darkenerOptions: {
                 hoverTint: 0xdbdbdb,

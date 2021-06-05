@@ -22,12 +22,12 @@ export class StartMenuState extends GameState {
     async initialize() {
         this.startScreen = new StartScreen()
         this.camera.cameraLetterboxPlugin.hide()
+        // this.inGameHUD.show()
         this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
-        this.inGameHUD.show()
         this.inGameHUD.crosshair.show()
 
         this.camera.viewport.addChild(this.startScreen)
-        this.camera.viewport.addChild(this.inGameHUD)
+        this.camera.viewport.addChild(this.inGameHUD.crosshair)
 
         await Game.showLoadingScreen(false)
     }
@@ -36,5 +36,9 @@ export class StartMenuState extends GameState {
         await this.startScreen.hide()
         this.camera.viewport.removeChild(this.startScreen)
         this.camera.viewport.removeChild(this.inGameHUD)
+    }
+
+    update() {
+        this.inGameHUD.update()
     }
 }

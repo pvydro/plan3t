@@ -3,6 +3,7 @@ import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
+import { SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { IUIComponentCreator, UIComponentCreator } from '../UIComponentCreator'
 
@@ -13,6 +14,7 @@ export interface IUIScreen extends IUIComponent {
 
 export interface UIScreenBackgroundOptions {
     backgroundColor?: number
+    useSharedBackground?: boolean
 }
 export interface UIScreenOptions extends UIComponentOptions {
     background?: UIScreenBackgroundOptions
@@ -48,20 +50,26 @@ export class UIScreen extends UIComponent implements IUIScreen {
     protected createBackgroundGraphics(options: UIScreenBackgroundOptions) {
         log('UIScreen', 'createBackgroundGraphics')
 
-        const backgroundColor = options.backgroundColor ?? 0x000000
-        const width = GameWindow.width
-        const height = GameWindow.height
+        if (options.useSharedBackground) {
+            const sharedBackground = SharedScreenBackground.getInstance()
 
-        if (this.backgroundGraphic !== undefined) {
-            this.backgroundGraphic.demolish()
+            this.addChild(sharedBackground)
+        } else {
+            const backgroundColor = options.backgroundColor ?? 0x000000
+            const width = GameWindow.width
+            const height = GameWindow.height
+    
+            if (this.backgroundGraphic !== undefined) {
+                this.backgroundGraphic.demolish()
+            }
+    
+            this.backgroundGraphic = new Graphix()
+            this.backgroundGraphic.beginFill(backgroundColor)
+            this.backgroundGraphic.drawRect(0, 0, width, height)
+            this.backgroundGraphic.y = GameWindow.y
+    
+            this.addChild(this.backgroundGraphic)
         }
-
-        this.backgroundGraphic = new Graphix()
-        this.backgroundGraphic.beginFill(backgroundColor)
-        this.backgroundGraphic.drawRect(0, 0, width, height)
-        this.backgroundGraphic.y = GameWindow.y
-
-        this.addChild(this.backgroundGraphic)
     }
 
     reposition(addListener?: boolean) {

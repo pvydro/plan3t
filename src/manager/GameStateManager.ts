@@ -6,8 +6,11 @@ import { WaveGameState } from '../gamestate/WaveGameState'
 import { IDemolishable } from '../interface/IDemolishable'
 import { Game } from '../main/Game'
 import { log } from '../service/Flogger'
+import { GameMapManager } from './GameMapManager'
 
 export interface IGameStateManager extends IDemolishable {
+    currentState: IGameState
+    currentStateID: GameStateID
     enterState(id: GameStateID): Promise<void>
     initialize(): void
     update(): void
@@ -122,6 +125,10 @@ export class GameStateManager implements IGameStateManager {
 
     get currentStateID() {
         return this._currentStateID
+    }
+
+    static getCurrentStateID() {
+        return GameStateManager.getInstance().currentStateID
     }
 
     setGame(game: Game) {

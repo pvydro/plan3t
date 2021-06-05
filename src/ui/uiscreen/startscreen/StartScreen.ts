@@ -9,7 +9,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
     playButton: PlayButton
 
     constructor() {
-        super()
+        super({ filters: [] })
 
         this.playButton = new PlayButton()
 

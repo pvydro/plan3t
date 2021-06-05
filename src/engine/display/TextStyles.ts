@@ -58,6 +58,14 @@ export class TextStyles {
         color: 0xFFFFFF
     }
 
+    static DefaultButton: ITextStyles = {
+        Medium: {
+            fontFamily: Fonts.FontDefault.family,
+            fontSize: scaleFontSize(18),
+            color: 0xFFFFFF
+        }
+    }
+
     static MetalButton: ITextStyles = {
         Medium: {
             fontFamily: Fonts.FontDefault.family,

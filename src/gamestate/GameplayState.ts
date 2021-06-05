@@ -46,7 +46,6 @@ export class GameplayState extends GameState implements IGameplayState {
 
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
-
         
         this.roomManager.initializeRoom().then(async (room: Room) => {
             log('GameplayState', 'Room initialized')
