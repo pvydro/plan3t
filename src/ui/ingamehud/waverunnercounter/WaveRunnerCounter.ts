@@ -43,8 +43,13 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
         this.forceHide()
     }
 
+    update() {
+        this.timerCounter.update()
+    }
+
     setWaveValue(wave: IWave) {
         asyncTimeout(500).then(() => {
+            this.timerCounter.setWave(wave)
             this.waveNumberLabel.setText(wave.waveIndex.toString())
             this.enemyCounter.setTotalEnemies(wave.totalEnemies)
             this._shouldShowEnemyCounter = true

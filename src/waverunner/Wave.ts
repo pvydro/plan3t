@@ -7,6 +7,8 @@ import { asyncTimeout } from '../utils/Utils'
 
 export interface IWave extends IUpdatable {
     totalEnemies: number
+    currentTime: number
+    currentTimePercentage: number
     waveIndex: number
     startSpawnIntervals(): void
 }
@@ -24,7 +26,7 @@ export class Wave extends Emitter implements IWave {
     shouldTimeout: boolean = false
     totalEnemies: number = 5
     totalTime: number = 1000 // 3000
-    currentTime: number = this.totalTime
+    elapsedTime: number = 0
     spawnIntervalTime: number = 500
     startDelayTime: number = 3000
     totalSpawns: number = 0
@@ -40,9 +42,9 @@ export class Wave extends Emitter implements IWave {
 
     update() {
         if (this.shouldTimeout) {
-            this.currentTime -= GameLoop.CustomDelta
+            this.elapsedTime += GameLoop.CustomDelta
 
-            if (this.currentTime <= 0) {
+            if (this.elapsedTime >= this.totalTime) {
                 this.complete()
             }
         }
@@ -99,5 +101,13 @@ export class Wave extends Emitter implements IWave {
 
     get isCompleted() {
         return this._isCompleted
+    }
+
+    get currentTime() {
+        return this.totalTime - this.elapsedTime
+    }
+
+    get currentTimePercentage() {
+        return this.currentTime / this.totalTime
     }
 }

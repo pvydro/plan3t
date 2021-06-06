@@ -21,7 +21,7 @@ export interface IInGameHUD extends IUpdatable, IReposition {
     waveRunnerCounter?: WaveRunnerCounter
     initializeHUD(): Promise<void>
     showHUDComponents(shouldShow?: boolean): Promise<void>
-    addComponent(type: UIComponentType): Promise<IUIComponent>
+    addComponent(type: UIComponentType): UIComponent
     addComponentTemporarily(type: UIComponentType, hideHUD?: boolean, lifetime?: number): Promise<void>
     getComponent(type: UIComponentType): IUIComponent
     requestMenuScreen(id: InGameScreenID): Promise<void>
@@ -85,17 +85,18 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     loadWave(wave: IWave) {
         Flogger.log('InGameHUD', 'loadWave', wave)
 
-        const waveRunnerCounter = this.getComponent(UIComponentType.HUDWaveCounter)
+        let waveRunnerCounter = this.getComponent(UIComponentType.HUDWaveCounter)
 
         if (waveRunnerCounter) {
             waveRunnerCounter.show()
         } else {
-            this.addComponent(UIComponentType.HUDWaveCounter)
+            waveRunnerCounter = this.addComponent(UIComponentType.HUDWaveCounter)
         }
+
+        (waveRunnerCounter as WaveRunnerCounter).setWaveValue(wave)
 
         this.addComponentTemporarily(UIComponentType.NextWaveSplash, true)
     }
-
 
     update() {
         super.update()
@@ -111,7 +112,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         }
     }
 
-    async addComponent(type: UIComponentType) {
+    addComponent(type: UIComponentType) {
         const component = this.creator.getComponentForType(type)
 
         
@@ -124,7 +125,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this.applyScale([ component ])
     
             if (typeof component.show === 'function') {
-                await component.show()
+                component.show()
             }
         }
 
