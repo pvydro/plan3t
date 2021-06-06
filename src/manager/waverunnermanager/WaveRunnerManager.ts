@@ -1,5 +1,6 @@
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
+import { IUpdatable } from '../../interface/IUpdatable'
 import { importantLog, log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { WaveRunnerCounter } from '../../ui/ingamehud/waverunnercounter/WaveRunnerCounter'
@@ -9,7 +10,7 @@ import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame
 import { SpawnPointManager } from '../spawnpointmanager/SpawnPointManager'
 import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
 
-export interface IWaveRunnerManager {
+export interface IWaveRunnerManager extends IUpdatable {
     initialize(): Promise<void>
     registerNextWave(): Promise<IWave>
 }
@@ -46,6 +47,12 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.currentWaveRunnerGame = new WaveRunnerGame()
         this.currentWaveRunnerGame.beginWaveRunner()
         this.registerNextWave()
+    }
+
+    update() {
+        if (this.currentWaveRunnerGame) {
+            this.currentWaveRunnerGame.update()
+        }
     }
 
     async registerNextWave() {

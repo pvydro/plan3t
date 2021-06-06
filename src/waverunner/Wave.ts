@@ -1,9 +1,11 @@
+import { GameLoop } from '../gameloop/GameLoop'
+import { IUpdatable } from '../interface/IUpdatable'
 import { Events } from '../model/events/Events'
 import { importantLog, log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
-import { asyncTimeout, exists, functionExists } from '../utils/Utils'
+import { asyncTimeout } from '../utils/Utils'
 
-export interface IWave {
+export interface IWave extends IUpdatable {
     totalEnemies: number
     waveIndex: number
     startSpawnIntervals(): void
@@ -18,9 +20,11 @@ export interface WaveOptions {
 export class Wave extends Emitter implements IWave {
     _onSpawn: Function
     _onComplete: Function
-    completionTimeout?: number
+    _isCompleted: boolean = false
+    shouldTimeout: boolean = false
     totalEnemies: number = 5
-    totalTime: number = 30000
+    totalTime: number = 1000 // 3000
+    currentTime: number = this.totalTime
     spawnIntervalTime: number = 500
     startDelayTime: number = 3000
     totalSpawns: number = 0
@@ -32,6 +36,16 @@ export class Wave extends Emitter implements IWave {
         this.waveIndex = options.waveIndex
         this._onSpawn = options.onSpawn
         this._onComplete = options.onComplete
+    }
+
+    update() {
+        if (this.shouldTimeout) {
+            this.currentTime -= GameLoop.CustomDelta
+
+            if (this.currentTime <= 0) {
+                this.complete()
+            }
+        }
     }
 
     startSpawnIntervals() {
@@ -53,13 +67,7 @@ export class Wave extends Emitter implements IWave {
     startCompletionTimer() {
         log('Wave', 'startCompletionTimer')
 
-        if (this.completionTimeout !== undefined) {
-            window.clearTimeout(this.completionTimeout)
-        }
-
-        this.completionTimeout = window.setTimeout(() => {
-            this.complete()
-        }, this.totalTime)
+        this.shouldTimeout = true
     }
 
     spawnEnemy() {
@@ -76,6 +84,8 @@ export class Wave extends Emitter implements IWave {
     complete() {
         importantLog('Wave', 'complete')
 
+        this.shouldTimeout = false
+        this._isCompleted = true
         this._onComplete()
     }
 
@@ -85,5 +95,9 @@ export class Wave extends Emitter implements IWave {
 
     get onSpawn() {
         return this._onSpawn
+    }
+
+    get isCompleted() {
+        return this._isCompleted
     }
 }

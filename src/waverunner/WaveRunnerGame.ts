@@ -3,13 +3,14 @@ import { CameraLayer } from '../camera/CameraStage'
 import { Creature } from '../creature/Creature'
 import { CreatureType } from '../creature/CreatureType'
 import { Enemy } from '../enemy/Enemy'
+import { IUpdatable } from '../interface/IUpdatable'
 import { IEnemyManager } from '../manager/enemymanager/EnemyManager'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { importantLog, log } from '../service/Flogger'
 import { CreatureSpawner, ICreatureSpawner } from '../spawner/creaturespawner/CreatureSpawner'
 import { IWave } from './Wave'
 
-export interface IWaveRunnerGame {
+export interface IWaveRunnerGame extends IUpdatable {
     spawner: ICreatureSpawner
     currentWave: IWave
     beginWaveRunner(): void
@@ -23,6 +24,12 @@ export class WaveRunnerGame implements IWaveRunnerGame {
 
     constructor() {
         this.enemyManager = EntityManager.getInstance().enemyManager
+    }
+
+    update() {
+        if (this.currentWave) {
+            this.currentWave.update()
+        }
     }
 
     beginWaveRunner() {
