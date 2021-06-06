@@ -26,11 +26,17 @@ export class WaveTimerCounter extends UIComponent {
     }
 
     update() {
+        const widthSnapBreakpoint = 0.1
+
         if (this.currentWave !== undefined) {
             this.timerBar.width = (this.barWidth * this.currentWave.currentTimePercentage)
-        } else {
+        } else if (this.timerBar.width < this.barWidth - widthSnapBreakpoint) {
+            this.timerBar.width += (this.barWidth - this.timerBar.width) / 10
 
-        }        
+            if (this.timerBar.width > this.barWidth - widthSnapBreakpoint) {
+                this.timerBar.width = this.barWidth
+            }
+        }
     }
 
     setWave(wave: IWave) {
