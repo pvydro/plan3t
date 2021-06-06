@@ -1,6 +1,4 @@
 import * as PIXI from 'pixi.js'
-import { MapBuildingType } from '../gamemap/mapbuilding/MapBuilding'
-import { MapBuildingHelper } from '../gamemap/mapbuilding/MapBuildingHelper'
 import { SphericalBiome } from '../gamemap/spherical/SphericalData'
 import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/tile/SphericalTileHelper'
 import { Flogger, importantLog } from '../service/Flogger'
@@ -104,6 +102,7 @@ export class Assets {
 
             mapBuildingKeys.forEach((mapBuilding: string) => {
                 const buildingDir = Assets.MapBuildingDir + mapBuilding
+                const platformDir = `${buildingDir}/platform`
                 // const totalBackgroundSprites = MapBuildingHelper.getTotalBackgroundTilesForType(mapBuilding)
 
                 for (let i = 0; i < 5; i++) {//totalBackgroundSprites; i++) {
@@ -117,6 +116,8 @@ export class Assets {
                         Flogger.warn(`No background tile for ${mapBuilding}`)
                     }
                 }
+
+                tileAssets.push(Assets.get(platformDir))
             })
 
             PIXI.Loader.shared.add(tileAssets).load(() => {

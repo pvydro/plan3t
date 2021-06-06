@@ -41,12 +41,7 @@ export class MapBuildingBackground extends Container {
 
             spr.x = currentX
             currentX += spr.width
-            // const lastSpr = this.backgroundSprites[i - 1]
-
-            // if (lastSpr) {
-            //     spr.x = lastSpr.x + lastSpr.width
-            // }
-
+            
             this.backgroundSprites.push(spr)
             this.addChild(spr)
         }
