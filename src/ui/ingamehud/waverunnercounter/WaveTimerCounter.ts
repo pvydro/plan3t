@@ -12,12 +12,10 @@ export interface IWaveTimerCounter extends IUIComponent {
 export class WaveTimerCounter extends UIComponent {
     currentWave?: IWave
     timerBar: Graphix
-    barWidth: number
 
     constructor() {
         super()
         
-        this.barWidth = GameWindow.width / UIDefaults.UIScale
         this.timerBar = new Graphix()
         this.timerBar.beginFill(0xFFFFFF)
         this.timerBar.drawRect(0, 0, this.barWidth, 1)
@@ -43,5 +41,9 @@ export class WaveTimerCounter extends UIComponent {
     reposition() {
         this.timerBar.x = -UIDefaults.UIEdgePadding / UIDefaults.UIScale
         this.timerBar.y = this.timerBar.halfHeight
+    }
+
+    get barWidth() {
+        return GameWindow.fullWindowWidth / UIDefaults.UIScale
     }
 }

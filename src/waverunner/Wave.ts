@@ -25,7 +25,7 @@ export class Wave extends Emitter implements IWave {
     _isCompleted: boolean = false
     shouldTimeout: boolean = false
     totalEnemies: number = 5
-    totalTime: number = 1000 // 3000
+    totalTime: number = 3000
     elapsedTime: number = 0
     spawnIntervalTime: number = 500
     startDelayTime: number = 3000
@@ -61,9 +61,9 @@ export class Wave extends Emitter implements IWave {
                     this.spawnEnemy()
                 }
             }, this.spawnIntervalTime)
-        })
 
-        this.startCompletionTimer()
+            this.startCompletionTimer()
+        })
     }
 
     startCompletionTimer() {
