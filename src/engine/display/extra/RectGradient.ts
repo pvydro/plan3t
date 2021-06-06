@@ -1,9 +1,9 @@
 import { FourWayDirection } from '../../math/Direction'
 import { IRect } from '../../math/Rect'
-import { Container } from '../Container'
+import { Container, IContainer } from '../Container'
 import { Graphix } from '../Graphix'
 
-export interface IRectGradient {
+export interface IRectGradient extends IContainer {
     configure(options: RectGradientOptions)
 }
 
