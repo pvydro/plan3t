@@ -2,7 +2,7 @@ import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IReposition } from '../../interface/IReposition'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { AnimDefaults, TimeDefaults } from '../../utils/Defaults'
 import { asyncTimeout } from '../../utils/Utils'
@@ -66,7 +66,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     async initializeHUD(): Promise<void> {
-        Flogger.log('InGameHUD', 'initializeHUD')
+        log('InGameHUD', 'initializeHUD')
 
         return new Promise((resolve) => {
             this.addChild(this.crosshair)
@@ -83,7 +83,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
     
     loadWave(wave: IWave) {
-        Flogger.log('InGameHUD', 'loadWave', wave)
+        log('InGameHUD', 'loadWave', wave)
 
         let waveRunnerCounter = this.getComponent(UIComponentType.HUDWaveCounter)
 
@@ -115,7 +115,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     addComponent(type: UIComponentType) {
         const component = this.creator.getComponentForType(type)
 
-        
         if (component) {
             if (!this.hasChild(component)) {
                 this.addChild(component)
@@ -171,7 +170,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     requestCrosshairState(state: CrosshairState, delay?: number) {
-        Flogger.log('InGameHUD', 'requestCrosshairState', 'state', CrosshairState[state])
+        log('InGameHUD', 'requestCrosshairState', 'state', CrosshairState[state])
 
         if (this.crosshair.state !== state) {
             if (state === CrosshairState.Gameplay || delay !== undefined) {
@@ -185,7 +184,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     async requestMenuScreen(id: InGameScreenID) {
-        Flogger.log('InGameHUD', 'requestScreen', 'id', id)
+        log('InGameHUD', 'requestScreen', 'id', id)
 
         await this.showHUDComponents(false)
 
@@ -197,7 +196,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     async closeMenuScreen(id: InGameScreenID) {
-        Flogger.log('InGameHUD', 'closeScreen', 'id', id)
+        log('InGameHUD', 'closeScreen', 'id', id)
 
         // await this.inGameMenu.hideScreen(id)
         await this.showHUDComponents()

@@ -9,6 +9,7 @@ export class Assets {
 
     static BaseImageDir: string = 'assets/image'
     static TileDir = Assets.BaseImageDir + '/gamemap/tiles/'
+    static MapBuildingDir = Assets.BaseImageDir + '/gamemap/mapbuilding/'
 
     private constructor() {
 

@@ -29,7 +29,7 @@ export class BuildingBuilder implements IBuildingBuilder {
         floorSprite.y = 138//142
         const collisionRects = this.buildCollisionRectsForFloor(floorSprite)
         
-        tileLayer.addChild(backgroundSprite)
+        // tileLayer.addChild(backgroundSprite) TODO
         tileLayer.addChild(floorSprite)
         
         backgroundSprite.x = 12//floorTexture.width / 2// - backgroundSprite.halfWidth

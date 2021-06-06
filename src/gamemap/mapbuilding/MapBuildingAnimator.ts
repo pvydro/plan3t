@@ -1,4 +1,5 @@
 import { PositionAndAlphaAnimateable } from '../../engine/display/Animator'
+import { IContainer } from '../../engine/display/Container'
 import { ISprite } from '../../engine/display/Sprite'
 
 export interface IMapBuildingAnimator {
@@ -7,12 +8,12 @@ export interface IMapBuildingAnimator {
 
 export interface MapBuilderAnimatorOptions {
     floorSprite: ISprite
-    backgroundSprite: ISprite
+    backgroundSprite: IContainer//ISprite
 }
 
 export class MapBuildingAnimator implements IMapBuildingAnimator {
     floorSprite: ISprite
-    backgroundSprite: ISprite
+    backgroundSprite: IContainer//ISprite
 
     constructor(options: MapBuilderAnimatorOptions) {
         this.floorSprite = options.floorSprite
