@@ -52,6 +52,10 @@ export function dimension(width: number, height: number): IDimension {
 export function double(value: number): number {
     return value * 2
 }
+
+export function getRandomIntBetween(minimum: number, maximum: number) {
+    return Math.floor(Math.random() * maximum) + minimum
+}
  
 export function asyncTimeout(time: number) {
     return new Promise(resolve => setTimeout(resolve, time))

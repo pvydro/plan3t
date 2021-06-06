@@ -8,8 +8,8 @@ import { MapBuildingBackground } from './MapBuildingBackground'
 export enum MapBuildingType {
     Dojo = 'dojo',
     Castle = 'castle',
-    ModernHome = 'modernhome',
-    Warehouse = 'warehouse'
+    // ModernHome = 'modernhome',
+    // Warehouse = 'warehouse'
 }
 
 export interface IMapBuilding extends IGameMapContainer {
@@ -39,7 +39,7 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
 
     initializeMap(): Promise<void> {
         this.clearChildren()
-        
+
         return new Promise((resolve) => {
             this.builder.buildBuilding(this.buildingOptions).then((response: BuildingBuilderResponse) => {
                 this.tileLayer = response.tileLayer
@@ -50,8 +50,11 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                     backgroundSprite: this.background//response.backgroundSprite
                 })
                 
+                this.background.x = response.tileLayer.halfWidth - (this.background.halfWidth)
+
                 this.addChild(this.background)
                 this.addChild(this.tileLayer)
+
 
                 // this.outline = new GradientOutline({
                 //     // targetElement: this.tileLayer,

@@ -1,7 +1,10 @@
-import { Assets, AssetUrls } from '../../asset/Assets'
+import { Assets } from '../../asset/Assets'
 import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
+import { importantLog } from '../../service/Flogger'
+import { getRandomIntBetween } from '../../utils/Utils'
 import { MapBuildingType } from './MapBuilding'
+import { MapBuildingHelper } from './MapBuildingHelper'
 
 export interface IMapBuildingBackground extends IContainer {
 
@@ -17,38 +20,35 @@ export class MapBuildingBackground extends Container {
 
     constructor(options: MapBuildingBackgroundOptions) {
         super()
-        
-        // const texture = PIXI.Texture.from(Assets.get(Assets.MapBuildingDir + 'dojo/background/1'))
-        // const spr = new Sprite({ texture })
-        
-        this.type = options.type
-        // this.addChild(spr)
 
+        this.type = options.type
         this.constructBackgroundTiles()
     }
 
     constructBackgroundTiles() {
-        const totalSprites = 3
+        const totalSprites = 5
+        const totalVariations = MapBuildingHelper.getTotalBackgroundTilesForType(this.type)
+        let currentX = 0
 
         for (var i = 0; i < totalSprites; i++) {
-            const url = Assets.MapBuildingDir + this.type + '/background/1'
+            const randomSelection = getRandomIntBetween(1, totalVariations)
+            const url = Assets.MapBuildingDir + `${this.type}/background/${randomSelection}`
+
+            importantLog('MapBuildingBackground', 'Found BackgroundTile URL', url)
+
             const texture = PIXI.Texture.from(Assets.get(url))
             const spr = new Sprite({ texture })
-            const lastSpr = this.backgroundSprites[i - 1]
 
-            if (lastSpr) {
-                spr.x = lastSpr.x + lastSpr.width
-            }
+            spr.x = currentX
+            currentX += spr.width
+            // const lastSpr = this.backgroundSprites[i - 1]
+
+            // if (lastSpr) {
+            //     spr.x = lastSpr.x + lastSpr.width
+            // }
 
             this.backgroundSprites.push(spr)
             this.addChild(spr)
         }
-
-        // for (var j in this.backgroundSprites) {
-        //     const spr = this.backgroundSprites[j]
-        //     const lastSpr = this.backgroundSprites[j - 1]
-
-        //     this.addChild(spr)
-        // }
     }
 }

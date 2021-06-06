@@ -109,7 +109,7 @@ export class GameMap extends Container implements IGameMap {
     async transitionToMap(type: MapBuildingType) {
         log('GameMap', 'transitionToMap', 'type', type)
 
-        await this.currentMap.transitionOut()
+        if (this.currentMap) await this.currentMap.transitionOut()
         this.initializeBuilding(type)
     }
 

@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js'
+import { MapBuildingType } from '../gamemap/mapbuilding/MapBuilding'
+import { MapBuildingHelper } from '../gamemap/mapbuilding/MapBuildingHelper'
 import { SphericalBiome } from '../gamemap/spherical/SphericalData'
 import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/tile/SphericalTileHelper'
-import { Flogger } from '../service/Flogger'
+import { Flogger, importantLog } from '../service/Flogger'
 
 export class Assets {
     private static _imagesStartedLoading: boolean = false
@@ -62,14 +64,15 @@ export class Assets {
             }
             
             const biomeKeys = Object.values(SphericalBiome)
+            // const mapBuildingKeys = Object.values(MapBuildingType) // TODO: This is breaking for some reason
+            const mapBuildingKeys = [ 'dojo', 'castle' ]// MapBuildingHelper.getAllMapTypesInProperties() // TODO This needs to be dynamic & linked to {@link MapBuildingHelper}
             const tileValues = Object.values(SphericalTileValues)
             const tileAssets = []
-            const tileDir = Assets.TileDir
             const totalFoliage = 10
             const totalTrees = 2
 
             biomeKeys.forEach((biome: SphericalBiome) => {
-                const biomeDir = tileDir + biome
+                const biomeDir = Assets.TileDir + biome
 
                 tileValues.forEach((value) => {
                     const tileUrl = SphericalTileHelper.getTilesheetFromColorData(value, biome)
@@ -78,24 +81,41 @@ export class Assets {
                 })
 
                 for (let i = 0; i < totalFoliage; i++) {
-                    let foliageDir = biomeDir + '/' + 'foliage' + i
+                    const foliageDir = biomeDir + `/foliage${i}`
 
                     try {
                         tileAssets.push(Assets.get(foliageDir))
                     } catch (error) {
-                        Flogger.warn('No foliage for ' + biome, 'i', i)
+                        Flogger.warn(`No foliage for ${biome}${i}`)
                     }
                 }
 
                 for (let i = 0; i < totalTrees; i++) {
-                    let treeDir = biomeDir + '/' + 'tree' + i
+                    const treeDir = biomeDir + `/tree${i}`
 
                     try {
                         tileAssets.push(Assets.get(treeDir))
                     } catch (error) {
-                        Flogger.warn('No tree for ' + biome, 'i', i)
+                        Flogger.warn(`No tree for ${biome}${i}`)
                     }
 
+                }
+            })
+
+            mapBuildingKeys.forEach((mapBuilding: string) => {
+                const buildingDir = Assets.MapBuildingDir + mapBuilding
+                // const totalBackgroundSprites = MapBuildingHelper.getTotalBackgroundTilesForType(mapBuilding)
+
+                for (let i = 0; i < 5; i++) {//totalBackgroundSprites; i++) {
+                    const tileDir = `${buildingDir}/background/${i}`
+
+                    importantLog('Assets', 'Loading backgroundtile', 'tileDir', tileDir)
+
+                    try {
+                        tileAssets.push(Assets.get(tileDir))
+                    } catch (error) {
+                        Flogger.warn(`No background tile for ${mapBuilding}`)
+                    }
                 }
             })
 
