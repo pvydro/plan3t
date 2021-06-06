@@ -19,12 +19,16 @@ export class PlayButton extends UIButton implements IPlayButton {
                 style: TextStyles.DefaultButton.Medium,
             },
             background: {
-                idle: AssetUrls.ButtonRectDefault
+                idle: AssetUrls.ButtonRectDefault,
+                hovered: AssetUrls.ButtonRectDefaultHovered
             },
-            darkenerOptions: {
-                hoverTint: 0xdbdbdb,
-                clickTint: 0x969696
+            onHover: () => {
+                console.log('hovered')
             },
+            // darkenerOptions: {
+            //     hoverTint: 0xdbdbdb,
+            //     clickTint: 0x969696
+            // },
             onTrigger: () => {
                 GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
             }

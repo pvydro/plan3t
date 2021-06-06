@@ -28,6 +28,4 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
 
         this.addChild(this.backgroundSprite)
     }
-
-
 }

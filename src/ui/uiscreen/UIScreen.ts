@@ -5,7 +5,6 @@ import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
 import { SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
-import { IUIComponentCreator, UIComponentCreator } from '../UIComponentCreator'
 
 export interface IUIScreen extends IUIComponent {
     backgroundGraphic?: Graphix

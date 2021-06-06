@@ -2,7 +2,6 @@ import { Game } from '../main/Game'
 import { GameStateID } from '../manager/GameStateManager'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { StartScreen } from '../ui/uiscreen/startscreen/StartScreen'
-import { Defaults } from '../utils/Defaults'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 
 export interface IStartMenuState extends IGameState {
@@ -39,6 +38,7 @@ export class StartMenuState extends GameState {
     }
 
     update() {
+        this.startScreen.update()
         this.inGameHUD.update()
     }
 }

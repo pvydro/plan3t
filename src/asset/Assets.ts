@@ -193,7 +193,8 @@ export class AssetUrls {
     static PauseButton = 'assets/image/ui/ingamehud/pausebutton'
 
     // UI
-    static ButtonRectDefault = 'assets/image/ui/generic/midbutton'
+    static ButtonRectDefault = 'assets/image/ui/generic/buttons/midbutton'
+    static ButtonRectDefaultHovered = 'assets/image/ui/generic/buttons/midbuttonhovered'
     static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
     static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
     static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'

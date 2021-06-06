@@ -35,6 +35,7 @@ export class GameplayState extends GameState implements IGameplayState {
     async initialize() {
         const particleManager = ParticleManager.getInstance()
         
+        this.camera.cameraLetterboxPlugin.show()
         this.inGameHUD.showHUDComponents()
 
         this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    

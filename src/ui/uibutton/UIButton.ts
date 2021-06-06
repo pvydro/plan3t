@@ -127,7 +127,9 @@ export class UIButton extends UIComponent implements IUIButton {
             this.trigger()
         }
 
-        this.extendedOnHold()
+        if (functionExists(this.extendedOnHold)) {
+            this.extendedOnHold()
+        }
     }
 
     async release() {

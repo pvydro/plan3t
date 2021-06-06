@@ -24,14 +24,16 @@ export class RespawnButton extends UIButton implements IRespawnButton {
                 style: TextStyles.MetalButton.Medium,
             },
             background: {
-                idle: AssetUrls.ButtonMetalMd
+                idle: AssetUrls.ButtonMetalMd,
+                hovered: AssetUrls.ButtonRectDefaultHovered
             },
             darkenerOptions: {
                 hoverTint: 0xdbdbdb,
                 clickTint: 0x969696
             },
             tooltipOptions: {
-                text: 'RESPAWN',
+                uppercase: true,
+                text: 'Respawn',
             }
         })
 

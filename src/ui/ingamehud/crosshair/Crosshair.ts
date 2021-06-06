@@ -95,13 +95,14 @@ export class Crosshair extends UIComponent implements ICrosshair {
     }
 
     private updatePositionOffset() {
-        const positionOffsetDivisor = 20
+        let positionOffsetDivisor = 20
         const posOffset = {
             x: this.state === CrosshairState.Cursor ? -3 : 0,
             y: this.state === CrosshairState.Cursor ? 12 : 0
         }
         
         if (GameStateManager.getCurrentStateID() === GameStateID.StartMenu) {
+            positionOffsetDivisor = 2
             posOffset.y += 152
         }
     
