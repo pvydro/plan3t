@@ -1,12 +1,12 @@
 import { Events } from '../model/events/Events'
-import { log } from '../service/Flogger'
+import { importantLog, log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
 import { asyncTimeout, exists, functionExists } from '../utils/Utils'
 
 export interface IWave {
     totalEnemies: number
     waveIndex: number
-    startSpawnIntervals()
+    startSpawnIntervals(): void
 }
 
 export interface WaveOptions {
@@ -18,7 +18,9 @@ export interface WaveOptions {
 export class Wave extends Emitter implements IWave {
     _onSpawn: Function
     _onComplete: Function
+    completionTimeout?: number
     totalEnemies: number = 5
+    totalTime: number = 30000
     spawnIntervalTime: number = 500
     startDelayTime: number = 3000
     totalSpawns: number = 0
@@ -44,6 +46,20 @@ export class Wave extends Emitter implements IWave {
                 }
             }, this.spawnIntervalTime)
         })
+
+        this.startCompletionTimer()
+    }
+
+    startCompletionTimer() {
+        log('Wave', 'startCompletionTimer')
+
+        if (this.completionTimeout !== undefined) {
+            window.clearTimeout(this.completionTimeout)
+        }
+
+        this.completionTimeout = window.setTimeout(() => {
+            this.complete()
+        }, this.totalTime)
     }
 
     spawnEnemy() {
@@ -55,6 +71,12 @@ export class Wave extends Emitter implements IWave {
         if (this._onSpawn !== undefined) {
             this._onSpawn()
         }
+    }
+
+    complete() {
+        importantLog('Wave', 'complete')
+
+        this._onComplete()
     }
 
     set onSpawn(value: Function) {

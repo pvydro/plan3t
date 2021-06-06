@@ -95,8 +95,8 @@ export class ClientPlayer extends ClientPlayerState {
         this.scale.set(GlobalScale, GlobalScale)
 
         this.holster.setLoadout({
-            primaryWeaponName: WeaponName.P3,
-            secondaryWeaponName: WeaponName.Komplimenter
+            primaryWeaponName: WeaponName.Komplimenter,
+            secondaryWeaponName: WeaponName.Komp9
         })
     }
     

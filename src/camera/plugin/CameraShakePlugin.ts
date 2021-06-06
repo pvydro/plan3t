@@ -12,7 +12,7 @@ export class CameraShakePlugin implements ICameraShakePlugin {
     _screenShakeOffset: IVector2 = Vector2.Zero
     screenShakeDamping: number = 1.5
     screenShakeRecoveryDamping: number = 5
-    maximumShakeAmount: number = 2
+    maximumShakeAmount: number = 1//2
 
     constructor(camera: ICamera) {
         this.camera = camera

@@ -17,8 +17,6 @@ export class WaveStats extends UIComponent implements IWaveStats {
 
     private constructor() {
         super()
-
-
     }
     
     reposition(addListeners?: boolean) {
