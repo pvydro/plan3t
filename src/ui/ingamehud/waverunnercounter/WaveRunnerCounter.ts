@@ -7,6 +7,7 @@ import { IWave } from '../../../waverunner/Wave'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { UIText } from '../../UIText'
 import { WaveEnemyCounter } from './WaveEnemyCounter'
+import { WaveTimerCounter } from './WaveTimerCounter'
 
 export interface IWaveRunnerCounter extends IUIComponent {
 
@@ -17,6 +18,7 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
     header: UIText
     waveNumberLabel: UIText
     enemyCounter: WaveEnemyCounter
+    timerCounter: WaveTimerCounter
     
     constructor() {
         super()
@@ -31,23 +33,14 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
             style: TextStyles.WaveCounterNumber
         })
         this.enemyCounter = new WaveEnemyCounter()
+        this.timerCounter = new WaveTimerCounter()
 
         this.addChild(this.header)
         this.addChild(this.waveNumberLabel)
         this.addChild(this.enemyCounter)
+        this.addChild(this.timerCounter)
 
         this.forceHide()
-    }
-
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
-        const margin = (1 / UIDefaults.UIScale)
-
-        this.position.set(UIDefaults.UIEdgePadding, -5)
-        
-        this.waveNumberLabel.x = this.header.x - (margin * 3)
-        this.waveNumberLabel.y = this.header.y - (this.header.textHeight * 1.5) - margin
-        this.enemyCounter.y = this.header.y + this.header.textHeight - this.enemyCounter.enemiesText.halfTextHeight + margin
     }
 
     setWaveValue(wave: IWave) {
@@ -69,5 +62,18 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
 
     async hide() {
         await Tween.to(this, { alpha: 0, duration: 0.5, autoplay: true })
+    }
+
+    reposition(addListeners?: boolean) {
+        super.reposition(addListeners)
+        const margin = (1 / UIDefaults.UIScale)
+
+        this.position.set(UIDefaults.UIEdgePadding, -5)
+        
+        this.waveNumberLabel.x = this.header.x - (margin * 3)
+        this.waveNumberLabel.y = this.header.y - (this.header.textHeight * 1.5) - margin
+        this.enemyCounter.y = this.header.y + this.header.textHeight - this.enemyCounter.enemiesText.halfTextHeight + margin
+
+        this.timerCounter.reposition()
     }
 }
