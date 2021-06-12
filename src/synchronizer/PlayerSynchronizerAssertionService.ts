@@ -38,14 +38,14 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
         log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'player: ' + JSON.stringify(player) : null))
 
         const clientEntity = this.entityAssertionService.entitySynchronizer.clientEntities.get(sessionId).clientEntity as ClientPlayer
-        const distanceFromServerX = Math.abs(clientEntity.x - player.x)
-        const distanceToResetBreakpoint = 10
+        // const distanceFromServerX = Math.abs(clientEntity.x - player.x)
+        // const distanceToResetBreakpoint = 10
 
-        if (distanceFromServerX > distanceToResetBreakpoint) {
-            importantLog('PlayerSynchronizerService', 'distance greater than breakpoint, force setting')
+        // if (distanceFromServerX > distanceToResetBreakpoint) {
+        //     importantLog('PlayerSynchronizerService', 'distance greater than breakpoint, force setting')
 
-            clientEntity.x = player.x
-        }
+        //     clientEntity.x = player.x
+        // }
         
         if (player.weaponStatus !== undefined) {
             const rotation = player.weaponStatus.rotation

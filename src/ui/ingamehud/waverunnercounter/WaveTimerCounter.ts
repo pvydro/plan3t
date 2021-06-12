@@ -12,6 +12,7 @@ export interface IWaveTimerCounter extends IUIComponent {
 export class WaveTimerCounter extends UIComponent {
     currentWave?: IWave
     timerBar: Graphix
+    endStopper: Graphix
 
     constructor() {
         super()
@@ -22,12 +23,19 @@ export class WaveTimerCounter extends UIComponent {
         this.timerBar.endFill()
         this.timerBar.alpha = 0.25
 
+        this.endStopper = new Graphix()
+        this.endStopper.beginFill(0xFFFFFF)
+        this.endStopper.drawRect(0, 0, 2, 1)
+        this.endStopper.endFill()
+        this.endStopper.alpha = 1
+
         this.addChild(this.timerBar)
+        this.addChild(this.endStopper)
     }
 
     update() {
         const widthSnapBreakpoint = 0.1
-
+        
         if (this.currentWave !== undefined) {
             this.timerBar.width = (this.barWidth * this.currentWave.currentTimePercentage)
         } else if (this.timerBar.width < this.barWidth - widthSnapBreakpoint) {
@@ -37,6 +45,8 @@ export class WaveTimerCounter extends UIComponent {
                 this.timerBar.width = this.barWidth
             }
         }
+
+        this.endStopper.x = this.timerBar.x + this.timerBar.width
     }
 
     setWave(wave: IWave) {
@@ -47,6 +57,7 @@ export class WaveTimerCounter extends UIComponent {
     reposition() {
         this.timerBar.x = -UIDefaults.UIEdgePadding / UIDefaults.UIScale
         this.timerBar.y = this.timerBar.halfHeight
+        this.endStopper.y = this.timerBar.y
     }
 
     get barWidth() {

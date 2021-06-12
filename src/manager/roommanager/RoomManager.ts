@@ -16,6 +16,7 @@ import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Spherical } from '../../gamemap/spherical/Spherical'
 import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
+import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -32,6 +33,7 @@ export class RoomManager implements IRoomManager {
     static _room: Room<PlanetGameState>
     static _clientSessionId = 'local'
     
+    roomStateManager: IRoomStateManager
     gameMapManager: IGameMapManager
     clientManager: IClientManager
     entityManager: IEntityManager
@@ -49,6 +51,7 @@ export class RoomManager implements IRoomManager {
     }
 
     private constructor(options: RoomManagerOptions) {
+        this.roomStateManager = new RoomStateManager()
         this.clientManager = ClientManager.getInstance()
         this.gameMapManager = options.gameMapManager
         this.entityManager = this.clientManager.entityManager
@@ -67,7 +70,7 @@ export class RoomManager implements IRoomManager {
 
         return new Promise((resolve) => {
             // First state change
-            this.currentRoom.onStateChange.once((state) => {
+            this.currentRoom.onStateChange.once((state: PlanetGameState) => {
                 log('RoomManager', 'firstState received')
                 
                 if (state.planetHasBeenSet) {
@@ -83,6 +86,10 @@ export class RoomManager implements IRoomManager {
                         resolve(this.currentRoom)
                     })
                 }
+            })
+
+            this.currentRoom.onStateChange((state: PlanetGameState) => {
+                this.roomStateManager.stateChanged(state)
             })
         })
     }
