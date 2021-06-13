@@ -13,3 +13,14 @@ export enum Direction {
     Left = -1,
     Right = 1
 }
+
+export enum CreatureType {
+    // Passive
+    Koini = 'Koini',
+    PassiveHornet = 'PassiveHornet',
+
+    // Enemies
+    FlyingEye = 'FlyingEye',
+    Sorm = 'Sorm',
+    Nenj = 'Nenj'
+}

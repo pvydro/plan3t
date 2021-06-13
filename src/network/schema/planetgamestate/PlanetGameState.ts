@@ -6,6 +6,7 @@ import { DimensionSchema } from '../DimensionSchema'
 import { IPGSPlayerController, PGSPlayerController } from './PGSPlayerController'
 import { IPGSGravityController, PGSGravityController } from './PGSGravityController'
 import { Entity } from '../../rooms/Entity'
+import { Creature } from '../../rooms/Creature'
 
 export class PlanetSphericalTileData extends Schema {
   @type('number')
@@ -50,12 +51,16 @@ export class Projectile extends Entity {
 export class PlanetGameState extends Schema {
   @type({ map: Player })
   players = new MapSchema<Player>()
+  @type({ map: Creature })
+  creatures = new MapSchema<Creature>()
   @type(PlanetSphericalSchema)
   planetSpherical?: PlanetSphericalSchema
   @type('boolean')
   planetHasBeenSet: boolean = false
   @type({ set: Projectile })
   projectiles = new SetSchema<Projectile>()
+  @type('string')
+  hostId: string = ''
 
   playerController!: IPGSPlayerController
   gravityController!: IPGSGravityController
@@ -65,12 +70,18 @@ export class PlanetGameState extends Schema {
     this.gravityController = new PGSGravityController(this)
   }
 
-  createPlayer(sessionId: string) {
+  createPlayer(sessionId: string, x?: number, y?: number) {
     Flogger.log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
+    if (this.hostId === '') {
+      Flogger.log('PlanetGameState', 'no hostId set, assigning player as host', 'sessionId', sessionId)
+
+      this.hostId = sessionId
+    }
+
     this.players.set(sessionId, new Player().assign({
-      x: 0,
-      y: 0,
+      x: x ?? 0,
+      y: y ?? 0,
       xVel: 0,
       yVel: 0
     }))

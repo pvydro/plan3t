@@ -208,6 +208,10 @@ export class RoomManager implements IRoomManager {
         return this._clientSessionId
     }
 
+    get isHost() {
+        return (RoomManager.clientSessionId === this.currentRoom.state.hostId)
+    }
+
     get currentRoom() {
         return RoomManager._room
     }
