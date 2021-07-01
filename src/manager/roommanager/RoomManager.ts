@@ -17,6 +17,8 @@ import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Spherical } from '../../gamemap/spherical/Spherical'
 import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
+import { Creature } from '../../network/rooms/Creature'
+import { Environment } from '../../main/Environment'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -72,6 +74,13 @@ export class RoomManager implements IRoomManager {
             // First state change
             this.currentRoom.onStateChange.once((state: PlanetGameState) => {
                 log('RoomManager', 'firstState received')
+
+
+                if (RoomManager.clientSessionId === state.hostId) {
+                    importantLog('Host sessionId found, setting in Environment', 'sessionId', RoomManager.clientSessionId)
+
+                    Environment.IsHost = true
+                }
                 
                 if (state.planetHasBeenSet) {
                     if (state.planetSpherical !== undefined) {
@@ -106,6 +115,9 @@ export class RoomManager implements IRoomManager {
             if (projectile.sessionId !== RoomManager.clientSessionId) {
                 this.addProjectile(projectile)
             }
+        }
+        this.currentRoom.state.creatures.onAdd = (creature: Creature, key: string) => {
+            // this
         }
     }
 
@@ -182,6 +194,12 @@ export class RoomManager implements IRoomManager {
     addProjectile(projectile: Projectile) {
         this.entityManager.createProjectile(ProjectileType.Bullet,
             projectile.x, projectile.y, projectile.rotation, projectile.velocity)
+    }
+
+    addCreature(creature: Creature) {
+        importantLog('RoomManager', 'addCreature', 'creature', 'type', creature.creatureType)
+
+        this.entityManager.createCreature(creature)
     }
 
     requestClientPlayerRespawn() {

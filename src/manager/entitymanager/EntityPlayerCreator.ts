@@ -4,15 +4,14 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Entity } from '../../network/rooms/Entity'
 import { Flogger } from '../../service/Flogger'
-import { IEntityManager } from './EntityManager'
+import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
     createPlayer(options: PlayerCreationOptions): ClientPlayer
     clearRegisteredPlayer(): void
 }
 
-export interface PlayerCreationOptions {
-    entity?: Entity
+export interface PlayerCreationOptions extends EntityCreatorOptions {
     sessionId?: string
     isClientPlayer?: boolean
     isOfflinePlayer?: boolean
@@ -71,6 +70,11 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             }
         } else {
             player = new ClientPlayer({ entity: options.entity })
+        }
+
+        if (options.entity) {
+            player.x = options.entity.x
+            player.y = options.entity.y
         }
 
         return player

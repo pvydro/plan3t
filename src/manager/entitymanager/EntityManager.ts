@@ -18,6 +18,13 @@ import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { EnemyManager, IEnemyManager } from '../enemymanager/EnemyManager'
 import { CreatureType } from '../../creature/CreatureType'
 import { CameraLayer } from '../../camera/CameraStage'
+import { Creature } from '../../network/rooms/Creature'
+import { IVector2 } from '../../engine/math/Vector2'
+
+export interface EntityCreatorOptions {
+    entity?: Entity
+    position?: IVector2
+}
 
 export interface LocalEntity {
     serverEntity?: Entity
@@ -33,6 +40,7 @@ export interface IEntityManager extends IUpdatable {
     createClientPlayer(entity?: Entity, sessionId?: string): ClientPlayer
     createCoPlayer(entity: Entity, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
+    createCreature(Creature?: Creature)
     clearClientEntities(): void
     updateEntity(entity: Entity, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number): void
@@ -109,6 +117,13 @@ export class EntityManager implements IEntityManager {
         log('EntityManager', 'updateEntity', 'sessionId', sessionId)
 
         this.synchronizer.updateEntity(entity, sessionId, changes)
+    }
+
+    createCreature(entity: Creature) {
+        // this.
+        this.creatureCreator.createCreature({
+            type: entity.creatureType
+        })
     }
 
     createPassiveCreature() {

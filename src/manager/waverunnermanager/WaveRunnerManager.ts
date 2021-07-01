@@ -45,6 +45,8 @@ export class WaveRunnerManager implements IWaveRunnerManager {
 
         this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
+
+        // TODO: If isHost
         this.currentWaveRunnerGame.beginWaveRunner()
         this.registerNextWave()
     }

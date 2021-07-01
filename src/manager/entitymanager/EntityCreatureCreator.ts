@@ -4,13 +4,13 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { Creature } from '../../creature/Creature'
 import { CreatureType } from '../../creature/CreatureType'
 import { CreatureFactory } from '../../factory/CreatureFactory'
-import { IEntityManager } from './EntityManager'
+import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityCreatureCreator {
     createCreature(options: CreatureCreationOptions): Creature
 }
 
-export interface CreatureCreationOptions {
+export interface CreatureCreationOptions extends EntityCreatorOptions {
     type: CreatureType
 }
 
@@ -33,8 +33,9 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
         this.entityManager.registerEntity(creature.entityId, creature)
         this.creatures.set(creature.entityId, creature)
         
-        creature.x = 512 + (Math.random() * 128)
-        creature.y = -64
+        // creature.x = //512 + (Math.random() * 128)
+        // creature.y = //-64
+        if (options)
 
         return creature
     }
