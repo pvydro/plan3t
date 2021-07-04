@@ -7,6 +7,7 @@ import { WaveRunnerCounter } from '../../ui/ingamehud/waverunnercounter/WaveRunn
 import { UIComponentType } from '../../ui/UIComponentFactory'
 import { IWave, Wave } from '../../waverunner/Wave'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
+import { IRoomManager, RoomManager } from '../roommanager/RoomManager'
 import { SpawnPointManager } from '../spawnpointmanager/SpawnPointManager'
 import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
 
@@ -17,6 +18,7 @@ export interface IWaveRunnerManager extends IUpdatable {
 
 export class WaveRunnerManager implements IWaveRunnerManager {
     private static Instance: IWaveRunnerManager
+    roomManager: IRoomManager
     levelManager: IWaveLevelManager
     currentWaveRunnerGame: IWaveRunnerGame
     currentWaveIndex: number = 0
@@ -32,6 +34,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
 
     private constructor() {
         this.hud = InGameHUD.getInstance()
+        this.roomManager = RoomManager.getInstance()
 
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             if (ev.which === Key.Y) {
@@ -46,9 +49,12 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
 
+        this.roomManager.requestWaveRunnerGame().then((state: any) => {
+            
+        })
         // TODO: If isHost
-        this.currentWaveRunnerGame.beginWaveRunner()
-        this.registerNextWave()
+        // this.currentWaveRunnerGame.beginWaveRunner()
+        // this.registerNextWave()
     }
 
     update() {
