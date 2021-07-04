@@ -1,7 +1,7 @@
 import { type } from '@colyseus/schema'
-import { Entity } from '../rooms/Entity'
+import { EntitySchema } from './EntitySchema'
 
-export class ProjectileSchema extends Entity {
+export class ProjectileSchema extends EntitySchema {
     @type('string')
     sessionId!: string
     @type('number')

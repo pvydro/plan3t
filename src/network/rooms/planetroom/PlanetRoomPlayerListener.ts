@@ -4,8 +4,8 @@ import { Flogger } from '../../../service/Flogger'
 import { PlayerBodyState, PlayerLegsState } from '../../utils/Enum'
 import { PlayerPayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
 import { PlanetRoomListener } from './PlanetRoomListener'
-import { Player } from '../Player'
-import { Projectile } from '../../schema/planetgamestate/PlanetGameState'
+import { PlayerSchema } from '../../schema/PlayerSchema'
+import { ProjectileSchema } from '../../schema/ProjectileSchema'
 
 export interface IPlanetRoomPlayerListener {
 
@@ -146,7 +146,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
     triggerWeaponShot(sessionId: string, payload: WeaponStatusPayload) {
         const bulletVelocity = payload.bulletVelocity ?? 1
-        this.room.state.createProjectile(new Projectile({
+        this.room.state.createProjectile(new ProjectileSchema({
             x: payload.bulletX,
             y: payload.bulletY,
             rotation: payload.rotation,
@@ -156,7 +156,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     }
 
     // TODO Do this when land on ground
-    private applyBodyStatePropertiesToPlayer(payload: PlayerPayload, player: Player) {        
+    private applyBodyStatePropertiesToPlayer(payload: PlayerPayload, player: PlayerSchema) {        
         if (player.bodyState !== PlayerBodyState.Idle) {
             if (payload.bodyState === PlayerBodyState.Idle) {
                 // First stand payload
@@ -169,7 +169,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         player.bodyState = payload.bodyState
     }
 
-    private applyVelocityPropertiesToPlayer(payload: PlayerPayload, player: Player) {
+    private applyVelocityPropertiesToPlayer(payload: PlayerPayload, player: PlayerSchema) {
         if (exists(payload.xVel)) {
             if (payload.xVel === 0 && exists(payload.x)) {
                 player.x = payload.x

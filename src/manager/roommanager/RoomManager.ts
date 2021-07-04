@@ -1,7 +1,7 @@
 import { Room } from 'colyseus.js'
 import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
-import { Entity } from '../../network/rooms/Entity'
+import { EntitySchema } from '../../network/schema/EntitySchema'
 import { ClientManager, IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
 import { importantLog, log } from '../../service/Flogger'
@@ -12,13 +12,13 @@ import { Dimension } from '../../engine/math/Dimension'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 import { RoomMessenger } from './RoomMessenger'
-import { Player } from '../../network/rooms/Player'
+import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Spherical } from '../../gamemap/spherical/Spherical'
 import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
-import { Creature } from '../../network/rooms/Creature'
+import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { Environment } from '../../main/Environment'
 
 export interface IRoomManager {
@@ -113,10 +113,10 @@ export class RoomManager implements IRoomManager {
     }
 
     initializeCurrentRoomEntities() {
-        this.currentRoom.state.players.onAdd = (player: Player, sessionId: string) => {
+        this.currentRoom.state.players.onAdd = (player: PlayerSchema, sessionId: string) => {
             this.addPlayer(player, sessionId)
         }
-        this.currentRoom.state.players.onRemove = (player: Player, sessionId: string) => {
+        this.currentRoom.state.players.onRemove = (player: PlayerSchema, sessionId: string) => {
             this.removePlayer(sessionId)
         }
 
@@ -125,7 +125,7 @@ export class RoomManager implements IRoomManager {
                 this.addProjectile(schema)
             }
         }
-        this.currentRoom.state.creatures.onAdd = (creature: Creature, key: string) => {
+        this.currentRoom.state.creatures.onAdd = (creature: CreatureSchema, key: string) => {
             // this
         }
     }
@@ -180,7 +180,7 @@ export class RoomManager implements IRoomManager {
         }
     }
 
-    addPlayer(entity?: Entity, sessionId?: string) {
+    addPlayer(entity?: EntitySchema, sessionId?: string) {
         importantLog('RoomManager', 'addPlayer', 'sessionId', sessionId)
 
         if (RoomManager.isSessionALocalPlayer(sessionId)) {
@@ -205,7 +205,7 @@ export class RoomManager implements IRoomManager {
             schema.x, schema.y, schema.rotation, schema.velocity)
     }
 
-    addCreature(creature: Creature) {
+    addCreature(creature: CreatureSchema) {
         importantLog('RoomManager', 'addCreature', 'creature', 'type', creature.creatureType)
 
         this.entityManager.createCreature(creature)

@@ -1,6 +1,5 @@
 import { Camera } from '../camera/Camera'
 import { CameraLayer } from '../camera/CameraStage'
-import { Creature } from '../creature/Creature'
 import { CreatureType } from '../creature/CreatureType'
 import { Enemy } from '../enemy/Enemy'
 import { IUpdatable } from '../interface/IUpdatable'

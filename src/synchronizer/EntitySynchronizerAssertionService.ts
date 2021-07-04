@@ -1,22 +1,22 @@
 import { IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../interface/IUpdatable'
-import { Entity } from '../network/rooms/Entity'
+import { EntitySchema } from '../network/schema/EntitySchema'
 import { Flogger, importantLog } from '../service/Flogger'
 import { EntitySynchronizer } from './EntitySynchronizer'
 import { IPlayerSynchronizerAssertionService, PlayerSynchronizerAssertionService } from './PlayerSynchronizerAssertionService'
 import { exists } from '../utils/Utils'
 import { PlanetGameState } from '../network/schema/planetgamestate/PlanetGameState'
 import { LocalEntity } from '../manager/entitymanager/EntityManager'
-import { Player } from '../network/rooms/Player'
+import { PlayerSchema } from '../network/schema/PlayerSchema'
 
 export interface IEntitySynchronizerAssertionService extends IUpdatable {
     playerAssertionService: IPlayerSynchronizerAssertionService
     entitySynchronizer: EntitySynchronizer
-    synchronizables: Map<string, Entity>
+    synchronizables: Map<string, EntitySchema>
     clientPlayer: IClientPlayer
     roomState: PlanetGameState
     clientEntities: Map<string, LocalEntity>
-    applyChangesToSynchronizable(sessionId: string, entity: Entity): void
+    applyChangesToSynchronizable(sessionId: string, entity: EntitySchema): void
 }
 
 export interface EntitySynchronizerAssertionServiceOptions {
@@ -24,7 +24,7 @@ export interface EntitySynchronizerAssertionServiceOptions {
 }
 
 export class EntitySynchronizerAssertionService implements IEntitySynchronizerAssertionService {
-    synchronizables: Map<string, Entity> = new Map()
+    synchronizables: Map<string, EntitySchema> = new Map()
 
     entitySynchronizer: EntitySynchronizer
     _numberOfTimesAsserted: number = 0
@@ -46,13 +46,13 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
         this.playerAssertionService.update()
     }
 
-    applyChangesToSynchronizable(sessionId: string, entity: Entity) {
+    applyChangesToSynchronizable(sessionId: string, entity: EntitySchema) {
         Flogger.log('EntitySynchronizerAssertionService', 'applyChangesToSynchronizable')
         
-        const entityPlayer = entity as Player
+        const entityPlayer = entity as PlayerSchema
         const isPlayer = entityPlayer !== undefined
         const synchEntity = this.synchronizables.get(sessionId)
-        const synchEntityPlayer = synchEntity as Player
+        const synchEntityPlayer = synchEntity as PlayerSchema
 
         if (sessionId !== undefined && synchEntity !== undefined) {
 

@@ -1,8 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Camera } from '../../camera/Camera'
-import { CameraLayer } from '../../camera/CameraStage'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { Entity } from '../../network/rooms/Entity'
 import { Flogger } from '../../service/Flogger'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 

@@ -1,4 +1,4 @@
-import { Entity } from '../network/rooms/Entity'
+import { EntitySchema } from '../network/schema/EntitySchema'
 import { ISprite, Sprite } from '../engine/display/Sprite'
 import { IContainer, Container } from '../engine/display/Container'
 import { IDimension } from '../engine/math/Dimension'
@@ -39,7 +39,7 @@ export interface IClientEntityPlugins {
 }
 
 export interface ClientEntityOptions {
-    entity?: Entity
+    entity?: EntitySchema
     sprite?: Sprite | Container
     plugins?: IClientEntityPluginOptions
 }
@@ -51,7 +51,7 @@ export class ClientEntity extends Container implements IClientEntity {
     name: string = 'ClientEntity'
     entityId: string
     _sprite: Sprite | Container
-    entity?: Entity
+    entity?: EntitySchema
     x: number
     y: number
     type: EntityType

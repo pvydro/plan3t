@@ -1,7 +1,6 @@
 import { Schema, ArraySchema, type } from '@colyseus/schema'
 import { DimensionSchema } from '../DimensionSchema'
 
-
 export class PlanetSphericalTileDataSchema extends Schema {
     @type('number')
     r!: number

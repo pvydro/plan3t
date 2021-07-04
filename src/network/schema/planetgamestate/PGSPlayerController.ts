@@ -1,4 +1,4 @@
-import { Player } from '../../rooms/Player'
+import { PlayerSchema } from '../../schema/PlayerSchema'
 import { PlanetGameState } from './PlanetGameState'
 import { PlayerBodyState, Direction, PlayerLegsState } from '../../utils/Enum'
 import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
@@ -21,7 +21,7 @@ export class PGSPlayerController implements IPGSPlayerController {
         const playerJumpingHeight: number = 5
         const horizontalFriction: number = 5
 
-        this.players.forEach((p: Player) => {
+        this.players.forEach((p: PlayerSchema) => {
             // Body state
             switch (p.bodyState) {
                 case PlayerBodyState.Idle:

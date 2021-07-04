@@ -1,6 +1,4 @@
-import { PixiPlugin } from 'gsap/all'
-import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
-import { Player } from '../../rooms/Player'
+import { PlayerSchema } from '../../schema/PlayerSchema'
 import { PlanetGameState } from './PlanetGameState'
 
 export interface IPGSGravityController {
@@ -16,7 +14,7 @@ export class PGSGravityController implements IPGSGravityController {
  
     update() {
         
-        this.players.forEach((p: Player, sessionId: string) => {
+        this.players.forEach((p: PlayerSchema, sessionId: string) => {
 
 
             if (p.hasSpawned) {

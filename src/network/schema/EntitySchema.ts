@@ -1,6 +1,6 @@
 import { Schema, type } from '@colyseus/schema'
 
-export class Entity extends Schema {
+export class EntitySchema extends Schema {
     @type('float64')
     x!: number 
     @type('float64')
@@ -14,7 +14,7 @@ export class Entity extends Schema {
 
     dead: boolean = false
 
-    static distance(a: Entity, b: Entity) {
+    static distance(a: EntitySchema, b: EntitySchema) {
         return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2))
     }
 }

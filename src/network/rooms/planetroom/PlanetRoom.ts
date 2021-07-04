@@ -1,9 +1,9 @@
 import { Flogger } from '../../../service/Flogger'
 import { Room, Client } from 'colyseus'
 import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
-import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetGameState'
+import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetSphericalSchema'
 import { IPlanetRoomListener, PlanetRoomListener } from './PlanetRoomListener'
-import { Player } from '../Player'
+import { PlayerSchema } from '../../schema/PlayerSchema'
 
 export interface IPlanetRoom {
 
@@ -26,7 +26,7 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
     this.setSimulationInterval((deltaTime: number) => {
       PlanetRoom.Delta = (deltaTime * 60 / 1000)
 
-      this.state.players.forEach((player: Player) => {
+      this.state.players.forEach((player: PlayerSchema) => {
 
         player.x += player.xVel * PlanetRoom.Delta
         player.y += player.yVel * PlanetRoom.Delta

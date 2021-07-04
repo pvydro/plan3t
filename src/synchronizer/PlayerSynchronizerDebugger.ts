@@ -4,7 +4,7 @@ import { Container } from '../engine/display/Container'
 import { Graphix } from '../engine/display/Graphix'
 import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
-import { Player } from '../network/rooms/Player'
+import { PlayerSchema } from '../network/schema/PlayerSchema'
 import { Flogger } from '../service/Flogger'
 import { DebugConstants } from '../utils/Constants'
 import { IPlayerSynchronizerAssertionService } from './PlayerSynchronizerAssertionService'
@@ -36,7 +36,7 @@ export class PlayerSynchronizerAssertionServiceDebugger extends Container implem
 
     update() {
         const synchPlayerInstance = this.assertionService.entityAssertionService
-            .synchronizables.get(this.localSessionId) as Player
+            .synchronizables.get(this.localSessionId) as PlayerSchema
         if (this.debugGraphics !== undefined
         && this.assertionService.clientPlayer !== undefined
         && synchPlayerInstance !== undefined) {

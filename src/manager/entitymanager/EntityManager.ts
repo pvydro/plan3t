@@ -1,4 +1,4 @@
-import { Entity } from '../../network/rooms/Entity'
+import { EntitySchema } from '../../network/schema/EntitySchema'
 import { RoomManager } from '../roommanager/RoomManager'
 import { Camera } from '../../camera/Camera'
 import { ClientEntity } from '../../cliententity/ClientEntity'
@@ -18,16 +18,16 @@ import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { EnemyManager, IEnemyManager } from '../enemymanager/EnemyManager'
 import { CreatureType } from '../../creature/CreatureType'
 import { CameraLayer } from '../../camera/CameraStage'
-import { Creature } from '../../network/rooms/Creature'
+import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { IVector2 } from '../../engine/math/Vector2'
 
 export interface EntityCreatorOptions {
-    entity?: Entity
+    entity?: EntitySchema
     position?: IVector2
 }
 
 export interface LocalEntity {
-    serverEntity?: Entity
+    serverEntity?: EntitySchema
     clientEntity?: ClientEntity
 }
 
@@ -37,15 +37,15 @@ export interface IEntityManager extends IUpdatable {
     roomState: PlanetGameState
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
-    createClientPlayer(entity?: Entity, sessionId?: string): ClientPlayer
-    createCoPlayer(entity: Entity, sessionId: string): ClientPlayer
+    createClientPlayer(entity?: EntitySchema, sessionId?: string): ClientPlayer
+    createCoPlayer(entity: EntitySchema, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
-    createCreature(Creature?: Creature)
+    createCreature(Creature?: CreatureSchema)
     clearClientEntities(): void
-    updateEntity(entity: Entity, sessionId: string, changes?: any): void
+    updateEntity(entity: EntitySchema, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number): void
     registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
-    getEntity(sessionId: string): Entity
+    getEntity(sessionId: string): EntitySchema
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
 }
 
@@ -113,13 +113,13 @@ export class EntityManager implements IEntityManager {
         }
     }
     
-    updateEntity(entity: Entity, sessionId: string, changes?: any) {
+    updateEntity(entity: EntitySchema, sessionId: string, changes?: any) {
         log('EntityManager', 'updateEntity', 'sessionId', sessionId)
 
         this.synchronizer.updateEntity(entity, sessionId, changes)
     }
 
-    createCreature(entity: Creature) {
+    createCreature(entity: CreatureSchema) {
         // this.
         this.creatureCreator.createCreature({
             type: entity.creatureType
@@ -145,7 +145,7 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createClientPlayer(entity?: Entity, sessionId?: string) {
+    createClientPlayer(entity?: EntitySchema, sessionId?: string) {
         log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({
@@ -158,7 +158,7 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createCoPlayer(entity: Entity, sessionId: string) {
+    createCoPlayer(entity: EntitySchema, sessionId: string) {
         log('EntityManager', 'createCoPlayer', 'sessionId', sessionId)
 
         const player = this.playerCreator.createPlayer({

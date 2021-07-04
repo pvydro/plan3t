@@ -1,7 +1,7 @@
 import { Schema, type } from '@colyseus/schema'
 import { Flogger } from '../../service/Flogger'
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
-import { Entity } from './Entity'
+import { EntitySchema } from './EntitySchema'
 
 class PlayerWeaponStatus extends Schema {
     @type('float64')
@@ -10,7 +10,7 @@ class PlayerWeaponStatus extends Schema {
     name: string = ''
 }
 
-export class Player extends Entity {
+export class PlayerSchema extends EntitySchema {
     @type(PlayerWeaponStatus)
     weaponStatus: PlayerWeaponStatus = new PlayerWeaponStatus({
         rotation: 0,

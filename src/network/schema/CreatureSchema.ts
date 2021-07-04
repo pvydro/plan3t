@@ -1,9 +1,9 @@
 import { type } from '@colyseus/schema'
 import { CreatureType } from '../utils/Enum'
-import { Entity } from './Entity'
+import { EntitySchema } from './EntitySchema'
 
 
-export class Creature extends Entity {
+export class CreatureSchema extends EntitySchema {
     @type('string')
     creatureType: CreatureType = CreatureType.Sorm
 }

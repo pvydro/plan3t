@@ -1,18 +1,18 @@
 import { Schema, SetSchema, MapSchema, ArraySchema, type } from '@colyseus/schema'
 
-import { Player } from '../../rooms/Player'
+import { PlayerSchema } from '../PlayerSchema'
 import { Flogger } from '../../../service/Flogger'
 import { IPGSPlayerController, PGSPlayerController } from './PGSPlayerController'
 import { IPGSGravityController, PGSGravityController } from './PGSGravityController'
 import { ProjectileSchema } from '../ProjectileSchema'
 import { PlanetSphericalSchema } from './PlanetSphericalSchema'
-import { Creature } from '../../rooms/Creature'
+import { CreatureSchema } from '../CreatureSchema'
 
 export class PlanetGameState extends Schema {
-  @type({ map: Player })
-  players = new MapSchema<Player>()
-  @type({ map: Creature })
-  creatures = new MapSchema<Creature>()
+  @type({ map: PlayerSchema })
+  players = new MapSchema<PlayerSchema>()
+  @type({ map: CreatureSchema })
+  creatures = new MapSchema<CreatureSchema>()
   @type(PlanetSphericalSchema)
   planetSpherical?: PlanetSphericalSchema
   @type('boolean')
@@ -39,12 +39,16 @@ export class PlanetGameState extends Schema {
       this.hostId = sessionId
     }
 
-    this.players.set(sessionId, new Player().assign({
+    this.players.set(sessionId, new PlayerSchema().assign({
       x: x ?? 0,
       y: y ?? 0,
       xVel: 0,
       yVel: 0
     }))
+  }
+
+  createCreature(schema: CreatureSchema) {
+
   }
 
   createProjectile(schema: ProjectileSchema) {
@@ -55,6 +59,10 @@ export class PlanetGameState extends Schema {
       velocity: schema.velocity,
       sessionId: schema.sessionId
     }))
+  }
+
+  beginWaveRunnerGame() {
+
   }
 
   update() {

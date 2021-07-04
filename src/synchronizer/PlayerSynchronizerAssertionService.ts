@@ -1,7 +1,7 @@
 import { ClientPlayer, IClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { IUpdatable } from '../interface/IUpdatable'
 import { RoomManager } from '../manager/roommanager/RoomManager'
-import { Player } from '../network/rooms/Player'
+import { PlayerSchema } from '../network/schema/PlayerSchema'
 import { importantLog, log, VerboseLogging } from '../service/Flogger'
 import { WeaponName } from '../weapon/WeaponName'
 import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
@@ -10,7 +10,7 @@ import { PlayerSynchronizerAssertionServiceDebugger } from './PlayerSynchronizer
 export interface IPlayerSynchronizerAssertionService extends IUpdatable {
     clientPlayer: IClientPlayer | undefined
     entityAssertionService: IEntitySynchronizerAssertionService
-    applyChangesToSynchronizablePlayer(sessionId: string, player: Player)
+    applyChangesToSynchronizablePlayer(sessionId: string, player: PlayerSchema)
 }
 
 export interface PlayerSynchronizerAssertionServiceOptions {
@@ -34,7 +34,7 @@ export class PlayerSynchronizerAssertionService implements IPlayerSynchronizerAs
         }
     }
 
-    applyChangesToSynchronizablePlayer(sessionId: string, player: Player) {
+    applyChangesToSynchronizablePlayer(sessionId: string, player: PlayerSchema) {
         log('PlayerSynchronizerService', 'applyChangesToSynchronizablePlayer', 'sessionId', sessionId, (VerboseLogging ? 'player: ' + JSON.stringify(player) : null))
 
         const clientEntity = this.entityAssertionService.entitySynchronizer.clientEntities.get(sessionId).clientEntity as ClientPlayer

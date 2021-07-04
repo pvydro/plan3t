@@ -1,8 +1,8 @@
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { Direction } from '../engine/math/Direction'
 import { IUpdatable } from '../interface/IUpdatable'
-import { Entity } from '../network/rooms/Entity'
-import { Player } from '../network/rooms/Player'
+import { EntitySchema } from '../network/schema/EntitySchema'
+import { PlayerSchema } from '../network/schema/PlayerSchema'
 import { PlayerBodyState, PlayerLegsState } from '../network/utils/Enum'
 import { log, VerboseLogging } from '../service/Flogger'
 import { RoomManager } from '../manager/roommanager/RoomManager'
@@ -13,7 +13,7 @@ import { WeaponName } from '../weapon/WeaponName'
 
 export interface IEntitySynchronizer extends IUpdatable {
     assertionService: IEntitySynchronizerAssertionService
-    updateEntity(entity: Entity, sessionId: string, changes?: any)
+    updateEntity(entity: EntitySchema, sessionId: string, changes?: any)
 }
 
 export interface EntitySynchronizerOptions {
@@ -35,24 +35,24 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         this.assertionService.update()
     }
 
-    updateEntity(entity: Entity, sessionId: string, changes?: any) {
+    updateEntity(entity: EntitySchema, sessionId: string, changes?: any) {
         log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId, VerboseLogging ? 'changes: ' + JSON.stringify(changes) : null)
 
         this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
         const isClientPlayer: boolean = RoomManager.isSessionALocalPlayer(sessionId)
-        const isPlayer: boolean = (entity as Player) !== undefined
+        const isPlayer: boolean = (entity as PlayerSchema) !== undefined
         
         if (!isClientPlayer) {
             const serverEntity = this.clientEntities.get(sessionId).serverEntity
 
             if (isPlayer) {
-                this.updatePlayer(serverEntity as Player, sessionId, changes)
+                this.updatePlayer(serverEntity as PlayerSchema, sessionId, changes)
             }
         }
     }
 
-    private updatePlayer(player: Player, sessionId: string, changes?: any) {
+    private updatePlayer(player: PlayerSchema, sessionId: string, changes?: any) {
         log('EntitySynchronizer', 'updatePlayer', 'sessionId', sessionId)
 
         if (RoomManager.isSessionALocalPlayer(sessionId)) return

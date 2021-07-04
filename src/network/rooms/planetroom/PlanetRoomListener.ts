@@ -1,7 +1,7 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { DimensionSchema } from '../../schema/DimensionSchema'
-import { PlanetSphericalSchema, PlanetSphericalTile, PlanetSphericalTileData } from '../../schema/planetgamestate/PlanetGameState'
+import { PlanetSphericalSchema, PlanetSphericalTileSchema, PlanetSphericalTileDataSchema } from '../../schema/planetgamestate/PlanetSphericalSchema'
 import { NewPlanetMessagePayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoom } from './PlanetRoom'
 import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
@@ -51,16 +51,16 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     }
 
     private convertFetchedPlanetToSchema(planet: any) {
-        const parsedPoints: PlanetSphericalTile[] = []
+        const parsedPoints: PlanetSphericalTileSchema[] = []
     
-        // Parse points into PlanetSphericalTile schema
+        // Parse points into PlanetSphericalTileSchema schema
         for (let i in planet.points) {
           const point = planet.points[i]
-          parsedPoints.push(new PlanetSphericalTile({
+          parsedPoints.push(new PlanetSphericalTileSchema({
             x: point.x,
             y: point.y,
             tileSolidity: point.tileSolidity,
-            tileValue: new PlanetSphericalTileData({
+            tileValue: new PlanetSphericalTileDataSchema({
               r: point.tileValue.r,
               g: point.tileValue.g,
               b: point.tileValue.b,

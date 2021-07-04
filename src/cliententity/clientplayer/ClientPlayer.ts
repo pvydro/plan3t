@@ -1,4 +1,4 @@
-import { Entity } from '../../network/rooms/Entity'
+import { EntitySchema } from '../../network/schema/EntitySchema'
 import { Direction } from '../../engine/math/Direction'
 import { PlayerHead } from './PlayerHead'
 import { PlayerBody } from './PlayerBody'
@@ -29,7 +29,7 @@ export interface IClientPlayer extends IClientPlayerState {
 }
 
 export interface ClientPlayerOptions {
-    entity: Entity
+    entity: EntitySchema
     clientControl?: boolean
     offlineControl?: boolean
     entityManager?: IEntityManager
