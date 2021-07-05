@@ -7,6 +7,7 @@ import { IPGSGravityController, PGSGravityController } from './PGSGravityControl
 import { ProjectileSchema } from '../ProjectileSchema'
 import { PlanetSphericalSchema } from './PlanetSphericalSchema'
 import { CreatureSchema } from '../CreatureSchema'
+import { WaveRunnerSchema } from '../waverunner/WaveRunnerSchema'
 
 export class PlanetGameState extends Schema {
   @type({ map: PlayerSchema })
@@ -15,17 +16,22 @@ export class PlanetGameState extends Schema {
   creatures = new MapSchema<CreatureSchema>()
   @type(PlanetSphericalSchema)
   planetSpherical?: PlanetSphericalSchema
-  @type('boolean')
-  planetHasBeenSet: boolean = false
+  @type(WaveRunnerSchema)
+  waveRunner?: WaveRunnerSchema
   @type({ set: ProjectileSchema })
   projectiles = new SetSchema<ProjectileSchema>()
   @type('string')
   hostId: string = ''
 
+  @type('boolean')
+  planetHasBeenSet: boolean = false
+  @type('boolean')
+  waveGameHasBeenStarted: boolean = false
+
   playerController!: IPGSPlayerController
   gravityController!: IPGSGravityController
 
-  initialize () {
+  initialize() {
     this.playerController = new PGSPlayerController(this)
     this.gravityController = new PGSGravityController(this)
   }
@@ -62,7 +68,8 @@ export class PlanetGameState extends Schema {
   }
 
   beginWaveRunnerGame() {
-
+    this.waveRunner = new WaveRunnerSchema()
+    this.waveRunner.initialize()
   }
 
   update() {
@@ -70,5 +77,6 @@ export class PlanetGameState extends Schema {
 
     if (this.playerController) this.playerController.update()
     if (this.gravityController) this.gravityController.update()
+    if (this.waveRunner) this.waveRunner.update()
   }
 }

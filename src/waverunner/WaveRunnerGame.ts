@@ -3,6 +3,7 @@ import { CameraLayer } from '../camera/CameraStage'
 import { CreatureType } from '../creature/CreatureType'
 import { Enemy } from '../enemy/Enemy'
 import { IUpdatable } from '../interface/IUpdatable'
+import { Environment } from '../main/Environment'
 import { IEnemyManager } from '../manager/enemymanager/EnemyManager'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { importantLog, log } from '../service/Flogger'
@@ -49,7 +50,9 @@ export class WaveRunnerGame implements IWaveRunnerGame {
     loadWave(wave: IWave) {
         this.currentWave = wave
 
-        wave.startSpawnIntervals()
+        if (Environment.IsHost) {
+            wave.startSpawnIntervals()
+        }
     }
 
     get spawner() {

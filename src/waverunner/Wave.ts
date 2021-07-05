@@ -1,6 +1,7 @@
 import { GameLoop } from '../gameloop/GameLoop'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Events } from '../model/events/Events'
+import { WaveSchema } from '../network/schema/waverunner/WaveRunnerSchema'
 import { importantLog, log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
 import { asyncTimeout } from '../utils/Utils'
@@ -15,8 +16,10 @@ export interface IWave extends IUpdatable {
 
 export interface WaveOptions {
     waveIndex: number
-    onSpawn: Function
-    onComplete: Function
+    totalTime: number
+    elapsedTime: number
+    onSpawn?: Function
+    onComplete?: Function
 }
 
 export class Wave extends Emitter implements IWave {
@@ -32,22 +35,22 @@ export class Wave extends Emitter implements IWave {
     totalSpawns: number = 0
     waveIndex: number = 0
 
-    constructor(options: WaveOptions) {
+    constructor(options: WaveOptions | WaveSchema) {
         super()
 
         this.waveIndex = options.waveIndex
-        this._onSpawn = options.onSpawn
-        this._onComplete = options.onComplete
+        // this._onSpawn = options.onSpawn
+        // this._onComplete = options.onComplete
     }
 
     update() {
-        if (this.shouldTimeout) {
-            this.elapsedTime += GameLoop.CustomDelta
+        // if (this.shouldTimeout) {
+        //     this.elapsedTime += GameLoop.CustomDelta
 
-            if (this.elapsedTime >= this.totalTime) {
-                this.complete()
-            }
-        }
+        //     if (this.elapsedTime >= this.totalTime) {
+        //         this.complete()
+        //     }
+        // }
     }
 
     startSpawnIntervals() {

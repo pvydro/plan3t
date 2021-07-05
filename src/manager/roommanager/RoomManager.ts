@@ -20,10 +20,11 @@ import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { Environment } from '../../main/Environment'
+import { WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
-    requestWaveRunnerGame(): Promise<void>
+    requestWaveRunnerGame(): Promise<WaveSchema>
     currentRoom: Room
 }
 
@@ -108,6 +109,15 @@ export class RoomManager implements IRoomManager {
     requestWaveRunnerGame(): Promise<any> {
         log('RoomManager', 'requestWaveRunnerGame')
         return new Promise((resolve) => {
+            // this.currentRoom.onMessage
+            if (this.currentRoom.state.waveGameHasBeenStarted
+            && this.currentRoom.state.waveRunner) {
+                this.roomStateManager.configureLocalWaveRunner(this.currentRoom.state.waveRunner)
+            } else {
+                // this.currentRoom.state.beginWaveRunnerGame()
+                this.currentRoom.send(RoomMessage.NewWaveRunner)
+            }
+
             resolve(true)
         })
     }

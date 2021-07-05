@@ -1,10 +1,9 @@
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
+import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
 import { importantLog, log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
-import { WaveRunnerCounter } from '../../ui/ingamehud/waverunnercounter/WaveRunnerCounter'
-import { UIComponentType } from '../../ui/UIComponentFactory'
 import { IWave, Wave } from '../../waverunner/Wave'
 import { IWaveRunnerGame, WaveRunnerGame } from '../../waverunner/WaveRunnerGame'
 import { IRoomManager, RoomManager } from '../roommanager/RoomManager'
@@ -13,7 +12,7 @@ import { IWaveLevelManager, WaveLevelManager } from './WaveLevelManager'
 
 export interface IWaveRunnerManager extends IUpdatable {
     initialize(): Promise<void>
-    registerNextWave(): Promise<IWave>
+    registerOfflineWave(): Promise<IWave>
 }
 
 export class WaveRunnerManager implements IWaveRunnerManager {
@@ -38,7 +37,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
 
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             if (ev.which === Key.Y) {
-                this.registerNextWave()
+                this.registerOfflineWave()
             }
         })
     }
@@ -49,8 +48,8 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
 
-        this.roomManager.requestWaveRunnerGame().then((state: any) => {
-            
+        this.roomManager.requestWaveRunnerGame().then((state: WaveSchema) => {
+            this.currentWaveRunnerGame.loadWave(new Wave(state))
         })
         // TODO: If isHost
         // this.currentWaveRunnerGame.beginWaveRunner()
@@ -63,7 +62,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         }
     }
 
-    async registerNextWave() {
+    async registerOfflineWave() {
         log('WaveRunnerManager', 'registerNextWave', 'prevWave', this.currentWaveIndex)
 
         await this.levelManager.transitionToNewLevel()
@@ -75,12 +74,14 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.currentWaveIndex++
         this.currentWaveRunnerGame.loadWave(new Wave({
             waveIndex: this.currentWaveIndex,
-            onSpawn: () => {
-                this.currentWaveRunnerGame.spawner.spawn()
-            },
-            onComplete: () => {
-                this.registerNextWave()
-            }
+            totalTime: 3000,
+            elapsedTime: 0
+            // onSpawn: () => {
+            //     this.currentWaveRunnerGame.spawner.spawn()
+            // },
+            // onComplete: () => {
+            //     this.registerNextWave()
+            // }
         }))
         this.hud.loadWave(this.currentWave)
 

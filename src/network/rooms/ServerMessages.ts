@@ -3,6 +3,7 @@ import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 export enum RoomMessage {
     NewPlanet = 'eNewPlanet',
     GetPlanet = 'eGetPlanet',
+    NewWaveRunner = 'eNewWaveRunner',
     PlayerBodyStateChanged = 'ePlayerBodyStateChanged',
     PlayerLegsStateChanged = 'ePlayerLegsStateChanged',
     PlayerConciousnessStateChanged = 'ePlayerConciousnessStateChanged',
