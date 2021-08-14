@@ -1,3 +1,4 @@
+import { KawaseBlurFilter } from 'pixi-filters'
 import * as PIXI from 'pixi.js'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
@@ -12,7 +13,7 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
     backgroundSprite: Sprite
 
     static getInstance() {
-        if (this.Instance) {
+        if (!this.Instance) {
             this.Instance = new SharedScreenBackground()
         }
 
@@ -22,9 +23,11 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
     private constructor() {
         super()
 
-        this.backgroundSprite = new Sprite({
-            texture: PIXI.Texture.from(Assets.get(AssetUrls.SharedBackground1))
-        })
+        this.backgroundSprite = new Sprite({ texture: PIXI.Texture.from(Assets.get(AssetUrls.SharedBackground1)) })
+        this.backgroundSprite.scale.set(3, 3)
+        this.backgroundSprite.filters = [
+            new KawaseBlurFilter(8.5, 6)
+        ]
 
         this.addChild(this.backgroundSprite)
     }

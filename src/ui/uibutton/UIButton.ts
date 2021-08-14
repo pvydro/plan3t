@@ -1,6 +1,7 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IDimension } from '../../engine/math/Dimension'
+import { importantLog } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
 import { Defaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
@@ -241,6 +242,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
     set state(value: UIButtonState) {
         this._state = value
+        this.background.refreshBackgroundBasedOnState(value)
     }
 
     get interactiveSprite() {

@@ -1,17 +1,19 @@
 import { Assets } from '../../asset/Assets'
 import { Container } from '../../engine/display/Container'
 import { ISprite, Sprite } from '../../engine/display/Sprite'
-import { IUIButton, UIButtonBackgroundOptions } from './UIButton'
+import { importantLog } from '../../service/Flogger'
+import { IUIButton, UIButtonBackgroundOptions, UIButtonState } from './UIButton'
 
 export interface IUIButtonBackground {
     backgroundSprite: ISprite
+    refreshBackgroundBasedOnState(value: UIButtonState): void
 }
 
 export interface UIButtonBackgroundContainerOptions {
     button: IUIButton
 }
 
-export class UIButtonBackground extends Container {
+export class UIButtonBackground extends Container implements IUIButtonBackground {
     _backgroundSprite?: Sprite
     _backgroundSpriteHovered?: Sprite
     _backgroundSpriteTriggered?: Sprite
@@ -33,14 +35,41 @@ export class UIButtonBackground extends Container {
                 
                 if (hovered !== undefined && background.hovered !== background.idle) {
                     this.backgroundSpriteHovered = new Sprite({ texture: hovered })
+                    this.backgroundSpriteHovered.alpha = 0
                 }
                 if (triggered !== undefined && background.triggered !== background.hovered) {
                     this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
+                    this.backgroundSpriteTriggered.alpha = 0
                 }
             } else if (background.graphic !== undefined) {
                 this.backgroundSprite = new Sprite({ texture: background.graphic })
             }
+
         }
+    }
+
+    refreshBackgroundBasedOnState(value: UIButtonState) {
+        importantLog('refreshBackgroundBasedOnState', 'state', value)
+
+        this.backgroundSprite.alpha = 0
+        this.backgroundSpriteHovered.alpha = 0
+        this.backgroundSpriteTriggered.alpha = 0
+
+        let selectedBackground
+        switch (value) {
+            case UIButtonState.Hovered:
+                selectedBackground = this.backgroundSpriteHovered
+                break
+            case UIButtonState.Triggered:
+                selectedBackground = this.backgroundSpriteTriggered
+                break
+            default:
+            case UIButtonState.Idle:
+                selectedBackground = this.backgroundSprite
+                break
+        }
+
+        selectedBackground.alpha = 1
     }
 
     set backgroundSprite(value: Sprite) {
@@ -73,5 +102,13 @@ export class UIButtonBackground extends Container {
 
     get backgroundSprite() {
         return this._backgroundSprite
+    }
+
+    get backgroundSpriteHovered() {
+        return this._backgroundSpriteHovered ?? this._backgroundSprite
+    }
+
+    get backgroundSpriteTriggered() {
+        return this._backgroundSpriteTriggered ?? (this.backgroundSpriteHovered ?? this._backgroundSprite)
     }
 }

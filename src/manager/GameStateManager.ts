@@ -6,7 +6,6 @@ import { WaveGameState } from '../gamestate/WaveGameState'
 import { IDemolishable } from '../interface/IDemolishable'
 import { Game } from '../main/Game'
 import { log } from '../service/Flogger'
-import { GameMapManager } from './GameMapManager'
 
 export interface IGameStateManager extends IDemolishable {
     currentState: IGameState
@@ -34,7 +33,7 @@ export class GameStateManager implements IGameStateManager {
     private static Instance: IGameStateManager
     _currentState?: IGameState
     _currentStateID: GameStateID
-    _defaultState: GameStateID = GameStateID.WaveRunnerGame // GameStateID.StartMenu
+    _defaultState: GameStateID = GameStateID.StartMenu // GameStateID.WaveRunnerGame
     game?: Game
 
     static getInstance() {

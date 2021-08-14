@@ -11,7 +11,10 @@ export class StartScreen extends UIScreen implements IStartScreen {
     tmpRespawnButton: RespawnButton
 
     constructor() {
-        super({ filters: [] })
+        super({
+            filters: [],
+            background: { useSharedBackground: true }
+        })
 
         this.playButton = new PlayButton()
         this.tmpRespawnButton = new RespawnButton()

@@ -86,15 +86,13 @@ export class CollisionManager implements ICollisionManager {
      * Check if yVel will pass block, if so, set yvel to max without passing.
     */
     private checkGroundCollision(entity: GravityEntity, collisionRect: Rect): boolean {
-        const centerX = entity.x
-        const rectLeftSide = collisionRect.x
         const rectRightSide = collisionRect.x + collisionRect.width
-        const rectBottomSide = collisionRect.y
+        const isSolidOnBottom = entity.bottomY <= collisionRect.y
+        const isWithinLeftBounds = entity.x >= collisionRect.x
+        const isWithinRightBounds = entity.x <= rectRightSide
 
         // Check if above, and within horizontally, rectangle
-        if (entity.bottomY <= rectBottomSide
-            && centerX >= rectLeftSide
-            && centerX <= rectRightSide) {
+        if (isSolidOnBottom && isWithinLeftBounds && isWithinRightBounds) {
             // Check if entity + entity yVel will collide
             if (entity.bottomY + entity.yVel >= collisionRect.y) {
                 return true
