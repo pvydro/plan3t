@@ -1,6 +1,7 @@
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Camera } from '../../camera/Camera'
 import { Sprite } from '../../engine/display/Sprite'
+import { GameWindow } from '../../utils/Constants'
 import { ICreature, Creature } from '../Creature'
 import { CreatureType } from '../CreatureType'
 
@@ -12,10 +13,11 @@ export class PassiveHornet extends Creature implements IPassiveHornet {
     hornetSprite: Sprite
     flyCoolDown: number = 100
     maxFlyCoolDown: number = 200
+    minimumCorner: number = 100
     hornetTargetX: number = 2
     hornetTargetY: number = 0
-    hornetTargetXMax: number = 300
-    hornetTargetYMax: number = 100
+    // hornetTargetXMax: number = 1300
+    // hornetTargetYMax: number = 1000
 
     constructor() {
         super({
@@ -32,8 +34,8 @@ export class PassiveHornet extends Creature implements IPassiveHornet {
     }
     
     findNewPosition() {
-        this.hornetTargetX = Math.random() * this.hornetTargetXMax
-        this.hornetTargetY = Math.random() * this.hornetTargetYMax
+        this.hornetTargetX = this.minimumCorner + Math.random() * GameWindow.fullWindowWidth//this.hornetTargetXMax
+        this.hornetTargetY = this.minimumCorner + Math.random() * GameWindow.fullWindowHeight//this.hornetTargetYMax
 
         const projected = Camera.toScreen({
             x: this.hornetTargetX,

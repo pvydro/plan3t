@@ -3,11 +3,12 @@ import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
-import { SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
+import { ISharedScreenBackground, SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 
 export interface IUIScreen extends IUIComponent {
     backgroundGraphic?: Graphix
+    sharedBackground?: ISharedScreenBackground
     applyScale(components?: any[]): void
 }
 
@@ -21,6 +22,7 @@ export interface UIScreenOptions extends UIComponentOptions {
 
 export class UIScreen extends UIComponent implements IUIScreen {
     backgroundGraphic?: Graphix
+    sharedBackground?: ISharedScreenBackground
 
     constructor(options?: UIScreenOptions) {
         options = options ?? {}
@@ -52,6 +54,7 @@ export class UIScreen extends UIComponent implements IUIScreen {
         if (options.useSharedBackground) {
             const sharedBackground = SharedScreenBackground.getInstance()
 
+            this.sharedBackground = sharedBackground
             this.addChild(sharedBackground)
         } else {
             const backgroundColor = options.backgroundColor ?? 0x000000

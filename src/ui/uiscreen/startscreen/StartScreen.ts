@@ -42,6 +42,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
     }
 
     update() {
+        this.sharedBackground.update()
         this.playButton.update()
         this.settingsButton.update()
     }
@@ -63,7 +64,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
         this.playButton.reposition(false)
 
-        this.titleLogo.x = GameWindow.width - this.titleLogo.width - UIDefaults.UIEdgePadding
+        this.titleLogo.x = GameWindow.fullWindowWidth - this.titleLogo.width - UIDefaults.UIEdgePadding
         this.titleLogo.y = UIDefaults.UIEdgePadding
 
         this.settingsButton.x = this.playButton.x

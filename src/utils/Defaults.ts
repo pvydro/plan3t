@@ -5,7 +5,7 @@ import { ISmallToLargeSort } from './UtilInterfaces'
 
 export abstract class Defaults {
     static SwipeAnimationDistance: number = 4
-    static JustificationPadding: number = 10
+    static JustificationPadding: number = 6
     static LoadingScreenCloseDelay: number = 1000
 }
 

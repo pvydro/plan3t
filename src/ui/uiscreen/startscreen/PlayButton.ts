@@ -27,10 +27,6 @@ export class PlayButton extends UIButton implements IPlayButton {
             onHover: () => {
                 console.log('hovered')
             },
-            // darkenerOptions: {
-            //     hoverTint: 0xdbdbdb,
-            //     clickTint: 0x969696
-            // },
             onTrigger: () => {
                 GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
             }
