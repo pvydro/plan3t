@@ -1,5 +1,7 @@
 import { Fonts } from '../asset/Fonts'
 import { Easing } from '../engine/display/tween/TweenEasing'
+import { IDimension } from '../engine/math/Dimension'
+import { IVector2 } from '../engine/math/Vector2'
 import { Filters } from './Filters'
 import { ISmallToLargeSort } from './UtilInterfaces'
 
@@ -19,6 +21,10 @@ export abstract class UIDefaults {
             polaroid: true
         })
     ]
+    static ChatboxDimensions: IDimension = {
+        width: 64,
+        height: 32
+    }
 
     static UIBleedPastBorderMargins: ISmallToLargeSort = {
         small: 8, mdSmall: 12, lgSmall: 14,

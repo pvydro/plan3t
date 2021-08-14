@@ -1,4 +1,5 @@
 import { log } from '../service/Flogger'
+import { InGameChat } from './ingamechat/InGameChat'
 import { AmmoStatusComponent } from './ingamehud/ammostatus/AmmoStatusComponent'
 import { HealthBar } from './ingamehud/healthbar/HealthBar'
 import { NextWaveSplash } from './ingamehud/nextwavesplash/NextWaveSplash'
@@ -11,7 +12,8 @@ export enum UIComponentType {
     HUDAmmoStatus = 'HUDAmmoStatus',
     HUDWaveCounter = 'HUDWaveCounter',
     HUDHealthBar = 'HUDHealthBar',
-    NextWaveSplash = 'NextWaveSplash'
+    NextWaveSplash = 'NextWaveSplash',
+    InGameChat = 'InGameChat'
 }
 
 export interface IUIComponentFactory {
@@ -43,6 +45,9 @@ export class UIComponentFactory {
                 break
             case UIComponentType.NextWaveSplash:
                 uicomponent = new NextWaveSplash()
+                break
+            case UIComponentType.InGameChat:
+                uicomponent = InGameChat.getInstance()
                 break
         }
 

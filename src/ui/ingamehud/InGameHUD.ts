@@ -7,6 +7,7 @@ import { GameWindow } from '../../utils/Constants'
 import { AnimDefaults, TimeDefaults } from '../../utils/Defaults'
 import { asyncTimeout } from '../../utils/Utils'
 import { IWave } from '../../waverunner/Wave'
+import { InGameChat } from '../ingamechat/InGameChat'
 import { InGameScreenID } from '../ingamemenu/InGameMenu'
 import { IUIComponent, UIComponent } from '../UIComponent'
 import { IUIComponentCreator, UIComponentCreator } from '../UIComponentCreator'
@@ -37,6 +38,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     _waveUIInitialized: boolean
     hudContainer: UIContainer
     crosshair: Crosshair
+    chat: InGameChat
     queuedHealthBars: OverheadHealthBar[]
     creator: IUIComponentCreator
 
@@ -56,6 +58,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         this.creator = new UIComponentCreator()
         this.crosshair = Crosshair.getInstance()
+        // this.chat = 
         
         // Temp
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
@@ -73,6 +76,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
             this.addComponent(UIComponentType.HUDPauseButton)
             this.addComponent(UIComponentType.HUDAmmoStatus)
+            this.addComponent(UIComponentType.InGameChat)
 
             this.queuedHealthBars = []
             this.reposition(true)
@@ -220,6 +224,14 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
     applyScale(toScaleCustom?: UIComponent[]) {
         super.applyScale(toScaleCustom)
+    }
+
+    applyListeners() {
+        InputProcessor.on('keydown', (ev: KeyboardEvent) => {
+            if (ev.which === Key.T) {
+
+            }
+        })
     }
 
     getComponent(type: UIComponentType) {

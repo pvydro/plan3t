@@ -19,7 +19,7 @@ export interface IGameplayState extends IGameState {
 
 export class GameplayState extends GameState implements IGameplayState {
     ambientLight: GameplayAmbientLight
-    hornet: PassiveHornet
+    // hornet: PassiveHornet
     player: ClientPlayer
 
     constructor(options: GameStateOptions) {
@@ -29,7 +29,7 @@ export class GameplayState extends GameState implements IGameplayState {
         })
 
         this.ambientLight = new GameplayAmbientLight()
-        this.hornet = new PassiveHornet()
+        // this.hornet = new PassiveHornet()
     }
     
     async initialize() {
@@ -38,7 +38,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.camera.cameraLetterboxPlugin.show()
         this.inGameHUD.showHUDComponents()
 
-        this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
+        // this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
         this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
         this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
         this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
@@ -74,7 +74,7 @@ export class GameplayState extends GameState implements IGameplayState {
         this.gameMapManager.update()
         this.ambientLight.update()
         this.inGameHUD.update()
-        this.hornet.update()
+        // this.hornet.update()
     }
 
     demolish() {
