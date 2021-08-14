@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { ISprite, Sprite } from '../engine/display/Sprite'
 import { Tween } from '../engine/display/tween/Tween'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
@@ -37,12 +38,14 @@ export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
 export interface UIComponentOptions extends UIContainerOptions {
     borderOptions?: UIComponentBorderOptions
     filters?: PIXI.Filter[]
+    sprite?: Sprite
 }
 
 export class UIComponent extends UIContainer implements IUIComponent {
     _isShown: boolean
     border?: UIComponentBorder
     _currentShowTimeout: number
+    _sprite: ISprite
 
     constructor(options?: UIComponentOptions) {
         super(options)
@@ -55,6 +58,10 @@ export class UIComponent extends UIContainer implements IUIComponent {
             }
             if (options.filters) {
                 this.filters = options.filters
+            }
+            if (options.sprite) {
+                this.addChild(options.sprite)
+                this._sprite = options.sprite
             }
         }
     }

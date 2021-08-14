@@ -215,6 +215,7 @@ export class AssetUrls {
     static PauseButton = 'assets/image/ui/ingamehud/pausebutton'
 
     // UI
+    static TitleLogoSmall = 'assets/image/ui/title/titlesmall'
     static ButtonRectDefault = 'assets/image/ui/generic/buttons/midbutton'
     static ButtonRectDefaultHovered = 'assets/image/ui/generic/buttons/midbuttonhovered'
     static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'

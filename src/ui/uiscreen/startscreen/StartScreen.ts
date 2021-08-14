@@ -1,6 +1,9 @@
+import { GameWindow } from '../../../utils/Constants'
+import { UIDefaults } from '../../../utils/Defaults'
 import { RespawnButton } from '../respawnscreen/RespawnButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
 import { PlayButton } from './PlayButton'
+import { TitleLogo } from './TitleLogo'
 
 export interface IStartScreen extends IUIScreen {
     
@@ -8,7 +11,7 @@ export interface IStartScreen extends IUIScreen {
 
 export class StartScreen extends UIScreen implements IStartScreen {
     playButton: PlayButton
-    tmpRespawnButton: RespawnButton
+    titleLogo: TitleLogo
 
     constructor() {
         super({
@@ -17,23 +20,22 @@ export class StartScreen extends UIScreen implements IStartScreen {
         })
 
         this.playButton = new PlayButton()
-        this.tmpRespawnButton = new RespawnButton()
+        this.titleLogo = new TitleLogo()
 
         this.addChild(this.playButton)
-        this.addChild(this.tmpRespawnButton)
+        this.addChild(this.titleLogo)
         this.applyScale()
         this.reposition(true)
     }
 
     update() {
         this.playButton.update()
-        this.tmpRespawnButton.update()
     }
 
     applyScale() {
         const toScale = [
             this.playButton,
-            this.tmpRespawnButton
+            this.titleLogo
         ]
         
         super.applyScale(toScale)
@@ -43,6 +45,8 @@ export class StartScreen extends UIScreen implements IStartScreen {
         super.reposition(addListeners)
 
         this.playButton.reposition(false)
-        this.tmpRespawnButton.reposition(false)
+
+        this.titleLogo.x = GameWindow.width - this.titleLogo.width - UIDefaults.UIEdgePadding
+        this.titleLogo.y = UIDefaults.UIEdgePadding
     }
 }

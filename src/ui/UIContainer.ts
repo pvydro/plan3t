@@ -27,13 +27,13 @@ export class UIContainer extends Container implements IUIContainer {
             if (options.width && options.height) {
                 this._containerWidth = options.width
                 this._containerHeight = options.height
+                this.applyContainerEmptyFill()
             }
             if (options.shouldFillWindow) {
                 this._shouldFillWindow = options.shouldFillWindow
+                this.applyContainerEmptyFill()
             }
         }
-
-        this.applyContainerEmptyFill()
     }
 
     update() {
