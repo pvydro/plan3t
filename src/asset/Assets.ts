@@ -218,6 +218,8 @@ export class AssetUrls {
     static TitleLogoSmall = 'assets/image/ui/title/titlesmall'
     static ButtonRectDefault = 'assets/image/ui/generic/buttons/midbutton'
     static ButtonRectDefaultHovered = 'assets/image/ui/generic/buttons/midbuttonhovered'
+    static ButtonRectSmall = 'assets/image/ui/generic/buttons/smbutton'
+    static ButtonRectSmallHovered = 'assets/image/ui/generic/buttons/smbuttonhovered'
     static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
     static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
     static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'

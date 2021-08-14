@@ -3,7 +3,7 @@ import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/dis
 import { IDimension } from '../../engine/math/Dimension'
 import { importantLog } from '../../service/Flogger'
 import { DebugConstants } from '../../utils/Constants'
-import { Defaults } from '../../utils/Defaults'
+import { Defaults, UIDefaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions as UIButtonDarkenerOptions } from './plugins/UIButtonDarkenerPlugin'

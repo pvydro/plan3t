@@ -59,6 +59,11 @@ export class TextStyles {
     }
 
     static DefaultButton: ITextStyles = {
+        Small: {
+            fontFamily: Fonts.FontDefault.family,
+            fontSize: scaleFontSize(8),
+            color: 0xFFFFFF
+        },
         Medium: {
             fontFamily: Fonts.FontDefault.family,
             fontSize: scaleFontSize(18),

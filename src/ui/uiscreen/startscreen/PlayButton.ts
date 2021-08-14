@@ -1,4 +1,5 @@
 import { AssetUrls } from '../../../asset/Assets'
+import { TextSpriteAlign } from '../../../engine/display/TextSprite'
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { GameStateID, GameStateManager } from '../../../manager/GameStateManager'
 import { GameWindow } from '../../../utils/Constants'
@@ -17,6 +18,7 @@ export class PlayButton extends UIButton implements IPlayButton {
                 text: 'Play',
                 uppercase: true,
                 style: TextStyles.DefaultButton.Medium,
+                align: TextSpriteAlign.Left
             },
             background: {
                 idle: AssetUrls.ButtonRectDefault,
