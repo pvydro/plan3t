@@ -222,7 +222,10 @@ export class AssetUrls {
     static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
     static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'
     static TooltipKey = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
-    static SharedBackground1 = 'assets/image/ui/sharedbackground/1' 
+
+    // SharedBackground
+    static SharedBackground1 = 'assets/image/ui/sharedbackground/1'
+    static SharedBackground2 = 'assets/image/ui/sharedbackground/2'
 
     // Homeship
     static Homeship = 'assets/image/gamemap/homeship/homeship_bg'
