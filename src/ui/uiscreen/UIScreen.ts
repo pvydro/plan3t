@@ -37,6 +37,12 @@ export class UIScreen extends UIComponent implements IUIScreen {
         }
     }
 
+    update() {
+        if (this.sharedBackground) {
+            this.sharedBackground.update()
+        }
+    }
+
     applyScale(components?: any[]) {
         if (components !== undefined) {
 

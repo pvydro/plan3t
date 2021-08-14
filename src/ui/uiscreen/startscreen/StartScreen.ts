@@ -24,7 +24,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
                     noise: 0.01,
                     lineWidth: 5,
                     lineContrast: 0.025,
-                    vignetting: 0.175
+                    vignetting: 0//0.175
                 })
             ],
             background: { useSharedBackground: true }
@@ -42,7 +42,8 @@ export class StartScreen extends UIScreen implements IStartScreen {
     }
 
     update() {
-        this.sharedBackground.update()
+        super.update()
+
         this.playButton.update()
         this.settingsButton.update()
     }
