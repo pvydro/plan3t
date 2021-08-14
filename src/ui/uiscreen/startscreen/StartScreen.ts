@@ -1,3 +1,4 @@
+import { CRTFilter } from 'pixi-filters'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { RespawnButton } from '../respawnscreen/RespawnButton'
@@ -15,7 +16,15 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
     constructor() {
         super({
-            filters: [],
+            filters: [
+                new CRTFilter({
+                    curvature: 5,
+                    noise: 0.01,
+                    lineWidth: 5,
+                    lineContrast: 0.025,
+                    vignetting: 0.175
+                })
+            ],
             background: { useSharedBackground: true }
         })
 

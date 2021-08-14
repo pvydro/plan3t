@@ -1,4 +1,4 @@
-import { GodrayFilter, KawaseBlurFilter } from 'pixi-filters'
+import { CRTFilter, GodrayFilter, KawaseBlurFilter } from 'pixi-filters'
 import * as PIXI from 'pixi.js'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Sprite } from '../../engine/display/Sprite'
@@ -23,15 +23,22 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
     private constructor() {
         super({
             filters: [
-                new GodrayFilter({
-                    angle: -45,
-                    alpha: 1.0,
-                    lacunarity: 2.0,
-                    center: new PIXI.Point(100, -100),
-                    parallel: true,
-                    time: 0,
-                    gain: 0.5
-                })
+                // new CRTFilter({
+                //     curvature: 5,
+                //     noise: 0.01,
+                //     lineWidth: 5,
+                //     lineContrast: 0.025,
+                //     vignetting: 0.25
+                // }),
+                // new GodrayFilter({
+                //     angle: -45,
+                //     alpha: 1.0,
+                //     lacunarity: 2.0,
+                //     center: new PIXI.Point(100, -100),
+                //     parallel: true,
+                //     time: 0,
+                //     gain: 0.5
+                // })
             ]
         })
 
