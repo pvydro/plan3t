@@ -1,5 +1,5 @@
 import { Fonts } from '../../asset/Fonts'
-import { TextSpriteStyle } from './TextSprite'
+import { TextSpriteAlign, TextSpriteStyle } from './TextSprite'
 
 export interface ITextStyles {
     [ key: string ]: TextSpriteStyle
@@ -76,6 +76,14 @@ export class TextStyles {
             fontFamily: Fonts.FontDefault.family,
             fontSize: scaleFontSize(18),
             color: 0x000000
+        }
+    }
+
+    static InGameChat: ITextStyles = {
+        Chat: {
+            fontFamily: Fonts.FontDefault.family,
+            fontSize: scaleFontSize(8),
+            color: 0xFFFFFF
         }
     }
 

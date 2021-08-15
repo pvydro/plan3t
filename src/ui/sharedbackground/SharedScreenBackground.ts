@@ -75,10 +75,10 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
         const translateX = distanceFromCenter.x / 2
         const translateY = distanceFromCenter.y / 2
 
-        this.backgroundSprite.x += (translateX - this.backgroundSprite.x) / 10
-        this.backgroundSprite.y += (translateY - this.backgroundSprite.y) / 10
+        this.backgroundSprite.x += (translateX - this.backgroundSprite.x) / 25
+        this.backgroundSprite.y += (translateY - this.backgroundSprite.y) / 25
 
-        this.backgroundSprite.x += (this.backgroundOriginalPos.x - this.backgroundSprite.x) / 5
-        this.backgroundSprite.y += (this.backgroundOriginalPos.y - this.backgroundSprite.y) / 5
+        this.backgroundSprite.x += (this.backgroundOriginalPos.x - this.backgroundSprite.x) / 15
+        this.backgroundSprite.y += (this.backgroundOriginalPos.y - this.backgroundSprite.y) / 15
     }
 }

@@ -58,7 +58,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
         this.creator = new UIComponentCreator()
         this.crosshair = Crosshair.getInstance()
-        // this.chat = 
         
         // Temp
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
@@ -81,6 +80,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this.queuedHealthBars = []
             this.reposition(true)
             this._initialized = true
+
+            InGameChat.getInstance().applyListeners()
 
             resolve()
         })
@@ -224,14 +225,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
 
     applyScale(toScaleCustom?: UIComponent[]) {
         super.applyScale(toScaleCustom)
-    }
-
-    applyListeners() {
-        InputProcessor.on('keydown', (ev: KeyboardEvent) => {
-            if (ev.which === Key.T) {
-
-            }
-        })
     }
 
     getComponent(type: UIComponentType) {

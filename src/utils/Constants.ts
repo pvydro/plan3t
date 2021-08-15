@@ -59,6 +59,7 @@ export class DebugConstants {
     static ShowCollisionDebug: boolean = false
     static ShowInteractiveContainerDebug: boolean = true
     static ShowUIButtonDebug: boolean = false
+    static AlternateChatbox: boolean = true
 }
 
 export class AIDebugConstants {

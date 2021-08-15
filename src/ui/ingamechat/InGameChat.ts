@@ -1,3 +1,6 @@
+import { Key } from 'ts-keycode-enum'
+import { InputProcessor } from '../../input/InputProcessor'
+import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../UIComponent'
@@ -42,4 +45,21 @@ export class InGameChat extends UIComponent implements IInGameChat {
         //     - (UIDefaults.ChatboxDimensions.height * UIDefaults.UIScale)
         //     - UIDefaults.UIEdgePadding
     }
+
+    applyListeners() {
+        log('InGameChat', 'applyListeners')
+
+        InputProcessor.on('keydown', (ev: KeyboardEvent) => {
+            if (ev.which === Key.T) {
+                this.enableFocus()
+            }
+        })
+    }
+
+    enableFocus() {
+        log('InGameChat', 'enableFocus')
+
+
+    }
+
 }
