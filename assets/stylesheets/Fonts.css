@@ -17,3 +17,13 @@
     font-family: Upheaval;
     src: url('../fonts/upheaval.ttf') format('truetype')
 }
+
+@font-face {
+    font-family: Squared Display;
+    src: url('../fonts/squareddisplay.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: Percy Pixel;
+    src: url('../fonts/percypixel.ttf') format('truetype')
+}

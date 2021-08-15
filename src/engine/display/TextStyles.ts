@@ -46,6 +46,12 @@ export class TextStyles {
         }
     }
 
+    static WeaponLabel: TextSpriteStyle = {
+        fontSize: scaleFontSize(12),
+        fontFamily: Fonts.FontDefault.family,
+        color: 0xFFFFFF
+    }
+
     static TextParticle: TextSpriteStyle = {
         fontSize: scaleFontSize(16),
         fontFamily: Fonts.FontDefault.family,
@@ -81,7 +87,7 @@ export class TextStyles {
 
     static InGameChat: ITextStyles = {
         Chat: {
-            fontFamily: Fonts.FontDefault.family,
+            fontFamily: Fonts.FontTiny.family,
             fontSize: scaleFontSize(8),
             color: 0xFFFFFF
         }

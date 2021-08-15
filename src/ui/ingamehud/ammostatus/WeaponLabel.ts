@@ -1,6 +1,6 @@
 import { Camera } from '../../../camera/Camera'
 import { TextSprite } from '../../../engine/display/TextSprite'
-import { scaleFontSize } from '../../../engine/display/TextStyles'
+import { scaleFontSize, TextStyles } from '../../../engine/display/TextStyles'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
 import { Defaults } from '../../../utils/Defaults'
@@ -37,9 +37,7 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
         this.ammoStatus = options.ammoStatus
         this.textSprite = new TextSprite({
             text: '',
-            style: {
-                fontSize: scaleFontSize(12)
-            }
+            style: TextStyles.WeaponLabel
         })
 
         this.addChild(this.textSprite)
