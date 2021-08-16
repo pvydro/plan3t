@@ -1,6 +1,7 @@
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 
 export enum RoomMessage {
+    NewChatMessage = 'r_new_chat',
     NewPlanet = 'r_new_planet',
     GetPlanet = 'r_get_planet',
     NewWaveRunner = 'r_new_wave_runner',
@@ -17,6 +18,11 @@ export enum RoomMessage {
 export enum ClientMessage {
     ServerHasPlanet = 'c_server_has_planet',
     NeedNewPlanet = 'c_need_new_planet'
+}
+
+export interface NewChatMessagePayload {
+    sender: string
+    text: string
 }
 
 export interface NewPlanetMessagePayload {

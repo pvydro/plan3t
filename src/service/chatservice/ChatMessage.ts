@@ -1,5 +1,5 @@
 export interface IChatMessage {
-    sender?: string
+    sender: string
     text: string
 }
 

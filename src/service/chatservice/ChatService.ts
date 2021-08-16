@@ -1,4 +1,6 @@
 import { EventEmitter } from 'eventemitter3'
+import { RoomMessenger } from '../../manager/roommanager/RoomMessenger'
+import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { log } from '../Flogger'
 import { IChatMessage } from './ChatMessage'
 
@@ -21,7 +23,9 @@ export class ChatService implements IChatService {
     }
 
     static sendMessage(message: IChatMessage) {
+        log('ChatService', 'sendMessage', 'message', message)
 
+        RoomMessenger.send(RoomMessage.NewChatMessage, message)
     }
 
     static get messageLogAsString() {
