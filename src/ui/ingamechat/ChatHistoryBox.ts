@@ -7,7 +7,7 @@ import { IUIComponent, UIComponent } from '../UIComponent'
 import { ChatHistoryText } from './ChatHistoryText'
 
 export interface IChatHistoryBox extends IUIComponent {
-    refreshChatText(): void
+
 }
 
 export class ChatHistoryBox extends UIComponent implements IChatHistoryBox {
@@ -25,11 +25,7 @@ export class ChatHistoryBox extends UIComponent implements IChatHistoryBox {
 
         this.reposition()
 
-        ChatService.onMessageChange((newMessage: string) => {
-            log('ChatHistoryBox', 'onMessageChange')
-
-
-        })
+        ChatService.onMessageChange((newMessage: string) => this.refreshChatText)
     }
 
     constructBackground() {
@@ -44,8 +40,8 @@ export class ChatHistoryBox extends UIComponent implements IChatHistoryBox {
         return backgroundGraphic
     }
 
-    refreshChatText() {
-        log('ChatHistoryBox', 'refreshChatText')
+    refreshChatText(newMessage: string) {
+        log('ChatHistoryBox', 'refreshChatText', newMessage)
 
         this.chatText.refreshChatText()
     }

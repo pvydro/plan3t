@@ -41,6 +41,8 @@ export class InGameChat extends UIComponent implements IInGameChat {
 
         this.x = GameWindow.fullWindowWidth - this.width - UIDefaults.UIEdgePadding
         this.y = GameWindow.height -(UIDefaults.UIEdgePadding * 3)
+
+        this.chatInputBar.y = this.chatHistoryBox.height
         // GameWindow.fullWindowHeight
         //     - (UIDefaults.ChatboxDimensions.height * UIDefaults.UIScale)
         //     - UIDefaults.UIEdgePadding
@@ -51,15 +53,17 @@ export class InGameChat extends UIComponent implements IInGameChat {
 
         InputProcessor.on('keydown', (ev: KeyboardEvent) => {
             if (ev.which === Key.T) {
-                this.enableFocus()
+                this.enableFocus(true)
+            } else if (ev.which === Key.Escape) {
+                this.enableFocus(false)
             }
         })
     }
 
-    enableFocus() {
-        log('InGameChat', 'enableFocus')
+    enableFocus(shouldEnable: boolean) {
+        log('InGameChat', 'enableFocus', 'shouldEnable', shouldEnable)
 
-
+        this.chatInputBar.enableFocus(shouldEnable)
     }
 
 }
