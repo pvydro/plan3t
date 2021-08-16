@@ -27,27 +27,32 @@ export class PlanetRoomListener implements IPlanetRoomListener {
         this.playerListener.startListening()
         
         this.listenForPlanet()
+        this.listenForChatMessages()
+    }
+
+    private listenForChatMessages() {
+      Flogger.log('PlanetRoomListener', 'listenForChatMessages')
     }
 
     private listenForPlanet() {
-        Flogger.log('PlanetRoomListener', 'listenForPlanet')
+      Flogger.log('PlanetRoomListener', 'listenForPlanet')
 
-        this.room.onMessage(RoomMessage.NewPlanet, (client: Client, message: NewPlanetMessagePayload) => {
-          Flogger.log('PlanetRoomListener', 'Secured new spherical data')//, 'message', message)
-    
-          try {
-            if (this.room.planet === undefined) {
-              this.room.planet = this.convertFetchedPlanetToSchema(message.planet)
-            } else {
-              Flogger.log('PlanetRoomListener', client.sessionId + ' tried to set new planet, but planet already set.')
-            }
-      
-            this.room.state.planetSpherical = this.room.planet
-            this.room.state.planetHasBeenSet = true
-          } catch(error) {
-            Flogger.error('PlanetRoomListener', 'Error setting planetSpherical schema', 'error', error)
+      this.room.onMessage(RoomMessage.NewPlanet, (client: Client, message: NewPlanetMessagePayload) => {
+        Flogger.log('PlanetRoomListener', 'Secured new spherical data')//, 'message', message)
+  
+        try {
+          if (this.room.planet === undefined) {
+            this.room.planet = this.convertFetchedPlanetToSchema(message.planet)
+          } else {
+            Flogger.log('PlanetRoomListener', client.sessionId + ' tried to set new planet, but planet already set.')
           }
-        })
+    
+          this.room.state.planetSpherical = this.room.planet
+          this.room.state.planetHasBeenSet = true
+        } catch(error) {
+          Flogger.error('PlanetRoomListener', 'Error setting planetSpherical schema', 'error', error)
+        }
+      })
     }
 
     private convertFetchedPlanetToSchema(planet: any) {

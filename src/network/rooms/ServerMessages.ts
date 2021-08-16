@@ -1,22 +1,22 @@
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 
 export enum RoomMessage {
-    NewPlanet = 'eNewPlanet',
-    GetPlanet = 'eGetPlanet',
-    NewWaveRunner = 'eNewWaveRunner',
-    PlayerBodyStateChanged = 'ePlayerBodyStateChanged',
-    PlayerLegsStateChanged = 'ePlayerLegsStateChanged',
-    PlayerConciousnessStateChanged = 'ePlayerConciousnessStateChanged',
-    PlayerDirectionChanged = 'ePlayerDirectionChanged',
-    PlayerLandedOnGround = 'ePlayerLandedOnGround',
-    PlayerLookAngleChanged = 'ePlayerLookAngleChanged',
-    PlayerShoot = 'ePlayerShoot',
-    PlayerForceSetPosition = 'ePlayerForceSetPosition'
+    NewPlanet = 'r_new_planet',
+    GetPlanet = 'r_get_planet',
+    NewWaveRunner = 'r_new_wave_runner',
+    PlayerBodyStateChanged = 'r_player_body_state_changed',
+    PlayerLegsStateChanged = 'r_player_legs_state_changed',
+    PlayerConciousnessStateChanged = 'r_player_conciousness_state_changed',
+    PlayerDirectionChanged = 'r_player_direction_changed',
+    PlayerLandedOnGround = 'r_player_landed_on_ground',
+    PlayerLookAngleChanged = 'r_player_look_angle_changed',
+    PlayerShoot = 'r_player_shoot',
+    PlayerForceSetPosition = 'r_player_force_set_position'
 }
 
 export enum ClientMessage {
-    ServerHasPlanet = 'eServerHasPlanet',
-    NeedNewPlanet = 'eNeedNewPlanet'
+    ServerHasPlanet = 'c_server_has_planet',
+    NeedNewPlanet = 'c_need_new_planet'
 }
 
 export interface NewPlanetMessagePayload {
