@@ -18,6 +18,8 @@ import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { PlayerHealthController } from './PlayerHealthController'
 import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState } from './ClientPlayerState'
+import { ISuperMe } from './superme/SuperMe'
+import { TheDevil } from './superme/TheDevil'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
@@ -49,6 +51,7 @@ export class ClientPlayer extends ClientPlayerState {
     collision: PlayerCollision
     controller: IPlayerController
     overheadHealthBar: OverheadHealthBar
+    superMe: ISuperMe
     emitter: Emitter = new Emitter()
 
     static getInstance(options?: ClientPlayerOptions): ClientPlayer | undefined {
@@ -73,6 +76,7 @@ export class ClientPlayer extends ClientPlayerState {
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
         this.hand = new PlayerHand({ player })
+        this.superMe = new TheDevil({ player })
         this.holster = new PlayerWeaponHolster({ player })
         this.healthController = new PlayerHealthController({ player })
         this.overheadHealthBar = new OverheadHealthBar({ player })

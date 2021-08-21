@@ -105,6 +105,14 @@ export class PlayerHead extends Container {
         })
     }
 
+    setCustomHeadSprite(assetUrl: string) {
+        
+    }
+    
+    flipAllSprites() {
+        this.headSprite.flipX()//.scale.x *= -1
+    }
+
     set direction(value: Direction) {
         if (this.currentDirection !== value) {
             this.currentDirection = value
@@ -112,9 +120,6 @@ export class PlayerHead extends Container {
         }
     }
 
-    flipAllSprites() {
-        this.headSprite.flipX()//.scale.x *= -1
-    }
 
     get headBobEaseAmount() {
         if (this.player.legsState === PlayerLegsState.Crouched) {
