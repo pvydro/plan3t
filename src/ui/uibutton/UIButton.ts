@@ -50,7 +50,7 @@ export interface UIButtonTextOptions extends TextSpriteOptions {
 }
 
 export interface UIButtonOptions extends UIComponentOptions {
-    type: UIButtonType
+    type?: UIButtonType
     text?: UIButtonTextOptions
     background?: UIButtonBackgroundOptions
     addClickListeners?: boolean
@@ -86,7 +86,7 @@ export class UIButton extends UIComponent implements IUIButton {
     constructor(options: UIButtonOptions) {
         super(options)
 
-        this.type = options.type
+        this.type = options.type ?? UIButtonType.Tap
         this.extendedOnHold = options.onHold
         this.extendedOnTrigger = options.onTrigger
         this.extendedOnHover = options.onHover

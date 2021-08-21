@@ -7,6 +7,9 @@ export interface ISettingsButton extends IUIButton {
 
 }
 
+/**
+ * @deprecated Use generic UIHoloButton
+ */
 export class SettingsButton extends UIButton implements ISettingsButton {
     constructor() {
         super({

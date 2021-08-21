@@ -1,6 +1,7 @@
 import { CRTFilter } from 'pixi-filters'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
+import { UIHoloButton } from '../../uibutton/UIHoloButton'
 import { RespawnButton } from '../respawnscreen/RespawnButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
 import { PlayButton } from './PlayButton'
@@ -13,7 +14,7 @@ export interface IStartScreen extends IUIScreen {
 
 export class StartScreen extends UIScreen implements IStartScreen {
     playButton: PlayButton
-    settingsButton: SettingsButton
+    settingsButton: UIHoloButton//SettingsButton
     titleLogo: TitleLogo
 
     constructor() {
@@ -31,7 +32,10 @@ export class StartScreen extends UIScreen implements IStartScreen {
         })
 
         this.playButton = new PlayButton()
-        this.settingsButton = new SettingsButton()
+        this.settingsButton = new UIHoloButton({
+            text: { text: 'settings', }
+        })
+        //new SettingsButton()
         this.titleLogo = new TitleLogo()
 
         this.addChild(this.playButton)
