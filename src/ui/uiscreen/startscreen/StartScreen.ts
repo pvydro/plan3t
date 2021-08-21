@@ -15,6 +15,7 @@ export interface IStartScreen extends IUIScreen {
 export class StartScreen extends UIScreen implements IStartScreen {
     playButton: PlayButton
     settingsButton: UIHoloButton//SettingsButton
+    loadoutButton: UIHoloButton
     titleLogo: TitleLogo
 
     constructor() {
@@ -35,11 +36,16 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.settingsButton = new UIHoloButton({
             text: { text: 'settings', }
         })
+        this.loadoutButton = new UIHoloButton({
+            text: { text: 'loadout' }
+        })
+
         //new SettingsButton()
         this.titleLogo = new TitleLogo()
 
         this.addChild(this.playButton)
         this.addChild(this.settingsButton)
+        this.addChild(this.loadoutButton)
         this.addChild(this.titleLogo)
         this.applyScale()
         this.reposition(true)
@@ -50,12 +56,14 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
         this.playButton.update()
         this.settingsButton.update()
+        this.loadoutButton.update()
     }
 
     applyScale() {
         const toScale = [
             this.playButton,
             this.settingsButton,
+            this.loadoutButton,
             this.titleLogo
         ]
         
@@ -74,5 +82,8 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
         this.settingsButton.x = this.playButton.x
         this.settingsButton.y = this.playButton.y - this.settingsButton.height - margin
+    
+        this.loadoutButton.x = this.playButton.x
+        this.loadoutButton.y = this.settingsButton.y - this.loadoutButton.height - margin
     }
 }

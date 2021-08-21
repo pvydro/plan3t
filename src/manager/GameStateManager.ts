@@ -26,7 +26,8 @@ export enum GameStateID {
     Gameplay = 'Gameplay',
     WaveRunnerGame = 'WaveGame',
     Homeship = 'Spaceship',
-    Empty = 'Empty'
+    Empty = 'Empty',
+    WeaponLoadout = 'WeaponLoadout'
 }
 
 export class GameStateManager implements IGameStateManager {
