@@ -63,7 +63,7 @@ export class PlanetRoomListener implements IPlanetRoomListener {
   private listenForWaveRunnerRequests() {
     Flogger.log('PlanetRoomListener', 'listenForWaveRunnerRequest')
 
-    this.room.onMessage(RoomMessage.NewWaveRunner, (client: Client, message: any) => {
+    this.room.onMessage(RoomMessage.NewWaveRunner, (client: Client) => {
       Flogger.log('PlanetRoomListener', 'Received request for new WaveRunner')
 
     })

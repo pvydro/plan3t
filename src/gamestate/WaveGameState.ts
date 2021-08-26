@@ -34,6 +34,8 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
                 sound.play()
             })
+
+            ChatService.fetchChatHistoryFromRoom()
         })
 
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {

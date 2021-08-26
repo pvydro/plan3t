@@ -78,6 +78,7 @@ export class RoomManager implements IRoomManager {
             this.currentRoom.onStateChange.once((state: PlanetGameState) => {
                 log('RoomManager', 'firstState received')
 
+                this.roomStateManager.stateChanged(state)
 
                 if (RoomManager.clientSessionId === state.hostId) {
                     importantLog('Host sessionId found, setting in Environment', 'sessionId', RoomManager.clientSessionId)

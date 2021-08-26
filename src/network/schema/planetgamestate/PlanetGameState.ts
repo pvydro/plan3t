@@ -7,6 +7,7 @@ import { IPGSGravityController, PGSGravityController } from './PGSGravityControl
 import { ProjectileSchema } from '../ProjectileSchema'
 import { PlanetSphericalSchema } from './PlanetSphericalSchema'
 import { CreatureSchema } from '../CreatureSchema'
+import { ChatMessageSchema } from '../ChatMessageSchema'
 import { WaveRunnerSchema } from '../waverunner/WaveRunnerSchema'
 
 export class PlanetGameState extends Schema {
@@ -14,6 +15,8 @@ export class PlanetGameState extends Schema {
   players = new MapSchema<PlayerSchema>()
   @type({ map: CreatureSchema })
   creatures = new MapSchema<CreatureSchema>()
+  @type({ set: ChatMessageSchema })
+  messages = new SetSchema<ChatMessageSchema>()
   @type(PlanetSphericalSchema)
   planetSpherical?: PlanetSphericalSchema
   @type(WaveRunnerSchema)
@@ -34,6 +37,10 @@ export class PlanetGameState extends Schema {
   initialize() {
     this.playerController = new PGSPlayerController(this)
     this.gravityController = new PGSGravityController(this)
+
+    this.messages.add(new ChatMessageSchema().assign({ sender: 'Bingalow', text: 'Hey' }))
+    this.messages.add(new ChatMessageSchema().assign({ sender: 'Doobie', text: 'What' }))
+    this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'Restarting...' }))
   }
 
   createPlayer(sessionId: string, x?: number, y?: number) {
