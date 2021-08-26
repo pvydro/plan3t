@@ -37,15 +37,15 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
                     //     vignetting: 0.25
                     // }),
                 new KawaseBlurFilter(8.5, 6),
-                new GodrayFilter({
-                    angle: -45,
-                    alpha: 1.0,
-                    lacunarity: 2.0,
-                    center: new PIXI.Point(100, -100),
-                    parallel: true,
-                    time: 0,
-                    gain: 0.5
-                })
+                // new GodrayFilter({
+                //     angle: -45,
+                //     alpha: 1.0,
+                //     lacunarity: 2.0,
+                //     center: new PIXI.Point(100, -100),
+                //     parallel: true,
+                //     time: 0,
+                //     gain: 0.5
+                // })
             ]
         })
         

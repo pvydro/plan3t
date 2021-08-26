@@ -13,6 +13,7 @@ import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState  } from './C
 export interface IPlayerHead extends IUpdatable {
     headBobOffset: number
     headBobOffsetInterpoliation: { interpolation: number }
+    setCustomHeadSprite(assetUrl: string): void
 }
 
 export interface PlayerHeadOptions {
@@ -106,7 +107,7 @@ export class PlayerHead extends Container {
     }
 
     setCustomHeadSprite(assetUrl: string) {
-        
+        // this.customSpriteContainer
     }
     
     flipAllSprites() {
