@@ -1,5 +1,6 @@
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
+import { ChatEvent, ChatService } from '../../service/chatservice/ChatService'
 import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
@@ -34,6 +35,7 @@ export class InGameChat extends UIComponent implements IInGameChat {
         this.addChild(this.chatInputBar)
 
         this.reposition(true)
+        this.applyListeners()
     }
 
     reposition(addListeners?: boolean) {
@@ -58,6 +60,16 @@ export class InGameChat extends UIComponent implements IInGameChat {
                 this.enableFocus(false)
             }
         })
+
+        ChatService.eventBus.on(ChatEvent.NewChatMessage, () => {
+            this.refreshChatText()
+        })
+    }
+
+    refreshChatText() {
+        log('InGameChat', 'refreshChatText')
+
+        this.chatHistoryBox.refreshChatText()
     }
 
     enableFocus(shouldEnable: boolean) {

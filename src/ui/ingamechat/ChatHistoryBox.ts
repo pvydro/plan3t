@@ -7,7 +7,7 @@ import { IUIComponent, UIComponent } from '../UIComponent'
 import { ChatHistoryText } from './ChatHistoryText'
 
 export interface IChatHistoryBox extends IUIComponent {
-
+    refreshChatText(): void
 }
 
 export class ChatHistoryBox extends UIComponent implements IChatHistoryBox {
@@ -40,8 +40,8 @@ export class ChatHistoryBox extends UIComponent implements IChatHistoryBox {
         return backgroundGraphic
     }
 
-    refreshChatText(newMessage: string) {
-        log('ChatHistoryBox', 'refreshChatText', newMessage)
+    refreshChatText() {
+        log('ChatHistoryBox', 'refreshChatText')
 
         this.chatText.refreshChatText()
     }

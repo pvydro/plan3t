@@ -1,7 +1,10 @@
 import { Sound } from '@pixi/sound'
+import { Key } from 'ts-keycode-enum'
+import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { GameStateID } from '../manager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
 import { SongKeyCodes } from '../music/SongKeyCodes'
+import { ChatService } from '../service/chatservice/ChatService'
 import { asyncTimeout } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
 import { GameStateOptions, IGameState } from './GameState'
@@ -31,6 +34,15 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
                 sound.play()
             })
+        })
+
+        InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
+            if (ev.which === Key.X) {
+                ChatService.sendMessage({
+                    sender: 'test',
+                    text: 'test message'
+                })
+            }
         })
     }
 

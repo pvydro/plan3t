@@ -34,8 +34,10 @@ export class ChatService implements IChatService {
     static sendMessage(message: IChatMessage) {
         log('ChatService', 'sendMessage', 'message', message)
 
+        ChatService._messageHistory.push(message)
+
+        ChatService.eventBus.emit(ChatEvent.NewChatMessage, message)
         RoomMessenger.send(RoomMessage.NewChatMessage, message)
-        ChatService._eventBus.emit(ChatEvent.NewChatMessage, message)
     }
 
     static get messageLogAsString(): string {
@@ -49,5 +51,9 @@ export class ChatService implements IChatService {
         }
 
         return str
+    }
+
+    static get eventBus() {
+        return ChatService._eventBus
     }
 }

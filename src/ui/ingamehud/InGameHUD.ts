@@ -81,8 +81,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
             this.reposition(true)
             this._initialized = true
 
-            InGameChat.getInstance().applyListeners()
-
             resolve()
         })
     }
