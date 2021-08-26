@@ -15,17 +15,25 @@ export class ChatHistoryText extends UIComponent implements IChatHistoryText {
         super()
 
         this.chatTextSprite = new TextSprite({
-            text: ChatService.messageLogAsString,
+            text: '',
             style: TextStyles.InGameChat.Chat,
             align: TextSpriteAlign.Left
         })
 
         this.addChild(this.chatTextSprite)
+        this.refreshChatText()
     }
 
     refreshChatText() {
         log('ChatHistoryText', 'refreshChatText')
 
         this.chatTextSprite.text = ChatService.messageLogAsString
+        this.reposition()
+    }
+
+    reposition() {
+        log('ChatHistoryText', 'reposition')
+
+        this.chatTextSprite.y = -this.chatTextSprite.height
     }
 }

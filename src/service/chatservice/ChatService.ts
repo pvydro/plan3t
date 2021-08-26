@@ -25,12 +25,6 @@ export class ChatService implements IChatService {
         throw new Error('InGameChatService should not be instantiated')
     }
 
-    static onMessageChange(callback: Function) {
-        log('ChatService', 'onMessageChange')
-
-        callback(this._messageHistory)
-    }
-
     static sendMessage(message: IChatMessage) {
         log('ChatService', 'sendMessage', 'message', message)
 

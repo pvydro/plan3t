@@ -24,8 +24,6 @@ export class ChatHistoryBox extends UIComponent implements IChatHistoryBox {
         this.addChild(this.chatText)
 
         this.reposition()
-
-        ChatService.onMessageChange((newMessage: string) => this.refreshChatText)
     }
 
     constructBackground() {
