@@ -1,8 +1,6 @@
 import { EventEmitter } from 'eventemitter3'
-import { RoomManager } from '../../manager/roommanager/RoomManager'
 import { RoomMessenger } from '../../manager/roommanager/RoomMessenger'
-import { RoomStateManager } from '../../manager/roommanager/RoomStateManager'
-import { RoomMessage } from '../../network/rooms/ServerMessages'
+import { ClientMessage, RoomMessage } from '../../network/rooms/ServerMessages'
 import { ChatMessageSchema } from '../../network/schema/ChatMessageSchema'
 import { log } from '../Flogger'
 import { IChatMessage } from './ChatMessage'
@@ -17,12 +15,12 @@ export enum ChatEvent {
 
 export class ChatService implements IChatService {
     private static _eventBus = new EventEmitter()
-    // private static _messageHistory: string = `Hey\nHey\nWhat's up\nJust coding\nCool`
     private static _localMessageHistory: IChatMessage[] = [
         { sender: 'Ding', text: 'Do' },
         { sender: 'Dong', text: 'The' },
         { sender: '[ Ditch ]', text: 'Mar' },
     ]
+    private static _serverMessages: any = {}
 
     private constructor() {
         throw new Error('InGameChatService should not be instantiated')
@@ -31,11 +29,9 @@ export class ChatService implements IChatService {
     static fetchChatHistoryFromRoom() {
         log('ChatService', 'fetchChatHistoryFromRoom')
 
-        const messages = RoomManager.getInstance().roomStateManager.currentState?.messages
-
-        if (messages) {
+        if (this._serverMessages) {
             this._localMessageHistory = []
-            messages.forEach((message: ChatMessageSchema) => {
+            this._serverMessages.forEach((message: ChatMessageSchema) => {
                 this._localMessageHistory.push({ sender: message.sender, text: message.text })
             })
     
@@ -46,9 +42,10 @@ export class ChatService implements IChatService {
     static sendMessage(message: IChatMessage) {
         log('ChatService', 'sendMessage', 'message', message)
 
-        RoomMessenger.send(RoomMessage.NewChatMessage, message)
-
-        this.fetchChatHistoryFromRoom()
+        RoomMessenger.sendAndExpect(RoomMessage.NewChatMessage, message, ClientMessage.UpdateChat).then((message) => {
+            this._serverMessages = message
+            this.fetchChatHistoryFromRoom()
+        })
     }
 
     static get messageLogAsString(): string {

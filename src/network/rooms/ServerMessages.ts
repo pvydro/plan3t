@@ -17,7 +17,8 @@ export enum RoomMessage {
 
 export enum ClientMessage {
     ServerHasPlanet = 'c_server_has_planet',
-    NeedNewPlanet = 'c_need_new_planet'
+    NeedNewPlanet = 'c_need_new_planet',
+    UpdateChat = 'c_update_chat'
 }
 
 export interface NewChatMessagePayload {

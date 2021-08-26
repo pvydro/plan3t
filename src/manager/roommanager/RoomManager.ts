@@ -21,6 +21,7 @@ import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { Environment } from '../../main/Environment'
 import { WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
+import { ChatService } from '../../service/chatservice/ChatService'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -102,6 +103,13 @@ export class RoomManager implements IRoomManager {
             })
 
             this.currentRoom.onStateChange((state: PlanetGameState) => {
+                importantLog('onStateChange')
+
+                if (this.roomStateManager.currentState?.messages !== state.messages) {
+                    importantLog('messages not in sync')
+
+                    ChatService.fetchChatHistoryFromRoom()
+                }
                 this.roomStateManager.stateChanged(state)
             })
         })

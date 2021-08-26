@@ -1,8 +1,9 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
+import { ChatMessageSchema } from '../../schema/ChatMessageSchema'
 import { DimensionSchema } from '../../schema/DimensionSchema'
 import { PlanetSphericalSchema, PlanetSphericalTileSchema, PlanetSphericalTileDataSchema } from '../../schema/planetgamestate/PlanetSphericalSchema'
-import { NewChatMessagePayload, NewPlanetMessagePayload, RoomMessage } from '../ServerMessages'
+import { ClientMessage, NewChatMessagePayload, NewPlanetMessagePayload, RoomMessage } from '../ServerMessages'
 import { PlanetRoom } from './PlanetRoom'
 import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
 
@@ -36,6 +37,13 @@ export class PlanetRoomListener implements IPlanetRoomListener {
 
     this.room.onMessage(RoomMessage.NewChatMessage, (client: Client, message: NewChatMessagePayload) => {
       Flogger.log('PlanetRoomListener', 'Received new chat message', message)//, 'message', message)
+
+      this.room.state.messages.add(new ChatMessageSchema().assign({
+        sender: message.sender,
+        text: message.text
+      }))
+      
+      this.room.send(client, ClientMessage.UpdateChat, this.room.state.messages)
     })
   }
 
