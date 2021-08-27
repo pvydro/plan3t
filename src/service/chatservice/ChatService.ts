@@ -1,4 +1,5 @@
 import { EventEmitter } from 'eventemitter3'
+import { RoomManager } from '../../manager/roommanager/RoomManager'
 import { RoomMessenger } from '../../manager/roommanager/RoomMessenger'
 import { ClientMessage, RoomMessage } from '../../network/rooms/ServerMessages'
 import { ChatMessageSchema } from '../../network/schema/ChatMessageSchema'
@@ -20,7 +21,7 @@ export class ChatService implements IChatService {
         { sender: 'Dong', text: 'The' },
         { sender: '[ Ditch ]', text: 'Mar' },
     ]
-    private static _serverMessages: any = {}
+    static _serverMessages: any = undefined
 
     private constructor() {
         throw new Error('InGameChatService should not be instantiated')
@@ -36,6 +37,9 @@ export class ChatService implements IChatService {
             })
     
             this.eventBus.emit(ChatEvent.NewChatMessage)
+        } else {
+            this._serverMessages = RoomManager.getInstance().roomState.messages
+            this.fetchChatHistoryFromRoom()
         }
     }
 

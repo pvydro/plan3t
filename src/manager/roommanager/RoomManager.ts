@@ -9,7 +9,7 @@ import { IGameMapManager } from '../GameMapManager'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Dimension } from '../../engine/math/Dimension'
-import { RoomMessage } from '../../network/rooms/ServerMessages'
+import { ClientMessage, RoomMessage } from '../../network/rooms/ServerMessages'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 import { RoomMessenger } from './RoomMessenger'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
@@ -105,13 +105,20 @@ export class RoomManager implements IRoomManager {
             this.currentRoom.onStateChange((state: PlanetGameState) => {
                 importantLog('onStateChange')
 
-                if (this.roomStateManager.currentState?.messages !== state.messages) {
-                    importantLog('messages not in sync')
+                // if (this.roomStateManager.currentState?.messages !== state.messages) {
+                //     importantLog('messages not in sync')
 
-                    ChatService.fetchChatHistoryFromRoom()
-                }
+                //     ChatService.fetchChatHistoryFromRoom()
+                // }
                 this.roomStateManager.stateChanged(state)
             })
+            this.currentRoom.onMessage(ClientMessage.UpdateChat, (message) => {
+                if (ChatService._serverMessages !== message) {
+                    ChatService._serverMessages = message
+                    ChatService.fetchChatHistoryFromRoom()
+                }
+            })
+
         })
     }
 

@@ -38,9 +38,7 @@ export class PlanetGameState extends Schema {
     this.playerController = new PGSPlayerController(this)
     this.gravityController = new PGSGravityController(this)
 
-    this.messages.add(new ChatMessageSchema().assign({ sender: 'Bingalow', text: 'Hey' }))
-    this.messages.add(new ChatMessageSchema().assign({ sender: 'Doobie', text: 'What' }))
-    this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'Restarting...' }))
+    this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'Starting...' }))
   }
 
   createPlayer(sessionId: string, x?: number, y?: number) {

@@ -4,6 +4,7 @@ import { ChatMessageSchema } from '../../schema/ChatMessageSchema'
 import { DimensionSchema } from '../../schema/DimensionSchema'
 import { PlanetSphericalSchema, PlanetSphericalTileSchema, PlanetSphericalTileDataSchema } from '../../schema/planetgamestate/PlanetSphericalSchema'
 import { ClientMessage, NewChatMessagePayload, NewPlanetMessagePayload, RoomMessage } from '../ServerMessages'
+import { ChatSender } from '../../../service/chatservice/ChatSenderConstants'
 import { PlanetRoom } from './PlanetRoom'
 import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
 
@@ -74,6 +75,7 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     this.room.onMessage(RoomMessage.NewWaveRunner, (client: Client) => {
       Flogger.log('PlanetRoomListener', 'Received request for new WaveRunner')
 
+      this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Request waverunner game...' }))
     })
   }
 
