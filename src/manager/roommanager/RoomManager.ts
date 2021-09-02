@@ -20,7 +20,7 @@ import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { Environment } from '../../main/Environment'
-import { WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
+import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
 
 export interface IRoomManager {
@@ -104,12 +104,6 @@ export class RoomManager implements IRoomManager {
 
             this.currentRoom.onStateChange((state: PlanetGameState) => {
                 importantLog('onStateChange')
-
-                // if (this.roomStateManager.currentState?.messages !== state.messages) {
-                //     importantLog('messages not in sync')
-
-                //     ChatService.fetchChatHistoryFromRoom()
-                // }
                 this.roomStateManager.stateChanged(state)
             })
 
@@ -119,26 +113,23 @@ export class RoomManager implements IRoomManager {
                     ChatService.fetchChatHistoryFromRoom()
                 }
             })
-
-            this.currentRoom.onMessage(ClientMessage.WaveRunnerStarted, (message) => {
-                importantLog('WaveRunnerStarted')
-                ChatService.sendMessage({ sender: '[ Server ]', text: 'Wave runner started' })
-
-                
-            })
         })
     }
 
     requestWaveRunnerGame(): Promise<any> {
         log('RoomManager', 'requestWaveRunnerGame')
+
         return new Promise((resolve) => {
             // this.currentRoom.onMessage
             if (this.currentRoom.state.waveGameHasBeenStarted
             && this.currentRoom.state.waveRunner) {
                 this.roomStateManager.configureLocalWaveRunner(this.currentRoom.state.waveRunner)
             } else {
-                // this.currentRoom.state.beginWaveRunnerGame()
-                this.currentRoom.send(RoomMessage.NewWaveRunner)
+                RoomMessenger.sendAndExpect(RoomMessage.NewWaveRunner, undefined, ClientMessage.WaveRunnerStarted).then((message: WaveRunnerSchema) => {
+                    log('RoomManager', 'received wave runner game')
+                    ChatService.sendMessage({ sender: '[ Server ]', text: 'Wave runner started' })
+                    this.roomStateManager.configureLocalWaveRunner(message)
+                })
             }
 
             resolve(true)

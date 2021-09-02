@@ -52,7 +52,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
             this.roomManager.requestWaveRunnerGame().then((state: WaveSchema) => {
                 this.currentWaveRunnerGame.loadWave(new Wave(state))
             })
-        }, 1000)
+        }, 2000)
         // TODO: If isHost
         // this.currentWaveRunnerGame.beginWaveRunner()
         // this.registerNextWave()
