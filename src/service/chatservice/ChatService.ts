@@ -3,6 +3,7 @@ import { RoomManager } from '../../manager/roommanager/RoomManager'
 import { RoomMessenger } from '../../manager/roommanager/RoomMessenger'
 import { ClientMessage, RoomMessage } from '../../network/rooms/ServerMessages'
 import { ChatMessageSchema } from '../../network/schema/ChatMessageSchema'
+import { asyncTimeout } from '../../utils/Utils'
 import { log } from '../Flogger'
 import { IChatMessage } from './ChatMessage'
 
@@ -27,8 +28,10 @@ export class ChatService implements IChatService {
         throw new Error('InGameChatService should not be instantiated')
     }
 
-    static fetchChatHistoryFromRoom() {
+    static async fetchChatHistoryFromRoom() {
         log('ChatService', 'fetchChatHistoryFromRoom')
+
+        await asyncTimeout(500)
 
         if (this._serverMessages) {
             this._localMessageHistory = []

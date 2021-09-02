@@ -73,6 +73,8 @@ export class PlanetGameState extends Schema {
   }
 
   beginWaveRunnerGame() {
+    Flogger.log('PlanetGameState', 'beginWaveRunnerGame')
+
     this.waveRunner = new WaveRunnerSchema()
     this.waveRunner.initialize()
   }
