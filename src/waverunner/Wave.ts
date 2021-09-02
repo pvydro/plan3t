@@ -38,7 +38,7 @@ export class Wave extends Emitter implements IWave {
     constructor(options: WaveOptions | WaveSchema) {
         super()
 
-        this.waveIndex = options.waveIndex
+        this.waveIndex = options.waveIndex ?? 0
         // this._onSpawn = options.onSpawn
         // this._onComplete = options.onComplete
     }

@@ -1,6 +1,7 @@
 
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { Tween } from '../../../engine/display/tween/Tween'
+import { log } from '../../../service/Flogger'
 import { UIDefaults } from '../../../utils/Defaults'
 import { asyncTimeout } from '../../../utils/Utils'
 import { IWave } from '../../../waverunner/Wave'
@@ -48,6 +49,8 @@ export class WaveRunnerCounter extends UIComponent implements IWaveRunnerCounter
     }
 
     setWaveValue(wave: IWave) {
+        log('WaveRunnerCounter', 'setWaveValue', 'wave', wave)
+
         asyncTimeout(500).then(() => {
             this.timerCounter.setWave(wave)
             this.waveNumberLabel.setText(wave.waveIndex.toString())

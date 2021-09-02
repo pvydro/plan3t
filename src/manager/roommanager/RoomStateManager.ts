@@ -31,6 +31,10 @@ export class RoomStateManager implements IRoomStateManager {
     }
 
     configureLocalWaveRunner(schema: WaveRunnerSchema) {
+        log('RoomStateManager', 'configureLocalWaveRunner', 'schema', schema)
+
         const waveRunner = WaveRunnerManager.getInstance()
+
+
     }
 }

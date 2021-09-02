@@ -22,10 +22,11 @@ import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { Environment } from '../../main/Environment'
 import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
+import { ChatSender } from '../../service/chatservice/ChatSenderConstants'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
-    requestWaveRunnerGame(): Promise<WaveSchema>
+    requestWaveRunnerGame(): Promise<WaveRunnerSchema>
     currentRoom: Room
 }
 
@@ -116,23 +117,25 @@ export class RoomManager implements IRoomManager {
         })
     }
 
-    requestWaveRunnerGame(): Promise<any> {
+    requestWaveRunnerGame(): Promise<WaveRunnerSchema> {
         log('RoomManager', 'requestWaveRunnerGame')
 
         return new Promise((resolve) => {
             // this.currentRoom.onMessage
             if (this.currentRoom.state.waveGameHasBeenStarted
             && this.currentRoom.state.waveRunner) {
-                this.roomStateManager.configureLocalWaveRunner(this.currentRoom.state.waveRunner)
+                resolve(this.currentRoom.state.waveRunner)
             } else {
                 RoomMessenger.sendAndExpect(RoomMessage.NewWaveRunner, undefined, ClientMessage.WaveRunnerStarted).then((message: WaveRunnerSchema) => {
                     log('RoomManager', 'received wave runner game')
-                    ChatService.sendMessage({ sender: '[ Server ]', text: 'Wave runner started' })
-                    this.roomStateManager.configureLocalWaveRunner(message)
+
+                    ChatService.sendMessage({ sender: ChatSender.Server, text: 'Wave runner started' })
+                    
+                    resolve(message)
                 })
             }
 
-            resolve(true)
+            // resolve(true)
         })
     }
 

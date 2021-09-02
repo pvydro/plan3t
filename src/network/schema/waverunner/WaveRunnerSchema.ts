@@ -21,6 +21,7 @@ export class WaveRunnerSchema extends Schema {
 
     initialize() {
         this.currentWave = new WaveSchema().assign({
+            waveIndex: 3,
             totalTime: 3000,
             totalEnemies: 5
         })
