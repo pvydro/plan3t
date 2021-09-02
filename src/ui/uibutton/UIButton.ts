@@ -86,7 +86,9 @@ export class UIButton extends UIComponent implements IUIButton {
     constructor(options: UIButtonOptions) {
         super(options)
 
-        this.type = options.type ?? UIButtonType.Tap
+        options.type = options.type ?? UIButtonType.Tap
+        
+        this.type = options.type
         this.extendedOnHold = options.onHold
         this.extendedOnTrigger = options.onTrigger
         this.extendedOnHover = options.onHover

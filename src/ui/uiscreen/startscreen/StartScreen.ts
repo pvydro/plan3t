@@ -1,5 +1,6 @@
 import { CRTFilter } from 'pixi-filters'
 import { Container } from '../../../engine/display/Container'
+import { GameStateID, GameStateManager } from '../../../manager/gamestatemanager/GameStateManager'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { UIButton } from '../../uibutton/UIButton'
@@ -33,7 +34,9 @@ export class StartScreen extends UIScreen implements IStartScreen {
                     vignetting: 0//0.175
                 })
             ],
-            background: { useSharedBackground: true }
+            background: {
+                useSharedBackground: true
+            }
         })
 
         this.titleLogo = new TitleLogo()
@@ -41,10 +44,14 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.buttons = [
             this.playButton = new PlayButton(),
             this.settingsButton = new UIHoloButton({
-                text: { text: 'settings', }
+                text: { text: 'settings' }
             }),
             this.styleButton = new UIHoloButton({
-                text: { text: 'style' }
+                text: { text: 'style' },
+                onTrigger: () => {
+                    console.log('click click click')
+                    GameStateManager.getInstance().enterState(GameStateID.StyleMenu)
+                }
             }),
             this.loadoutButton = new UIHoloButton({
                 text: { text: 'loadout' }

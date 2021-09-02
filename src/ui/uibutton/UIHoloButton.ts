@@ -8,31 +8,32 @@ export interface IUIHoloButton {
 
 }
 
-export interface IUIHoloButtonOptions extends UIButtonOptions {
+export interface UIHoloButtonOptions extends UIButtonOptions {
 
 }
 
 export class UIHoloButton extends UIButton implements IUIHoloButton {
     backgroundGraphics: Graphix
 
-    constructor(options?: IUIHoloButtonOptions) {super({
-        type: UIButtonType.Tap,
-        text: {
-            text: options.text.text,
-            uppercase: options.text.uppercase ?? true,
-            style: options.text.style ?? TextStyles.DefaultButton.Small,
-            align: options.text.align ?? TextSpriteAlign.Left
-        },
-        background: {
+    constructor(options?: UIHoloButtonOptions) {
+        options = UIHoloButton.applyDefaults(options)
+
+        super(options)
+    }
+
+    private static applyDefaults(options: UIHoloButtonOptions): UIHoloButtonOptions {
+        options.type = options.type ?? UIButtonType.Tap
+        options.background = {
             idle: AssetUrls.ButtonRectSmall,
             hovered: AssetUrls.ButtonRectSmallHovered
-        },
-        onHover: () => options.onHover,
-        // darkenerOptions: {
-        //     hoverTint: 0xdbdbdb,
-        //     clickTint: 0x969696
-        // },
-        onTrigger: () => options.onTrigger
-    })
+
+        }
+        if (options.text) {
+            options.text.uppercase = options.text.uppercase ?? true
+            options.text.style = options.text.style ?? TextStyles.DefaultButton.Small
+            options.text.align = options.text.align ?? TextSpriteAlign.Left
+        }
+
+        return options
     }
 }

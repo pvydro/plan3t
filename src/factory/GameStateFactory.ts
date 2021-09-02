@@ -2,6 +2,7 @@ import { GameplayState } from '../gamestate/GameplayState'
 import { GameState, GameStateOptions } from '../gamestate/GameState'
 import { HomeshipState } from '../gamestate/HomeshipState'
 import { StartMenuState } from '../gamestate/menustate/StartMenuState'
+import { StyleMenuState } from '../gamestate/menustate/StyleMenuState'
 import { WaveGameState } from '../gamestate/WaveGameState'
 import { Game } from '../main/Game'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
@@ -32,10 +33,14 @@ export class GameStateFactory implements IGameStateFactory {
             case GameStateID.WaveRunnerGame:
                 state = new WaveGameState(options)
                 break
+            
+            // Menu
             case GameStateID.StartMenu:
                 state = new StartMenuState(options)
                 break
-                
+            case GameStateID.StyleMenu:
+                state = new StyleMenuState(options)
+                break
         }
 
         return state

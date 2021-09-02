@@ -5,6 +5,7 @@ import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
 import { ISharedScreenBackground, SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
+import { UIScreenHeader, UIScreenHeaderOptions } from './UIScreenHeader'
 
 export interface IUIScreen extends IUIComponent {
     backgroundGraphic?: Graphix
@@ -18,11 +19,13 @@ export interface UIScreenBackgroundOptions {
 }
 export interface UIScreenOptions extends UIComponentOptions {
     background?: UIScreenBackgroundOptions
+    header?: UIScreenHeaderOptions
 }
 
 export class UIScreen extends UIComponent implements IUIScreen {
     backgroundGraphic?: Graphix
     sharedBackground?: ISharedScreenBackground
+    screenHeader?: UIScreenHeader
 
     constructor(options?: UIScreenOptions) {
         options = options ?? {}
@@ -34,6 +37,9 @@ export class UIScreen extends UIComponent implements IUIScreen {
             if (exists(options.background)) {
                 this.createBackgroundGraphics(options.background)
             }
+            if (exists(options.header)) {
+                this.createScreenHeader(options.header)
+            }
         }
     }
 
@@ -44,13 +50,13 @@ export class UIScreen extends UIComponent implements IUIScreen {
     }
 
     applyScale(components?: any[]) {
-        if (components !== undefined) {
+        if (components === undefined) components = []
+        if (this.screenHeader) components.push(this.screenHeader)
 
-            for (var i in components) {
-                const scaledComponent = components[i]
+        for (var i in components) {
+            const scaledComponent = components[i]
 
-                scaledComponent.scale.set(UIDefaults.UIScale, UIDefaults.UIScale)
-            }
+            scaledComponent.scale.set(UIDefaults.UIScale, UIDefaults.UIScale)
         }
     }
 
@@ -78,6 +84,14 @@ export class UIScreen extends UIComponent implements IUIScreen {
     
             this.addChild(this.backgroundGraphic)
         }
+    }
+
+    protected createScreenHeader(options: UIScreenHeaderOptions) {
+        log('UIScreen', 'createScreenHeader')
+
+        this.screenHeader = new UIScreenHeader(options)
+
+        this.addChild(this.screenHeader)
     }
 
     reposition(addListener?: boolean) {
