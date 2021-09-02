@@ -1,6 +1,8 @@
 import { CRTFilter } from 'pixi-filters'
+import { Container } from '../../../engine/display/Container'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
+import { UIButton } from '../../uibutton/UIButton'
 import { UIHoloButton } from '../../uibutton/UIHoloButton'
 import { RespawnButton } from '../respawnscreen/RespawnButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
@@ -13,9 +15,12 @@ export interface IStartScreen extends IUIScreen {
 
 export class StartScreen extends UIScreen implements IStartScreen {
     playButton: PlayButton
-    settingsButton: UIHoloButton//SettingsButton
+    settingsButton: UIHoloButton
+    styleButton: UIHoloButton
     loadoutButton: UIHoloButton
     titleLogo: TitleLogo
+    buttonContainer: Container
+    buttons: UIButton[]
 
     constructor() {
         super({
@@ -31,21 +36,27 @@ export class StartScreen extends UIScreen implements IStartScreen {
             background: { useSharedBackground: true }
         })
 
-        this.playButton = new PlayButton()
-        this.settingsButton = new UIHoloButton({
-            text: { text: 'settings', }
-        })
-        this.loadoutButton = new UIHoloButton({
-            text: { text: 'loadout' }
-        })
-
-        //new SettingsButton()
         this.titleLogo = new TitleLogo()
+        this.buttonContainer = new Container()
+        this.buttons = [
+            this.playButton = new PlayButton(),
+            this.settingsButton = new UIHoloButton({
+                text: { text: 'settings', }
+            }),
+            this.styleButton = new UIHoloButton({
+                text: { text: 'style' }
+            }),
+            this.loadoutButton = new UIHoloButton({
+                text: { text: 'loadout' }
+            })
+        ]
 
-        this.addChild(this.playButton)
-        this.addChild(this.settingsButton)
-        this.addChild(this.loadoutButton)
+        for (var i in this.buttons) {
+            const btn = this.buttons[i]
+            this.buttonContainer.addChild(btn)
+        }
         this.addChild(this.titleLogo)
+        this.addChild(this.buttonContainer)
         this.applyScale()
         this.reposition(true)
     }
@@ -60,11 +71,15 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
     applyScale() {
         const toScale = [
-            this.playButton,
-            this.settingsButton,
-            this.loadoutButton,
+            // this.playButton,
+            // this.settingsButton,
+            // this.loadoutButton,
+            // this.buttonContainer,
             this.titleLogo
         ]
+        for (const i in this.buttons) {
+            toScale.push(this.buttons[i])
+        }
         
         super.applyScale(toScale)
     }
@@ -74,20 +89,25 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
         const scale = UIDefaults.UIScale
         const margin = UIDefaults.UIMargin * scale
+        let lastButtonProperties = { height: 0, y: 0 }
 
-        // this.playButton.reposition(false)
-        this.playButton.x = GameWindow.halfWidth - (this.playButton.halfWidth * scale)
-        this.playButton.y = GameWindow.fullWindowHeight
-                - UIDefaults.UIEdgePadding - (this.playButton.height)
+        for (let i in this.buttons) {
+            const btn = this.buttons[i]
 
-        this.titleLogo.x = GameWindow.halfWidth - this.titleLogo.halfWidth
-        //GameWindow.fullWindowWidth - this.titleLogo.width - UIDefaults.UIEdgePadding
-        this.titleLogo.y = UIDefaults.UIEdgePadding
+            btn.position.x = -btn.halfWidth * scale
+            btn.position.y = lastButtonProperties.y + lastButtonProperties.height + margin
 
-        this.settingsButton.x = GameWindow.halfWidth - (this.settingsButton.halfWidth * scale)
-        this.settingsButton.y = this.playButton.y - this.settingsButton.height - margin
-    
-        this.loadoutButton.x = GameWindow.halfWidth - (this.loadoutButton.halfWidth * scale)
-        this.loadoutButton.y = this.settingsButton.y - this.loadoutButton.height - margin
+            lastButtonProperties.height = btn.height
+            lastButtonProperties.y = btn.y
+        }
+
+        this.buttonContainer.pos = {
+            x: GameWindow.halfWidth,
+            y: GameWindow.halfHeight
+        }
+        this.titleLogo.pos = {
+            x: GameWindow.halfWidth - this.titleLogo.halfWidth,
+            y: this.buttonContainer.y - this.titleLogo.height - margin
+        }
     }
 }

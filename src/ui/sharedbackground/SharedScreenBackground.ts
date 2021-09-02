@@ -63,7 +63,7 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
 
     update() {
         this.hornet.update()
-        this.followMouse()
+        // this.followMouse()
     }
 
     followMouse() {
