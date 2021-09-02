@@ -1,7 +1,7 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { TextSpriteAlign } from '../../../engine/display/TextSprite'
 import { TextStyles } from '../../../engine/display/TextStyles'
-import { GameStateID, GameStateManager } from '../../../manager/GameStateManager'
+import { GameStateID, GameStateManager } from '../../../manager/gamestatemanager/GameStateManager'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'

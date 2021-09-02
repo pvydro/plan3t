@@ -1,7 +1,7 @@
 import { Game } from '../main/Game'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
-import { GameStateID } from '../manager/GameStateManager'
+import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { log } from '../service/Flogger'

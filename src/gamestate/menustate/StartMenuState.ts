@@ -1,8 +1,8 @@
-import { Game } from '../main/Game'
-import { GameStateID } from '../manager/GameStateManager'
-import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
-import { StartScreen } from '../ui/uiscreen/startscreen/StartScreen'
-import { GameState, GameStateOptions, IGameState } from './GameState'
+import { Game } from '../../main/Game'
+import { CrosshairState } from '../../ui/ingamehud/crosshair/Crosshair'
+import { StartScreen } from '../../ui/uiscreen/startscreen/StartScreen'
+import { GameState, GameStateOptions, IGameState } from '../GameState'
+import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
 
 export interface IStartMenuState extends IGameState {
 

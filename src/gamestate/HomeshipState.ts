@@ -1,6 +1,6 @@
 import { CameraLayer } from '../camera/CameraStage'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
-import { GameStateID } from '../manager/GameStateManager'
+import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { log } from '../service/Flogger'

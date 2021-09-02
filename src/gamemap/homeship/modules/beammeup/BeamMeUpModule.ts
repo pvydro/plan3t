@@ -1,7 +1,7 @@
 import { Key } from 'ts-keycode-enum'
 import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { Sprite } from '../../../../engine/display/Sprite'
-import { GameStateID, GameStateManager } from '../../../../manager/GameStateManager'
+import { GameStateID, GameStateManager } from '../../../../manager/gamestatemanager/GameStateManager'
 import { Flogger } from '../../../../service/Flogger'
 import { HomeshipicalModule, IHomeShipicalModule } from '../HomeshipicalModule'
 

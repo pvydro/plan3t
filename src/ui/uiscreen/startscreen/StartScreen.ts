@@ -71,10 +71,6 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
     applyScale() {
         const toScale = [
-            // this.playButton,
-            // this.settingsButton,
-            // this.loadoutButton,
-            // this.buttonContainer,
             this.titleLogo
         ]
         for (const i in this.buttons) {

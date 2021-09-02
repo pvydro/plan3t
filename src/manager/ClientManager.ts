@@ -3,7 +3,7 @@ import { ENDPOINT } from '../network/Network'
 import { Camera, ICamera } from '../camera/Camera'
 import { IEntityManager } from './entitymanager/EntityManager'
 import { GameMap, IGameMap } from '../gamemap/GameMap'
-import { GameStateManager, IGameStateManager } from './GameStateManager'
+import { GameStateManager, IGameStateManager } from './gamestatemanager/GameStateManager'
 import { Game } from '../main/Game'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger, log } from '../service/Flogger';

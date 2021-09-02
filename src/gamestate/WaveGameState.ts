@@ -1,7 +1,7 @@
 import { Sound } from '@pixi/sound'
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
-import { GameStateID } from '../manager/GameStateManager'
+import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
 import { SongKeyCodes } from '../music/SongKeyCodes'
 import { ChatService } from '../service/chatservice/ChatService'

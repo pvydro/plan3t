@@ -1,11 +1,8 @@
-import { GameplayState } from '../gamestate/GameplayState'
-import { GameState, GameStateOptions, IGameState } from '../gamestate/GameState'
-import { HomeshipState } from '../gamestate/HomeshipState'
-import { StartMenuState } from '../gamestate/StartMenuState'
-import { WaveGameState } from '../gamestate/WaveGameState'
-import { IDemolishable } from '../interface/IDemolishable'
-import { Game } from '../main/Game'
-import { log } from '../service/Flogger'
+import { GameStateFactory, IGameStateFactory } from '../../factory/GameStateFactory'
+import { GameState, IGameState } from '../../gamestate/GameState'
+import { IDemolishable } from '../../interface/IDemolishable'
+import { Game } from '../../main/Game'
+import { log } from '../../service/Flogger'
 
 export interface IGameStateManager extends IDemolishable {
     currentState: IGameState
@@ -35,6 +32,7 @@ export class GameStateManager implements IGameStateManager {
     _currentState?: IGameState
     _currentStateID: GameStateID
     _defaultState: GameStateID = GameStateID.StartMenu
+    factory: IGameStateFactory
     game?: Game
 
     static getInstance() {
@@ -46,7 +44,7 @@ export class GameStateManager implements IGameStateManager {
     }
 
     private constructor() {
-        
+        this.factory = new GameStateFactory()
     }
 
     initialize() {
@@ -71,7 +69,7 @@ export class GameStateManager implements IGameStateManager {
         }
 
         this._currentStateID = id
-        this._currentState = this.getStateByID(id)
+        this._currentState = this.createStateByID(id)
 
         await this.currentState.initialize()
     }
@@ -91,28 +89,8 @@ export class GameStateManager implements IGameStateManager {
         this.exitState()
     }
 
-    getStateByID(id: GameStateID): GameState {
-        let state: GameState
-        const options: GameStateOptions = { game: this.game }
-
-        switch (id) {
-            default:
-            case GameStateID.Gameplay:
-                state = new GameplayState(options)
-                break
-            case GameStateID.Homeship:
-                state = new HomeshipState(options)
-                break
-            case GameStateID.WaveRunnerGame:
-                state = new WaveGameState(options)
-                break
-            case GameStateID.StartMenu:
-                state = new StartMenuState(options)
-                break
-                
-        }
-
-        return state
+    createStateByID(id: GameStateID): GameState {
+        return this.factory.createGameStateForID(id, this.game)
     }
 
     get defaultState() {
