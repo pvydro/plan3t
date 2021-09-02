@@ -112,6 +112,7 @@ export class RoomManager implements IRoomManager {
                 // }
                 this.roomStateManager.stateChanged(state)
             })
+
             this.currentRoom.onMessage(ClientMessage.UpdateChat, (message) => {
                 if (ChatService._serverMessages !== message) {
                     ChatService._serverMessages = message
@@ -119,6 +120,12 @@ export class RoomManager implements IRoomManager {
                 }
             })
 
+            this.currentRoom.onMessage(ClientMessage.WaveRunnerStarted, (message) => {
+                importantLog('WaveRunnerStarted')
+                ChatService.sendMessage({ sender: '[ Server ]', text: 'Wave runner started' })
+
+                
+            })
         })
     }
 

@@ -4,18 +4,21 @@ import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
 import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetSphericalSchema'
 import { IPlanetRoomListener, PlanetRoomListener } from './PlanetRoomListener'
 import { PlayerSchema } from '../../schema/PlayerSchema'
+import { IWaveRunnerWorker, WaveRunnerWorker } from '../../worker/WaveRunnerWorker'
 
 export interface IPlanetRoom {
-
+  waveRunnerWorker: IWaveRunnerWorker
 }
 
 export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
   static Delta: number = 1
   listener!: IPlanetRoomListener
   planet?: PlanetSphericalSchema = undefined
+  waveRunnerWorker!: IWaveRunnerWorker
 
   onCreate() {
     this.listener = new PlanetRoomListener(this)
+    this.waveRunnerWorker = new WaveRunnerWorker(this)
     this.setState(new PlanetGameState())
     
     // Internal services
@@ -27,10 +30,8 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
       PlanetRoom.Delta = (deltaTime * 60 / 1000)
 
       this.state.players.forEach((player: PlayerSchema) => {
-
         player.x += player.xVel * PlanetRoom.Delta
         player.y += player.yVel * PlanetRoom.Delta
-        
       })
 
       this.state.update()

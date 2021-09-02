@@ -31,7 +31,7 @@ export class ChatService implements IChatService {
     static async fetchChatHistoryFromRoom() {
         log('ChatService', 'fetchChatHistoryFromRoom')
 
-        await asyncTimeout(500)
+        await asyncTimeout(100)
 
         if (this._serverMessages) {
             this._localMessageHistory = []

@@ -48,9 +48,11 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
 
-        this.roomManager.requestWaveRunnerGame().then((state: WaveSchema) => {
-            this.currentWaveRunnerGame.loadWave(new Wave(state))
-        })
+        setTimeout(() => {
+            this.roomManager.requestWaveRunnerGame().then((state: WaveSchema) => {
+                this.currentWaveRunnerGame.loadWave(new Wave(state))
+            })
+        }, 1000)
         // TODO: If isHost
         // this.currentWaveRunnerGame.beginWaveRunner()
         // this.registerNextWave()

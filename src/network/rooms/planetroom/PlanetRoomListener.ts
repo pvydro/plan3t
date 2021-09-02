@@ -14,7 +14,6 @@ export interface IPlanetRoomListener {
 
 export class PlanetRoomListener implements IPlanetRoomListener {
   playerListener: PlanetRoomPlayerListener
-
   room: PlanetRoom
 
   constructor(room: PlanetRoom) {
@@ -75,8 +74,14 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     this.room.onMessage(RoomMessage.NewWaveRunner, (client: Client) => {
       Flogger.log('PlanetRoomListener', 'Received request for new WaveRunner')
 
-      this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Request waverunner game...' }))
+      this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Requesting waverunner game...' }))
+      this.room.waveRunnerWorker.startWaveRunner(client)
     })
+
+    // this.room.onMessage(ClientMessage.WaveRunnerStarted, () => {
+    //   Flogger.log('PlanetRoomListener', 'Received WaveRunnerStarted')
+    //   this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Wave runner game started.' }))
+    // })
   }
 
   private convertFetchedPlanetToSchema(planet: any) {
