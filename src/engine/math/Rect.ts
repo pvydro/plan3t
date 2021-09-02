@@ -64,6 +64,9 @@ export class Rect extends PIXI.Rectangle implements IRect {
     }
 
     set position(value: IVector2) {
+        if (typeof value === 'number') {
+            value = { x: value, y: value }
+        }
         this.x = value.x
         this.y = value.y
     }

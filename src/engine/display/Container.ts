@@ -16,7 +16,7 @@ export interface IContainer extends IDemolishable {
     y: number
     width: number
     height: number
-    pos: IVector2
+    pos: IVector2 | number
     clearChildren(): void
 }
 
@@ -48,7 +48,10 @@ export class Container extends PIXI.Container implements IContainer {
         return contains
     }
 
-    set pos(value: IVector2) {
+    set pos(value: IVector2 | number) {
+        if (typeof value === 'number') {
+            value = { x: value, y: value }
+        }
         this.position.x = value.x
         this.position.y = value.y
     }

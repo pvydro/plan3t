@@ -5,6 +5,7 @@ import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { log } from '../service/Flogger'
+import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 
 export interface IGameState {
@@ -43,6 +44,12 @@ export abstract class GameState implements IGameState {
 
     async initialize() {
         log('GameState', 'initialize', 'id', this.id)
+
+        this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
+        this.inGameHUD.crosshair.show()
+        this.camera.viewport.addChild(this.inGameHUD.crosshair)
+        
+        await Game.showLoadingScreen(false)
 
         return
     }

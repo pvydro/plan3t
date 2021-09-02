@@ -19,12 +19,15 @@ export interface GameStateManagerOptions {
 }
 
 export enum GameStateID {
-    StartMenu = 'StartMenu',
+    // Game
     Gameplay = 'Gameplay',
     WaveRunnerGame = 'WaveGame',
     Homeship = 'Spaceship',
     Empty = 'Empty',
-    WeaponLoadout = 'WeaponLoadout'
+    WeaponLoadout = 'WeaponLoadout',
+    // Menu
+    StartMenu = 'StartMenu',
+    StyleMenu = 'StyleMenu'
 }
 
 export class GameStateManager implements IGameStateManager {
