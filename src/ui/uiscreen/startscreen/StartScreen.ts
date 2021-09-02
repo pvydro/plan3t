@@ -5,7 +5,6 @@ import { UIHoloButton } from '../../uibutton/UIHoloButton'
 import { RespawnButton } from '../respawnscreen/RespawnButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
 import { PlayButton } from './PlayButton'
-import { SettingsButton } from './SettingsButton'
 import { TitleLogo } from './TitleLogo'
 
 export interface IStartScreen extends IUIScreen {
@@ -73,17 +72,22 @@ export class StartScreen extends UIScreen implements IStartScreen {
     reposition(addListeners?: boolean) {
         super.reposition(addListeners)
 
-        const margin = UIDefaults.UIMargin * UIDefaults.UIScale
+        const scale = UIDefaults.UIScale
+        const margin = UIDefaults.UIMargin * scale
 
-        this.playButton.reposition(false)
+        // this.playButton.reposition(false)
+        this.playButton.x = GameWindow.halfWidth - (this.playButton.halfWidth * scale)
+        this.playButton.y = GameWindow.fullWindowHeight
+                - UIDefaults.UIEdgePadding - (this.playButton.height)
 
-        this.titleLogo.x = GameWindow.fullWindowWidth - this.titleLogo.width - UIDefaults.UIEdgePadding
+        this.titleLogo.x = GameWindow.halfWidth - this.titleLogo.halfWidth
+        //GameWindow.fullWindowWidth - this.titleLogo.width - UIDefaults.UIEdgePadding
         this.titleLogo.y = UIDefaults.UIEdgePadding
 
-        this.settingsButton.x = this.playButton.x
+        this.settingsButton.x = GameWindow.halfWidth - (this.settingsButton.halfWidth * scale)
         this.settingsButton.y = this.playButton.y - this.settingsButton.height - margin
     
-        this.loadoutButton.x = this.playButton.x
+        this.loadoutButton.x = GameWindow.halfWidth - (this.loadoutButton.halfWidth * scale)
         this.loadoutButton.y = this.settingsButton.y - this.loadoutButton.height - margin
     }
 }

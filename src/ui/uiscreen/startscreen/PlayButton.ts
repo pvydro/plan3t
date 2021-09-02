@@ -36,14 +36,14 @@ export class PlayButton extends UIButton implements IPlayButton {
     reposition(addListener?: boolean) {
         super.reposition(addListener)
 
-        const scaledWidth = this.backgroundWidth * UIDefaults.UIScale
+        // const scaledWidth = this.backgroundWidth * UIDefaults.UIScale
 
-        this.pos = {
-            x: UIDefaults.UIEdgePadding,//GameWindow.width - UIDefaults.UIEdgePadding - scaledWidth ,
-            y: GameWindow.fullWindowHeight
-                - UIDefaults.UIEdgePadding
-                - (this.backgroundHeight * UIDefaults.UIScale)
-        }
+        // this.pos = {
+        //     x: UIDefaults.UIEdgePadding,//GameWindow.width - UIDefaults.UIEdgePadding - scaledWidth ,
+        //     y: GameWindow.fullWindowHeight
+        //         - UIDefaults.UIEdgePadding
+        //         - (this.backgroundHeight * UIDefaults.UIScale)
+        // }
     }
 
     

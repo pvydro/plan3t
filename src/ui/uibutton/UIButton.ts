@@ -258,11 +258,11 @@ export class UIButton extends UIComponent implements IUIButton {
     }
 
     get backgroundWidth() {
-        return this.backgroundSprite ? this.backgroundSprite.width : 0
+        return this.background.width//this.backgroundSprite ? this.backgroundSprite.width : 0
     }
 
     get backgroundHeight() {
-        return this.backgroundSprite ? this.backgroundSprite.height : 0
+        return this.background.height//this.backgroundSprite ? this.backgroundSprite.height : 0
     }
 
     get dimension() {
