@@ -49,12 +49,14 @@ export class StartScreen extends UIScreen implements IStartScreen {
             this.styleButton = new UIHoloButton({
                 text: { text: 'style' },
                 onTrigger: () => {
-                    console.log('click click click')
                     GameStateManager.getInstance().enterState(GameStateID.StyleMenu)
                 }
             }),
             this.loadoutButton = new UIHoloButton({
-                text: { text: 'loadout' }
+                text: { text: 'loadout' },
+                onTrigger: () => {
+                    GameStateManager.getInstance().enterState(GameStateID.LoadoutMenu)
+                }
             })
         ]
 

@@ -24,10 +24,10 @@ export enum GameStateID {
     WaveRunnerGame = 'WaveGame',
     Homeship = 'Spaceship',
     Empty = 'Empty',
-    WeaponLoadout = 'WeaponLoadout',
     // Menu
     StartMenu = 'StartMenu',
-    StyleMenu = 'StyleMenu'
+    StyleMenu = 'StyleMenu',
+    LoadoutMenu = 'LoadoutMenu',
 }
 
 export class GameStateManager implements IGameStateManager {
