@@ -4,7 +4,7 @@ import { Events } from '../model/events/Events'
 import { WaveSchema } from '../network/schema/waverunner/WaveRunnerSchema'
 import { importantLog, log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
-import { asyncTimeout } from '../utils/Utils'
+import { asyncTimeout, functionExists } from '../utils/Utils'
 
 export interface IWave extends IUpdatable {
     totalEnemies: number
@@ -39,18 +39,18 @@ export class Wave extends Emitter implements IWave {
         super()
 
         this.waveIndex = options.waveIndex ?? 0
-        // this._onSpawn = options.onSpawn
+        this._onSpawn = (options as WaveOptions).onSpawn ?? function() {}
         // this._onComplete = options.onComplete
     }
 
     update() {
-        // if (this.shouldTimeout) {
-        //     this.elapsedTime += GameLoop.CustomDelta
+        if (this.shouldTimeout) {
+            this.elapsedTime += GameLoop.CustomDelta
 
-        //     if (this.elapsedTime >= this.totalTime) {
-        //         this.complete()
-        //     }
-        // }
+            if (this.elapsedTime >= this.totalTime) {
+                this.complete()
+            }
+        }
     }
 
     startSpawnIntervals() {
@@ -91,7 +91,8 @@ export class Wave extends Emitter implements IWave {
 
         this.shouldTimeout = false
         this._isCompleted = true
-        this._onComplete()
+
+        if (functionExists(this._onComplete)) this._onComplete()
     }
 
     set onSpawn(value: Function) {

@@ -19,6 +19,11 @@ export class WaveRunnerSchema extends Schema {
     @type(WaveSchema)
     currentWave!: WaveSchema
 
+    constructor() {
+        super()
+        this.initialize()
+    }
+
     initialize() {
         this.currentWave = new WaveSchema().assign({
             waveIndex: 3,

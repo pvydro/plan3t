@@ -50,7 +50,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
 
     update() {
         super.update()
-
         this.waveManager.update()
     }
 
