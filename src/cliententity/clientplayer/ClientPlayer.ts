@@ -103,8 +103,8 @@ export class ClientPlayer extends ClientPlayerState {
         if (this.isClientPlayer) this.addChild(this.light)
         this.addChild(this.body)
         this.addChild(this.head)
-        this.addChild(this.hand)
         this.addChild(this.playerBadge)
+        this.addChild(this.hand)
         this.addChild(this.collision)
         
         this.controller = new PlayerController({ player })
