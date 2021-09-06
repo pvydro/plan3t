@@ -107,7 +107,7 @@ export class TextStyles {
 
     static PlayerBadge: TextSpriteStyle = {
         fontFamily: Fonts.FontDefault.family,
-        fontSize: scaleFontSize(12),
+        fontSize: scaleFontSize(8),
         color: 0xFFFFFF,
         uppercase: true
     }

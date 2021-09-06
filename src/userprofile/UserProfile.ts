@@ -4,6 +4,6 @@ export interface IUserProfile {
 }
 
 export class UserProfile implements IUserProfile {
-    username: string = 'Guest'
+    username: string = 'Paydro'
     rank: number = 25
 }
