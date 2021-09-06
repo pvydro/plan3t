@@ -3,6 +3,7 @@ import { log } from '../../service/Flogger'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { BuildingBuilder, BuildingBuilderResponse, IBuildingBuilder } from './BuildingBuilder'
 import { IMapBuildingAnimator, MapBuildingAnimator } from './MapBuildingAnimator'
+import { MapBuildingBackground } from './MapBuildingBackground'
 import { MapBuildingWalls as MapBuildingWalls } from './MapBuildingWalls'
 
 export enum MapBuildingType {
@@ -24,6 +25,7 @@ export interface MapBuildingOptions {
 export class MapBuilding extends GameMapContainer implements IMapBuilding {
     buildingOptions: MapBuildingOptions
     walls: MapBuildingWalls
+    background: MapBuildingBackground
     builder: IBuildingBuilder
     animator!: IMapBuildingAnimator
     type: MapBuildingType
@@ -45,6 +47,7 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
                 this.walls = new MapBuildingWalls({ type: this.type })
+                this.background = new MapBuildingBackground({ type: this.type })
                 this.animator = new MapBuildingAnimator({
                     floorSprite: response.floorSprite,
                     backgroundSprite: this.walls//response.backgroundSprite
@@ -52,9 +55,9 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                 
                 this.walls.x = response.tileLayer.halfWidth - (this.walls.halfWidth)
 
+                this.addChild(this.background)
                 this.addChild(this.walls)
                 this.addChild(this.tileLayer)
-
 
                 // this.outline = new GradientOutline({
                 //     // targetElement: this.tileLayer,

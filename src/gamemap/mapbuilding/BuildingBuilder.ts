@@ -23,7 +23,7 @@ export class BuildingBuilder implements IBuildingBuilder {
     async buildBuilding(options: MapBuildingOptions): Promise<BuildingBuilderResponse> {
         const tileLayer = new Container()
         const backgroundTexture = MapBuildingHelper.getBackgroundAssetForType(options.type)
-        const backgroundSprite = new Sprite({ texture: backgroundTexture })
+        const backgroundSprite = new Sprite({ texture: PIXI.Texture.EMPTY })//backgroundTexture })
         const floorTexture = MapBuildingHelper.getFloorAssetForType(options.type)
         const floorSprite = new Sprite({ texture: floorTexture })
         floorSprite.y = 138//142
