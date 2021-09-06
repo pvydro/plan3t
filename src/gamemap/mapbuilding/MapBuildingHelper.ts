@@ -29,7 +29,7 @@ export class MapBuildingHelper {
         return PIXI.Texture.from(Assets.get(url))
     }
 
-    static getTotalBackgroundTilesForType(type: MapBuildingType | string): number {
+    static getTotalWallTilesForType(type: MapBuildingType | string): number {
         try {
             const buildingData: MapBuildingProperties = MapBuildings[type]
 

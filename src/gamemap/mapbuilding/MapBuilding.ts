@@ -3,7 +3,7 @@ import { log } from '../../service/Flogger'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { BuildingBuilder, BuildingBuilderResponse, IBuildingBuilder } from './BuildingBuilder'
 import { IMapBuildingAnimator, MapBuildingAnimator } from './MapBuildingAnimator'
-import { MapBuildingBackground } from './MapBuildingBackground'
+import { MapBuildingWalls as MapBuildingWalls } from './MapBuildingWalls'
 
 export enum MapBuildingType {
     Dojo = 'dojo',
@@ -23,7 +23,7 @@ export interface MapBuildingOptions {
 
 export class MapBuilding extends GameMapContainer implements IMapBuilding {
     buildingOptions: MapBuildingOptions
-    background: MapBuildingBackground
+    walls: MapBuildingWalls
     builder: IBuildingBuilder
     animator!: IMapBuildingAnimator
     type: MapBuildingType
@@ -44,15 +44,15 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
             this.builder.buildBuilding(this.buildingOptions).then((response: BuildingBuilderResponse) => {
                 this.tileLayer = response.tileLayer
                 this.collisionRects = response.collisionRects
-                this.background = new MapBuildingBackground({ type: this.type })
+                this.walls = new MapBuildingWalls({ type: this.type })
                 this.animator = new MapBuildingAnimator({
                     floorSprite: response.floorSprite,
-                    backgroundSprite: this.background//response.backgroundSprite
+                    backgroundSprite: this.walls//response.backgroundSprite
                 })
                 
-                this.background.x = response.tileLayer.halfWidth - (this.background.halfWidth)
+                this.walls.x = response.tileLayer.halfWidth - (this.walls.halfWidth)
 
-                this.addChild(this.background)
+                this.addChild(this.walls)
                 this.addChild(this.tileLayer)
 
 

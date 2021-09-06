@@ -8,21 +8,21 @@ import { getRandomIntBetween, rect } from '../../utils/Utils'
 import { MapBuildingType } from './MapBuilding'
 import { MapBuildingHelper } from './MapBuildingHelper'
 
-export interface IMapBuildingBackground extends IContainer {
+export interface IMapBuildingWalls extends IContainer {
 
 }
 
-export interface MapBuildingBackgroundOptions {
+export interface MapBuildingWallsOptions {
     type: MapBuildingType
 }
 
-export class MapBuildingBackground extends Container {
+export class MapBuildingWalls extends Container implements IMapBuildingWalls {
     type: MapBuildingType
-    backgroundSprites: Sprite[] = []
+    wallSprites: Sprite[] = []
     leftGradient: RectGradient
     rightGradient: RectGradient
 
-    constructor(options: MapBuildingBackgroundOptions) {
+    constructor(options: MapBuildingWallsOptions) {
         super()
 
         this.type = options.type
@@ -32,14 +32,14 @@ export class MapBuildingBackground extends Container {
 
     constructBackgroundTiles() {
         const totalSprites = 5
-        const totalVariations = MapBuildingHelper.getTotalBackgroundTilesForType(this.type)
+        const totalVariations = MapBuildingHelper.getTotalWallTilesForType(this.type)
         let currentX = 0
 
         for (var i = 0; i < totalSprites; i++) {
             const randomSelection = getRandomIntBetween(1, totalVariations)
             const url = Assets.MapBuildingDir + `${this.type}/background/${randomSelection}`
 
-            importantLog('MapBuildingBackground', 'Found BackgroundTile URL', url)
+            importantLog('MapBuildingWalls', 'Found wall tile URL', url)
 
             const texture = PIXI.Texture.from(Assets.get(url))
             const spr = new Sprite({ texture })
@@ -47,7 +47,7 @@ export class MapBuildingBackground extends Container {
             spr.x = currentX
             currentX += spr.width
 
-            this.backgroundSprites.push(spr)
+            this.wallSprites.push(spr)
             this.addChild(spr)
         }
     }
