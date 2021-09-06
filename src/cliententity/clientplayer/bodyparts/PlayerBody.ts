@@ -1,13 +1,13 @@
 import * as PIXI from 'pixi.js'
-import { IUpdatable } from '../../interface/IUpdatable'
-import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
-import { IContainer, Container } from '../../engine/display/Container'
-import { IClientPlayer } from './ClientPlayer'
+import { IUpdatable } from '../../../interface/IUpdatable'
+import { Spritesheets, SpritesheetUrls } from '../../../asset/Spritesheets'
+import { IContainer, Container } from '../../../engine/display/Container'
+import { IClientPlayer } from '../ClientPlayer'
 import { IPlayerBodyAnimator, PlayerBodyAnimator } from './PlayerBodyAnimator'
-import { Assets, AssetUrls } from '../../asset/Assets'
-import { Sprite } from '../../engine/display/Sprite'
-import { Direction } from '../../engine/math/Direction'
-import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
+import { Assets, AssetUrls } from '../../../asset/Assets'
+import { Sprite } from '../../../engine/display/Sprite'
+import { Direction } from '../../../engine/math/Direction'
+import { AnimatedSprite } from '../../../engine/display/AnimatedSprite'
 
 export interface IPlayerBody extends IContainer, IUpdatable {
     sprite: PIXI.Sprite

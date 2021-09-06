@@ -1,11 +1,11 @@
 import { EntitySchema } from '../../network/schema/EntitySchema'
 import { Direction } from '../../engine/math/Direction'
-import { PlayerHead } from './PlayerHead'
-import { PlayerBody } from './PlayerBody'
+import { IPlayerHead, PlayerHead } from './bodyparts/PlayerHead'
+import { PlayerBody } from './bodyparts/PlayerBody'
 import { GlobalScale } from '../../utils/Constants'
 import { IPlayerController, PlayerController } from './PlayerController'
 import { Emitter } from '../../utils/Emitter'
-import { IPlayerHand, PlayerHand } from './PlayerHand'
+import { IPlayerHand, PlayerHand } from './bodyparts/PlayerHand'
 import { WeaponName } from '../../weapon/WeaponName'
 import { PlayerCollision } from './PlayerCollision'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
@@ -21,6 +21,7 @@ import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState } from 
 import { ISuperMe } from './superme/SuperMe'
 import { TheDevil } from './superme/TheDevil'
 import { PlayerBadgeFloat } from './PlayerBadgeFloat'
+import { IPlayerCustomization, PlayerCustomization } from './customization/PlayerCustomization'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
@@ -30,6 +31,7 @@ export interface IClientPlayer extends IClientPlayerState {
     emitter: Emitter
     holster: IPlayerWeaponHolster
     equipWeapon(weapon: Weapon): void
+    getPlayerHead(): IPlayerHead
 }
 
 export interface ClientPlayerOptions {
@@ -54,6 +56,7 @@ export class ClientPlayer extends ClientPlayerState {
     light: PlayerLight
     collision: PlayerCollision
     controller: IPlayerController
+    customization: IPlayerCustomization
     overheadHealthBar: OverheadHealthBar
     playerBadge: PlayerBadgeFloat
     superMe: ISuperMe
@@ -87,6 +90,7 @@ export class ClientPlayer extends ClientPlayerState {
         this.healthController = new PlayerHealthController({ player })
         this.overheadHealthBar = new OverheadHealthBar({ player })
         this.collision = new PlayerCollision({ player })
+        this.customization = new PlayerCustomization({ player })
         this.boundingBox = this.collision.boundingBox
         this.playerBadge = new PlayerBadgeFloat({ player })
         if (this.isClientPlayer) {
@@ -182,5 +186,9 @@ export class ClientPlayer extends ClientPlayerState {
 
     get entityManager() {
         return this._entityManager
+    }
+
+    getPlayerHead() {
+        return this.head
     }
 }

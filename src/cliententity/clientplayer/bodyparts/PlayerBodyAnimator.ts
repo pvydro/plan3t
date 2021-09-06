@@ -1,9 +1,9 @@
-import { Spritesheets, SpritesheetUrls } from '../../asset/Spritesheets'
-import { AnimatedSprite } from '../../engine/display/AnimatedSprite'
-import { IUpdatable } from '../../interface/IUpdatable'
-import { PlayerEvents } from '../../model/events/Events'
-import { IClientPlayer } from './ClientPlayer'
-import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayerState'
+import { Spritesheets, SpritesheetUrls } from '../../../asset/Spritesheets'
+import { AnimatedSprite } from '../../../engine/display/AnimatedSprite'
+import { IUpdatable } from '../../../interface/IUpdatable'
+import { PlayerEvents } from '../../../model/events/Events'
+import { IClientPlayer } from '../ClientPlayer'
+import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from '../ClientPlayerState'
 import { IPlayerBody } from './PlayerBody'
 
 export interface IPlayerBodyAnimator extends IUpdatable {

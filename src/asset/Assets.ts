@@ -10,6 +10,7 @@ export class Assets {
     static BaseImageDir: string = 'assets/image'
     static TileDir = Assets.BaseImageDir + '/gamemap/tiles/'
     static MapBuildingDir = Assets.BaseImageDir + '/gamemap/mapbuilding/'
+    static CustomizationDir = Assets.BaseImageDir + '/player/customization/'
 
     private constructor() {
 
@@ -148,6 +149,9 @@ export class AssetUrls {
     static PlayerHeadHumanDefault = 'assets/image/player/head/head-default'
     static PlayerHandHumanDefault = 'assets/image/player/hand/hand-default'
     static PlayerHeadHumanAstro = 'assets/image/player/head/head-astro'
+
+    // Player Customization
+    static HairFadeFro = 'assets/image/player/customization/hair/fade_fro'
 
     // Enemy
     static EnemyFlyingEyeIdle = 'assets/image/enemy/flyingeye/flyingeye'

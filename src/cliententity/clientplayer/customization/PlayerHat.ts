@@ -1,14 +1,12 @@
 import { PlayerHatType } from '../../../model/PlayerCustomizationTypes'
-import { ClientEntity, IClientEntity } from '../../ClientEntity'
+import { IPlayerCustomizationPiece, PlayerCustomizationPiece } from './PlayerCustomizationPiece'
 
-export interface IPlayerHat extends IClientEntity {
+export interface IPlayerHat extends IPlayerCustomizationPiece {
 
 }
 
-export class PlayerHat extends ClientEntity implements IPlayerHat {
+export class PlayerHat extends PlayerCustomizationPiece implements IPlayerHat {
     constructor(type: PlayerHatType) {
-        super({
-
-        })
+        super()
     }
 }

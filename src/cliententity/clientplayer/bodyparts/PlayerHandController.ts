@@ -1,8 +1,8 @@
-import { Camera } from '../../camera/Camera'
-import { Direction } from '../../engine/math/Direction'
+import { Camera } from '../../../camera/Camera'
+import { Direction } from '../../../engine/math/Direction'
 import { PlayerHand } from './PlayerHand'
-import { IVector2, Vector2 } from '../../engine/math/Vector2'
-import { PlayerConsciousnessState, PlayerLegsState } from './ClientPlayerState'
+import { IVector2, Vector2 } from '../../../engine/math/Vector2'
+import { PlayerConsciousnessState, PlayerLegsState } from '../ClientPlayerState'
 
 export interface IPlayerHandController {
     update(clientControl: boolean)
