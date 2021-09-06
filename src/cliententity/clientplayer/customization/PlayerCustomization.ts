@@ -5,7 +5,7 @@ import { PlayerHairFactory } from './helper/PlayerHairFactory'
 import { IPlayerHair, PlayerHair } from './PlayerHair'
 
 export interface IPlayerCustomization extends PlayerCustomizationPieces {
-
+    apply(config: PlayerCustomizationConfig)
 }
 
 export interface PlayerCustomizationOptions {
@@ -17,7 +17,7 @@ export interface PlayerCustomizationConfig {
 }
 
 interface PlayerCustomizationPieces {
-    hair?: IPlayerHair
+    hair?: PlayerHair
 }
 
 export class PlayerCustomization implements IPlayerCustomization {
@@ -48,7 +48,7 @@ export class PlayerCustomization implements IPlayerCustomization {
 
     attachPiecesToBodyParts(pieces: PlayerCustomizationPieces) {
         if (pieces.hair) {
-            // this.player.getPlayerHead().
+            this.player.getPlayerHead().setHair(pieces.hair)
         }
     }
 }

@@ -1,14 +1,16 @@
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { Sprite } from '../../../engine/display/Sprite'
 import { PlayerHairType } from '../../../model/PlayerCustomizationTypes'
+import { IPlayerHead } from '../bodyparts/PlayerHead'
 import { IPlayerCustomizationPiece, PlayerCustomizationPiece } from './PlayerCustomizationPiece'
 
 export interface IPlayerHair extends IPlayerCustomizationPiece {
-
+    setHead(head: IPlayerHead)
 }
 
 export class PlayerHair extends PlayerCustomizationPiece implements IPlayerHair {
     hairSprite: Sprite
+    head: IPlayerHead
 
     constructor(type: PlayerHairType) {
         super()
@@ -20,7 +22,18 @@ export class PlayerHair extends PlayerCustomizationPiece implements IPlayerHair 
 
         this.addChild(this.hairSprite)
 
-        this.hairSprite.x -= 3
-        this.hairSprite.y -= 5
+        this.hairSprite.x -= this.hairSprite.halfWidth
+    }
+
+    update() {
+        super.update()
+
+        if (this.head) {
+            this.hairSprite.y = -26
+        }
+    }
+    
+    setHead(head: IPlayerHead) {
+        this.head = head
     }
 }

@@ -22,6 +22,7 @@ import { ISuperMe } from './superme/SuperMe'
 import { TheDevil } from './superme/TheDevil'
 import { PlayerBadgeFloat } from './PlayerBadgeFloat'
 import { IPlayerCustomization, PlayerCustomization } from './customization/PlayerCustomization'
+import { PlayerHairType } from '../../model/PlayerCustomizationTypes'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
@@ -113,6 +114,9 @@ export class ClientPlayer extends ClientPlayerState {
         this.holster.setLoadout({
             primaryWeaponName: WeaponName.Komplimenter,
             secondaryWeaponName: WeaponName.Komp9
+        })
+        this.customization.apply({
+            hair: PlayerHairType.FadeFro
         })
     }
     

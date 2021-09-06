@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Power4 } from 'gsap'
-import { Container } from '../../../engine/display/Container'
+import { Container, IContainer } from '../../../engine/display/Container'
 import { Sprite } from '../../../engine/display/Sprite'
 import { Assets, AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../ClientPlayer'
@@ -9,11 +9,13 @@ import { Direction } from '../../../engine/math/Direction'
 import { IPlayerHeadController, PlayerHeadController } from './PlayerHeadController'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState  } from '../ClientPlayerState'
+import { IPlayerHair, PlayerHair } from '../customization/PlayerHair'
 
-export interface IPlayerHead extends IUpdatable {
+export interface IPlayerHead extends IContainer, IUpdatable {
     headBobOffset: number
     headBobOffsetInterpoliation: { interpolation: number }
     setCustomHeadSprite(assetUrl: string): void
+    setHair(hair: PlayerHair): void
 }
 
 export interface PlayerHeadOptions {
@@ -26,6 +28,7 @@ export class PlayerHead extends Container {
     player: ClientPlayer
     controller: IPlayerHeadController
     headSprite: Sprite
+    currentHair: IPlayerHair
     currentDirection: Direction = Direction.Right
     headBobOffsetInterpoliation: { interpolation: number } = { interpolation: 0 }
     headBobOffset: number = 0
@@ -72,6 +75,7 @@ export class PlayerHead extends Container {
         }
 
         this.controller.update()
+        if (this.currentHair) this.currentHair.update()
     }
 
     bobHead() {
@@ -109,9 +113,17 @@ export class PlayerHead extends Container {
     setCustomHeadSprite(assetUrl: string) {
         // this.customSpriteContainer
     }
+
+    setHair(hair: PlayerHair) {
+        this.currentHair = hair
+        this.currentHair.setHead(this)
+        
+        this.addChild(hair)
+    }
     
     flipAllSprites() {
-        this.headSprite.flipX()//.scale.x *= -1
+        this.headSprite.flipX()
+        if (this.currentHair) this.currentHair.flipX()
     }
 
     set direction(value: Direction) {
@@ -120,7 +132,6 @@ export class PlayerHead extends Container {
             this.flipAllSprites()
         }
     }
-
 
     get headBobEaseAmount() {
         if (this.player.legsState === PlayerLegsState.Crouched) {
