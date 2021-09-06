@@ -10,6 +10,7 @@
     "target": "es2015",
     "declaration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "downlevelIteration": true,
     "noImplicitAny": false,
     "esModuleInterop": true,

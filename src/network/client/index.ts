@@ -3,6 +3,7 @@ import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { IGame, Game } from '../../main/Game'
 import { GameWindow } from '../../utils/Constants'
+import 'reflect-metadata'
 
 window.PIXI = PIXI
 global.PIXI = PIXI
