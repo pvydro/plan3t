@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Camera } from '../../camera/Camera'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Flogger } from '../../service/Flogger'
+import { userProfile } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
@@ -62,12 +63,16 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                     offlineControl: options.isOfflinePlayer ?? false,
                     entity: options.entity,
                     entityManager: this.entityManager,
-                    sessionId: options.sessionId
+                    sessionId: options.sessionId,
+                    playerName: userProfile.username
                 })
                 player = this._currentClientPlayer
             }
         } else {
-            player = new ClientPlayer({ entity: options.entity })
+            player = new ClientPlayer({
+                entity: options.entity,
+                playerName: options.sessionId
+            })
         }
 
         if (options.entity) {

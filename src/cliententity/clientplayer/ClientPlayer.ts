@@ -20,9 +20,11 @@ import { PlayerHealthController } from './PlayerHealthController'
 import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState } from './ClientPlayerState'
 import { ISuperMe } from './superme/SuperMe'
 import { TheDevil } from './superme/TheDevil'
+import { PlayerBadgeFloat } from './PlayerBadgeFloat'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
+    playerName: string
     controller: IPlayerController
     hand: IPlayerHand
     emitter: Emitter
@@ -36,6 +38,7 @@ export interface ClientPlayerOptions {
     offlineControl?: boolean
     entityManager?: IEntityManager
     sessionId?: string
+    playerName: string
 }
 
 export class ClientPlayer extends ClientPlayerState {
@@ -43,6 +46,7 @@ export class ClientPlayer extends ClientPlayerState {
     
     _entityManager?: IEntityManager
     sessionId: string = ''
+    playerName: string = ''
     head: PlayerHead
     body: PlayerBody
     hand: PlayerHand
@@ -51,6 +55,7 @@ export class ClientPlayer extends ClientPlayerState {
     collision: PlayerCollision
     controller: IPlayerController
     overheadHealthBar: OverheadHealthBar
+    playerBadge: PlayerBadgeFloat
     superMe: ISuperMe
     emitter: Emitter = new Emitter()
 
@@ -72,6 +77,7 @@ export class ClientPlayer extends ClientPlayerState {
 
         if (options.entityManager) this._entityManager = options.entityManager
         if (exists(options.sessionId)) this.sessionId = options.sessionId
+        this.playerName = options.playerName
 
         this.head = new PlayerHead({ player })
         this.body = new PlayerBody({ player })
@@ -82,6 +88,7 @@ export class ClientPlayer extends ClientPlayerState {
         this.overheadHealthBar = new OverheadHealthBar({ player })
         this.collision = new PlayerCollision({ player })
         this.boundingBox = this.collision.boundingBox
+        this.playerBadge = new PlayerBadgeFloat({ player })
         if (this.isClientPlayer) {
             this.light = new PlayerLight({ player })
             this.messenger.startSendingWeaponStatus()
@@ -92,6 +99,7 @@ export class ClientPlayer extends ClientPlayerState {
         this.addChild(this.body)
         this.addChild(this.head)
         this.addChild(this.hand)
+        this.addChild(this.playerBadge)
         this.addChild(this.collision)
         
         this.controller = new PlayerController({ player })
