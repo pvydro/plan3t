@@ -54,6 +54,7 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                 })
                 
                 this.walls.x = response.tileLayer.halfWidth - (this.walls.halfWidth)
+                this.background.x = response.tileLayer.halfWidth
 
                 this.addChild(this.background)
                 this.addChild(this.walls)

@@ -31,7 +31,7 @@ export class MapBuildingWalls extends Container implements IMapBuildingWalls {
     }
 
     constructBackgroundTiles() {
-        const totalSprites = 5
+        const totalSprites = 6
         const totalVariations = MapBuildingHelper.getTotalWallTilesForType(this.type)
         let currentX = 0
 
