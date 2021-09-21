@@ -1,5 +1,5 @@
 import { dimension, rect } from '../../../utils/Utils'
-import { Dimension, IDimension } from '../../math/Dimension'
+import { IDimension } from '../../math/Dimension'
 import { FourWayDirection } from '../../math/Direction'
 import { Container, IContainer } from '../Container'
 import { RectGradient, RectGradientDefinition } from '../extra/RectGradient'
@@ -40,15 +40,10 @@ export class GradientOutline extends Container implements IGradientOutline {
     }
 
     initializeOutlineGradients() {
-        // const sideHeight = this.targetElement.height
-        // const topWidth = this.targetElement.width
-        const elementWidth = this.targetDimension.width// + this.offsetWidth
+        const elementWidth = this.targetDimension.width
         const elementHeight = this.targetDimension.height
-        const leftRect = rect(0 + this.offsetWidth, 0,
-            this.gradientWidth, elementHeight)
-        const rightRect = rect(elementWidth - this.gradientWidth// + (this.offsetWidth * 2)
-            , 0,
-            this.gradientWidth, elementHeight)
+        const leftRect = rect(0 + this.offsetWidth, 0, this.gradientWidth, elementHeight)
+        const rightRect = rect(elementWidth - this.gradientWidth, 0, this.gradientWidth, elementHeight)
         const topRect = rect(0, 0, elementWidth, this.gradientWidth)
         const bottomRect = rect(0, elementHeight - this.gradientWidth, elementWidth, this.gradientWidth)
         const rects: RectGradientDefinition[] = [

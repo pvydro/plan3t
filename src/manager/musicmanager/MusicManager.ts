@@ -1,10 +1,9 @@
 import { Sound } from '@pixi/sound'
 import { Sounds } from '../../asset/Sounds'
-import { SongKeyCodes } from '../../music/SongKeyCodes'
 import { log } from '../../service/Flogger'
 
 export interface IMusicManager {
-    fetchSong(keyCode: SongKeyCodes): Promise<Sound>
+    fetchSong(): void
 }
 
 export class MusicManager implements IMusicManager {
@@ -26,10 +25,10 @@ export class MusicManager implements IMusicManager {
 
     }
     
-    async fetchSong(keyCode: SongKeyCodes) {
-        const songUrl = MusicManager.MusicUrl + keyCode + '.wav'
-        log('MusicManager', 'fetchSong', 'songUrl', songUrl)
+    async fetchSong() {
+        // const songUrl = MusicManager.MusicUrl + keyCode + '.wav'
+        // log('MusicManager', 'fetchSong', 'songUrl', songUrl)
 
-        return Sounds.add(songUrl)
+        // return Sounds.add(songUrl)
     }
 }

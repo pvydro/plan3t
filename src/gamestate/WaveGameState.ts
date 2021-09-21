@@ -3,7 +3,6 @@ import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
-import { SongKeyCodes } from '../music/SongKeyCodes'
 import { ChatService } from '../service/chatservice/ChatService'
 import { asyncTimeout } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
@@ -31,9 +30,9 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
         asyncTimeout(500).then(() => {
             this.waveManager.initialize()
             
-            this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
-                sound.play()
-            })
+            // this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
+            //     sound.play()
+            // })
 
             ChatService.fetchChatHistoryFromRoom()
         })

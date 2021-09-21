@@ -14,6 +14,8 @@ import { Tween } from '../engine/display/tween/Tween'
 import { LoadingScreen } from '../ui/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
+import { MusicLoader } from '../music/MusicLoader'
+import { musicLoader } from '../shared/Dependencies'
 
 export interface IGame {
     view: any
@@ -57,6 +59,7 @@ export class Game implements IGame {
         Flogger.log('Game', 'bootstrap')
 
         await Assets.loadImages()
+        await musicLoader.loadSongs()
         await Fonts.loadFonts()
         await Spritesheets.loadSpritesheets()
         await Sounds.loadSounds()

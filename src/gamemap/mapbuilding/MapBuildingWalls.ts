@@ -1,6 +1,7 @@
 import { Assets } from '../../asset/Assets'
 import { Container, IContainer } from '../../engine/display/Container'
 import { RectGradient } from '../../engine/display/extra/RectGradient'
+import { GradientOutline } from '../../engine/display/lighting/GradientOutline'
 import { Sprite } from '../../engine/display/Sprite'
 import { FourWayDirection } from '../../engine/math/Direction'
 import { importantLog } from '../../service/Flogger'
@@ -21,17 +22,26 @@ export class MapBuildingWalls extends Container implements IMapBuildingWalls {
     wallSprites: Sprite[] = []
     leftGradient: RectGradient
     rightGradient: RectGradient
+    outline: GradientOutline
 
     constructor(options: MapBuildingWallsOptions) {
         super()
 
         this.type = options.type
-        this.constructBackgroundTiles()
-        this.constructGradientEdges()
+        this.constructWallTiles()
+        this.outline = new GradientOutline({
+            targetElement: this,
+            gradientWidth: 32,
+            // offsetWidth: 12,
+            rayAlpha: 0.25
+        })
+
+        this.addChild(this.outline)
+        // this.constructGradientEdges()
     }
 
-    constructBackgroundTiles() {
-        const totalSprites = 6
+    constructWallTiles() {
+        const totalSprites = 5
         const totalVariations = MapBuildingHelper.getTotalWallTilesForType(this.type)
         let currentX = 0
 
@@ -52,24 +62,24 @@ export class MapBuildingWalls extends Container implements IMapBuildingWalls {
         }
     }
 
-    constructGradientEdges() {
-        const gradientRect = rect(0, 0, 32, this.height)
-        const overlapOffset = 1
-        const gradientOptions = {
-            definition: { rect: gradientRect, direction: FourWayDirection.Left },
-            totalGradientRays: 5,
-            rayAlpha: 0.15,
-        }
+    // constructGradientEdges() {
+    //     const gradientRect = rect(0, 0, 32, this.height)
+    //     const overlapOffset = 1
+    //     const gradientOptions = {
+    //         definition: { rect: gradientRect, direction: FourWayDirection.Left },
+    //         totalGradientRays: 5,
+    //         rayAlpha: 0.15,
+    //     }
 
-        this.leftGradient = new RectGradient(gradientOptions)
-        gradientOptions.definition.direction = FourWayDirection.Right
-        this.rightGradient = new RectGradient(gradientOptions)
-        this.rightGradient.x = this.width - this.rightGradient.width + overlapOffset
-        this.leftGradient.x = -overlapOffset
+    //     this.leftGradient = new RectGradient(gradientOptions)
+    //     gradientOptions.definition.direction = FourWayDirection.Right
+    //     this.rightGradient = new RectGradient(gradientOptions)
+    //     this.rightGradient.x = this.width - this.rightGradient.width + overlapOffset
+    //     this.leftGradient.x = -overlapOffset
 
-        this.addChild(...[
-            this.leftGradient,
-            this.rightGradient
-        ])
-    }
+    //     this.addChild(...[
+    //         this.leftGradient,
+    //         this.rightGradient
+    //     ])
+    // }
 }
