@@ -27,7 +27,7 @@ export class Wave extends Emitter implements IWave {
     _onComplete: Function
     _isCompleted: boolean = false
     shouldTimeout: boolean = false
-    totalEnemies: number = 5
+    totalEnemies: number = 2
     totalTime: number = 3000
     elapsedTime: number = 0
     spawnIntervalTime: number = 500

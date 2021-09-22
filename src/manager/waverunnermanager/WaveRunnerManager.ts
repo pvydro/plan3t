@@ -83,13 +83,13 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.currentWaveRunnerGame.loadWave(new Wave({
             waveIndex: this.currentWaveIndex,
             totalTime: 3000,
-            elapsedTime: 0
-            // onSpawn: () => {
-            //     this.currentWaveRunnerGame.spawner.spawn()
-            // },
-            // onComplete: () => {
-            //     this.registerNextWave()
-            // }
+            elapsedTime: 0,
+            onSpawn: () => {
+                this.currentWaveRunnerGame.spawner.spawn()
+            },
+            onComplete: () => {
+                this.registerCurrentWave()
+            }
         }))
         this.hud.loadWave(this.currentWave)
 
