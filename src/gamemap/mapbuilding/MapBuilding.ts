@@ -1,9 +1,11 @@
 import { GradientOutline } from '../../engine/display/lighting/GradientOutline'
+import { Rect } from '../../engine/math/Rect'
 import { log } from '../../service/Flogger'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
 import { BuildingBuilder, BuildingBuilderResponse, IBuildingBuilder } from './BuildingBuilder'
 import { IMapBuildingAnimator, MapBuildingAnimator } from './MapBuildingAnimator'
 import { MapBuildingBackground } from './MapBuildingBackground'
+import { MapBuildingFloor } from './MapBuildingFloor'
 import { MapBuildingWalls as MapBuildingWalls } from './MapBuildingWalls'
 
 export enum MapBuildingType {
@@ -25,6 +27,7 @@ export interface MapBuildingOptions {
 export class MapBuilding extends GameMapContainer implements IMapBuilding {
     buildingOptions: MapBuildingOptions
     walls: MapBuildingWalls
+    floor: MapBuildingFloor
     background: MapBuildingBackground
     builder: IBuildingBuilder
     animator!: IMapBuildingAnimator
@@ -43,22 +46,29 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
         this.clearChildren()
 
         return new Promise((resolve) => {
-            this.builder.buildBuilding(this.buildingOptions).then((response: BuildingBuilderResponse) => {
-                this.tileLayer = response.tileLayer
-                this.collisionRects = response.collisionRects
+            // this.builder.buildBuilding(this.buildingOptions).then((response: BuildingBuilderResponse) => {
+                // this.tileLayer = response.tileLayer
+                // this.collisionRects = response.collisionRects
                 this.walls = new MapBuildingWalls({ type: this.type })
+                this.floor = new MapBuildingFloor({ type: this.type })
                 this.background = new MapBuildingBackground({ type: this.type })
                 this.animator = new MapBuildingAnimator({
-                    floorSprite: response.floorSprite,
+                    floor: this.floor,
                     backgroundSprite: this.walls//response.backgroundSprite
                 })
                 
-                this.walls.x = response.tileLayer.halfWidth - (this.walls.halfWidth)
-                this.background.x = response.tileLayer.halfWidth
+                // TODO: Reposition function, IReposition interface
+                this.walls.x = 0//response.tileLayer.halfWidth - (this.walls.halfWidth)
+                this.floor.x = 0//this.walls.halfWidth - this.floor.halfWidth
+                this.floor.y = this.walls.height
+                // this.background.x = response.tileLayer.halfWidth
 
                 this.addChild(this.background)
                 this.addChild(this.walls)
-                this.addChild(this.tileLayer)
+                this.addChild(this.floor)
+                // this.addChild(this.tileLayer)
+
+                this.collisionRects = this.buildCollisionRects()
 
                 // this.outline = new GradientOutline({
                 //     // targetElement: this.tileLayer,
@@ -74,7 +84,18 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
 
                 resolve()
             })
+        // })
+    }
+
+    buildCollisionRects(): Rect[] {
+        const groundRect = new Rect({
+            x: 0, y: this.floor.y + 2,//250,
+            width: this.floor.width,//240,//floorSprite.width,
+            height: 42
         })
+
+        return [ groundRect ]
+
     }
 
     async transitionIn() {

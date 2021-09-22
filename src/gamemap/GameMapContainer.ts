@@ -23,7 +23,7 @@ export interface IGameMapContainer extends IContainer, IUpdatable {
 export interface GameMapContainerBuilderResponse {
     tileLayer: Container
     natureLayer?: Container
-    collisionRects: Rect[]
+    collisionRects?: Rect[]
 }
 
 export class GameMapContainer extends Container implements IGameMapContainer {

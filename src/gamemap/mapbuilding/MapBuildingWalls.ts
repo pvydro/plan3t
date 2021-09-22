@@ -41,11 +41,11 @@ export class MapBuildingWalls extends Container implements IMapBuildingWalls {
     }
 
     constructWallTiles() {
-        const totalSprites = 5
+        const totalWalls = 10//5
         const totalVariations = MapBuildingHelper.getTotalWallTilesForType(this.type)
         let currentX = 0
 
-        for (var i = 0; i < totalSprites; i++) {
+        for (var i = 0; i < totalWalls; i++) {
             const randomSelection = getRandomIntBetween(1, totalVariations)
             const url = Assets.MapBuildingDir + `${this.type}/background/${randomSelection}`
 
