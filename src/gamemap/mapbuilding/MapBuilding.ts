@@ -2,7 +2,6 @@ import { GradientOutline } from '../../engine/display/lighting/GradientOutline'
 import { Rect } from '../../engine/math/Rect'
 import { log } from '../../service/Flogger'
 import { GameMapContainer, IGameMapContainer } from '../GameMapContainer'
-import { BuildingBuilder, BuildingBuilderResponse, IBuildingBuilder } from './BuildingBuilder'
 import { IMapBuildingAnimator, MapBuildingAnimator } from './MapBuildingAnimator'
 import { MapBuildingBackground } from './MapBuildingBackground'
 import { MapBuildingFloor } from './MapBuildingFloor'
@@ -29,7 +28,6 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
     walls: MapBuildingWalls
     floor: MapBuildingFloor
     background: MapBuildingBackground
-    builder: IBuildingBuilder
     animator!: IMapBuildingAnimator
     type: MapBuildingType
     outline: GradientOutline
@@ -39,7 +37,6 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
         
         this.buildingOptions = options
         this.type = options.type
-        this.builder = new BuildingBuilder()
     }
 
     initializeMap(): Promise<void> {
@@ -54,32 +51,23 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
                 backgroundSprite: this.walls
             })
             
-            // TODO: Reposition function, IReposition interface
-            this.walls.x = 0
-            this.floor.x = 0
-            this.floor.y = this.walls.height
-
             this.addChild(this.background)
             this.addChild(this.walls)
             this.addChild(this.floor)
-            // this.addChild(this.tileLayer)
-
+            
+            this.reposition()            
             this.collisionRects = this.buildCollisionRects()
-
-            // this.outline = new GradientOutline({
-            //     // targetElement: this.tileLayer,
-            //     targetDimension: { width: this.width, height: this.height },
-            //     gradientWidth: 32,
-            //     offsetWidth: 12,
-            //     rayAlpha: 0.25
-            // })
-            // console.log('%cWH: ' + this.width + ', ' + this.height, 'font-size: 400%; background-color: orange')
-            // this.addChild(this.outline)
             
             super.initializeMap()
 
             resolve()
         })
+    }
+
+    reposition() {
+        this.walls.x = 0
+        this.floor.x = 0
+        this.floor.y = this.walls.height - 56
     }
 
     buildCollisionRects(): Rect[] {
@@ -90,7 +78,6 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
         })
 
         return [ groundRect ]
-
     }
 
     async transitionIn() {

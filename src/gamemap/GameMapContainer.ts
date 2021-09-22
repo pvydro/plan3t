@@ -5,13 +5,14 @@ import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { Rect } from '../engine/math/Rect'
 import { GameLoop } from '../gameloop/GameLoop'
+import { IReposition } from '../interface/IReposition'
 import { IUpdatable } from '../interface/IUpdatable'
 import { log } from '../service/Flogger'
 import { DebugConstants } from '../utils/Constants'
 import { AnimDefaults } from '../utils/Defaults'
 import { asyncTimeout } from '../utils/Utils'
 
-export interface IGameMapContainer extends IContainer, IUpdatable {
+export interface IGameMapContainer extends IContainer, IUpdatable, IReposition {
     collisionRects: Rect[]
     tileLayer?: Container
     initializeMap(): Promise<void>
@@ -113,6 +114,10 @@ export class GameMapContainer extends Container implements IGameMapContainer {
         }
 
         await asyncTimeout(500)
+    }
+
+    reposition() {
+        return
     }
 
     clearMap() {
