@@ -11,10 +11,7 @@ export interface IBuildingBuilder {
 }
 
 export interface BuildingBuilderResponse extends GameMapContainerBuilderResponse {
-    // floorSprite: ISprite
-    // floor: IMapBuildingFloor
     backgroundSprite: ISprite
-    // ceilingSprite: ISprite
 }
 
 /**
@@ -42,14 +39,4 @@ export class BuildingBuilder implements IBuildingBuilder {
 
         return { tileLayer, backgroundSprite }
     }
-
-    // private buildCollisionRectsForFloor(floorSprite: ISprite): Rect[] {
-    //     const groundRect = new Rect({
-    //         x: 0, y: floorSprite.y + 2,//250,
-    //         width: floorSprite.width,//240,//floorSprite.width,
-    //         height: 42
-    //     })
-
-    //     return [ groundRect ]
-    // }
 }

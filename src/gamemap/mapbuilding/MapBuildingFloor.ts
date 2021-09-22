@@ -1,6 +1,5 @@
 import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
-import { Rect } from '../../engine/math/Rect'
 import { MapBuildingType } from './MapBuilding'
 import { MapBuildingHelper } from './MapBuildingHelper'
 
@@ -14,7 +13,6 @@ export interface MapBuildingFloorOptions {
 
 export class MapBuildingFloor extends Container implements IMapBuildingFloor {
     floorSprite: Sprite
-    // collisionRects: Rect[]
 
     constructor(options: MapBuildingFloorOptions) {
         super()
@@ -23,18 +21,5 @@ export class MapBuildingFloor extends Container implements IMapBuildingFloor {
         this.floorSprite = new Sprite({ texture: floorTexture })
         
         this.addChild(this.floorSprite)
-
-        // this.collisionRects = this.buildCollisionRects()
     }
-
-    // TODO: This positioning is broken
-    // buildCollisionRects(): Rect[] {
-    //     const groundRect = new Rect({
-    //         x: 0, y: this.y + 20,//250,
-    //         width: this.floorSprite.width,//240,//floorSprite.width,
-    //         height: 42
-    //     })
-
-    //     return [ groundRect ]
-    // }
 }

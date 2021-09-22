@@ -46,51 +46,46 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
         this.clearChildren()
 
         return new Promise((resolve) => {
-            // this.builder.buildBuilding(this.buildingOptions).then((response: BuildingBuilderResponse) => {
-                // this.tileLayer = response.tileLayer
-                // this.collisionRects = response.collisionRects
-                this.walls = new MapBuildingWalls({ type: this.type })
-                this.floor = new MapBuildingFloor({ type: this.type })
-                this.background = new MapBuildingBackground({ type: this.type })
-                this.animator = new MapBuildingAnimator({
-                    floor: this.floor,
-                    backgroundSprite: this.walls//response.backgroundSprite
-                })
-                
-                // TODO: Reposition function, IReposition interface
-                this.walls.x = 0//response.tileLayer.halfWidth - (this.walls.halfWidth)
-                this.floor.x = 0//this.walls.halfWidth - this.floor.halfWidth
-                this.floor.y = this.walls.height
-                // this.background.x = response.tileLayer.halfWidth
-
-                this.addChild(this.background)
-                this.addChild(this.walls)
-                this.addChild(this.floor)
-                // this.addChild(this.tileLayer)
-
-                this.collisionRects = this.buildCollisionRects()
-
-                // this.outline = new GradientOutline({
-                //     // targetElement: this.tileLayer,
-                //     targetDimension: { width: this.width, height: this.height },
-                //     gradientWidth: 32,
-                //     offsetWidth: 12,
-                //     rayAlpha: 0.25
-                // })
-                // console.log('%cWH: ' + this.width + ', ' + this.height, 'font-size: 400%; background-color: orange')
-                // this.addChild(this.outline)
-                
-                super.initializeMap()
-
-                resolve()
+            this.walls = new MapBuildingWalls({ type: this.type })
+            this.floor = new MapBuildingFloor({ type: this.type })
+            this.background = new MapBuildingBackground({ type: this.type })
+            this.animator = new MapBuildingAnimator({
+                floor: this.floor,
+                backgroundSprite: this.walls
             })
-        // })
+            
+            // TODO: Reposition function, IReposition interface
+            this.walls.x = 0
+            this.floor.x = 0
+            this.floor.y = this.walls.height
+
+            this.addChild(this.background)
+            this.addChild(this.walls)
+            this.addChild(this.floor)
+            // this.addChild(this.tileLayer)
+
+            this.collisionRects = this.buildCollisionRects()
+
+            // this.outline = new GradientOutline({
+            //     // targetElement: this.tileLayer,
+            //     targetDimension: { width: this.width, height: this.height },
+            //     gradientWidth: 32,
+            //     offsetWidth: 12,
+            //     rayAlpha: 0.25
+            // })
+            // console.log('%cWH: ' + this.width + ', ' + this.height, 'font-size: 400%; background-color: orange')
+            // this.addChild(this.outline)
+            
+            super.initializeMap()
+
+            resolve()
+        })
     }
 
     buildCollisionRects(): Rect[] {
         const groundRect = new Rect({
-            x: 0, y: this.floor.y + 2,//250,
-            width: this.floor.width,//240,//floorSprite.width,
+            x: 0, y: this.floor.y + 2,
+            width: this.floor.width,
             height: 42
         })
 
