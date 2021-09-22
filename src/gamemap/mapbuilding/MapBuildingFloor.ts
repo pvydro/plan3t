@@ -32,5 +32,7 @@ export class MapBuildingFloor extends Container implements IMapBuildingFloor {
         }
 
         this.decoration = new FloorDecoration({ floor: this })
+
+        this.addChild(this.decoration)
     }
 }

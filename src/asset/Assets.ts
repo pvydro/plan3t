@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { SphericalBiome } from '../gamemap/spherical/SphericalData'
 import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/tile/SphericalTileHelper'
-import { Flogger, importantLog } from '../service/Flogger'
+import { Flogger, importantLog, log } from '../service/Flogger'
 
 export class Assets {
     private static _imagesStartedLoading: boolean = false
@@ -19,6 +19,7 @@ export class Assets {
     static async loadImages() {
         Flogger.log('Assets', 'loadImages')
 
+        await Assets.loadAllDecorImages()
         await Assets.loadAllTileImages()
         
         return new Promise((resolve, reject) => {
@@ -53,6 +54,23 @@ export class Assets {
             }
         })
     }
+
+    private static async loadAllDecorImages() {
+        log('AssetLoader', 'loadAllDecorImages')
+
+        return new Promise((resolve) => {
+            const decorKeys = [
+                // Temporary
+                Assets.get('assets/image/gamemap/mapbuilding/dojo/decorations/solid_0'),
+                Assets.get('assets/image/gamemap/mapbuilding/dojo/decorations/solid_1')
+            ]
+
+            PIXI.Loader.shared.add(decorKeys).load(() => {
+                resolve(true)
+            })
+        })
+    }
+
 
     private static async loadAllTileImages() {
         Flogger.log('Assets', 'loadAllTileImages')
