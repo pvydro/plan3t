@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js'
 import { SphericalBiome } from '../gamemap/spherical/SphericalData'
 import { SphericalTileHelper, SphericalTileValues } from '../gamemap/spherical/tile/SphericalTileHelper'
 import { Flogger, importantLog, log } from '../service/Flogger'
-import { FileUtils } from '../utils/FileUtils'
 
 export class Assets {
     private static _imagesStartedLoading: boolean = false
@@ -60,13 +59,7 @@ export class Assets {
         log('AssetLoader', 'loadAllDecorImages')
 
         return new Promise((resolve) => {
-            const decorKeys = [
-                // Temporary
-                Assets.get('assets/image/gamemap/mapbuilding/dojo/decorations/solid_0'),
-                Assets.get('assets/image/gamemap/mapbuilding/dojo/decorations/solid_1')
-            ]
-
-            FileUtils.getAllFilePathsInFolder('assets')
+            const decorKeys: string[] = require('../json/BiomeDecorations.json')
 
             PIXI.Loader.shared.add(decorKeys).load(() => {
                 resolve(true)

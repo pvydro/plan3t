@@ -13,7 +13,7 @@ function fetchDecorationKeys() {
 
         for (var i in files) {
             const fileName = files[i]
-            const filePath = `${decorationDir}/${fileName}`
+            const filePath = `${decorationDir}/${fileName}`.replace('.png', '')
 
             decorationPaths.push(filePath)
         }
