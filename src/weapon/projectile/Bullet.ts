@@ -5,7 +5,6 @@ import { GravityEntity, IGravityEntity } from '../../cliententity/GravityEntity'
 import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
-import { Flogger } from '../../service/Flogger'
 import { GlobalScale } from '../../utils/Constants'
 import { PhysDefaults } from '../../utils/Defaults'
 
