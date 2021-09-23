@@ -10,7 +10,8 @@
     "dev": "nodemon",
     "serve": "npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "custom-clean": "find . -name '.DS_Store' -delete"
+    "custom-clean": "find . -name '.DS_Store' -delete",
+    "update-asset-keys": "node tools/updateassetkeys.js"
   },
   "author": "Endel Dreyer",
   "license": "MIT",
