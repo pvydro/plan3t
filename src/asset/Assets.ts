@@ -171,6 +171,7 @@ export class AssetUrls {
     static EnemyFlyingEyeIdle = 'assets/image/enemy/flyingeye/flyingeye'
     static EnemySormIdle = 'assets/image/enemy/sorm/idle'
     static EnemyNenjIdle = 'assets/image/enemy/nenj/idle'
+    static EnemyTorkIdle = 'assets/image/enemy/tork/idle'
 
     // Spherical/GameMap
     static SkyDawn = 'assets/image/gamemap/sky/dawn'

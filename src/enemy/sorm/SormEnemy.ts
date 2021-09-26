@@ -6,7 +6,6 @@ import { Sprite } from '../../engine/display/Sprite'
 import { Spritesheet } from '../../engine/display/spritesheet/Spritesheet'
 import { Rect } from '../../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
-import { Events } from '../../model/events/Events'
 import { Enemy, IEnemy } from '../Enemy'
 
 export interface ISormEnemy extends IEnemy {
@@ -43,7 +42,8 @@ export class SormEnemy extends Enemy implements ISormEnemy {
                     }
                 },
             },
-            walkSpeed: 1, weight: 0.5,
+            walkSpeed: 1,
+            weight: 0.5,
             boundingDimensions: { width, height },
             boundingBoxAnchor: { x: 0.5, y: 0 }
         })

@@ -4,6 +4,7 @@ import { Koini } from '../creature/koini/Koini'
 import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
 import { CreatureType } from '../creature/CreatureType'
 import { NenjEnemy } from '../enemy/nenj/NenjEnemy'
+import { TorkEnemy } from '../enemy/tork/TorkEnemy'
 
 export class CreatureFactory {
     private constructor() {
@@ -28,6 +29,9 @@ export class CreatureFactory {
                 break
             case CreatureType.Nenj:
                 creature = new NenjEnemy()
+                break
+            case CreatureType.Tork:
+                creature = new TorkEnemy()
                 break
         }
 
