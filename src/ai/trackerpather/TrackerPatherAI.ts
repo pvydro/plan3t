@@ -1,4 +1,6 @@
+import { IClientEntity } from '../../cliententity/ClientEntity'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { TravelkinMovementState } from '../../creature/travelkin/TravelkinCreature'
 import { AIOptions, IAI } from '../AI'
 import { GroundPatherAI, GroundPatherState } from '../groundpather/GroundPatherAI'
 
@@ -12,13 +14,14 @@ export interface TrackerPatherOptions extends AIOptions {
 
 export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI {
     followTarget: IClientPlayer
+    currentTarget: IClientEntity
 
     constructor(options: TrackerPatherOptions) {
         super(options)
     }
 
     update() {
-        // this.debugger.update()
+        this.debugger.update()
         this.jumper.update()
 
         if (!this.isDead) {
@@ -27,6 +30,12 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
 
                 // this.startTrackingPlayer()
             }
+
+            if (this.currentNode && this.currentNode.x !== this.currentTarget.x) {
+                this.currentNode.x = this.currentTarget.x
+                this._currentState = GroundPatherState.Following
+            }
+
 
             // if (this.currentState === GroundPatherState.Following)
 
@@ -44,6 +53,7 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
             x: clientPlayer.x,
             y: this.currentGroundRect.y
         }
+        this.currentTarget = clientPlayer
     }
 
     startTrackingPlayer() {
