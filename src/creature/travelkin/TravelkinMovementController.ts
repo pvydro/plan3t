@@ -54,10 +54,12 @@ export class TravelkinMovementController implements ITravelkinMovementController
     goToCurrentNode() {
         const currentNode = this.travelkin.ai.currentNode
 
-        if (currentNode.x > this.travelkin.x) {
-            this.moveRight()
-        } else if (currentNode.x < this.travelkin.x) {
-            this.moveLeft()
+        if (currentNode) {
+            if (currentNode.x > this.travelkin.x) {
+                this.moveRight()
+            } else if (currentNode.x < this.travelkin.x) {
+                this.moveLeft()
+            }
         }
     }
 

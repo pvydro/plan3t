@@ -53,6 +53,10 @@ export class SormEnemy extends Enemy implements ISormEnemy {
         })
     }
 
+    update() {
+        super.update()
+    }
+
     takeDamage(damageAmount: number) {
         super.takeDamage(damageAmount)
     }

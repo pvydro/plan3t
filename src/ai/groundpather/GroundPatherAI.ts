@@ -2,7 +2,6 @@ import { GravityOrganismState } from '../../cliententity/gravityorganism/Gravity
 import { Direction } from '../../engine/math/Direction'
 import { Rect } from '../../engine/math/Rect'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { log } from '../../service/Flogger'
 import { AI, AINode, AIOptions, IAI } from '../AI'
 import { GroundPatherAIJumper, IGroundPatherAIJumper } from './GroundPatherAIJumper'
 import { GroundPatherDebugger, IGroundPatherDebugger } from './GroundPatherDebugger'

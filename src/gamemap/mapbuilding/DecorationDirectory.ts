@@ -13,13 +13,14 @@ export class DecorationDirectory {
         log('DecorationDirectory', 'assembleDirectory')
 
         Object.values(MapBuildingType).forEach((value: MapBuildingType) => {
-            log('Collecting decorations for ', value)
+            log('DecorationDirectory', 'Collecting decorations for ', value)
+            
             const decorationsDir = `${Assets.MapBuildingDir}${value}/decorations/`
             const decorations = []
 
             this.allDecorations.forEach((decor: string) => {
                 if (decor.includes(decorationsDir)) {
-                    importantLog(`decorDir is of type ${value}, ${decor}`)
+                    importantLog('DecorationDirectory', `decorDir is of type ${value}, ${decor}`)
 
                     decorations.push(decor)
                 }

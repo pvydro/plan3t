@@ -5,6 +5,7 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { Camera } from '../camera/Camera'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
+import { TrackerPatherAI } from '../ai/trackerpather/TrackerPatherAI'
 
 export interface IEnemy extends ITravelkinCreature {
 
@@ -28,6 +29,7 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
 
         this.applyEnemyProperties(enemyProperties)
         this.entityId = 'Enemy' + Enemy.EnemyIdIteration++
+        this.ai = new TrackerPatherAI({ gravityOrganism: this })
     }
 
     applyEnemyProperties(properties: EnemyProperties) {

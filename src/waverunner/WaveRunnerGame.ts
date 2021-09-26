@@ -36,7 +36,7 @@ export class WaveRunnerGame implements IWaveRunnerGame {
         importantLog('WaveRunnerGame', 'beginWaveRunner')
 
         this._spawner = new CreatureSpawner({
-            typeToSpawn: CreatureType.Tork,     //  TODO: MULTIPLE
+            typeToSpawn: CreatureType.Sorm,     //  TODO: MULTIPLE
             onSpawn: (enemy: Enemy) => {
                 log('WaveRunnerGame', 'spawner.onSpawn', 'entityId', (enemy && enemy.entityId) ?? 'Not defined')
 
