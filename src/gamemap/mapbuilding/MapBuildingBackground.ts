@@ -31,7 +31,7 @@ export class MapBuildingBackground extends Container implements IMapBuildingBack
         const texture = MapBuildingHelper.getBackgroundAssetForType(this.type)
         
         this.backgroundSprite = new Sprite({ texture })
-        this.backgroundSprite.anchor.x = 0.5
+        // this.backgroundSprite.anchor.x = 0.5
 
         return this.backgroundSprite
     }

@@ -3,21 +3,21 @@ import { getRandomIntBetween } from '../../../utils/Utils'
 import { DecorationDirectory } from '../DecorationDirectory'
 import { MapBuildingType } from '../MapBuilding'
 import { IMapBuildingFloor } from '../MapBuildingFloor'
-import { FloorDecorationItem } from './FloorDecorationItem'
+import { FloorDecorationItem } from './DecorationItem'
 
-export interface IFloorDecoration extends IContainer {
+export interface IDecoration extends IContainer {
 
 }
 
-export interface FloorDecorationOptions {
+export interface DecorationOptions {
     floor: IMapBuildingFloor
     type: MapBuildingType
 }
 
-export class FloorDecoration extends Container implements IFloorDecoration {
+export class Decoration extends Container implements IDecoration {
     type: MapBuildingType
 
-    constructor(options: FloorDecorationOptions) {
+    constructor(options: DecorationOptions) {
         super()
 
         this.type = options.type
@@ -25,11 +25,10 @@ export class FloorDecoration extends Container implements IFloorDecoration {
         this.randomlyGenerateDecor(options)
     }
 
-    randomlyGenerateDecor(options: FloorDecorationOptions) {
+    randomlyGenerateDecor(options: DecorationOptions) {
         const totalDecor = getRandomIntBetween(3, 10)
         
         const allDecorations = DecorationDirectory.getDecorationsForType(this.type)
-        // const allDecorations = DecorationDirectory.allDecorations
 
         for (var i = 0; i < totalDecor; i++) {
             const randomIndex: number = getRandomIntBetween(0, allDecorations.length)

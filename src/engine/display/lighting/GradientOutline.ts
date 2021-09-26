@@ -42,10 +42,10 @@ export class GradientOutline extends Container implements IGradientOutline {
     initializeOutlineGradients() {
         const elementWidth = this.targetDimension.width
         const elementHeight = this.targetDimension.height
-        const leftRect = rect(0 + this.offsetWidth, 0, this.gradientWidth, elementHeight)
-        const rightRect = rect(elementWidth - this.gradientWidth, 0, this.gradientWidth, elementHeight)
-        const topRect = rect(0, 0, elementWidth, this.gradientWidth)
-        const bottomRect = rect(0, elementHeight - this.gradientWidth, elementWidth, this.gradientWidth)
+        const leftRect = rect(0 + this.offsetWidth - 1, -1, this.gradientWidth, elementHeight + 2)
+        const rightRect = rect(elementWidth - this.gradientWidth + 1, -1, this.gradientWidth, elementHeight + 2)
+        const topRect = rect(0, -1, elementWidth, this.gradientWidth)
+        const bottomRect = rect(0, elementHeight - this.gradientWidth + 1, elementWidth, this.gradientWidth)
         const rects: RectGradientDefinition[] = [
             { rect: leftRect, direction: FourWayDirection.Left },
             { rect: rightRect, direction: FourWayDirection.Right },

@@ -65,6 +65,7 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
     }
 
     reposition() {
+        this.background.x = 0
         this.walls.x = 0
         this.floor.x = 0
         this.floor.y = this.walls.height - 56

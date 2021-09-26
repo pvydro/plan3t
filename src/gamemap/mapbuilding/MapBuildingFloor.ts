@@ -1,6 +1,6 @@
 import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
-import { FloorDecoration } from './floordecoration/FloorDecoration'
+import { Decoration } from './decoration/Decoration'
 import { MapBuildingType } from './MapBuilding'
 import { MapBuildingHelper } from './MapBuildingHelper'
 
@@ -13,7 +13,7 @@ export interface MapBuildingFloorOptions {
 }
 
 export class MapBuildingFloor extends Container implements IMapBuildingFloor {
-    decoration: FloorDecoration
+    decoration: Decoration
     floorSprites: Sprite[] = []
     totalFloors: number = 2
 
@@ -31,7 +31,7 @@ export class MapBuildingFloor extends Container implements IMapBuildingFloor {
             this.floorSprites.push(floorSprite)
         }
 
-        this.decoration = new FloorDecoration({ floor: this, type: options.type })
+        this.decoration = new Decoration({ floor: this, type: options.type })
 
         this.addChild(this.decoration)
     }

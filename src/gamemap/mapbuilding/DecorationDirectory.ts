@@ -13,7 +13,6 @@ export class DecorationDirectory {
         log('DecorationDirectory', 'assembleDirectory')
 
         Object.values(MapBuildingType).forEach((value: MapBuildingType) => {
-            // console.log('value', value)
             log('Collecting decorations for ', value)
             const decorationsDir = `${Assets.MapBuildingDir}${value}/decorations/`
             const decorations = []
@@ -28,8 +27,6 @@ export class DecorationDirectory {
             
             this.decorationsByType.set(value, decorations)
         })
-
-        console.log(this.decorationsByType)
     }
 
     static getDecorationsForType(type: MapBuildingType): string[] {
