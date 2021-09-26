@@ -20,38 +20,38 @@ function fetchDecorationKeys() {
     const keysFile = 'src/json/BiomeDecorations.json'
 
 
-        getDirectories(mapsDir, (allMaps) => {
-            console.log('Collected map directories')
-            console.log(allMaps)
-    
-            allMaps.forEach((dir) => {
-                const decorationDir = path.join(dir, '/decorations')
-    
-                if (decorationDir) {
-                    console.log(`Iterated MapBuilding directory: ${dir}`)
-                    fs.readdir(decorationDir, (error, files) => {
-    
-                        if (error) {
-                            console.log(`No decorations for ${dir}`)
-                        } else if (files) {
-                            for (var i in files) {
-                                
-                                const fileName = files[i]
+    getDirectories(mapsDir, (allMaps) => {
+        console.log('Collected map directories')
+        console.log(allMaps)
 
-                                if (fileName.includes('.png')) {
-                                    const filePath = `${decorationDir}/${fileName}`.replace('.png', '')
-            
-                                    console.log(`Iterated file: ${filePath}`)
-                        
-                                    decorationPaths.push(filePath)
-                                }
+        allMaps.forEach((dir) => {
+            const decorationDir = path.join(dir, '/decorations')
+
+            if (decorationDir) {
+                console.log(`Iterated MapBuilding directory: ${dir}`)
+                fs.readdir(decorationDir, (error, files) => {
+
+                    if (error) {
+                        console.log(`No decorations for ${dir}`)
+                    } else if (files) {
+                        for (var i in files) {
+                            
+                            const fileName = files[i]
+
+                            if (fileName.includes('.png')) {
+                                const filePath = `${decorationDir}/${fileName}`.replace('.png', '')
+        
+                                console.log(`Iterated file: ${filePath}`)
+                    
+                                decorationPaths.push(filePath)
                             }
                         }
-                        
-                        fs.writeFileSync(keysFile, JSON.stringify(decorationPaths))
-                    })
-                }
-            })
+                    }
+                    
+                    fs.writeFileSync(keysFile, JSON.stringify(decorationPaths))
+                })
+            }
+        })
     })
 
 }

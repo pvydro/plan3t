@@ -31,7 +31,7 @@ export class MapBuildingFloor extends Container implements IMapBuildingFloor {
             this.floorSprites.push(floorSprite)
         }
 
-        this.decoration = new FloorDecoration({ floor: this })
+        this.decoration = new FloorDecoration({ floor: this, type: options.type })
 
         this.addChild(this.decoration)
     }

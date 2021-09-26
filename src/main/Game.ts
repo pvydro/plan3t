@@ -16,6 +16,7 @@ import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
 import { MusicLoader } from '../music/MusicLoader'
 import { musicLoader } from '../shared/Dependencies'
+import { DecorationDirectory } from '../gamemap/mapbuilding/DecorationDirectory'
 
 export interface IGame {
     view: any
@@ -64,6 +65,7 @@ export class Game implements IGame {
         await Spritesheets.loadSpritesheets()
         await Sounds.loadSounds()
         await Tween.initializePlugins()
+        await DecorationDirectory.assembleDirectory()
         
         await this.clientManager.initialize()
 
