@@ -1,14 +1,15 @@
 import { IClientEntity } from '../../cliententity/ClientEntity'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { TravelkinMovementState } from '../../creature/travelkin/TravelkinCreature'
-import { AIOptions, IAI } from '../AI'
-import { GroundPatherAI, GroundPatherState } from '../groundpather/GroundPatherAI'
+import { importantLog } from '../../service/Flogger'
+import { asyncTimeout } from '../../utils/Utils'
+import { IAI } from '../AI'
+import { GroundPatherAI, GroundPatherOptions, GroundPatherState } from '../groundpather/GroundPatherAI'
 
 export interface ITrackerPatherAI extends IAI {
 
 }
 
-export interface TrackerPatherOptions extends AIOptions {
+export interface TrackerPatherOptions extends GroundPatherOptions {
 
 }
 
@@ -17,6 +18,7 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
     currentTarget: IClientEntity
 
     constructor(options: TrackerPatherOptions) {
+        options.idleTimeRange = options.idleTimeRange ?? 100
         super(options)
     }
 
@@ -46,6 +48,12 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
         }
     }
 
+    async attack() {
+        importantLog('TrackerPatherAI', 'attack')
+
+        await asyncTimeout(1000)
+    }
+
     findPointOnCurrentGround() {
         const clientPlayer = ClientPlayer.getInstance()
 
@@ -53,14 +61,23 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
             x: clientPlayer.x,
             y: this.currentGroundRect.y
         }
+
         this.currentTarget = clientPlayer
+    }
+
+    hasReachedNode() {
+        this.currentState = GroundPatherState.Idle
+        this.clearCurrentNode()
+
+        this.attack().then(() => {
+            this.startTrackingPlayer()
+        })
     }
 
     startTrackingPlayer() {
         this.currentState = GroundPatherState.Following
 
         this.findNewPoint()
-        // this.decideIfContinueOrStop()
     }
 
     findNewPoint() {
@@ -68,8 +85,4 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
 
         this.findPointOnCurrentGround()
     }
-
-    // findPlayerPoint() {
-
-    // }
 }

@@ -27,7 +27,8 @@ export enum GroundPatherState {
     Stopped = 'Stopped',
     Following = 'Following',
     Scared = 'Scared',
-    Dead = 'Dead'
+    Dead = 'Dead',
+    Attacking = 'Attacking'
 }
 
 export interface GroundPatherOptions extends AIOptions {
@@ -130,13 +131,16 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         const distance = this.target.x - this.currentNode.x
 
         if (Math.abs(distance) < 1) {
-            this.clearCurrentNode()
-            this.currentState = GroundPatherState.Idle
-
             hasReached = true
+            this.hasReachedNode()
         }
 
         return hasReached
+    }
+
+    hasReachedNode() {
+        this.clearCurrentNode()
+        this.currentState = GroundPatherState.Idle
     }
 
     decideIfContinueOrStop() {
@@ -198,7 +202,7 @@ export class GroundPatherAI extends AI implements IGroundPatherAI {
         }
     }
 
-    private clearCurrentNode() {
+    protected clearCurrentNode() {
         this.currentNode = undefined
     }
 
