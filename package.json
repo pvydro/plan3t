@@ -7,8 +7,7 @@
     "schema-codegen": "schema-codegen src/server/rooms/*.ts --ts --output src/network/client/schema/",
     "heroku-postbuild": "tsc && webpack",
     "start": "node ./lib/index.js",
-    "dev": "nodemon",
-    "serve": "npm run dev",
+    "serve": "npm run update-asset-keys && nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "custom-clean": "find . -name '.DS_Store' -delete",
     "update-asset-keys": "node tools/updateassetkeys.js"

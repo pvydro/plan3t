@@ -27,9 +27,6 @@ export class FloorDecoration extends Container implements IFloorDecoration {
         for (var i = 0; i < totalDecor; i++) {
             const randomIndex: number = getRandomIntBetween(0, allDecorations.length - 1)
             const randomID: string = allDecorations[randomIndex]
-
-            console.log('%cRND', 'background-color: red; font-size: 300%')
-            console.log(randomID)
             
             const item = new FloorDecorationItem({ itemID: randomID })
             item.x = Math.random() * options.floor.width
