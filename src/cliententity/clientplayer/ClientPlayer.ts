@@ -133,6 +133,11 @@ export class ClientPlayer extends ClientPlayerState {
         if (this.isClientPlayer) {
             this.messenger.update()
         }
+
+        if (this.y > 312) {
+            this.yVel = 0
+            this.y = 0
+        }
     }
 
     equipWeapon(weapon: Weapon | null) {

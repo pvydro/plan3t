@@ -1,5 +1,9 @@
-import { Enemy, EnemyProperties } from '../Enemy'
-import { Dimension } from '../../engine/math/Dimension'
+import { Enemy } from '../Enemy'
+import { Dimension, IDimension } from '../../engine/math/Dimension'
+
+export interface EnemyProperties {
+    dimension?: IDimension
+}
 
 export class EnemyHelper {
     private constructor() {

@@ -60,14 +60,16 @@ export class DebugConstants {
     static ShowInteractiveContainerDebug: boolean = true
     static ShowUIButtonDebug: boolean = false
     static AlternateChatbox: boolean = false
+    static ShowEnemyAttackRadius: boolean = true
 }
 
 export class AIDebugConstants {
     static ShowCurrentNode: boolean = true
     static ShowCurrentGroundIndicator: boolean = false
     static ShowCurrentGroundRange: boolean = false
-    static ShowGroundJumperSensors: boolean = false
+    static ShowGroundJumperSensors: boolean = true
     static ShowAIBadge: boolean = true
+    static ShowAttackRadius: boolean = true
 }
 
 export class Constants {

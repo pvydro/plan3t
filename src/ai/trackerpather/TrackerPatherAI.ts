@@ -29,22 +29,12 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
         if (!this.isDead) {
             if (this._currentGroundRect !== this.target.currentGroundRect) {
                 this.currentGroundRect = this.target.currentGroundRect
-
-                // this.startTrackingPlayer()
             }
 
             if (this.currentNode && this.currentNode.x !== this.currentTarget.x) {
                 this.currentNode.x = this.currentTarget.x
-                this._currentState = GroundPatherState.Following
+                this.currentState = GroundPatherState.Following
             }
-
-
-            // if (this.currentState === GroundPatherState.Following)
-
-            // if (this.currentState === GroundPatherState.Idle && this.currentNode === undefined
-            // && this.currentGroundRect !== undefined) {
-
-            // }
         }
     }
 

@@ -1,26 +1,26 @@
-import { EnemyHelper } from './helper/EnemyHelper'
-import { IDimension } from '../engine/math/Dimension'
+import { EnemyHelper, EnemyProperties } from './helper/EnemyHelper'
 import { ITravelkinCreature, TravelkinCreature, TravelkinCreatureOptions } from '../creature/travelkin/TravelkinCreature'
 import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { Camera } from '../camera/Camera'
 import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { TrackerPatherAI } from '../ai/trackerpather/TrackerPatherAI'
+import { EnemyDebugger } from './EnemyDebugger'
+import { DebugConstants } from '../utils/Constants'
 
 export interface IEnemy extends ITravelkinCreature {
-
+    attackRadius: number
 }
 
 export interface EnemyOptions extends TravelkinCreatureOptions {
-
+    attackRadius?: number
 }
 
-export interface EnemyProperties {
-    dimension?: IDimension
-}
 
 export abstract class Enemy extends TravelkinCreature implements IEnemy {
+    private debugger?: EnemyDebugger
     static EnemyIdIteration: number = 0
+    attackRadius: number = 20
 
     constructor(options: EnemyOptions) {
         super(options)
@@ -30,6 +30,13 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
         this.applyEnemyProperties(enemyProperties)
         this.entityId = 'Enemy' + Enemy.EnemyIdIteration++
         this.ai = new TrackerPatherAI({ gravityOrganism: this })
+        this.attackRadius = options.attackRadius ?? this.attackRadius
+
+        if (DebugConstants.ShowEnemyAttackRadius) {
+            this.debugger = new EnemyDebugger({ enemy: this })
+
+            this.addChildAt(this.debugger, 0)
+        }
     }
 
     applyEnemyProperties(properties: EnemyProperties) {
