@@ -1,6 +1,6 @@
-import { TextStyles } from '../../engine/display/TextStyles'
-import { IUIComponent, UIComponent } from '../UIComponent'
-import { UIText } from '../UIText'
+import { TextStyles } from '../../../engine/display/TextStyles'
+import { IUIComponent, UIComponent } from '../../UIComponent'
+import { UIText } from '../../UIText'
 
 export interface ILoadingIcon extends IUIComponent {
     textHeight: number

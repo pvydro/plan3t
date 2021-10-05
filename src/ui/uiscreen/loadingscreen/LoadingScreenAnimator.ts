@@ -1,6 +1,6 @@
-import { Animator, IAnimator } from '../../engine/display/Animator'
-import { Tween } from '../../engine/display/tween/Tween'
-import { log } from '../../service/Flogger'
+import { Animator, IAnimator } from '../../../engine/display/Animator'
+import { Tween } from '../../../engine/display/tween/Tween'
+import { log } from '../../../service/Flogger'
 import { ILoadingScreen } from './LoadingScreen'
 
 export interface ILoadingScreenAnimator extends IAnimator {
