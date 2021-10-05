@@ -5,10 +5,9 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { log } from '../../service/Flogger'
 import { GameWindow } from '../../utils/Constants'
 import { AnimDefaults, TimeDefaults } from '../../utils/Defaults'
-import { asyncTimeout } from '../../utils/Utils'
+import { asyncTimeout, functionExists } from '../../utils/Utils'
 import { IWave } from '../../waverunner/Wave'
 import { InGameChat } from '../ingamechat/InGameChat'
-import { InGameScreenID } from '../ingamemenu/InGameMenu'
 import { IUIComponent, UIComponent } from '../UIComponent'
 import { IUIComponentCreator, UIComponentCreator } from '../UIComponentCreator'
 import { UIComponentType } from '../UIComponentFactory'
@@ -17,6 +16,7 @@ import { UIScreen } from '../uiscreen/UIScreen'
 import { Crosshair, CrosshairState } from './crosshair/Crosshair'
 import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 import { WaveRunnerCounter } from './waverunnercounter/WaveRunnerCounter'
+import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     waveRunnerCounter?: WaveRunnerCounter
@@ -39,9 +39,10 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     hudContainer: UIContainer
     crosshair: Crosshair
     chat: InGameChat
+    menus: InGameMenu
     queuedHealthBars: OverheadHealthBar[]
     creator: IUIComponentCreator
-
+    
     static getInstance() {
         if (!this.Instance) {
             this.Instance = new InGameHUD()
@@ -56,13 +57,16 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         this._initialized = false
         this.queuedHealthBars = []
 
+        this.menus = new InGameMenu()
         this.creator = new UIComponentCreator()
         this.crosshair = Crosshair.getInstance()
+
+        this.addChild(this.menus)
         
         // Temp
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             if (ev.which === Key.B) {
-                this.requestMenuScreen(InGameScreenID.BeamMeUp)
+                this.requestMenuScreen(InGameScreenID.Attachments)
             }
         })
     }
@@ -109,7 +113,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
         for (const i in this.allComponents) {
             const component = this.allComponents[i]
 
-            if (typeof component.update === 'function') {
+            if (functionExists(component.update)) {
                 component.update()
             }
         }
@@ -145,7 +149,6 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     }
 
     async addComponentTemporarily(type: UIComponentType, hideHUD: boolean = false, lifetime: number = 500) {
-        
         if (hideHUD) {
             await this.showHUDComponents(false)
         }
@@ -189,11 +192,10 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     async requestMenuScreen(id: InGameScreenID) {
         log('InGameHUD', 'requestScreen', 'id', id)
 
-        await this.showHUDComponents(false)
+        if (id === this.menus.currentScreenID) return
 
-        // if (this.inGameMenu) {
-        //     await this.inGameMenu.showScreen(id)
-        // }
+        await this.showHUDComponents(false)
+        await this.menus.showScreen(id)
 
         this.requestCrosshairState(CrosshairState.Gameplay, 250)
     }

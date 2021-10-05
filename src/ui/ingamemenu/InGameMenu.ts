@@ -1,128 +1,91 @@
 import { Darkener } from '../../engine/display/lighting/Darkener'
+import { AttachmentsScreen } from '../uiscreen/attachmentsscreen/AttachmentsScreen'
 import { BeamMeUpScreen } from '../uiscreen/beamemupscreen/BeamMeUpScreen'
 import { RespawnScreen } from '../uiscreen/respawnscreen/RespawnScreen'
-import { IUIScreen, UIScreen } from '../uiscreen/UIScreen'
+import { UIScreen } from '../uiscreen/UIScreen'
 import { WaveRunnerScreen } from '../uiscreen/waverunnerscreen/WaveRunnerScreen'
-import { InGameInventory } from './ingameinventory/InGameInventory'
 
 export enum InGameScreenID {
     RespawnScreen,
-    BeamMeUp
+    BeamMeUp,
+    Attachments,
+    WaveRunner
 }
 
 export interface IInGameMenu {
+    currentScreenID: InGameScreenID
     showScreen(id: InGameScreenID): Promise<void>
     hideScreen(id: InGameScreenID): Promise<void>
-    hideAllScreens(): Promise<void>
 }
 
 export class InGameMenu extends UIScreen implements IInGameMenu {
     private static Instance: InGameMenu
     darkener: Darkener
-    respawnScreen: RespawnScreen
-    beamMeUpScreen: BeamMeUpScreen
-    waveRunnerScreen: WaveRunnerScreen
-    inGameInventory: InGameInventory
-    allScreens: IUIScreen[]
+    currentScreen: UIScreen
+    currentScreenID: InGameScreenID
 
-    static getInstance() {
-        if (InGameMenu.Instance === undefined) {
-            InGameMenu.Instance = new InGameMenu()
-        }
-
-        return InGameMenu.Instance
-    }
-    
-    private constructor() {
+    constructor() {
         super({
             shouldFillWindow: true,
             filters: []
         })
 
         this.darkener = new Darkener({ blendMode: PIXI.BLEND_MODES.NORMAL, alpha: 0.9 })
-        this.respawnScreen = new RespawnScreen()
-        this.waveRunnerScreen = new WaveRunnerScreen()
-        // this.beamMeUpScreen = new BeamMeUpScreen()
-        // this.inGameInventory = new InGameInventory()
-
-        this.addChild(this.darkener)
-        this.addChild(this.respawnScreen)
-        this.addChild(this.waveRunnerScreen)
-        // this.addChild(this.beamMeUpScreen)
-        // this.addChild(this.inGameInventory)
-
-        this.allScreens = [
-            this.respawnScreen,
-            this.waveRunnerScreen,
-            this.waveRunnerScreen
-            // this.inGameInventory,
-            // this.beamMeUpScreen
-        ]
 
         this.reposition(true)
     }
 
     async showScreen(id: InGameScreenID) {
+        if (id === this.currentScreenID) return
+
         const screen = this.getScreenForID(id)
+
+        this.currentScreenID = id
+        this.currentScreen = screen
+        this.currentScreen.applyScale()
+        this.currentScreen.reposition()
+
+        this.addChild(this.currentScreen)
 
         this.darkener.show()
-        await screen.show()
+        await this.currentScreen.show()
     }
 
-    async hideScreen(id: InGameScreenID) {
-        const screen = this.getScreenForID(id)
+    async hideScreen() {
+        await this.currentScreen.hide()
+        this.removeChild(this.currentScreen)
 
-        await screen.hide()
-    }
-
-    async hideAllScreens() {
-        if (this.respawnScreen.isShown) {
-            await this.respawnScreen.hide()
-        }
-    }
-
-    applyScale() {
-        for (const i in this.allScreens) {
-            const screen = this.allScreens[i]
-            screen.applyScale()
-        }
-
-        super.applyScale()
+        this.currentScreen = undefined
+        this.currentScreenID = undefined
     }
 
     forceHide() {
         this.darkener.forceHide()
+        this.currentScreen.forceHide()
+        this.removeChild(this.currentScreen)
 
-        for (const i in this.allScreens) {
-            const screen = this.allScreens[i]
-            
-            screen.forceHide()
-        }
+        this.currentScreen = undefined
     }
 
     getScreenForID(id: InGameScreenID) {
-        let screen: IUIScreen
+        let screen: UIScreen
 
         switch (id) {
             case InGameScreenID.RespawnScreen:
-                screen = this.respawnScreen
+                screen = new RespawnScreen()
                 break
             default:
             case InGameScreenID.BeamMeUp:
-                screen = this.beamMeUpScreen
+                screen = new BeamMeUpScreen()
+                break
+            case InGameScreenID.Attachments:
+                screen = new AttachmentsScreen()
+                break
+            case InGameScreenID.WaveRunner:
+                screen = new WaveRunnerScreen()
                 break
         }
 
         return screen
-    }
-
-    reposition(addListeners?: boolean) {
-        super.reposition(addListeners)
-
-        for (const i in this.allScreens) {
-            const screen = this.allScreens[i]
-
-            screen.reposition(addListeners)
-        }
     }
 }

@@ -1,10 +1,11 @@
 import { Flogger } from '../../../service/Flogger'
-import { UIScreen } from '../UIScreen'
+import { InGameScreenID } from '../../ingamemenu/InGameMenu'
+import { IUIScreen, UIScreen } from '../UIScreen'
 import { BeamMeUpButton } from './BeamMeUpButton'
 import { BeamMeUpHeader, IBeamMeUpHeader } from './BeamMeUpHeader'
 import { BeamMeUpScreenAnimator, IBeamMeUpScreenAnimator } from './BeamMeUpScreenAnimator'
 
-export interface IBeamMeUpScreen {
+export interface IBeamMeUpScreen extends IUIScreen {
     header: IBeamMeUpHeader
 }
 

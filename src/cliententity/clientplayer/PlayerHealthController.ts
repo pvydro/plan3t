@@ -59,6 +59,8 @@ export class PlayerHealthController extends HealthController implements IPlayerH
 
         this.player.consciousnessState = PlayerConsciousnessState.Dead
         this.displayDeathEffects()
+
+        InGameHUD.getInstance().requestMenuScreen(InGameScreenID.RespawnScreen)
     }
 
     private displayDamageEffects(damageAmount: number) {
@@ -74,12 +76,9 @@ export class PlayerHealthController extends HealthController implements IPlayerH
 
     private displayDeathEffects() {
         const particleManager = ParticleManager.getInstance()
-        const hud = InGameHUD.getInstance()
 
         particleManager.addParticle(new SmallBlastParticle({
             position: { x: this.player.x, y: this.player.y }
         }))
-
-        hud.requestMenuScreen(InGameScreenID.RespawnScreen)
     }
 }

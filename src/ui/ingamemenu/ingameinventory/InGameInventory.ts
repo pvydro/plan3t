@@ -11,6 +11,9 @@ export interface IInGameInventory extends IUIComponent {
 
 }
 
+/**
+ * TODO Move this to SCREENS.
+ */
 export class InGameInventory extends UIScreen implements IInGameInventory {
 
     topBarSprite: Sprite
