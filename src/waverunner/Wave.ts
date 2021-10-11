@@ -40,7 +40,7 @@ export class Wave extends Emitter implements IWave {
 
         this.waveIndex = options.waveIndex ?? 0
         this._onSpawn = (options as WaveOptions).onSpawn ?? function() {}
-        // this._onComplete = options.onComplete
+        this._onComplete = (options as WaveOptions).onComplete
     }
 
     update() {
