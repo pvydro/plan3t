@@ -12,6 +12,7 @@ export class SpritesheetUrls {
 
     static SormWalking = 'assets/image/enemy/sorm/sorm_walking.json'
     static SormDying = 'assets/image/enemy/sorm/sorm_dying.json'
+    static SormAttacking = 'assets/image/enemy/sorm/sorm_attacking.json'
 }
 
 export class Spritesheets {

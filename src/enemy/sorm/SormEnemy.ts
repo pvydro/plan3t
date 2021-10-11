@@ -21,6 +21,7 @@ export class SormEnemy extends Enemy implements ISormEnemy {
         const idleSprite = new Sprite({ texture })
         const walkingSheet = new Spritesheet({ sheetUrl: SpritesheetUrls.SormWalking })
         const dyingSheet = new Spritesheet({ sheetUrl: SpritesheetUrls.SormDying })
+        const attackingSheet = new Spritesheet({ sheetUrl: SpritesheetUrls.SormAttacking })
         const width = idleSprite.width / 2
         const height = idleSprite.height - 4
 
@@ -41,6 +42,12 @@ export class SormEnemy extends Enemy implements ISormEnemy {
                         loop: true
                     }
                 },
+                attackingSpriteDef: {
+                    sprite: attackingSheet,
+                    animationOptions: {
+                        animationSpeed: 0.175
+                    }
+                }
             },
             walkSpeed: 1,
             weight: 0.5,

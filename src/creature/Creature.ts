@@ -14,6 +14,7 @@ import { CreatureType } from './CreatureType'
 export interface ICreature extends IGravityOrganism {
     idleSprite: Sprite | AnimatedSprite
     walkingSpriteAnimated: AnimatedSprite
+    isPassive: boolean
     interact(): void
     flipAllSprites(): void
     showIdleSprite(): void
@@ -21,15 +22,23 @@ export interface ICreature extends IGravityOrganism {
     showDyingSprite(): void
 }
 
+export interface CreatureAttackOptions {
+    attackTime: number
+    damage: number
+}
+
 export interface CreatureOptions extends GravityOrganismOptions {
     type: CreatureType
     sprites: CreatureSprites
+    passive?: boolean
+    attackOptions?: CreatureAttackOptions
 }
 
 export abstract class Creature extends GravityOrganism implements ICreature {
     static CreatureIdIteration: number = 0
     entityId: string
     spriteStore: CreatureSpriteStore
+    passive: boolean
 
     constructor(options: CreatureOptions) {
         const idleSprite = (options.sprites.idleSpriteDef && options.sprites.idleSpriteDef.sprite)
@@ -116,6 +125,10 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         this.spriteStore.showSprite(this.dyingSprite)
     }
 
+    showAttackingSprite() {
+        this.spriteStore.showSprite(this.attackingSprite)
+    }
+
     flipAllSprites() {
         this.sprite.flipX()
     }
@@ -153,6 +166,10 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     get dyingSprite() {
         return this.spriteStore.dyingSprite
     }
+
+    get attackingSprite() {
+        return this.spriteStore.attackingSprite
+    }
     
     get walkingSpriteAnimated() {
         return this.spriteStore.walkingSpriteAnimated
@@ -160,5 +177,13 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     get dyingSpriteAnimated() {
         return this.spriteStore.dyingSpriteAnimated
+    }
+
+    get attackingSpriteAnimated() {
+        return this.spriteStore.attackingSprite
+    }
+
+    get isPassive() {
+        return this.passive
     }
 }

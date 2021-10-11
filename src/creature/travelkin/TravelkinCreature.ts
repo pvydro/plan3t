@@ -14,6 +14,7 @@ export enum TravelkinMovementState {
     NotSet,
     Idle,
     Walking,
+    Attacking,
     Dead
 }
 
@@ -44,6 +45,7 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
 
         this.spriteStore = new CreatureSpriteStore(options.sprites)
         this.walkSpeed = options.walkSpeed ?? 5
+        this.passive = options.passive ?? true
         this.ai = new GroundPatherAI({ gravityOrganism: travelkin })
         this.animator = new TravelkinAnimator({
             travelkin, // TODO This one below 

@@ -22,6 +22,7 @@ export interface CreatureSprites {
     idleSpriteDef?: CreatureSpriteDefinition
     walkingSpriteDef?: CreatureSpriteDefinition
     dyingSpriteDef?: CreatureSpriteDefinition
+    attackingSpriteDef?: CreatureSpriteDefinition
 }
 
 export class CreatureSpriteStore extends Container implements ICreatureSpriteStore {
@@ -29,10 +30,12 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     _idleSprite?: Sprite | AnimatedSprite
     _walkingSprite?: Sprite | AnimatedSprite
     _dyingSprite?: Sprite | AnimatedSprite
+    _attackingSprite?: Sprite | AnimatedSprite
     _allSprites: ISprite[] = [
         this._idleSprite,
         this._walkingSprite,
-        this._dyingSprite
+        this._dyingSprite,
+        this._attackingSprite
     ]
     
     constructor(sprites?: CreatureSprites) {
@@ -47,23 +50,26 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
         const idleSprite = sprites.idleSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.idleSpriteDef) : undefined
         const walkingSprite = sprites.walkingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.walkingSpriteDef) : undefined
         const dyingSprite = sprites.dyingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.dyingSpriteDef) : undefined
+        const attackingSprite = sprites.attackingSpriteDef ? this.convertToSpriteOrAnimatedSprite(sprites.attackingSpriteDef) : undefined
         
-        if (idleSprite)     idleSprite.anchor.x = 0.5
-        if (walkingSprite)  walkingSprite.anchor.x = 0.5
-        if (dyingSprite)    dyingSprite.anchor.x = 0.5
+        if (idleSprite)         idleSprite.anchor.x = 0.5
+        if (walkingSprite)      walkingSprite.anchor.x = 0.5
+        if (dyingSprite)        dyingSprite.anchor.x = 0.5
+        if (attackingSprite)    attackingSprite.anchor.x = 0.5
 
         this._idleSprite = idleSprite ?? this._idleSprite
         this._walkingSprite = walkingSprite ?? this._walkingSprite
         this._dyingSprite = dyingSprite ?? this._dyingSprite
+        this._attackingSprite = attackingSprite ?? this._attackingSprite
         
-        if (this._idleSprite)     this.addChild(this._idleSprite)
-        if (this._walkingSprite)  this.addChild(this._walkingSprite)
-        if (this._dyingSprite)    this.addChild(this._dyingSprite)
+        if (this._idleSprite)       this.addChild(this._idleSprite)
+        if (this._walkingSprite)    this.addChild(this._walkingSprite)
+        if (this._dyingSprite)      this.addChild(this._dyingSprite)
+        if (this._attackingSprite)  this.addChild(this._attackingSprite)
 
         this._allSprites = trimArray(
-            this._idleSprite,
-            this._walkingSprite,
-            this._dyingSprite
+            this._idleSprite, this._walkingSprite,
+            this._dyingSprite, this._attackingSprite
         )
 
         this.hideAllExcept(this.idleSprite)
@@ -159,6 +165,10 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
         this._walkingSprite = value
     }
 
+    set attackingSprite(value: Sprite | AnimatedSprite) {
+        this._attackingSprite = value
+    }
+
     get idleSprite() {
         return this._idleSprite
     }
@@ -170,6 +180,10 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     get walkingSprite() {
         return this._walkingSprite
     }
+
+    get attackingSprite() {
+        return this._attackingSprite
+    }
     
     get walkingSpriteAnimated() {
         return (this.walkingSprite && this.isAnimatedSprite(this.walkingSprite))
@@ -179,5 +193,10 @@ export class CreatureSpriteStore extends Container implements ICreatureSpriteSto
     get dyingSpriteAnimated() {
         return this.isAnimatedSprite(this.dyingSprite)
             ? this.dyingSprite as AnimatedSprite : undefined
+    }
+
+    get attackingSpriteAnimated() {
+        return this.isAnimatedSprite(this.attackingSprite)
+            ? this.attackingSprite as AnimatedSprite : undefined
     }
 }
