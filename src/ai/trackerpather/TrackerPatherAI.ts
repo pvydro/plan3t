@@ -1,6 +1,7 @@
 import { IClientEntity } from '../../cliententity/ClientEntity'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Creature } from '../../creature/Creature'
+import { Direction } from '../../engine/math/Direction'
 import { importantLog } from '../../service/Flogger'
 import { asyncTimeout, functionExists } from '../../utils/Utils'
 import { IAI } from '../AI'
@@ -28,12 +29,16 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
         this.jumper.update()
 
         if (!this.isDead) {
+            const attackDiameter = this.organismAsCreature.attacker.attackDiameter
+            const direction = this.organismAsCreature.direction
+            const targetNodeOffset = direction === Direction.Left ? attackDiameter : -attackDiameter
+
             if (this._currentGroundRect !== this.target.currentGroundRect) {
                 this.currentGroundRect = this.target.currentGroundRect
             }
 
             if (this.currentNode && this.currentNode.x !== this.currentTarget.x) {
-                this.currentNode.x = this.currentTarget.x
+                this.currentNode.x = this.currentTarget.x + targetNodeOffset
                 this.currentState = GroundPatherState.Following
             }
         }

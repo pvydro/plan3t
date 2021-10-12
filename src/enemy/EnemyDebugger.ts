@@ -18,7 +18,6 @@ export class EnemyDebugger extends Container implements IEnemyDebugger {
     constructor(options: EnemyDebuggerOptions) {
         super()
 
-        // this.graphics = options
         this.attackRadius = options.enemy.attackRadius
 
         this.graphics = new Graphix()

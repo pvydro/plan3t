@@ -18,6 +18,7 @@ export interface ICreature extends IGravityOrganism {
     walkingSpriteAnimated: AnimatedSprite
     isPassive: boolean
     attackRadius: number
+    attacker: ICreatureAttacker
     interact(): void
     attack(): Promise<void>
     flipAllSprites(): void
