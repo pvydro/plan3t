@@ -19,6 +19,7 @@ export class TorkEnemy extends Enemy implements ITorkEnemy {
         const height = idleSprite.height - 4
 
         super({
+            name: 'Tork',
             type: CreatureType.Tork,
             sprites: { idleSpriteDef: { sprite: idleSprite} },
             walkSpeed: 1,

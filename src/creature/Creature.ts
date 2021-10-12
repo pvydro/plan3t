@@ -89,7 +89,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     async attack() {
         log('Creature', this.name, 'attack')
 
-        await asyncTimeout(1000)
+        await this.attacker.attack()
     }
 
     hitWall(wallRect: Rect) {

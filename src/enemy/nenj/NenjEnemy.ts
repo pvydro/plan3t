@@ -16,6 +16,7 @@ export class NenjEnemy extends Enemy implements INenjEnemy {
         const height = idleSprite.height
 
         super({
+            name: 'Nenj',
             type: CreatureType.Nenj,
             sprites: {
                 idleSpriteDef: { sprite: idleSprite }

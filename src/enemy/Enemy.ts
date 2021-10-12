@@ -12,6 +12,7 @@ export interface IEnemy extends ITravelkinCreature {
 }
 
 export interface EnemyOptions extends TravelkinCreatureOptions {
+    name: string
 }
 
 
@@ -27,6 +28,7 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
         this.applyEnemyProperties(enemyProperties)
         this.entityId = 'Enemy' + Enemy.EnemyIdIteration++
         this.ai = new TrackerPatherAI({ gravityOrganism: this })
+        this.name = options.name
 
         if (DebugConstants.ShowEnemyAttackRadius) {
             this.debugger = new EnemyDebugger({ enemy: this })

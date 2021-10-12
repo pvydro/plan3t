@@ -4,6 +4,7 @@ import { SpritesheetUrls } from '../../asset/Spritesheets'
 import { CreatureType } from '../../creature/CreatureType'
 import { Sprite } from '../../engine/display/Sprite'
 import { Spritesheet } from '../../engine/display/spritesheet/Spritesheet'
+import { Direction } from '../../engine/math/Direction'
 import { Rect } from '../../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { Enemy, IEnemy } from '../Enemy'
@@ -13,7 +14,6 @@ export interface ISormEnemy extends IEnemy {
 }
 
 export class SormEnemy extends Enemy implements ISormEnemy {
-    name: 'Sorm'
     _boundingBox?: Rect
 
     constructor() {
@@ -26,6 +26,7 @@ export class SormEnemy extends Enemy implements ISormEnemy {
         const height = idleSprite.height - 4
 
         super({
+            name: 'Sorm',
             type: CreatureType.Sorm,
             sprites: {
                 idleSpriteDef: { sprite: idleSprite },
@@ -62,6 +63,16 @@ export class SormEnemy extends Enemy implements ISormEnemy {
 
     update() {
         super.update()
+    }
+
+    async attack() {
+        const lungeVelocity = 3
+        const lungeJumpAmount = 2
+
+        this.xVel = this.direction === Direction.Left ? -lungeVelocity : lungeVelocity
+        this.jump(lungeJumpAmount)
+
+        return super.attack()
     }
 
     takeDamage(damageAmount: number) {
