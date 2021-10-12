@@ -1,6 +1,6 @@
 {"frames": {
 
-"sorm_attacking-0.png":
+"tile000.png":
 {
 	"frame": {"x":0,"y":0,"w":28,"h":28},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":28},
 	"sourceSize": {"w":28,"h":28}
 },
-"sorm_attacking-1.png":
+"tile001.png":
 {
 	"frame": {"x":28,"y":0,"w":28,"h":28},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":28},
 	"sourceSize": {"w":28,"h":28}
 },
-"sorm_attacking-2.png":
+"tile002.png":
 {
 	"frame": {"x":56,"y":0,"w":28,"h":28},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":28},
 	"sourceSize": {"w":28,"h":28}
 },
-"sorm_attacking-3.png":
+"tile003.png":
 {
 	"frame": {"x":84,"y":0,"w":28,"h":28},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":28,"h":28},
 	"sourceSize": {"w":28,"h":28}
 },
-"sorm_attacking-4.png":
+"tile004.png":
 {
 	"frame": {"x":112,"y":0,"w":28,"h":28},
 	"rotated": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":28,"h":28}
 }},
 "animations": {
-	"sorm_attacking": ["sorm_attacking-0.png","sorm_attacking-1.png","sorm_attacking-2.png","sorm_attacking-3.png","sorm_attacking-4.png"]
+	"sorm_attacking": ["tile000.png","tile001.png","tile002.png","tile003.png","tile004.png"]
 },
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",

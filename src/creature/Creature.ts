@@ -8,6 +8,7 @@ import { Rect } from '../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { asyncTimeout } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
+import { CreatureAttacker, ICreatureAttacker } from './CreatureAttacker'
 import { CreatureSprites, CreatureSpriteStore } from './CreatureSpriteStore'
 import { CreatureType } from './CreatureType'
 
@@ -15,6 +16,7 @@ export interface ICreature extends IGravityOrganism {
     idleSprite: Sprite | AnimatedSprite
     walkingSpriteAnimated: AnimatedSprite
     isPassive: boolean
+    attackRadius: number
     interact(): void
     flipAllSprites(): void
     showIdleSprite(): void
@@ -23,8 +25,9 @@ export interface ICreature extends IGravityOrganism {
 }
 
 export interface CreatureAttackOptions {
-    attackTime: number
-    damage: number
+    attackTime?: number
+    attackRadius?: number
+    damage?: number
 }
 
 export interface CreatureOptions extends GravityOrganismOptions {
@@ -35,10 +38,12 @@ export interface CreatureOptions extends GravityOrganismOptions {
 }
 
 export abstract class Creature extends GravityOrganism implements ICreature {
-    static CreatureIdIteration: number = 0
+    static CreatureIdIteration: number
     entityId: string
     spriteStore: CreatureSpriteStore
     passive: boolean
+    attacker: ICreatureAttacker
+    // attackRadius: number
 
     constructor(options: CreatureOptions) {
         const idleSprite = (options.sprites.idleSpriteDef && options.sprites.idleSpriteDef.sprite)
@@ -58,6 +63,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
         this.entityId = 'Creature' + Creature.CreatureIdIteration++
         this.spriteStore = new CreatureSpriteStore(options.sprites)
+        this.attacker = new CreatureAttacker(options.attackOptions ?? {})
 
         this.addChild(this.spriteStore)
 
@@ -71,6 +77,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     update() {
         super.update()
+        this.attacker.update()
     }
 
     interact() {
@@ -185,5 +192,9 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     get isPassive() {
         return this.passive
+    }
+
+    get attackRadius() {
+        return this.attacker.attackRadius        
     }
 }

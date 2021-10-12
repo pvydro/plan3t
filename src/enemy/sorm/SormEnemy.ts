@@ -42,12 +42,12 @@ export class SormEnemy extends Enemy implements ISormEnemy {
                         loop: true
                     }
                 },
-                attackingSpriteDef: {
-                    sprite: attackingSheet,
-                    animationOptions: {
-                        animationSpeed: 0.175
-                    }
-                }
+                // attackingSpriteDef: {
+                //     sprite: attackingSheet,
+                //     animationOptions: {
+                //         animationSpeed: 0.175
+                //     }
+                // }
             },
             walkSpeed: 1,
             weight: 0.5,
