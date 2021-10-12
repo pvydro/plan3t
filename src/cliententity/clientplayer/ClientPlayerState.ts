@@ -48,7 +48,7 @@ export class ClientPlayerState extends GravityOrganism {
             horizontalFriction: 5,
             weight: 0.5,
             gravityAnchor: point(0, 0.5),
-            jumpHeight: 5
+            jumpHeight: 3
         })
 
         if (options.clientControl) this._clientControl = true
