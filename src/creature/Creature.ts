@@ -6,6 +6,7 @@ import { Spritesheet } from '../engine/display/spritesheet/Spritesheet'
 import { Direction } from '../engine/math/Direction'
 import { Rect } from '../engine/math/Rect'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
+import { log } from '../service/Flogger'
 import { asyncTimeout } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { CreatureAttacker, ICreatureAttacker } from './CreatureAttacker'
@@ -18,6 +19,7 @@ export interface ICreature extends IGravityOrganism {
     isPassive: boolean
     attackRadius: number
     interact(): void
+    attack(): Promise<void>
     flipAllSprites(): void
     showIdleSprite(): void
     showWalkingSprite(): void
@@ -82,6 +84,12 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
     interact() {
 
+    }
+
+    async attack() {
+        log('Creature', this.name, 'attack')
+
+        await asyncTimeout(1000)
     }
 
     hitWall(wallRect: Rect) {

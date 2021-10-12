@@ -1,7 +1,8 @@
 import { IClientEntity } from '../../cliententity/ClientEntity'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { Creature } from '../../creature/Creature'
 import { importantLog } from '../../service/Flogger'
-import { asyncTimeout } from '../../utils/Utils'
+import { asyncTimeout, functionExists } from '../../utils/Utils'
 import { IAI } from '../AI'
 import { GroundPatherAI, GroundPatherOptions, GroundPatherState } from '../groundpather/GroundPatherAI'
 
@@ -41,7 +42,9 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
     async attack() {
         importantLog('TrackerPatherAI', 'attack')
 
-        await asyncTimeout(1000)
+        if (functionExists(this.organismAsCreature.attack)) {
+            await this.organismAsCreature.attack()
+        }
     }
 
     findPointOnCurrentGround() {
@@ -74,5 +77,9 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
         if (this.isDead) return
 
         this.findPointOnCurrentGround()
+    }
+
+    get organismAsCreature() {
+        return (this._gravityOrganism as Creature)
     }
 }
