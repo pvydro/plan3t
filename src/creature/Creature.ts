@@ -9,7 +9,7 @@ import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { log } from '../service/Flogger'
 import { asyncTimeout } from '../utils/Utils'
 import { Bullet } from '../weapon/projectile/Bullet'
-import { CreatureAttacker, ICreatureAttacker } from './CreatureAttacker'
+import { CreatureAttacker, CreatureAttackerOptions, CreatureAttackOptions, ICreatureAttacker } from './CreatureAttacker'
 import { CreatureSprites, CreatureSpriteStore } from './CreatureSpriteStore'
 import { CreatureType } from './CreatureType'
 
@@ -25,12 +25,6 @@ export interface ICreature extends IGravityOrganism {
     showIdleSprite(): void
     showWalkingSprite(): void
     showDyingSprite(): void
-}
-
-export interface CreatureAttackOptions {
-    attackTime?: number
-    attackRadius?: number
-    damage?: number
 }
 
 export interface CreatureOptions extends GravityOrganismOptions {
@@ -64,9 +58,11 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
         super(options)
 
+        const attackerOptions: CreatureAttackerOptions = { ...options.attackOptions, creature: this }
+
         this.entityId = 'Creature' + Creature.CreatureIdIteration++
         this.spriteStore = new CreatureSpriteStore(options.sprites)
-        this.attacker = new CreatureAttacker(options.attackOptions ?? {})
+        this.attacker = new CreatureAttacker(attackerOptions)
 
         this.addChild(this.spriteStore)
 
