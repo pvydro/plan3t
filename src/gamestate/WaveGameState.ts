@@ -1,9 +1,10 @@
-import { Sound } from '@pixi/sound'
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
 import { ChatService } from '../service/chatservice/ChatService'
+import { InGameHUD } from '../ui/ingamehud/InGameHUD'
+import { InGameScreenID } from '../ui/ingamemenu/InGameMenu'
 import { asyncTimeout } from '../utils/Utils'
 import { GameplayState } from './GameplayState'
 import { GameStateOptions, IGameState } from './GameState'
@@ -52,4 +53,9 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
         this.waveManager.update()
     }
 
+    gameOver() {
+        super.gameOver()
+
+        InGameHUD.getInstance().requestMenuScreen(InGameScreenID.RespawnScreen)
+    }
 }

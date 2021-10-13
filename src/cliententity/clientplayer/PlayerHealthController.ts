@@ -1,6 +1,7 @@
 import { Key } from 'ts-keycode-enum'
 import { SmallBlastParticle } from '../../engine/display/particle/SmallBlastParticle'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
+import { GameStateManager } from '../../manager/gamestatemanager/GameStateManager'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
@@ -60,7 +61,7 @@ export class PlayerHealthController extends HealthController implements IPlayerH
         this.player.consciousnessState = PlayerConsciousnessState.Dead
         this.displayDeathEffects()
 
-        InGameHUD.getInstance().requestMenuScreen(InGameScreenID.RespawnScreen)
+        GameStateManager.getInstance().gameOver()
     }
 
     private displayDamageEffects(damageAmount: number) {

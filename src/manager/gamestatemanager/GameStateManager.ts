@@ -10,6 +10,7 @@ export interface IGameStateManager extends IDemolishable {
     enterState(id: GameStateID): Promise<void>
     initialize(): void
     update(): void
+    gameOver(): void
     setGame(game: Game)
 }
 
@@ -84,6 +85,12 @@ export class GameStateManager implements IGameStateManager {
             await this.currentState.exit()
             this._currentState = undefined
         }
+    }
+
+    gameOver() {
+        log('GameStateManager', 'gameOver', 'id', this.currentStateID)
+
+        this.currentState.gameOver()
     }
 
     demolish() {

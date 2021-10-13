@@ -11,6 +11,7 @@ import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 export interface IGameState {
     initialize(): Promise<void>
     exit(): Promise<void>
+    gameOver(): void
     update(): void
 }
 
@@ -50,8 +51,6 @@ export abstract class GameState implements IGameState {
         this.camera.viewport.addChild(this.inGameHUD.crosshair)
         
         await Game.showLoadingScreen(false)
-
-        return
     }
 
     async exit() {
@@ -62,8 +61,11 @@ export abstract class GameState implements IGameState {
         this.camera.clear()
         this.camera.clearFollowTarget()
         clientManager.clearEntityManager()
+    }
 
-        return
+    gameOver() {
+        log('GameState', 'gameOver', 'id', this.id)
+
     }
 
     update() {
