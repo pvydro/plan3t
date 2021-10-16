@@ -121,6 +121,8 @@ export class UIButton extends UIComponent implements IUIButton {
     async unhover() {
         this.state = UIButtonState.Idle
 
+        this.applyClickOffset(false)
+
         if (functionExists(this.extendedOnMouseOut)) {
             this.extendedOnMouseOut()
         }
