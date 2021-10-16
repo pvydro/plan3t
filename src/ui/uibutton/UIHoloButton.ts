@@ -2,30 +2,26 @@ import { AssetUrls } from '../../asset/Assets'
 import { Graphix } from '../../engine/display/Graphix'
 import { TextSpriteAlign } from '../../engine/display/TextSprite'
 import { TextStyles } from '../../engine/display/TextStyles'
-import { UIButton, UIButtonOptions, UIButtonType } from './UIButton'
+import { IUIButton, UIButton, UIButtonOptions, UIButtonType } from './UIButton'
 
-export interface IUIHoloButton {
-
-}
-
-export interface UIHoloButtonOptions extends UIButtonOptions {
+export interface IUIHoloButton extends IUIButton {
 
 }
 
 export class UIHoloButton extends UIButton implements IUIHoloButton {
     backgroundGraphics: Graphix
 
-    constructor(options?: UIHoloButtonOptions) {
+    constructor(options?: UIButtonOptions) {
         options = UIHoloButton.applyDefaults(options)
 
         super(options)
     }
 
-    private static applyDefaults(options: UIHoloButtonOptions): UIHoloButtonOptions {
+    private static applyDefaults(options: UIButtonOptions): UIButtonOptions {
         options.type = options.type ?? UIButtonType.Tap
         options.background = {
-            idle: AssetUrls.ButtonRectSmall,
-            hovered: AssetUrls.ButtonRectSmallHovered
+            idle: AssetUrls.ButtonRoundRectSmall,
+            hovered: AssetUrls.ButtonRoundRectSmallHovered
 
         }
         if (options.text) {

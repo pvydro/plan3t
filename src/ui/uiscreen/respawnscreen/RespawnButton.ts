@@ -28,8 +28,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
                 hovered: AssetUrls.ButtonRectDefaultHovered
             },
             darkenerOptions: {
-                hoverTint: 0xdbdbdb,
-                clickTint: 0x969696
+                shouldDarken: true
             },
             tooltipOptions: {
                 uppercase: true,

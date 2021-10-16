@@ -5,6 +5,7 @@ import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { UIButton } from '../../uibutton/UIButton'
 import { UIHoloButton } from '../../uibutton/UIHoloButton'
+import { UIWoodButton } from '../../uibutton/UIWoodButton'
 import { RespawnButton } from '../respawnscreen/RespawnButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
 import { PlayButton } from './PlayButton'
@@ -15,10 +16,10 @@ export interface IStartScreen extends IUIScreen {
 }
 
 export class StartScreen extends UIScreen implements IStartScreen {
-    playButton: PlayButton
-    settingsButton: UIHoloButton
-    styleButton: UIHoloButton
-    loadoutButton: UIHoloButton
+    playButton: UIButton//PlayButton
+    settingsButton: UIButton
+    styleButton: UIButton
+    loadoutButton: UIButton
     titleLogo: TitleLogo
     buttonContainer: Container
     buttons: UIButton[]
@@ -42,8 +43,13 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.titleLogo = new TitleLogo()
         this.buttonContainer = new Container()
         this.buttons = [
-            this.playButton = new PlayButton(),
-            this.settingsButton = new UIHoloButton({
+            this.playButton = new UIWoodButton({
+                text: { text: 'play' },
+                // onTrigger: () => {
+                //     GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
+                // }
+            }), //new PlayButton(),
+            this.settingsButton = new UIWoodButton({
                 text: { text: 'settings' }
             }),
             this.styleButton = new UIHoloButton({

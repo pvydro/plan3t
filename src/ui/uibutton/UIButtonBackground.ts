@@ -6,6 +6,7 @@ import { IUIButton, UIButtonBackgroundOptions, UIButtonState } from './UIButton'
 
 export interface IUIButtonBackground {
     backgroundSprite: ISprite
+    allBackgrounds: ISprite[]
     refreshBackgroundBasedOnState(value: UIButtonState): void
 }
 
@@ -17,8 +18,9 @@ export class UIButtonBackground extends Container implements IUIButtonBackground
     _backgroundSprite?: Sprite
     _backgroundSpriteHovered?: Sprite
     _backgroundSpriteTriggered?: Sprite
+    _allSprites: ISprite[] = []
 
-    constructor(options: UIButtonBackgroundContainerOptions) {
+    constructor() {
         super()
     }
 
@@ -37,19 +39,20 @@ export class UIButtonBackground extends Container implements IUIButtonBackground
                     this.backgroundSpriteHovered = new Sprite({ texture: hovered })
                     this.backgroundSpriteHovered.alpha = 0
                 }
-                if (triggered !== undefined && background.triggered !== background.hovered) {
+                if (triggered !== undefined && (background.triggered !== background.hovered || !background.hovered)) {
                     this.backgroundSpriteTriggered = new Sprite({ texture: triggered })
                     this.backgroundSpriteTriggered.alpha = 0
                 }
             } else if (background.graphic !== undefined) {
                 this.backgroundSprite = new Sprite({ texture: background.graphic })
             }
-
         }
+
+        this._allSprites = [ this._backgroundSprite, this._backgroundSpriteHovered, this._backgroundSpriteTriggered ]
     }
 
     refreshBackgroundBasedOnState(value: UIButtonState) {
-        importantLog('refreshBackgroundBasedOnState', 'state', value)
+        importantLog('refreshBackgroundBasedOnState', 'state', UIButtonState[value])
 
         this.backgroundSprite.alpha = 0
         this.backgroundSpriteHovered.alpha = 0
@@ -110,5 +113,12 @@ export class UIButtonBackground extends Container implements IUIButtonBackground
 
     get backgroundSpriteTriggered() {
         return this._backgroundSpriteTriggered ?? (this.backgroundSpriteHovered ?? this._backgroundSprite)
+    }
+
+    get allBackgrounds() {
+        return this._allSprites
+        // return [
+        //     this.backgroundSprite,
+        // ]
     }
 }

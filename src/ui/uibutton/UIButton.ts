@@ -95,7 +95,7 @@ export class UIButton extends UIComponent implements IUIButton {
         this.extendedOnMouseOut = options.onMouseOut
         this.extendedOnRelease = options.onRelease
 
-        this.background = new UIButtonBackground({ button: this })
+        this.background = new UIButtonBackground()
 
         this.loadPlugins(options)
         this.applyBackgroundTexture(options)
@@ -125,6 +125,8 @@ export class UIButton extends UIComponent implements IUIButton {
     async pressDown() {
         this.isPushed = true
 
+        this.state = UIButtonState.Triggered
+        
         // Trigger if hold-action
         if (this.type === UIButtonType.Hold) {
             this.trigger()
@@ -180,6 +182,7 @@ export class UIButton extends UIComponent implements IUIButton {
     
             if (addClickListeners) {
                 this.interactiveSprite.on('pointerdown', () => {
+                    console.log('doWN!')
                     this.pressDown()
                 })
                 this.interactiveSprite.on('pointerup', () => {

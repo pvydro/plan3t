@@ -6,8 +6,9 @@ export interface IUIButtonDarkenerPlugin {
 }
 
 export interface UIButtonDarkenerPluginOptions {
-    hoverTint: number
-    clickTint: number
+    shouldDarken: boolean
+    hoverTint?: number
+    clickTint?: number
 }
 
 export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
@@ -23,8 +24,8 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
     constructor(button: IUIButton, options: UIButtonDarkenerPluginOptions) {
         this.button = button
 
-        this.hoverTint = options.hoverTint
-        this.clickTint = options.clickTint
+        this.hoverTint = options.hoverTint ?? 0xdbdbdb
+        this.clickTint = options.clickTint ?? 0x969696
 
         this.buttonExtendedHover = this.button.extendedOnHover
         this.buttonExtendedOnHold = this.button.extendedOnHold
@@ -38,26 +39,41 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
     }
 
     onHover() {
-        this.backgroundSprite.tint = this.hoverTint
+        // this.backgroundSprite.tint = this.hoverTint
+        this.backgroundTint = this.hoverTint
         if (functionExists(this.buttonExtendedHover)) this.buttonExtendedHover()
     }
 
     onHold() {
-        this.backgroundSprite.tint = this.clickTint
+        // this.backgroundSprite.tint = this.clickTint
+        this.backgroundTint = this.clickTint
         if (functionExists(this.buttonExtendedOnHold)) this.buttonExtendedOnHold()
     }
     
     onMouseOut() {
-        this.backgroundSprite.tint = 0xFFFFFF
+        // this.backgroundSprite.tint = 0xFFFFFF
+        this.backgroundTint = 0xFFFFFF
         if (functionExists(this.buttonExtendedOnMouseOut)) this.buttonExtendedOnMouseOut()
     }
 
     onRelease() {
-        this.backgroundSprite.tint = this.hoverTint
+        // this.backgroundSprite.tint = this.hoverTint
+        this.backgroundTint = this.hoverTint
         if (functionExists(this.buttonExtendedOnRelease)) this.buttonExtendedOnRelease()
     }
 
     get backgroundSprite() {
         return this.button.background.backgroundSprite
+    }
+
+    set backgroundTint(value: number) {
+        const backgrounds = this.button.background.allBackgrounds
+
+        for (var i in backgrounds) {
+            const bg = backgrounds[i]
+            if (bg) {
+                bg.tint = value
+            }
+        }
     }
 }
