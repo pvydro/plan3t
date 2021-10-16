@@ -235,6 +235,10 @@ export class AssetUrls {
 
     // UI
     static TitleLogoSmall = 'assets/image/ui/title/titlesmall'
+    static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'
+    static TooltipKey = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
+
+    // Buttons
     static ButtonRectDefault = 'assets/image/ui/generic/buttons/midbutton'
     static ButtonRectDefaultHovered = 'assets/image/ui/generic/buttons/midbuttonhovered'
     static ButtonRoundRectSmall = 'assets/image/ui/generic/buttons/smbutton'
@@ -243,8 +247,8 @@ export class AssetUrls {
     static ButtonWoodClicked = 'assets/image/ui/generic/buttons/woodbuttonclicked'
     static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
     static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
-    static InGameInventoryTop = 'assets/image/ui/ingameinventory/container-top'
-    static TooltipKey = 'assets/image/ui/ingamehud/tooltip/tooltip-key'
+    // ButtonDecor
+    static ButtonDecorWoodSeed = 'assets/image/ui/generic/buttons/buttondecor/woodbuttonseed'
 
     // SharedBackground
     static SharedBackground1 = 'assets/image/ui/sharedbackground/1'

@@ -39,25 +39,21 @@ export class UIButtonDarkenerPlugin implements IUIButtonDarkenerPlugin {
     }
 
     onHover() {
-        // this.backgroundSprite.tint = this.hoverTint
         this.backgroundTint = this.hoverTint
         if (functionExists(this.buttonExtendedHover)) this.buttonExtendedHover()
     }
 
     onHold() {
-        // this.backgroundSprite.tint = this.clickTint
         this.backgroundTint = this.clickTint
         if (functionExists(this.buttonExtendedOnHold)) this.buttonExtendedOnHold()
     }
     
     onMouseOut() {
-        // this.backgroundSprite.tint = 0xFFFFFF
         this.backgroundTint = 0xFFFFFF
         if (functionExists(this.buttonExtendedOnMouseOut)) this.buttonExtendedOnMouseOut()
     }
 
     onRelease() {
-        // this.backgroundSprite.tint = this.hoverTint
         this.backgroundTint = this.hoverTint
         if (functionExists(this.buttonExtendedOnRelease)) this.buttonExtendedOnRelease()
     }

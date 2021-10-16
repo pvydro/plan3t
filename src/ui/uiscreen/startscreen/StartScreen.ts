@@ -4,11 +4,8 @@ import { GameStateID, GameStateManager } from '../../../manager/gamestatemanager
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { UIButton } from '../../uibutton/UIButton'
-import { UIHoloButton } from '../../uibutton/UIHoloButton'
 import { UIWoodButton } from '../../uibutton/UIWoodButton'
-import { RespawnButton } from '../respawnscreen/RespawnButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
-import { PlayButton } from './PlayButton'
 import { TitleLogo } from './TitleLogo'
 
 export interface IStartScreen extends IUIScreen {
@@ -45,20 +42,21 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.buttons = [
             this.playButton = new UIWoodButton({
                 text: { text: 'play' },
+                // scale: 1.5
                 // onTrigger: () => {
                 //     GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
                 // }
-            }), //new PlayButton(),
+            }),
             this.settingsButton = new UIWoodButton({
                 text: { text: 'settings' }
             }),
-            this.styleButton = new UIHoloButton({
+            this.styleButton = new UIWoodButton({
                 text: { text: 'style' },
                 onTrigger: () => {
                     GameStateManager.getInstance().enterState(GameStateID.StyleMenu)
                 }
             }),
-            this.loadoutButton = new UIHoloButton({
+            this.loadoutButton = new UIWoodButton({
                 text: { text: 'loadout' },
                 onTrigger: () => {
                     GameStateManager.getInstance().enterState(GameStateID.LoadoutMenu)
@@ -99,7 +97,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
         super.reposition(addListeners)
 
         const scale = UIDefaults.UIScale
-        const margin = UIDefaults.UIMargin * scale
+        const margin = 1 * scale//UIDefaults.UIMargin * scale
         let lastButtonProperties = { height: 0, y: 0 }
 
         for (let i in this.buttons) {

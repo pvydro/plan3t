@@ -1,7 +1,7 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { TextSprite, TextSpriteAlign, TextSpriteOptions } from '../../engine/display/TextSprite'
 import { IDimension } from '../../engine/math/Dimension'
-import { importantLog } from '../../service/Flogger'
+import { IVector2 } from '../../engine/math/Vector2'
 import { DebugConstants } from '../../utils/Constants'
 import { Defaults, UIDefaults } from '../../utils/Defaults'
 import { functionExists } from '../../utils/Utils'
@@ -57,6 +57,7 @@ export interface UIButtonOptions extends UIComponentOptions {
     darkenerOptions?: UIButtonDarkenerOptions
     tooltipOptions?: UIButtonToolipOptions
     nudgeOptions?: UIButtonNudgeOptions
+    clickedOffsetY?: number
 
     onHold?: () => void
     onTrigger?: () => void
@@ -66,12 +67,14 @@ export interface UIButtonOptions extends UIComponentOptions {
 }
 
 export class UIButton extends UIComponent implements IUIButton {
+    textPreClickPosition: IVector2
     _state: UIButtonState
     _textSprite?: TextSprite
     type: UIButtonType
     background: UIButtonBackground
     isPushed: boolean = false
     listenersAdded: boolean = false
+    clickedOffsetY?: number
 
     plugins: any[] = []
     debuggerPlugin: UIButtonDebuggerPlugin
@@ -94,6 +97,7 @@ export class UIButton extends UIComponent implements IUIButton {
         this.extendedOnHover = options.onHover
         this.extendedOnMouseOut = options.onMouseOut
         this.extendedOnRelease = options.onRelease
+        this.clickedOffsetY = options.clickedOffsetY
 
         this.background = new UIButtonBackground()
 
@@ -124,9 +128,9 @@ export class UIButton extends UIComponent implements IUIButton {
 
     async pressDown() {
         this.isPushed = true
-
         this.state = UIButtonState.Triggered
-        
+        this.applyClickOffset(true)
+
         // Trigger if hold-action
         if (this.type === UIButtonType.Hold) {
             this.trigger()
@@ -139,6 +143,7 @@ export class UIButton extends UIComponent implements IUIButton {
 
     async release() {
         if (!this.isPushed) return
+        this.applyClickOffset(false)
 
         // Trigger if tap-action
         if (this.isPushed) {
@@ -166,6 +171,16 @@ export class UIButton extends UIComponent implements IUIButton {
         
         if (functionExists(this.extendedOnTrigger)) {
             this.extendedOnTrigger()
+        }
+    }
+
+    applyClickOffset(shouldApply: boolean) {
+        if (this.textSprite && this.clickedOffsetY !== undefined) {
+            if (shouldApply) {
+                this.textSprite.y = this.textPreClickPosition.y + this.clickedOffsetY
+            } else {
+                this.textSprite.y = this.textPreClickPosition.y
+            }
         }
     }
 
@@ -215,6 +230,11 @@ export class UIButton extends UIComponent implements IUIButton {
                 this.textSprite.x += Defaults.JustificationPadding
             } else if (alignment === TextSpriteAlign.Center) {
                 this.textSprite.x += this.halfWidth - (this.textWidth / 2)
+            }
+
+            this.textPreClickPosition = {
+                x: this.textSprite.x,
+                y: this.textSprite.y
             }
             
             this.addChild(this._textSprite)
