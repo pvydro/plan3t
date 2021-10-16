@@ -59,6 +59,8 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
 
         this.addChild(this.backgroundSprite)
         this.addChild(this.hornet)
+
+        this.reposition(true)
     }
 
     update() {
@@ -80,5 +82,11 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
 
         this.backgroundSprite.x += (this.backgroundOriginalPos.x - this.backgroundSprite.x) / 15
         this.backgroundSprite.y += (this.backgroundOriginalPos.y - this.backgroundSprite.y) / 15
+    }
+
+    reposition(addListeners: boolean) {
+        super.reposition(addListeners)
+
+        this.backgroundSprite.x = (window.innerWidth / 2) - this.backgroundSprite.halfWidth
     }
 }
