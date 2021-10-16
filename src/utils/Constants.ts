@@ -51,6 +51,7 @@ export const GlobalScale: number = 1
 
 export class DebugConstants {
     static SuperSprint: boolean = false
+    static SuperMan: boolean = true
     static DisableFoliage: boolean = false
     static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false
@@ -60,16 +61,15 @@ export class DebugConstants {
     static ShowInteractiveContainerDebug: boolean = true
     static ShowUIButtonDebug: boolean = false
     static AlternateChatbox: boolean = false
-    static ShowEnemyAttackRadius: boolean = true
+    static ShowEnemyAttackRadius: boolean = false
 }
 
 export class AIDebugConstants {
     static ShowCurrentNode: boolean = true
     static ShowCurrentGroundIndicator: boolean = false
     static ShowCurrentGroundRange: boolean = false
-    static ShowGroundJumperSensors: boolean = true
+    static ShowGroundJumperSensors: boolean = false
     static ShowAIBadge: boolean = true
-    static ShowAttackRadius: boolean = true
 }
 
 export class Constants {

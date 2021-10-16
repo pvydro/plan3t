@@ -4,8 +4,7 @@ import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { GameStateManager } from '../../manager/gamestatemanager/GameStateManager'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
-import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
-import { InGameScreenID } from '../../ui/ingamemenu/InGameMenu'
+import { DebugConstants } from '../../utils/Constants'
 import { HealthController, IHealthController } from '../gravityorganism/HealthController'
 import { IClientPlayer } from './ClientPlayer'
 import { PlayerConsciousnessState } from './ClientPlayerState'
@@ -49,9 +48,12 @@ export class PlayerHealthController extends HealthController implements IPlayerH
 
     takeDamage(damageAmount: number): void {
         Flogger.log('PlayerHealthController', 'takeDamage', 'damageAmount', damageAmount)
-        super.takeDamage(damageAmount)
 
         this.displayDamageEffects(damageAmount)
+
+        if (DebugConstants.SuperMan) return
+
+        super.takeDamage(damageAmount)
     }
 
     die() {

@@ -56,6 +56,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
     gameOver() {
         super.gameOver()
 
-        InGameHUD.getInstance().requestMenuScreen(InGameScreenID.RespawnScreen)
+        InGameHUD.getInstance().requestMenuScreen(InGameScreenID.WaveRunnerOver)
     }
 }

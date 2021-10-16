@@ -3,13 +3,15 @@ import { AttachmentsScreen } from '../uiscreen/attachmentsscreen/AttachmentsScre
 import { BeamMeUpScreen } from '../uiscreen/beamemupscreen/BeamMeUpScreen'
 import { RespawnScreen } from '../uiscreen/respawnscreen/RespawnScreen'
 import { UIScreen } from '../uiscreen/UIScreen'
+import { WaveRunnerOverScreen } from '../uiscreen/waverunneroverscreen/WaveRunnerOverScreen'
 import { WaveRunnerScreen } from '../uiscreen/waverunnerscreen/WaveRunnerScreen'
 
 export enum InGameScreenID {
     RespawnScreen,
     BeamMeUp,
     Attachments,
-    WaveRunner
+    WaveRunner,
+    WaveRunnerOver
 }
 
 export interface IInGameMenu {
@@ -83,6 +85,9 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
                 break
             case InGameScreenID.WaveRunner:
                 screen = new WaveRunnerScreen()
+                break
+            case InGameScreenID.WaveRunnerOver:
+                screen = new WaveRunnerOverScreen()
                 break
         }
 

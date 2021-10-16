@@ -1,8 +1,13 @@
 import { Events } from '../../model/events/Events'
 import { log } from '../../service/Flogger'
+import { IEmitter } from '../../utils/Emitter'
 import { Bullet } from '../../weapon/projectile/Bullet'
 import { GravityEntity, GravityEntityOptions, IGravityEntity } from '../GravityEntity'
 import { HealthController, IHealthController } from './HealthController'
+
+export enum GravityOrganismEvents {
+    Dead = 'Dead'
+}
 
 export interface IGravityOrganism extends IGravityEntity {
     currentHealth: number
@@ -71,6 +76,7 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
 
         this._isDead = true
         this.organismState = GravityOrganismState.Dead
+        this.emit(GravityOrganismEvents.Dead)
     }
 
     get isDead() {
