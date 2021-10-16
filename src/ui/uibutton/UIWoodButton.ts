@@ -34,8 +34,10 @@ export class UIWoodButton extends UIButton implements IUIWoodButton {
             })
 
             const seedPos: IVector2 = {
-                x: Math.floor(Math.random() * (this.width - this.seedSprite.width - (borderSize * 2))) + borderSize,
-                y: (Math.floor(Math.random() * (this.height - this.seedSprite.height - bottomShadingSectionSize - borderSize)) + borderSize)
+                x: Math.floor(Math.random() * 
+                    (this.width - this.seedSprite.width - (borderSize * 2))) + borderSize,
+                y: (Math.floor(Math.random() * 
+                    (this.height - this.seedSprite.height - bottomShadingSectionSize - borderSize)) + borderSize)
             }
 
             this.addChildAt(this.seedSprite, 1)
