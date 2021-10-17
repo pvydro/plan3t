@@ -6,6 +6,7 @@ import { PlayerPayload, RoomMessage, WeaponStatusPayload } from '../ServerMessag
 import { PlanetRoomListener } from './PlanetRoomListener'
 import { PlayerSchema } from '../../schema/PlayerSchema'
 import { ProjectileSchema } from '../../schema/ProjectileSchema'
+import { of, bindCallback, Observable, map } from 'rxjs'
 
 export interface IPlanetRoomPlayerListener {
 
@@ -13,16 +14,22 @@ export interface IPlanetRoomPlayerListener {
 
 export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     parentListener: PlanetRoomListener
+    playerState$?: Observable<any>
 
     constructor(listener: PlanetRoomListener) {
         this.parentListener = listener
+
+        // this.playerState$ = bindCallback(this.room.onMessage).pipe(
+        //     map(x => x)
+        // )
+        //Observable) //of(this.room.onMessage)
     }
 
     startListening() {
         Flogger.log('PlanetRoomPlayerListener', 'startListening')
 
-        this.listenForWeaponStatusChanges()
-        this.listenForWeaponShots()
+        // this.listenForWeaponStatusChanges()
+        // this.listenForWeaponShots()
         this.listenForBodyStateChange()
         this.listenForLegsStateChange()
         this.listenForDirectionChange()

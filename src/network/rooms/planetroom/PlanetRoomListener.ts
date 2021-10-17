@@ -7,19 +7,30 @@ import { ClientMessage, NewChatMessagePayload, NewPlanetMessagePayload, RoomMess
 import { ChatSender } from '../../../service/chatservice/ChatSenderConstants'
 import { PlanetRoom } from './PlanetRoom'
 import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
+import { Emitter } from '../../../utils/Emitter'
+import { of, bindCallback, Observable, map } from 'rxjs'
 
 export interface IPlanetRoomListener {
     startListening(): void
+    dispatcher: Emitter
 }
 
 export class PlanetRoomListener implements IPlanetRoomListener {
   playerListener: PlanetRoomPlayerListener
   room: PlanetRoom
+  dispatcher: Emitter
+  roomStream$: Observable<any>
 
   constructor(room: PlanetRoom) {
       this.room = room
 
+      this.dispatcher = new Emitter()
       this.playerListener = new PlanetRoomPlayerListener(this)
+      this.roomStream$ = new Observable((observer) => {
+        this.dispatcher.on('roomEvent', (value) => observer.next(value))
+      })
+
+      this.roomStream$.subscribe(x => { console.log('XXXXXXX', x) })
   }
 
   startListening() {
@@ -30,6 +41,10 @@ export class PlanetRoomListener implements IPlanetRoomListener {
       this.listenForPlanet()
       this.listenForChatMessages()
       this.listenForWaveRunnerRequests()
+
+      this.room.onMessage('*', (client: Client, message: any) => {
+        this.dispatcher.emit('roomEvent', message)
+      })
   }
 
   private listenForChatMessages() {

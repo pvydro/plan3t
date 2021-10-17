@@ -9,7 +9,7 @@ export class Emitter extends EventEmitter implements IEmitter {
         super()
     }
 
-    on(value: any, callback: any, context?: any) {
+    on(value: any, callback?: any, context?: any) {
         return super.on(value, callback, context)
     }
 

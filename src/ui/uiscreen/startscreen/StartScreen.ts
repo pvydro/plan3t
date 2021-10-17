@@ -42,10 +42,9 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.buttons = [
             this.playButton = new UIWoodButton({
                 text: { text: 'play' },
-                // scale: 1.5
-                // onTrigger: () => {
-                //     GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
-                // }
+                onTrigger: () => {
+                    GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
+                }
             }),
             this.settingsButton = new UIWoodButton({
                 text: { text: 'settings' }

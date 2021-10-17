@@ -35,7 +35,7 @@ export class GameStateManager implements IGameStateManager {
     private static Instance: IGameStateManager
     _currentState?: IGameState
     _currentStateID: GameStateID
-    _defaultState: GameStateID = GameStateID.StartMenu
+    _defaultState: GameStateID = GameStateID.WaveRunnerGame
     factory: IGameStateFactory
     game?: Game
 
