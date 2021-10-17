@@ -1,13 +1,11 @@
 import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
-import { ChatMessageSchema } from '../../schema/ChatMessageSchema'
-import { ClientMessage, NewChatMessagePayload, RoomMessage } from '../ServerMessages'
-import { IPlanetRoom, PlanetRoom } from './PlanetRoom'
-import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
+import { ChatMessagePayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
+import { PlanetRoom } from './PlanetRoom'
 import { RoomEvent } from '../../event/RoomEvent'
 import { Emitter } from '../../../utils/Emitter'
 import { Observable } from 'rxjs'
-import { catchError, filter, finalize, map, retry, take, tap, timeout } from 'rxjs/operators'
+import { filter } from 'rxjs/operators'
 
 export interface IPlanetRoomListener {
   startListening(): void
@@ -15,14 +13,14 @@ export interface IPlanetRoomListener {
 }
 
 export interface IRoomListenerDelegate {
-  handleChatEvent(event: RoomEvent): void
-  handleWeaponEvent(event: RoomEvent): void
+  handleChatEvent(event: RoomEvent<ChatMessagePayload>): void
+  handleWeaponEvent(event: RoomEvent<WeaponStatusPayload>): void
 }
 
 export class PlanetRoomListener implements IPlanetRoomListener {
   delegate: PlanetRoom
   dispatcher: Emitter
-  roomStream$: Observable<RoomEvent>
+  roomStream$: Observable<RoomEvent<any>>
 
   constructor(delegate: PlanetRoom) {
     this.delegate = delegate
@@ -32,7 +30,7 @@ export class PlanetRoomListener implements IPlanetRoomListener {
       this.dispatcher.emit('roomEvent', this.buildRoomEvent(type, message, client))
     })
     this.roomStream$ = new Observable((observer) => {
-      this.dispatcher.on('roomEvent', (value: RoomEvent) => observer.next(value))
+      this.dispatcher.on('roomEvent', (value: RoomEvent<any>) => observer.next(value))
     })
   }
 
@@ -53,8 +51,8 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     delegate = delegate.bind(this.delegate)
 
     this.roomStream$.pipe(
-      filter((ev: RoomEvent) => ev.type === message)
-    ).subscribe((ev: RoomEvent) => delegate(ev))
+      filter((ev: RoomEvent<any>) => ev.type === message)
+    ).subscribe((ev: RoomEvent<any>) => delegate(ev))
   }
 
   // handleEvent(event: RoomEvent) {

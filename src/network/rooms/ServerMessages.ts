@@ -23,7 +23,7 @@ export enum ClientMessage {
     WaveRunnerStarted = 'c_wave_runner_started'
 }
 
-export interface NewChatMessagePayload {
+export interface ChatMessagePayload {
     sender: string
     text: string
 }
