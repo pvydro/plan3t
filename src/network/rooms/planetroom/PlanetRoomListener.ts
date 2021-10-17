@@ -2,7 +2,7 @@ import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { ChatMessagePayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
 import { PlanetRoom } from './PlanetRoom'
-import { RoomEvent } from '../../event/RoomEvent'
+import { IRoomEvent, RoomEvent } from '../../event/RoomEvent'
 import { Emitter } from '../../../utils/Emitter'
 import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
@@ -13,8 +13,8 @@ export interface IPlanetRoomListener {
 }
 
 export interface IRoomListenerDelegate {
-  handleChatEvent(event: RoomEvent<ChatMessagePayload>): void
-  handleWeaponEvent(event: RoomEvent<WeaponStatusPayload>): void
+  handleChatEvent(event: IRoomEvent<ChatMessagePayload>): void
+  handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>): void
 }
 
 export class PlanetRoomListener implements IPlanetRoomListener {
@@ -30,7 +30,7 @@ export class PlanetRoomListener implements IPlanetRoomListener {
       this.dispatcher.emit('roomEvent', this.buildRoomEvent(type, message, client))
     })
     this.roomStream$ = new Observable((observer) => {
-      this.dispatcher.on('roomEvent', (value: RoomEvent<any>) => observer.next(value))
+      this.dispatcher.on('roomEvent', (value: IRoomEvent<any>) => observer.next(value))
     })
   }
 
@@ -51,103 +51,74 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     delegate = delegate.bind(this.delegate)
 
     this.roomStream$.pipe(
-      filter((ev: RoomEvent<any>) => ev.type === message)
-    ).subscribe((ev: RoomEvent<any>) => delegate(ev))
+      filter((ev: IRoomEvent<any>) => ev.type === message)
+    ).subscribe((ev: IRoomEvent<any>) => delegate(ev))
   }
-
-  // handleEvent(event: RoomEvent) {
-  //   Flogger.log('PlanetRoomListeners', 'handleEvent', event.type)
-
-  //   switch (event.type) {
-  //     case RoomMessage.NewChatMessage:
-  //       this.delegate.handleChatEvent(event)
-  //       break
-
-  //     case RoomMessage.PlayerShoot: // TODO: Abstract PlayerShoot into WeaponUpdate
-  //       this.delegate.handleWeaponEvent(event)
-  //       break
-  //   }
-  // }
-
-  // private listenForChatMessages() {
-  //   Flogger.log('PlanetRoomListener', 'listenForChatMessages')
-
-  //   this.delegate.onMessage(RoomMessage.NewChatMessage, (client: Client, message: NewChatMessagePayload) => {
-  //     Flogger.log('PlanetRoomListener', 'Received new chat message', message)//, 'message', message)
-
-  //     this.delegate.state.messages.add(new ChatMessageSchema().assign({
-  //       sender: message.sender,
-  //       text: message.text
-  //     }))
-      
-  //     this.delegate.send(client, ClientMessage.UpdateChat, this.delegate.state.messages)
-  //   })
-  // }
-
-  // private listenForWaveRunnerRequests() {
-  //   Flogger.log('PlanetRoomListener', 'listenForWaveRunnerRequest')
-
-  //   this.room.onMessage(RoomMessage.NewWaveRunner, (client: Client) => {
-  //     Flogger.log('PlanetRoomListener', 'Received request for new WaveRunner')
-
-  //     this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Requesting waverunner game...' }))
-  //     this.room.waveRunnerWorker.startWaveRunner(client)
-  //   })
-
-  //   // this.room.onMessage(ClientMessage.WaveRunnerStarted, () => {
-  //   //   Flogger.log('PlanetRoomListener', 'Received WaveRunnerStarted')
-  //   //   this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Wave runner game started.' }))
-  //   // })
-  // }
-
-  // private listenForPlanet() {
-  //   Flogger.log('PlanetRoomListener', 'listenForPlanet')
-
-  //   this.room.onMessage(RoomMessage.NewPlanet, (client: Client, message: NewPlanetMessagePayload) => {
-  //     Flogger.log('PlanetRoomListener', 'Secured new spherical data')//, 'message', message)
-
-  //     try {
-  //       if (this.room.planet === undefined) {
-  //         this.room.planet = this.convertFetchedPlanetToSchema(message.planet)
-  //       } else {
-  //         Flogger.log('PlanetRoomListener', client.sessionId + ' tried to set new planet, but planet already set.')
-  //       }
-  
-  //       this.room.state.planetSpherical = this.room.planet
-  //       this.room.state.planetHasBeenSet = true
-  //     } catch(error) {
-  //       Flogger.error('PlanetRoomListener', 'Error setting planetSpherical schema', 'error', error)
-  //     }
-  //   })
-  // }
-
-  // private convertFetchedPlanetToSchema(planet: any) {
-  //   const parsedPoints: PlanetSphericalTileSchema[] = []
-
-  //   // Parse points into PlanetSphericalTileSchema schema
-  //   for (let i in planet.points) {
-  //     const point = planet.points[i]
-  //     parsedPoints.push(new PlanetSphericalTileSchema({
-  //       x: point.x,
-  //       y: point.y,
-  //       tileSolidity: point.tileSolidity,
-  //       tileValue: new PlanetSphericalTileDataSchema({
-  //         r: point.tileValue.r,
-  //         g: point.tileValue.g,
-  //         b: point.tileValue.b,
-  //         a: point.tileValue.a,
-  //       })
-  //     }))
-  //   }
-
-  //   // Parse new data into PlanetSphericalSchema
-  //   return new PlanetSphericalSchema({
-  //     biome: planet.biome,
-  //     dimension: new DimensionSchema({
-  //       width: planet.dimension.width,
-  //       height: planet.dimension.height,
-  //     }),
-  //     points: parsedPoints
-  //   })  
-  // }
 }
+
+// private listenForWaveRunnerRequests() {
+//   Flogger.log('PlanetRoomListener', 'listenForWaveRunnerRequest')
+
+//   this.room.onMessage(RoomMessage.NewWaveRunner, (client: Client) => {
+//     Flogger.log('PlanetRoomListener', 'Received request for new WaveRunner')
+
+//     this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Requesting waverunner game...' }))
+//     this.room.waveRunnerWorker.startWaveRunner(client)
+//   })
+
+//   // this.room.onMessage(ClientMessage.WaveRunnerStarted, () => {
+//   //   Flogger.log('PlanetRoomListener', 'Received WaveRunnerStarted')
+//   //   this.room.state.messages.add(new ChatMessageSchema().assign({ sender: ChatSender.Server, text: 'Wave runner game started.' }))
+//   // })
+// }
+
+// private listenForPlanet() {
+//   Flogger.log('PlanetRoomListener', 'listenForPlanet')
+
+//   this.room.onMessage(RoomMessage.NewPlanet, (client: Client, message: NewPlanetMessagePayload) => {
+//     Flogger.log('PlanetRoomListener', 'Secured new spherical data')//, 'message', message)
+
+//     try {
+//       if (this.room.planet === undefined) {
+//         this.room.planet = this.convertFetchedPlanetToSchema(message.planet)
+//       } else {
+//         Flogger.log('PlanetRoomListener', client.sessionId + ' tried to set new planet, but planet already set.')
+//       }
+
+//       this.room.state.planetSpherical = this.room.planet
+//       this.room.state.planetHasBeenSet = true
+//     } catch(error) {
+//       Flogger.error('PlanetRoomListener', 'Error setting planetSpherical schema', 'error', error)
+//     }
+//   })
+// }
+
+// private convertFetchedPlanetToSchema(planet: any) {
+//   const parsedPoints: PlanetSphericalTileSchema[] = []
+
+//   // Parse points into PlanetSphericalTileSchema schema
+//   for (let i in planet.points) {
+//     const point = planet.points[i]
+//     parsedPoints.push(new PlanetSphericalTileSchema({
+//       x: point.x,
+//       y: point.y,
+//       tileSolidity: point.tileSolidity,
+//       tileValue: new PlanetSphericalTileDataSchema({
+//         r: point.tileValue.r,
+//         g: point.tileValue.g,
+//         b: point.tileValue.b,
+//         a: point.tileValue.a,
+//       })
+//     }))
+//   }
+
+//   // Parse new data into PlanetSphericalSchema
+//   return new PlanetSphericalSchema({
+//     biome: planet.biome,
+//     dimension: new DimensionSchema({
+//       width: planet.dimension.width,
+//       height: planet.dimension.height,
+//     }),
+//     points: parsedPoints
+//   })  
+// }

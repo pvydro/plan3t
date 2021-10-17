@@ -5,7 +5,7 @@ import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetSpheri
 import { IPlanetRoomListener, IRoomListenerDelegate, PlanetRoomListener } from './PlanetRoomListener'
 import { PlayerSchema } from '../../schema/PlayerSchema'
 import { IWaveRunnerWorker, WaveRunnerWorker } from '../../worker/WaveRunnerWorker'
-import { RoomEvent } from '../../event/RoomEvent'
+import { IRoomEvent } from '../../event/RoomEvent'
 import { ClientMessage, ChatMessagePayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
 import { ChatMessageSchema } from '../../schema/ChatMessageSchema'
 
@@ -56,7 +56,7 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
   }
 
   // Handlers
-  handleChatEvent(event: RoomEvent<ChatMessagePayload>) {
+  handleChatEvent(event: IRoomEvent<ChatMessagePayload>) {
     Flogger.log('Planet', 'handleChatEvent', event.data)
 
     this.state.messages.add(new ChatMessageSchema()
@@ -65,7 +65,7 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
     event.client.send(ClientMessage.UpdateChat)
   }
 
-  handleWeaponEvent(event: RoomEvent<WeaponStatusPayload>) {
+  handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
     Flogger.log('Planet', 'handleWeaponEvent', event.data.name)
   }
 }

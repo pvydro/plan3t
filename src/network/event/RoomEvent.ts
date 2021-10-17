@@ -2,7 +2,9 @@ import { Client } from 'colyseus'
 import { RoomMessage } from '../rooms/ServerMessages'
 
 export interface IRoomEvent<T> {
-
+    type: RoomMessage
+    data: T
+    client: Client
 }
 
 export class RoomEvent<T> implements IRoomEvent<T> {
