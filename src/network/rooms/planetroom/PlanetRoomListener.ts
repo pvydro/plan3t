@@ -27,9 +27,11 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     this.dispatcher = new Emitter()
 
     this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
+      // Re-route server messages to internal dispatcher
       this.dispatcher.emit('roomEvent', this.buildRoomEvent(type, message, client))
     })
     this.roomStream$ = new Observable((observer) => {
+      // Base internal observable on internal dispatcher
       this.dispatcher.on('roomEvent', (value: IRoomEvent<any>) => observer.next(value))
     })
   }
