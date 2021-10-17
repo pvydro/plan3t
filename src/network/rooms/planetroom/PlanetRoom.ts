@@ -2,11 +2,13 @@ import { Flogger } from '../../../service/Flogger'
 import { Room, Client } from 'colyseus'
 import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
 import { PlanetSphericalSchema } from '../../schema/planetgamestate/PlanetSphericalSchema'
-import { IPlanetRoomListener, PlanetRoomListener } from './PlanetRoomListener'
+import { IPlanetRoomListener, IRoomListenerDelegate, PlanetRoomListener } from './PlanetRoomListener'
 import { PlayerSchema } from '../../schema/PlayerSchema'
 import { IWaveRunnerWorker, WaveRunnerWorker } from '../../worker/WaveRunnerWorker'
+import { RoomEvent } from '../../event/RoomEvent'
+import { RoomMessage } from '../ServerMessages'
 
-export interface IPlanetRoom {
+export interface IPlanetRoom extends IRoomListenerDelegate {
   waveRunnerWorker: IWaveRunnerWorker
 }
 
@@ -55,5 +57,15 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
   onStateChange() {
     Flogger.log('PlanetRoom', 'State changed.')
 
+  }
+
+  handleEvent(event: RoomEvent) {
+    Flogger.log('PlanetRoom', 'handleEvent')
+
+    switch (event.type) {
+      // RoomMessage.
+      // mutateEntity - applies schema to entity based on id
+
+    }
   }
 }

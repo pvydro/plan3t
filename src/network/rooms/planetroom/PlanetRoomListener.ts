@@ -2,7 +2,7 @@ import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { ChatMessageSchema } from '../../schema/ChatMessageSchema'
 import { ClientMessage, NewChatMessagePayload, RoomMessage } from '../ServerMessages'
-import { PlanetRoom } from './PlanetRoom'
+import { IPlanetRoom, PlanetRoom } from './PlanetRoom'
 import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
 import { RoomEvent } from '../../event/RoomEvent'
 import { Emitter } from '../../../utils/Emitter'
@@ -13,14 +13,19 @@ export interface IPlanetRoomListener {
     dispatcher: Emitter
 }
 
+export interface IRoomListenerDelegate {
+  handleEvent(event: RoomEvent): void
+}
+
 export class PlanetRoomListener implements IPlanetRoomListener {
   playerListener: PlanetRoomPlayerListener
-  room: PlanetRoom
+  // room: PlanetRoom
+  delegate: PlanetRoom
   dispatcher: Emitter
   roomStream$: Observable<RoomEvent>
 
-  constructor(room: PlanetRoom) {
-      this.room = room
+  constructor(delegate: PlanetRoom) {
+      this.delegate = delegate
 
       this.dispatcher = new Emitter()
       this.playerListener = new PlanetRoomPlayerListener(this)
@@ -28,23 +33,25 @@ export class PlanetRoomListener implements IPlanetRoomListener {
       this.roomStream$ = new Observable((observer) => {
         this.dispatcher.on('roomEvent', (value: RoomEvent) => observer.next(value))
       })
+
       this.roomStream$.subscribe(x => { console.log('XXXXXXX', x.type, x.data) })
   }
 
   startListening() {
       Flogger.log('PlanetRoomListener', 'startListening')
 
-      this.playerListener.startListening()
-      
-      this.listenForChatMessages()
-      // this.listenForPlanet()
-      // this.listenForWaveRunnerRequests()
-
-      this.room.onMessage('*', (client: Client, type: string | number, message: any) => {
+      this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
         const event = this.buildRoomEvent(type, message, client)
 
         this.dispatcher.emit('roomEvent', event)
       })
+
+      this.roomStream$.subscribe(value => this.delegate.handleEvent(value))
+
+      // this.playerListener.startListening()
+      // this.listenForChatMessages()
+      // this.listenForPlanet()
+      // this.listenForWaveRunnerRequests()
   }
 
   buildRoomEvent(type: string | number, message: any, client?: Client) {
@@ -53,20 +60,20 @@ export class PlanetRoomListener implements IPlanetRoomListener {
     return event
   }
 
-  private listenForChatMessages() {
-    Flogger.log('PlanetRoomListener', 'listenForChatMessages')
+  // private listenForChatMessages() {
+  //   Flogger.log('PlanetRoomListener', 'listenForChatMessages')
 
-    this.room.onMessage(RoomMessage.NewChatMessage, (client: Client, message: NewChatMessagePayload) => {
-      Flogger.log('PlanetRoomListener', 'Received new chat message', message)//, 'message', message)
+  //   this.delegate.onMessage(RoomMessage.NewChatMessage, (client: Client, message: NewChatMessagePayload) => {
+  //     Flogger.log('PlanetRoomListener', 'Received new chat message', message)//, 'message', message)
 
-      this.room.state.messages.add(new ChatMessageSchema().assign({
-        sender: message.sender,
-        text: message.text
-      }))
+  //     this.delegate.state.messages.add(new ChatMessageSchema().assign({
+  //       sender: message.sender,
+  //       text: message.text
+  //     }))
       
-      this.room.send(client, ClientMessage.UpdateChat, this.room.state.messages)
-    })
-  }
+  //     this.delegate.send(client, ClientMessage.UpdateChat, this.delegate.state.messages)
+  //   })
+  // }
 
   // private listenForWaveRunnerRequests() {
   //   Flogger.log('PlanetRoomListener', 'listenForWaveRunnerRequest')

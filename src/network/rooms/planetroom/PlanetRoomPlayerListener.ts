@@ -12,6 +12,9 @@ export interface IPlanetRoomPlayerListener {
 
 }
 
+/**
+ * @deprecated Use delegation
+ */
 export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     parentListener: PlanetRoomListener
     playerState$?: Observable<any>
@@ -99,7 +102,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         this.room.onMessage(RoomMessage.PlayerLandedOnGround, (client: Client, message: PlayerPayload) => {
             Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLandedOnGround, 'sessionId', client.sessionId, 'message', message)
 
-            const state = this.parentListener.room.state
+            const state = this.parentListener.delegate.state
             const player = state.players.get(client.sessionId)
 
             if (message.isOnGround) {
@@ -191,7 +194,7 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
     }
 
     get room() {
-        return this.parentListener.room
+        return this.parentListener.delegate
     }
 
     get state() {
