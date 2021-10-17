@@ -6,7 +6,8 @@ import { IPlanetRoomListener, IRoomListenerDelegate, PlanetRoomListener } from '
 import { PlayerSchema } from '../../schema/PlayerSchema'
 import { IWaveRunnerWorker, WaveRunnerWorker } from '../../worker/WaveRunnerWorker'
 import { RoomEvent } from '../../event/RoomEvent'
-import { RoomMessage } from '../ServerMessages'
+import { ClientMessage, RoomMessage } from '../ServerMessages'
+import { ChatMessageSchema } from '../../schema/ChatMessageSchema'
 
 export interface IPlanetRoom extends IRoomListenerDelegate {
   waveRunnerWorker: IWaveRunnerWorker
@@ -41,31 +42,30 @@ export class PlanetRoom extends Room<PlanetGameState> implements IPlanetRoom {
   }
 
   onJoin(client: Client, options: any) {
-    Flogger.log('PlanetRoom', 'id', client.sessionId, 'Player joined.', 'options', options)
+    Flogger.log('PlanetRoom', 'id', client.sessionId, 'Player joined', 'options', options)
 
     this.state.createPlayer(client.sessionId)
   }
 
   onLeave(client: Client) {
-    Flogger.log('PlanetRoom', 'id', client.sessionId, 'Player left.')
+    Flogger.log('PlanetRoom', 'id', client.sessionId, 'Player left')
 
     const entity = this.state.players[client.sessionId]
 
     if (entity) { entity.dead = true }
   }
 
-  onStateChange() {
-    Flogger.log('PlanetRoom', 'State changed.')
+  // Handlers
+  handleChatEvent(event: RoomEvent) {
+    Flogger.log('Planet', 'handleChatEvent', event.data)
 
+    this.state.messages.add(new ChatMessageSchema()
+      .assign(event.data))
+
+    this.send(event.client, ClientMessage.UpdateChat, [])
   }
 
-  handleEvent(event: RoomEvent) {
-    Flogger.log('PlanetRoom', 'handleEvent')
-
-    switch (event.type) {
-      // RoomMessage.
-      // mutateEntity - applies schema to entity based on id
-
-    }
+  handleWeaponEvent(event: RoomEvent) {
+    Flogger.log('Planet', 'handleWeaponEvent')
   }
 }

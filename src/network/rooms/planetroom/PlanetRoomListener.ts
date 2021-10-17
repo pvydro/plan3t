@@ -7,58 +7,69 @@ import { PlanetRoomPlayerListener } from './PlanetRoomPlayerListener'
 import { RoomEvent } from '../../event/RoomEvent'
 import { Emitter } from '../../../utils/Emitter'
 import { Observable } from 'rxjs'
+import { catchError, filter, finalize, map, retry, take, tap, timeout } from 'rxjs/operators'
 
 export interface IPlanetRoomListener {
-    startListening(): void
-    dispatcher: Emitter
+  startListening(): void
+  dispatcher: Emitter
 }
 
 export interface IRoomListenerDelegate {
-  handleEvent(event: RoomEvent): void
+  handleChatEvent(event: RoomEvent): void
+  handleWeaponEvent(event: RoomEvent): void
 }
 
 export class PlanetRoomListener implements IPlanetRoomListener {
-  playerListener: PlanetRoomPlayerListener
-  // room: PlanetRoom
   delegate: PlanetRoom
   dispatcher: Emitter
   roomStream$: Observable<RoomEvent>
 
   constructor(delegate: PlanetRoom) {
-      this.delegate = delegate
+    this.delegate = delegate
+    this.dispatcher = new Emitter()
 
-      this.dispatcher = new Emitter()
-      this.playerListener = new PlanetRoomPlayerListener(this)
-
-      this.roomStream$ = new Observable((observer) => {
-        this.dispatcher.on('roomEvent', (value: RoomEvent) => observer.next(value))
-      })
-
-      this.roomStream$.subscribe(x => { console.log('XXXXXXX', x.type, x.data) })
+    this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
+      this.dispatcher.emit('roomEvent', this.buildRoomEvent(type, message, client))
+    })
+    this.roomStream$ = new Observable((observer) => {
+      this.dispatcher.on('roomEvent', (value: RoomEvent) => observer.next(value))
+    })
   }
 
   startListening() {
-      Flogger.log('PlanetRoomListener', 'startListening')
+    Flogger.log('PlanetRoomListener', 'startListening')
 
-      this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
-        const event = this.buildRoomEvent(type, message, client)
-
-        this.dispatcher.emit('roomEvent', event)
-      })
-
-      this.roomStream$.subscribe(value => this.delegate.handleEvent(value))
-
-      // this.playerListener.startListening()
-      // this.listenForChatMessages()
-      // this.listenForPlanet()
-      // this.listenForWaveRunnerRequests()
+    this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
+    this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleWeaponEvent)
   }
 
-  buildRoomEvent(type: string | number, message: any, client?: Client) {
+  buildRoomEvent(type: string | number, message: any, client: Client) {
     const event = new RoomEvent(type as RoomMessage, message, client)
 
     return event
   }
+
+  delegateMessage(message: RoomMessage, delegate: Function) {
+    delegate = delegate.bind(this.delegate)
+
+    this.roomStream$.pipe(
+      filter((ev: RoomEvent) => ev.type === message)
+    ).subscribe((ev: RoomEvent) => delegate(ev))
+  }
+
+  // handleEvent(event: RoomEvent) {
+  //   Flogger.log('PlanetRoomListeners', 'handleEvent', event.type)
+
+  //   switch (event.type) {
+  //     case RoomMessage.NewChatMessage:
+  //       this.delegate.handleChatEvent(event)
+  //       break
+
+  //     case RoomMessage.PlayerShoot: // TODO: Abstract PlayerShoot into WeaponUpdate
+  //       this.delegate.handleWeaponEvent(event)
+  //       break
+  //   }
+  // }
 
   // private listenForChatMessages() {
   //   Flogger.log('PlanetRoomListener', 'listenForChatMessages')
