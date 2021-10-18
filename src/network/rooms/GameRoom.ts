@@ -5,7 +5,7 @@ import { ChatMessageSchema } from '../schema/ChatMessageSchema'
 import { PlayerSchema } from '../schema/PlayerSchema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { PlanetRoom } from './planetroom/PlanetRoom'
-import { IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
+import { GameRoomListener, IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
 import { ChatMessagePayload, ClientMessage, WeaponStatusPayload } from './ServerMessages'
 
 export interface IGameRoom extends IRoomListenerDelegate {
@@ -23,6 +23,7 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     }
 
     initialize() {
+        this.listener = new GameRoomListener(this)
         this.state.initialize()
 
         // Server-side game loop
