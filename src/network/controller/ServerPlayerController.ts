@@ -1,8 +1,8 @@
-import { PlayerSchema } from '../../../schema/PlayerSchema'
-import { PlanetGameState } from '../../planetgamestate/PlanetGameState'
-import { PlayerBodyState, Direction, PlayerLegsState } from '../../../utils/Enum'
-import { PlanetRoom } from '../../../rooms/planetroom/PlanetRoom'
-import { ServerGameState } from '../ServerGameState'
+import { PlayerSchema } from '../schema/PlayerSchema'
+import { PlanetGameState } from '../schema/planetgamestate/PlanetGameState'
+import { PlayerBodyState, Direction, PlayerLegsState } from '../utils/Enum'
+import { PlanetRoom } from '../rooms/planetroom/PlanetRoom'
+import { ServerGameState } from '../schema/serverstate/ServerGameState'
 
 export interface IServerPlayerController {
     update(): void
@@ -48,7 +48,6 @@ export class ServerPlayerController implements IServerPlayerController {
                         if (p.xVel !== playerWalkingSpeed) {
                             p.xVel = playerWalkingSpeed
                         }
-
                     }
 
                     break

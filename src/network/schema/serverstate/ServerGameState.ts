@@ -5,8 +5,8 @@ import { ChatMessageSchema } from '../ChatMessageSchema'
 import { CreatureSchema } from '../CreatureSchema'
 import { PlayerSchema } from '../PlayerSchema'
 import { ProjectileSchema } from '../ProjectileSchema'
-import { ServerGravityController } from './controller/ServerGravityController'
-import { ServerPlayerController } from './controller/ServerPlayerController'
+import { ServerGravityController } from '../../controller/ServerGravityController'
+import { ServerPlayerController } from '../../controller/ServerPlayerController'
 
 export class ServerGameState extends Schema {
     @type({ map: PlayerSchema })
@@ -28,11 +28,22 @@ export class ServerGameState extends Schema {
         this.playerController = new ServerPlayerController(this)
     }
 
+    update() {
+        // this.players.forEach((player: PlayerSchema) => {
+        //     player.x += player.xVel * GameRoom.Delta
+        //     player.y += player.yVel * GameRoom.Delta
+        // })
+
+        // TODO: Instead of updating these in the state, update these outside, setting the state. <- tf do you mean
+        if (this.playerController) this.playerController.update()
+        if (this.gravityController) this.gravityController.update()
+    }
+
     createPlayer(sessionId: string, x?: number, y?: number) {
         log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
         if (this.hostId === '') {
-            log('PlanetGameState', 'no hostId set, assigning player as host', 'sessionId', sessionId)
+            log('PlanetGameState', 'no hostId set, assigning this player as host', 'sessionId', sessionId)
 
             this.hostId = sessionId
         }
@@ -57,17 +68,6 @@ export class ServerGameState extends Schema {
             velocity: schema.velocity,
             sessionId: schema.sessionId
         }))
-    }
-
-    update() {
-        this.players.forEach((player: PlayerSchema) => {
-            player.x += player.xVel * GameRoom.Delta
-            player.y += player.yVel * GameRoom.Delta
-        })
-
-        // TODO: Instead of updating these in the state, update these outside, setting the state. <- tf do you mean
-        if (this.playerController) this.playerController.update()
-        if (this.gravityController) this.gravityController.update()
     }
 
 }
