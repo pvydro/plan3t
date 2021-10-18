@@ -6,6 +6,7 @@ import { IRoomEvent, RoomEvent } from '../../event/RoomEvent'
 import { Emitter } from '../../../utils/Emitter'
 import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
+import { IGameRoom } from '../GameRoom'
 
 export interface IPlanetRoomListener {
   startListening(): void
@@ -17,8 +18,8 @@ export interface IRoomListenerDelegate {
   handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>): void
 }
 
-export class PlanetRoomListener implements IPlanetRoomListener {
-  delegate: PlanetRoom
+export class GameRoomListener implements IPlanetRoomListener {
+  delegate: IGameRoom
   dispatcher: Emitter
   roomStream$: Observable<RoomEvent<any>>
 

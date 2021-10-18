@@ -9,7 +9,10 @@ import { IRoomListenerDelegate } from './planetroom/PlanetRoomListener'
 import { ChatMessagePayload, ClientMessage, WeaponStatusPayload } from './ServerMessages'
 
 export interface IGameRoom extends IRoomListenerDelegate {
+    state: ServerGameState
 
+    onMessage<T = any>(messageType: '*', callback: (client: Client, type: string | number, message: T) => void): any
+    onMessage<T = any>(messageType: string | number, callback: (client: Client, message: T) => void): any
 }
 
 export class GameRoom extends Room<ServerGameState> implements IGameRoom {
@@ -31,6 +34,8 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
 
             this.state.update()
         })
+
+        this.onMessage
     }
 
     onJoin(client: Client, options: any) {

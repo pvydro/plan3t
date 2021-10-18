@@ -3,7 +3,7 @@ import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { PlayerBodyState, PlayerLegsState } from '../../utils/Enum'
 import { PlayerPayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
-import { PlanetRoomListener } from './PlanetRoomListener'
+import { GameRoomListener } from './PlanetRoomListener'
 import { PlayerSchema } from '../../schema/PlayerSchema'
 import { ProjectileSchema } from '../../schema/ProjectileSchema'
 import { of, bindCallback, Observable, map } from 'rxjs'
@@ -16,10 +16,10 @@ export interface IPlanetRoomPlayerListener {
  * @deprecated Use delegation
  */
 export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
-    parentListener: PlanetRoomListener
+    parentListener: GameRoomListener
     playerState$?: Observable<any>
 
-    constructor(listener: PlanetRoomListener) {
+    constructor(listener: GameRoomListener) {
         this.parentListener = listener
 
         // this.playerState$ = bindCallback(this.room.onMessage).pipe(
