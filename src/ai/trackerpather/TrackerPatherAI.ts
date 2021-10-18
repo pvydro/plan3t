@@ -53,6 +53,8 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
     }
 
     findPointOnCurrentGround() {
+        if (this.target.isDead) return
+
         const clientPlayer = ClientPlayer.getInstance()
 
         this.currentNode = {
@@ -64,6 +66,8 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
     }
 
     hasReachedNode() {
+        if (this.target.isDead) return
+        
         this.currentState = GroundPatherState.Idle
         this.clearCurrentNode()
 
