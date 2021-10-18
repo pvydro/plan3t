@@ -5,7 +5,7 @@ import { ChatMessageSchema } from '../schema/ChatMessageSchema'
 import { PlayerSchema } from '../schema/PlayerSchema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { PlanetRoom } from './planetroom/PlanetRoom'
-import { IRoomListenerDelegate } from './planetroom/PlanetRoomListener'
+import { IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
 import { ChatMessagePayload, ClientMessage, WeaponStatusPayload } from './ServerMessages'
 
 export interface IGameRoom extends IRoomListenerDelegate {
@@ -16,6 +16,8 @@ export interface IGameRoom extends IRoomListenerDelegate {
 }
 
 export class GameRoom extends Room<ServerGameState> implements IGameRoom {
+    listener!: IGameRoomListener
+
     onCreate() {
         this.initialize()
     }

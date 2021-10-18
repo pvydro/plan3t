@@ -1,14 +1,14 @@
 import { Client } from 'colyseus'
-import { Flogger } from '../../../service/Flogger'
-import { ChatMessagePayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
-import { PlanetRoom } from './PlanetRoom'
-import { IRoomEvent, RoomEvent } from '../../event/RoomEvent'
-import { Emitter } from '../../../utils/Emitter'
+import { Flogger } from '../../service/Flogger'
+import { ChatMessagePayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
+import { PlanetRoom } from './planetroom/PlanetRoom'
+import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
+import { Emitter } from '../../utils/Emitter'
 import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { IGameRoom } from '../GameRoom'
+import { IGameRoom } from './GameRoom'
 
-export interface IPlanetRoomListener {
+export interface IGameRoomListener {
   startListening(): void
   dispatcher: Emitter
 }
@@ -18,12 +18,12 @@ export interface IRoomListenerDelegate {
   handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>): void
 }
 
-export class GameRoomListener implements IPlanetRoomListener {
+export class GameRoomListener implements IGameRoomListener {
   delegate: IGameRoom
   dispatcher: Emitter
   roomStream$: Observable<RoomEvent<any>>
 
-  constructor(delegate: PlanetRoom) {
+  constructor(delegate: IGameRoom) {
     this.delegate = delegate
     this.dispatcher = new Emitter()
 
