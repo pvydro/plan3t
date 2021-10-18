@@ -11,7 +11,6 @@ export interface IPlanetRoom extends IGameRoom {
 }
 
 export class PlanetRoom extends GameRoom implements IPlanetRoom {
-  static Delta: number = 1
   planet?: PlanetSphericalSchema = undefined
   waveRunnerWorker!: IWaveRunnerWorker
 
@@ -19,7 +18,6 @@ export class PlanetRoom extends GameRoom implements IPlanetRoom {
     this.waveRunnerWorker = new WaveRunnerWorker(this)
     
     this.setState(new PlanetGameState())
-    this.listener.startListening()
 
     super.initialize()
   }

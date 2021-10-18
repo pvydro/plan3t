@@ -1,5 +1,6 @@
 import { Schema, SetSchema, MapSchema, type } from '@colyseus/schema'
-import { Flogger } from '../../../service/Flogger'
+import { GameRoom } from '../../rooms/GameRoom'
+import { log } from '../../../service/Flogger'
 import { ChatMessageSchema } from '../ChatMessageSchema'
 import { CreatureSchema } from '../CreatureSchema'
 import { PlayerSchema } from '../PlayerSchema'
@@ -28,12 +29,12 @@ export class ServerGameState extends Schema {
     }
 
     createPlayer(sessionId: string, x?: number, y?: number) {
-        Flogger.log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
+        log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
 
         if (this.hostId === '') {
-        Flogger.log('PlanetGameState', 'no hostId set, assigning player as host', 'sessionId', sessionId)
+            log('PlanetGameState', 'no hostId set, assigning player as host', 'sessionId', sessionId)
 
-        this.hostId = sessionId
+            this.hostId = sessionId
         }
 
         this.players.set(sessionId, new PlayerSchema().assign({
@@ -59,6 +60,11 @@ export class ServerGameState extends Schema {
     }
 
     update() {
+        this.players.forEach((player: PlayerSchema) => {
+            player.x += player.xVel * GameRoom.Delta
+            player.y += player.yVel * GameRoom.Delta
+        })
+
         // TODO: Instead of updating these in the state, update these outside, setting the state. <- tf do you mean
         if (this.playerController) this.playerController.update()
         if (this.gravityController) this.gravityController.update()

@@ -2,8 +2,8 @@ import { IClientEntity } from '../../cliententity/ClientEntity'
 import { ClientPlayer, IClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Creature } from '../../creature/Creature'
 import { Direction } from '../../engine/math/Direction'
-import { importantLog } from '../../service/Flogger'
-import { asyncTimeout, functionExists } from '../../utils/Utils'
+import { log } from '../../service/Flogger'
+import { functionExists } from '../../utils/Utils'
 import { IAI } from '../AI'
 import { GroundPatherAI, GroundPatherOptions, GroundPatherState } from '../groundpather/GroundPatherAI'
 
@@ -45,7 +45,7 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
     }
 
     async attack() {
-        importantLog('TrackerPatherAI', 'attack')
+        log('TrackerPatherAI', 'attack')
 
         if (functionExists(this.organismAsCreature.attack)) {
             await this.organismAsCreature.attack()
@@ -67,7 +67,7 @@ export class TrackerPatherAI extends GroundPatherAI implements ITrackerPatherAI 
 
     hasReachedNode() {
         if (this.target.isDead) return
-        
+
         this.currentState = GroundPatherState.Idle
         this.clearCurrentNode()
 
