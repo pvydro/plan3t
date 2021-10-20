@@ -59,7 +59,7 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     }
 
     handlePlayerEvent(event: IRoomEvent<PlayerPayload>) {
-        log('GameRoom', 'handlePlayerEvent', event.data)
+        log('GameRoom', 'handlePlayerEvent', event.client.id)
         
         const payload = event.data
         const player = this.players.get(event.client.sessionId)

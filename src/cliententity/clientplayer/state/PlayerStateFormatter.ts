@@ -18,12 +18,16 @@ export class PlayerStateFormatter {
         payload.bodyState = player.bodyState as number
         payload.legsState = player.legsState as number
         payload.isOnGround = player.isOnGround
+        payload.x = player.x
+        payload.y = player.y
+        payload.xVel = player.xVel
+        payload.yVel = player.yVel
 
         if (rules !== undefined) {
-            if (rules.includePosition) {
-                payload.x = player.x
-                payload.y = player.y
-            }
+            // if (rules.includePosition) {
+            //     payload.x = player.x
+            //     payload.y = player.y
+            // }
             if (rules.includeVelocity) {
                 payload.xVel = player.xVel
                 payload.yVel = player.yVel
