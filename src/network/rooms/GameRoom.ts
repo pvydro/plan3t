@@ -4,7 +4,7 @@ import { IRoomEvent } from '../event/RoomEvent'
 import { ChatMessageSchema } from '../schema/ChatMessageSchema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { GameRoomListener, IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
-import { ChatMessagePayload, ClientMessage, WeaponStatusPayload } from './ServerMessages'
+import { ChatMessagePayload, ClientMessage, PlayerPayload, WeaponStatusPayload } from './ServerMessages'
 
 export interface IGameRoom extends IRoomListenerDelegate {
     state: ServerGameState
@@ -58,6 +58,21 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         })
     }
 
+    handlePlayerEvent(event: IRoomEvent<PlayerPayload>) {
+        log('GameRoom', 'handlePlayerEvent', event.data)
+        
+        const payload = event.data
+        const player = this.players.get(event.client.sessionId)
+
+        player.legsState = payload.legsState
+        player.bodyState = payload.bodyState
+        player.walkingDirection = payload.walkingDirection
+        player.direction = payload.direction
+        player.isOnGround = payload.isOnGround
+        player.x = payload.x
+        player.xVel = payload.xVel
+    }
+
     handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
         const { shouldShoot } = event.data
 
@@ -66,6 +81,11 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         }
     }
 
+    get players() {
+        return this.state.players
+    }
+
+    // Creators
     protected createProjectile(weaponPayload: WeaponStatusPayload) {
         this.state.createProjectile({
             x: weaponPayload.bulletX,

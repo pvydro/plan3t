@@ -174,7 +174,7 @@ export class ClientPlayer extends ClientPlayerState {
         this.head.direction = value
         this.hand.direction = value
 
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate)
     }
 
     set walkingDirection(value: Direction) {
@@ -182,7 +182,7 @@ export class ClientPlayer extends ClientPlayerState {
 
         this._walkingDirection = value
 
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate)
     }
 
     get direction() {

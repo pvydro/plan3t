@@ -33,87 +33,87 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
 
         // this.listenForWeaponStatusChanges()
         // this.listenForWeaponShots()
-        this.listenForBodyStateChange()
-        this.listenForLegsStateChange()
-        this.listenForDirectionChange()
-        this.listenForOnGroundChange()
+        // this.listenForBodyStateChange()
+        // this.listenForLegsStateChange()
+        // this.listenForDirectionChange()
+        // this.listenForOnGroundChange()
         this.listenForForceSetPosition()
     }
 
-    private listenForWeaponStatusChanges() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForWeaponStatusChanges')
+    // private listenForWeaponStatusChanges() {
+    //     Flogger.log('PlanetRoomPlayerListener', 'listenForWeaponStatusChanges')
 
-        this.room.onMessage(RoomMessage.PlayerLookAngleChanged, (client: Client, message: WeaponStatusPayload) => {
-            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLookAngleChanged, 'sessionId', client.sessionId, 'message', message)
+    //     this.room.onMessage(RoomMessage.PlayerLookAngleChanged, (client: Client, message: WeaponStatusPayload) => {
+    //         Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLookAngleChanged, 'sessionId', client.sessionId, 'message', message)
 
-            this.applyWeaponStatusToPlayer(client.sessionId, message)
-        })
-    }
+    //         this.applyWeaponStatusToPlayer(client.sessionId, message)
+    //     })
+    // }
 
-    private listenForWeaponShots() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForWeaponShots')
+    // private listenForWeaponShots() {
+    //     Flogger.log('PlanetRoomPlayerListener', 'listenForWeaponShots')
 
-        this.room.onMessage(RoomMessage.PlayerShoot, (client: Client, message: WeaponStatusPayload) => {
-            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerShoot, 'sessionId', client.sessionId, 'message', message)
+    //     this.room.onMessage(RoomMessage.PlayerShoot, (client: Client, message: WeaponStatusPayload) => {
+    //         Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerShoot, 'sessionId', client.sessionId, 'message', message)
 
-            this.triggerWeaponShot(client.sessionId, message)
-        })
-    }
+    //         this.triggerWeaponShot(client.sessionId, message)
+    //     })
+    // }
 
-    private listenForBodyStateChange() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForBodyStateChange')
+    // private listenForBodyStateChange() {
+    //     Flogger.log('PlanetRoomPlayerListener', 'listenForBodyStateChange')
         
-        this.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
-            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
+    //     this.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
+    //         Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
 
-            this.applyPlayerPayloadToPlayer(client.sessionId, message)
-        })
-    }
+    //         this.applyPlayerPayloadToPlayer(client.sessionId, message)
+    //     })
+    // }
 
-    private listenForLegsStateChange() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForLegsStateChange')
+    // private listenForLegsStateChange() {
+    //     Flogger.log('PlanetRoomPlayerListener', 'listenForLegsStateChange')
 
-        this.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
-            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
+    //     this.room.onMessage(RoomMessage.PlayerBodyStateChanged, (client: Client, message: PlayerPayload) => {
+    //         Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerBodyStateChanged, 'sessionId', client.sessionId, 'message', message)
 
-            const player = this.getPlayer(client.sessionId)
+    //         const player = this.getPlayer(client.sessionId)
 
-            if (message.legsState == PlayerLegsState.Jumping && player.legsState !== message.legsState) {
-                player.jump()
-            }
+    //         if (message.legsState == PlayerLegsState.Jumping && player.legsState !== message.legsState) {
+    //             player.jump()
+    //         }
 
-            this.applyPlayerPayloadToPlayer(client.sessionId, message)
-        })
-    }
+    //         this.applyPlayerPayloadToPlayer(client.sessionId, message)
+    //     })
+    // }
 
-    private listenForDirectionChange() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForDirectionChange')
+    // private listenForDirectionChange() {
+    //     Flogger.log('PlanetRoomPlayerListener', 'listenForDirectionChange')
 
-        this.room.onMessage(RoomMessage.PlayerDirectionChanged, (client: Client, message: PlayerPayload) => {
-            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerDirectionChanged, 'sessionId', client.sessionId, 'message', message)
+    //     this.room.onMessage(RoomMessage.PlayerDirectionChanged, (client: Client, message: PlayerPayload) => {
+    //         Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerDirectionChanged, 'sessionId', client.sessionId, 'message', message)
 
-            this.applyPlayerPayloadToPlayer(client.sessionId, message)
-        })
-    }
+    //         this.applyPlayerPayloadToPlayer(client.sessionId, message)
+    //     })
+    // }
 
-    private listenForOnGroundChange() {
-        Flogger.log('PlanetRoomPlayerListener', 'listenForOnGroundChange')
+    // private listenForOnGroundChange() {
+    //     Flogger.log('PlanetRoomPlayerListener', 'listenForOnGroundChange')
 
-        this.room.onMessage(RoomMessage.PlayerLandedOnGround, (client: Client, message: PlayerPayload) => {
-            Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLandedOnGround, 'sessionId', client.sessionId, 'message', message)
+    //     this.room.onMessage(RoomMessage.PlayerLandedOnGround, (client: Client, message: PlayerPayload) => {
+    //         Flogger.log('PlanetRoomPlayerListener', RoomMessage.PlayerLandedOnGround, 'sessionId', client.sessionId, 'message', message)
 
-            const state = this.parentListener.delegate.state
-            const player = state.players.get(client.sessionId)
+    //         const state = this.parentListener.delegate.state
+    //         const player = state.players.get(client.sessionId)
 
-            if (message.isOnGround) {
-                player.isOnGround = true
-                player.yVel = 0
-                player.y = message.y
-            }
+    //         if (message.isOnGround) {
+    //             player.isOnGround = true
+    //             player.yVel = 0
+    //             player.y = message.y
+    //         }
             
-            this.applyPlayerPayloadToPlayer(client.sessionId, message)
-        })
-    }
+    //         this.applyPlayerPayloadToPlayer(client.sessionId, message)
+    //     })
+    // }
 
     private listenForForceSetPosition() {
         Flogger.log('PlanetRoomPlayerListener', 'listenForForceSetPosition')
@@ -154,16 +154,16 @@ export class PlanetRoomPlayerListener implements IPlanetRoomPlayerListener {
         player.weaponStatus.name = payload.name
     }
 
-    triggerWeaponShot(sessionId: string, payload: WeaponStatusPayload) {
-        const bulletVelocity = payload.bulletVelocity ?? 1
-        this.room.state.createProjectile(new ProjectileSchema({
-            x: payload.bulletX,
-            y: payload.bulletY,
-            rotation: payload.rotation,
-            velocity: bulletVelocity * payload.direction,
-            sessionId: sessionId
-        }))
-    }
+    // triggerWeaponShot(sessionId: string, payload: WeaponStatusPayload) {
+    //     const bulletVelocity = payload.bulletVelocity ?? 1
+    //     this.room.state.createProjectile({
+    //         x: payload.bulletX,
+    //         y: payload.bulletY,
+    //         rotation: payload.rotation,
+    //         bulletVelocity: bulletVelocity * payload.direction,
+    //         sessionId: sessionId
+    //     })
+    // }
 
     // TODO Do this when land on ground
     private applyBodyStatePropertiesToPlayer(payload: PlayerPayload, player: PlayerSchema) {        

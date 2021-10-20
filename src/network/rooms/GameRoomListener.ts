@@ -1,6 +1,6 @@
 import { Client } from 'colyseus'
 import { log } from '../../service/Flogger'
-import { ChatMessagePayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
+import { ChatMessagePayload, PlayerPayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
 import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
 import { Emitter } from '../../utils/Emitter'
 import { Observable } from 'rxjs'
@@ -15,6 +15,7 @@ export interface IGameRoomListener {
 export interface IRoomListenerDelegate {
   handleChatEvent(event: IRoomEvent<ChatMessagePayload>): void
   handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>): void
+  handlePlayerEvent(event: IRoomEvent<PlayerPayload>): void
 }
 
 export class GameRoomListener implements IGameRoomListener {
@@ -37,10 +38,11 @@ export class GameRoomListener implements IGameRoomListener {
   }
 
   startListening() {
-    log('PlanetRoomListener', 'startListening')
+    log('GameRoomListener', 'startListening')
 
     this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
     this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleWeaponEvent)
+    this.delegateMessage(RoomMessage.PlayerUpdate, this.delegate.handlePlayerEvent)
   }
 
   buildRoomEvent(type: string | number, message: any, client: Client) {
@@ -50,6 +52,8 @@ export class GameRoomListener implements IGameRoomListener {
   }
 
   delegateMessage(message: RoomMessage, delegate: Function) {
+    log('GameRoomListener', 'Delegating message type', message)
+
     delegate = delegate.bind(this.delegate)
 
     this.roomStream$.pipe(

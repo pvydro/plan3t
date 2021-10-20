@@ -71,7 +71,7 @@ export class ClientPlayerState extends GravityOrganism {
 
         this._onGround = value
 
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerLandedOnGround, {
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate, {
             includePosition: true
         })
     }
@@ -81,7 +81,7 @@ export class ClientPlayerState extends GravityOrganism {
 
         this._walkingDirection = value
 
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerDirectionChanged)
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate)//.PlayerDirectionChanged)
     }
 
     set consciousnessState(value: PlayerConsciousnessState) {
@@ -89,7 +89,7 @@ export class ClientPlayerState extends GravityOrganism {
 
         this._consciousnessState = value
         
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerConciousnessStateChanged)
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate)//.PlayerConciousnessStateChanged)
     }
 
     set bodyState(value: PlayerBodyState) {
@@ -97,7 +97,7 @@ export class ClientPlayerState extends GravityOrganism {
 
         this._bodyState = value
 
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerBodyStateChanged, { includePosition: true })
+        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate, { includePosition: true })
     }
 
     set legsState(value: PlayerLegsState) {
