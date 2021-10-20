@@ -3,10 +3,10 @@ import { Client } from 'colyseus'
 import { Flogger } from '../../../service/Flogger'
 import { PlayerBodyState, PlayerLegsState } from '../../utils/Enum'
 import { PlayerPayload, RoomMessage, WeaponStatusPayload } from '../ServerMessages'
-import { GameRoomListener } from './PlanetRoomListener'
+import { GameRoomListener } from '../GameRoomListener'
 import { PlayerSchema } from '../../schema/PlayerSchema'
 import { ProjectileSchema } from '../../schema/ProjectileSchema'
-import { of, bindCallback, Observable, map } from 'rxjs'
+import { Observable } from 'rxjs'
 
 export interface IPlanetRoomPlayerListener {
 

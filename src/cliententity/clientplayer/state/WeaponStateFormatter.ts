@@ -9,6 +9,7 @@ export class WeaponStateFormatter {
         const bulletX = weapon._currentRotatedBarrelPoint.x
         const bulletY = weapon._currentRotatedBarrelPoint.y
         const bulletVelocity = weapon.bulletVelocity
+        const sessionId = weapon.playerHolster.player.sessionId
         const direction = weapon.playerHolster && weapon.playerHolster.player !== undefined
             ? weapon.playerHolster.player.direction : Direction.Right
 
@@ -18,7 +19,8 @@ export class WeaponStateFormatter {
             direction,
             bulletX,
             bulletY,
-            bulletVelocity
+            bulletVelocity,
+            sessionId
         }
 
         return payload

@@ -1,14 +1,35 @@
 import { Schema, SetSchema, MapSchema, type } from '@colyseus/schema'
-import { GameRoom } from '../../rooms/GameRoom'
-import { log } from '../../../service/Flogger'
+import { log, logError } from '../../../service/Flogger'
 import { ChatMessageSchema } from '../ChatMessageSchema'
 import { CreatureSchema } from '../CreatureSchema'
 import { PlayerSchema } from '../PlayerSchema'
 import { ProjectileSchema } from '../ProjectileSchema'
 import { ServerGravityController } from '../../controller/ServerGravityController'
 import { ServerPlayerController } from '../../controller/ServerPlayerController'
+import { exists } from '../../../utils/Utils'
 
-export class ServerGameState extends Schema {
+interface CreateEntityOptions {
+    x?: number
+    y?: number
+    xVel?: number
+    yVel?: number
+    sessionId: string
+}
+
+export interface CreateProjectileOptions extends CreateEntityOptions {
+    rotation: number
+    bulletVelocity: number
+}
+
+export interface CreatePlayerOptions extends CreateEntityOptions {
+    name?: string
+}
+
+export interface IServerGameState {
+
+}
+
+export class ServerGameState extends Schema implements IServerGameState {
     @type({ map: PlayerSchema })
     players = new MapSchema<PlayerSchema>()
     @type({ map: CreatureSchema })
@@ -39,18 +60,18 @@ export class ServerGameState extends Schema {
         if (this.gravityController) this.gravityController.update()
     }
 
-    createPlayer(sessionId: string, x?: number, y?: number) {
-        log('PlanetGameState', 'createPlayer', 'sessionId', sessionId)
+    createPlayer(options: CreatePlayerOptions) {
+        log('PlanetGameState', 'createPlayer', 'sessionId', options.sessionId)
 
         if (this.hostId === '') {
-            log('PlanetGameState', 'no hostId set, assigning this player as host', 'sessionId', sessionId)
+            log('PlanetGameState', 'no hostId set, assigning this player as host', 'sessionId', options.sessionId)
 
-            this.hostId = sessionId
+            this.hostId = options.sessionId
         }
 
-        this.players.set(sessionId, new PlayerSchema().assign({
-            x: x ?? 0,
-            y: y ?? 0,
+        this.players.set(options.sessionId, new PlayerSchema().assign({
+            x: options.x ?? 0,
+            y: options.y ?? 0,
             xVel: 0,
             yVel: 0
         }))
@@ -60,14 +81,22 @@ export class ServerGameState extends Schema {
 
     }
 
-    createProjectile(schema: ProjectileSchema) {
+    createProjectile(options: CreateProjectileOptions) {
+        if (!exists(options.x) || !exists(options.y)) {
+            logError(`Tried to create projectile with no x or y. options: ${options}`)
+            return
+        }
+
+        const xVel = options.bulletVelocity * Math.cos(options.rotation)
+        const yVel = options.bulletVelocity * Math.sin(options.rotation)
+
         this.projectiles.add(new ProjectileSchema().assign({
-            x: schema.x,
-            y: schema.y,
-            rotation: schema.rotation,
-            velocity: schema.velocity,
-            sessionId: schema.sessionId
+            x: options.x,
+            y: options.y,
+            rotation: options.rotation,
+            xVel, yVel,
+            velocity: options.bulletVelocity,
+            sessionId: options.sessionId
         }))
     }
-
 }

@@ -48,6 +48,8 @@ export interface WeaponStatusPayload {
     bulletX?: number
     bulletY?: number
     bulletVelocity?: number
+    shouldShoot?: boolean
+    sessionId: string
 }
 
 export interface EntityPayload {

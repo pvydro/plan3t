@@ -1,7 +1,6 @@
 import { Client } from 'colyseus'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { ChatMessagePayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
-import { PlanetRoom } from './planetroom/PlanetRoom'
 import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
 import { Emitter } from '../../utils/Emitter'
 import { Observable } from 'rxjs'
@@ -38,7 +37,7 @@ export class GameRoomListener implements IGameRoomListener {
   }
 
   startListening() {
-    Flogger.log('PlanetRoomListener', 'startListening')
+    log('PlanetRoomListener', 'startListening')
 
     this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
     this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleWeaponEvent)

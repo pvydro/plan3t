@@ -175,7 +175,6 @@ export class Weapon extends Container implements IWeapon {
             const bulletX = this._currentRotatedBarrelPoint.x
             const bulletY = this._currentRotatedBarrelPoint.y
 
-
             if (entityManager !== undefined) {
                 entityManager.createProjectile(ProjectileType.Bullet,
                     bulletX, bulletY, playerHand.rotation, this.bulletVelocity * direction)

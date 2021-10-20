@@ -7,5 +7,9 @@ export class ProjectileSchema extends EntitySchema {
     @type('number')
     rotation!: number
     @type('number')
+    xVel!: number
+    @type('number')
+    yVel!: number
+    @type('number')
     velocity!: number
 }

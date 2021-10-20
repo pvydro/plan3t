@@ -24,5 +24,7 @@ export class PlanetRoom extends GameRoom implements IPlanetRoom {
 
   handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
     Flogger.log('PlanetRoom', 'handleWeaponEvent', event.data.name)
+
+    super.handleWeaponEvent(event)
   }
 }

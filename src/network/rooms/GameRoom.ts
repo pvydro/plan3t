@@ -36,7 +36,7 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     onJoin(client: Client, options: any) {
         log('GameRoom', 'id', client.sessionId, 'Player joined', 'options', options)
 
-        this.state.createPlayer(client.sessionId)
+        this.state.createPlayer({ sessionId: client.sessionId })
     }
   
     onLeave(client: Client) {
@@ -59,6 +59,20 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     }
 
     handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
+        const { shouldShoot } = event.data
 
+        if (shouldShoot) {
+            this.createProjectile(event.data)
+        }
+    }
+
+    protected createProjectile(weaponPayload: WeaponStatusPayload) {
+        this.state.createProjectile({
+            x: weaponPayload.bulletX,
+            y: weaponPayload.bulletY,
+            rotation: weaponPayload.rotation,
+            sessionId: weaponPayload.sessionId,
+            bulletVelocity: weaponPayload.bulletVelocity ?? 0
+        })
     }
 }
