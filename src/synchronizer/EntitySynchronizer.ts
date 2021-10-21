@@ -70,6 +70,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         clientPlayer.walkingDirection = playerState.walkingDirection as Direction
         clientPlayer.bodyState = playerState.bodyState as PlayerBodyState
         clientPlayer.legsState = playerState.legsState as PlayerLegsState
+        clientPlayer.x = playerState.x
         
         // if (clientPlayer.holster.currentWeapon.name
         // && clientPlayer.holster.currentWeapon.name !== playerState.weaponStatus.name) {

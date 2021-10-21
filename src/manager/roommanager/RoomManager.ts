@@ -1,32 +1,22 @@
 import { Room } from 'colyseus.js'
 import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
-import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
 import { EntitySchema } from '../../network/schema/EntitySchema'
 import { ClientManager, IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
 import { importantLog, log } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
-import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
-import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
-import { Dimension } from '../../engine/math/Dimension'
-import { ClientMessage, RoomMessage } from '../../network/rooms/ServerMessages'
+import { ClientMessage } from '../../network/rooms/ServerMessages'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 import { RoomMessenger } from './RoomMessenger'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { Spherical } from '../../gamemap/spherical/Spherical'
-import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
-import { Environment } from '../../main/Environment'
-import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
-import { ChatSender } from '../../service/chatservice/ChatSenderConstants'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
-    requestWaveRunnerGame(): Promise<WaveRunnerSchema>
     currentRoom: Room
 }
 
@@ -37,8 +27,8 @@ export interface RoomManagerOptions {
 
 export class RoomManager implements IRoomManager {
     private static Instance: RoomManager
+    private static _clientSessionId = 'local'
     static _room: Room<PlanetGameState>
-    static _clientSessionId = 'local'
     
     roomStateManager: IRoomStateManager
     gameMapManager: IGameMapManager
@@ -58,7 +48,7 @@ export class RoomManager implements IRoomManager {
     }
 
     private constructor(options: RoomManagerOptions) {
-        this.roomStateManager = new RoomStateManager()
+        this.roomStateManager = new RoomStateManager(options)
         this.clientManager = ClientManager.getInstance()
         this.gameMapManager = options.gameMapManager
         this.entityManager = this.clientManager.entityManager
@@ -78,64 +68,28 @@ export class RoomManager implements IRoomManager {
         return new Promise((resolve) => {
             // First state change
             this.currentRoom.onStateChange.once((state: PlanetGameState) => {
-                log('RoomManager', 'firstState received')
-
-                this.roomStateManager.stateChanged(state)
-
-                if (RoomManager.clientSessionId === state.hostId) {
-                    importantLog('Host sessionId found, setting in Environment', 'sessionId', RoomManager.clientSessionId)
-
-                    Environment.IsHost = true
-                }
-                
-                if (state.planetHasBeenSet) {
-                    if (state.planetSpherical !== undefined) {
-                        this.parseRoomSpherical(state.planetSpherical).then(() => {
-                            resolve(this.currentRoom)
-                        })
-                    }
-                } else {
-                    this.createMapAndSendToRoom().then(() => {
-                        this.roomState.planetHasBeenSet = true
-
-                        resolve(this.currentRoom)
-                    })
-                }
+                this.roomStateManager.setInitialState(state).then(() => {
+                    resolve(this.currentRoom)
+                })
             })
 
-            this.currentRoom.onStateChange((state: PlanetGameState) => {
-                importantLog('onStateChange')
-                this.roomStateManager.stateChanged(state)
-            })
-
-            this.currentRoom.onMessage(ClientMessage.UpdateChat, (message) => {
-                if (ChatService._serverMessages !== message) {
-                    ChatService._serverMessages = message
-                    ChatService.fetchChatHistoryFromRoom()
-                }
-            })
+            this.startListening()
         })
     }
 
-    requestWaveRunnerGame(): Promise<WaveRunnerSchema> {
-        log('RoomManager', 'requestWaveRunnerGame')
+    startListening() {
+        log('RoomManager', 'startListening')
 
-        return new Promise((resolve) => {
-            // this.currentRoom.onMessage
-            if (this.currentRoom.state.waveGameHasBeenStarted
-            && this.currentRoom.state.waveRunner) {
-                resolve(this.currentRoom.state.waveRunner)
-            } else {
-                RoomMessenger.sendAndExpect(RoomMessage.NewWaveRunner, undefined, ClientMessage.WaveRunnerStarted).then((message: WaveRunnerSchema) => {
-                    log('RoomManager', 'received wave runner game')
+        this.currentRoom.onStateChange((state: PlanetGameState) => {
+            importantLog('onStateChange')
+            this.roomStateManager.stateChanged(state)
+        })
 
-                    ChatService.sendMessage({ sender: ChatSender.Server, text: 'Wave runner started' })
-                    
-                    resolve(message)
-                })
+        this.currentRoom.onMessage(ClientMessage.UpdateChat, (message) => {
+            if (ChatService._serverMessages !== message) {
+                ChatService._serverMessages = message
+                ChatService.fetchChatHistoryFromRoom()
             }
-
-            // resolve(true)
         })
     }
 
@@ -157,55 +111,44 @@ export class RoomManager implements IRoomManager {
         }
     }
 
-    async parseRoomSpherical(schema: PlanetSphericalSchema) {
-        log('RoomManager', 'parseRoomSpherical', 'schema', {
-            'biome': schema.biome,
-            'dimension': schema.dimension
-        })
+    // requestWaveRunnerGame(): Promise<WaveRunnerSchema> {
+    //     log('RoomManager', 'requestWaveRunnerGame')
 
-        const parsedPoints = []
+    //     return new Promise((resolve) => {
+    //         if (this.currentRoom.state.waveGameHasBeenStarted
+    //         && this.currentRoom.state.waveRunner) {
+    //             resolve(this.currentRoom.state.waveRunner)
+    //         } else {
+    //             RoomMessenger.sendAndExpect(RoomMessage.NewWaveRunner, undefined, ClientMessage.WaveRunnerStarted).then((message: WaveRunnerSchema) => {
+    //                 log('RoomManager', 'received wave runner game')
 
-        schema.points.forEach((point) => {
-            parsedPoints.push(new SphericalPoint({
-                x: point.x, y: point.y,
-                tileSolidity: point.tileSolidity,
-                tileValue: {
-                    r: point.tileValue.r,
-                    g: point.tileValue.g,
-                    b: point.tileValue.b,
-                    a: point.tileValue.a
-                }
-            }))
-        })
+    //                 ChatService.sendMessage({ sender: ChatSender.Server, text: 'Wave runner started' })
+                    
+    //                 resolve(message)
+    //             })
+    //         }
+    //     })
+    // }
 
-        const sphericalData = new SphericalData({
-            points: parsedPoints,
-            biome: (schema.biome as SphericalBiome),
-            dimension: new Dimension(schema.dimension.width, schema.dimension.height)
-        })
-
-        await this.gameMapManager.initialize(sphericalData)
-    }
-
-    async createMapAndSendToRoom(): Promise<void> {
-        const temporarilyLoadBuilding = true
+    // async createMapAndSendToRoom(): Promise<void> {
+    //     const temporarilyLoadBuilding = true
         
-        if (temporarilyLoadBuilding) {
-            await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
-        } else {
-            await this.gameMapManager.initializeRandomSpherical()
+    //     if (temporarilyLoadBuilding) {
+    //         await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
+    //     } else {
+    //         await this.gameMapManager.initializeRandomSpherical()
 
-            const currentSpherical = this.gameMapManager.gameMap.currentMap as Spherical
+    //         const currentSpherical = this.gameMapManager.gameMap.currentMap as Spherical
     
-            if (currentSpherical) {
-                const currentData = currentSpherical.data
+    //         if (currentSpherical) {
+    //             const currentData = currentSpherical.data
     
-                if (currentData) {
-                    this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
-                }
-            }
-        }
-    }
+    //             if (currentData) {
+    //                 this.currentRoom.send(RoomMessage.NewPlanet, { planet: currentData.toPayloadFormat() })
+    //             }
+    //         }
+    //     }
+    // }
 
     addPlayer(entity?: EntitySchema, sessionId?: string) {
         importantLog('RoomManager', 'addPlayer', 'sessionId', sessionId)
