@@ -8,13 +8,14 @@ import { exists } from '../utils/Utils'
 import { PlanetGameState } from '../network/schema/planetgamestate/PlanetGameState'
 import { LocalEntity } from '../manager/entitymanager/EntityManager'
 import { PlayerSchema } from '../network/schema/PlayerSchema'
+import { ServerGameState } from '../network/schema/serverstate/ServerGameState'
 
 export interface IEntitySynchronizerAssertionService extends IUpdatable {
     playerAssertionService: IPlayerSynchronizerAssertionService
     entitySynchronizer: EntitySynchronizer
     synchronizables: Map<string, EntitySchema>
     clientPlayer: IClientPlayer
-    roomState: PlanetGameState
+    roomState: ServerGameState
     clientEntities: Map<string, LocalEntity>
     applyChangesToSynchronizable(sessionId: string, entity: EntitySchema): void
 }

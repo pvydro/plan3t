@@ -1,5 +1,4 @@
 import { Room } from 'colyseus.js'
-import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
 import { EntitySchema } from '../../network/schema/EntitySchema'
 import { ClientManager, IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
@@ -14,6 +13,8 @@ import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
+import { IServerGameState, ServerGameState } from '../../network/schema/serverstate/ServerGameState'
+import { WaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -28,7 +29,7 @@ export interface RoomManagerOptions {
 export class RoomManager implements IRoomManager {
     private static Instance: RoomManager
     private static _clientSessionId = 'local'
-    static _room: Room<PlanetGameState>
+    static _room: Room<any>
     
     roomStateManager: IRoomStateManager
     gameMapManager: IGameMapManager
@@ -58,7 +59,7 @@ export class RoomManager implements IRoomManager {
         log('RoomManager', 'initializeRoom')
         const client = this.clientManager.client
 
-        this.currentRoom = await client.joinOrCreate<PlanetGameState>('GameRoom')
+        this.currentRoom = await client.joinOrCreate<WaveRunnerGameState>('GameRoom')
 
         RoomManager.clientSessionId = this.currentRoom.sessionId
         RoomMessenger._isOnline = true
@@ -67,7 +68,7 @@ export class RoomManager implements IRoomManager {
 
         return new Promise((resolve) => {
             // First state change
-            this.currentRoom.onStateChange.once((state: PlanetGameState) => {
+            this.currentRoom.onStateChange.once((state: ServerGameState) => {
                 this.roomStateManager.setInitialState(state).then(() => {
                     resolve(this.currentRoom)
                 })
@@ -80,7 +81,7 @@ export class RoomManager implements IRoomManager {
     startListening() {
         log('RoomManager', 'startListening')
 
-        this.currentRoom.onStateChange((state: PlanetGameState) => {
+        this.currentRoom.onStateChange((state: ServerGameState) => {
             importantLog('onStateChange')
             this.roomStateManager.stateChanged(state)
         })
@@ -115,7 +116,7 @@ export class RoomManager implements IRoomManager {
     //     log('RoomManager', 'requestWaveRunnerGame')
 
     //     return new Promise((resolve) => {
-    //         if (this.currentRoom.state.waveGameHasBeenStarted
+    //         if (this.currentRoom.state.waveGameHasStarted
     //         && this.currentRoom.state.waveRunner) {
     //             resolve(this.currentRoom.state.waveRunner)
     //         } else {

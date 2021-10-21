@@ -6,7 +6,6 @@ import { Flogger, log } from '../../service/Flogger'
 import { GravityManager, IGravityManager } from '../GravityManager'
 import { Game } from '../../main/Game'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
-import { PlanetGameState } from '../../network/schema/planetgamestate/PlanetGameState'
 import { EntityPlayerCreator, IEntityPlayerCreator } from './EntityPlayerCreator'
 import { EntitySynchronizer, IEntitySynchronizer } from '../../synchronizer/EntitySynchronizer'
 import { EntityProjectileCreator, IEntityProjectileCreator } from './EntityProjectileCreator'
@@ -20,6 +19,7 @@ import { CreatureType } from '../../creature/CreatureType'
 import { CameraLayer } from '../../camera/CameraStage'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { IVector2 } from '../../engine/math/Vector2'
+import { ServerGameState } from '../../network/schema/serverstate/ServerGameState'
 
 export interface EntityCreatorOptions {
     entity?: EntitySchema
@@ -34,7 +34,7 @@ export interface LocalEntity {
 export interface IEntityManager extends IUpdatable {
     clientEntities: Map<string, LocalEntity>
     camera: Camera
-    roomState: PlanetGameState
+    roomState: ServerGameState
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
     createClientPlayer(entity?: EntitySchema, sessionId?: string): ClientPlayer

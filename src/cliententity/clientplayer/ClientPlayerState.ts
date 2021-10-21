@@ -63,7 +63,7 @@ export class ClientPlayerState extends GravityOrganism {
         this.position.x = value.x
         this.position.y = value.y
 
-        this.messenger.send(RoomMessage.PlayerForceSetPosition, { includePosition: true })
+        this.messenger.send(RoomMessage.PlayerUpdate, { includePosition: true })
     }
 
     set onGround(value: boolean) {

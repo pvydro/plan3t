@@ -61,10 +61,10 @@ export class ServerGameState extends Schema implements IServerGameState {
     }
 
     createPlayer(options: CreatePlayerOptions) {
-        log('PlanetGameState', 'createPlayer', 'sessionId', options.sessionId)
+        log('ServerGameState', 'createPlayer', 'sessionId', options.sessionId)
 
         if (this.hostId === '') {
-            log('PlanetGameState', 'no hostId set, assigning this player as host', 'sessionId', options.sessionId)
+            log('ServerGameState', 'no hostId set, assigning this player as host', 'sessionId', options.sessionId)
 
             this.hostId = options.sessionId
         }

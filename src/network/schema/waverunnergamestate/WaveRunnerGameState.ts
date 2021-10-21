@@ -1,5 +1,5 @@
 import { type } from '@colyseus/schema'
-import { Flogger } from '../../../service/Flogger'
+import { log } from '../../../service/Flogger'
 import { ChatMessageSchema } from '../ChatMessageSchema'
 import { WaveRunnerSchema } from '../waverunnergamestate/WaveRunnerSchema'
 import { IServerGameState, ServerGameState } from '../serverstate/ServerGameState'
@@ -11,9 +11,8 @@ export interface IWaveRunnerGameState extends IServerGameState {
 export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerGameState {
   @type(WaveRunnerSchema)
   waveRunner?: WaveRunnerSchema
-
   @type('boolean')
-  waveGameHasBeenStarted: boolean = false
+  waveGameHasStarted: boolean = false
 
   initialize() {
     super.initialize()
@@ -22,7 +21,7 @@ export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerG
   }
 
   beginWaveRunnerGame() {
-    Flogger.log('PlanetGameState', 'beginWaveRunnerGame')
+    log('WaveRunnerGameState', 'beginWaveRunnerGame')
 
     this.waveRunner = new WaveRunnerSchema()
     this.waveRunner.initialize()

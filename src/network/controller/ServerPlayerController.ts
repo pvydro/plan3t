@@ -1,5 +1,4 @@
 import { PlayerSchema } from '../schema/PlayerSchema'
-import { PlanetGameState } from '../schema/planetgamestate/PlanetGameState'
 import { PlayerBodyState, Direction, PlayerLegsState } from '../utils/Enum'
 import { PlanetRoom } from '../rooms/planetroom/PlanetRoom'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
@@ -9,9 +8,9 @@ export interface IServerPlayerController {
 }
 
 export class ServerPlayerController implements IServerPlayerController {
-    state: PlanetGameState | ServerGameState
+    state: ServerGameState
 
-    constructor(state: PlanetGameState | ServerGameState) {
+    constructor(state: ServerGameState) {
         this.state = state
     }
 
@@ -71,9 +70,5 @@ export class ServerPlayerController implements IServerPlayerController {
 
     get players() {
         return this.state.players
-    }
-
-    get planetSpherical() {
-        return (this.state as PlanetGameState).planetSpherical || undefined
     }
 }
