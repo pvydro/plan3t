@@ -1,7 +1,7 @@
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunner/WaveRunnerSchema'
+import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunnergamestate/WaveRunnerSchema'
 import { importantLog, log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { IWave, Wave } from '../../waverunner/Wave'
