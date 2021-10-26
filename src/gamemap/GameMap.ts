@@ -25,7 +25,7 @@ export interface IGameMap extends IDemolishable, IUpdatable {
 export class GameMap extends Container implements IGameMap {
     private static Instance?: GameMap
     currentMap?: GameMapContainer
-    // sky: GameMapSky
+    currentMapBuildingType?: MapBuildingType
     
     static getInstance() {
         if (GameMap.Instance === undefined) {
@@ -56,8 +56,9 @@ export class GameMap extends Container implements IGameMap {
     }
 
     async initializeBuilding(type: MapBuildingType) {
+        this.currentMapBuildingType = type
+        
         const building = MapBuildingHelper.getMapBuildingForType(type)
-
         
         await this.applyGameMapContainer(building)
     }

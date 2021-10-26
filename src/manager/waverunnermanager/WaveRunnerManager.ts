@@ -1,7 +1,6 @@
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { IUpdatable } from '../../interface/IUpdatable'
-import { WaveRunnerSchema, WaveSchema } from '../../network/schema/waverunnergamestate/WaveRunnerSchema'
 import { importantLog, log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { IWave, Wave } from '../../waverunner/Wave'
@@ -47,8 +46,8 @@ export class WaveRunnerManager implements IWaveRunnerManager {
 
         this.levelManager = new WaveLevelManager()
         this.currentWaveRunnerGame = new WaveRunnerGame()
-        this.currentWaveRunnerGame.beginWaveRunner()
-        this.registerCurrentWave()
+        // this.currentWaveRunnerGame.beginWaveRunner()
+        // this.registerCurrentWave()
 
         // setTimeout(() => {
         //     // this.roomManager.requestWaveRunnerGame().then((state: WaveRunnerSchema) => {
@@ -75,25 +74,25 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     async registerCurrentWave() {
         log('WaveRunnerManager', 'registerNextWave', 'prevWave', this.currentWaveIndex)
 
-        await this.levelManager.transitionToNewLevel()
+        // await this.levelManager.transitionToNewLevel()
 
-        if (this.currentWaveIndex === 0) {
-            await SpawnPointManager.applySpawnPointsToPlayers()
-        }
+        // if (this.currentWaveIndex === 0) {
+        //     await SpawnPointManager.applySpawnPointsToPlayers()
+        // }
 
-        this.currentWaveIndex++
-        this.currentWaveRunnerGame.loadWave(new Wave({
-            waveIndex: this.currentWaveIndex,
-            totalTime: 3000,
-            elapsedTime: 0,
-            onSpawn: () => {
-                this.currentWaveRunnerGame.spawner.spawn()
-            },
-            onComplete: () => {
-                this.registerCurrentWave()
-            }
-        }))
-        this.hud.loadWave(this.currentWave)
+        // this.currentWaveIndex++
+        // this.currentWaveRunnerGame.loadWave(new Wave({
+        //     waveIndex: this.currentWaveIndex,
+        //     totalTime: 3000,
+        //     elapsedTime: 0,
+        //     onSpawn: () => {
+        //         this.currentWaveRunnerGame.spawner.spawn()
+        //     },
+        //     onComplete: () => {
+        //         this.registerCurrentWave()
+        //     }
+        // }))
+        // this.hud.loadWave(this.currentWave)
 
         return this.currentWave
     }

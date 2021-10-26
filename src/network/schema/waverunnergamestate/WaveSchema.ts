@@ -4,7 +4,7 @@ import { CreatureSchema } from '../CreatureSchema'
 
 export class WaveSchema extends Schema {
     @type('string')
-    currentMap!: MapBuildingType
+    currentMap: MapBuildingType = MapBuildingType.Castle
     @type('number')
     waveIndex: number = 3
     @type('number')

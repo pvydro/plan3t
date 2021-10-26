@@ -24,3 +24,10 @@ export enum CreatureType {
     Sorm = 'Sorm',
     Nenj = 'Nenj'
 }
+
+export enum MapBuildingType {
+    Dojo = 'dojo',
+    Castle = 'castle',
+    // ModernHome = 'modernhome',
+    // Warehouse = 'warehouse'
+}

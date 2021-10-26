@@ -5,13 +5,13 @@ import { WaveRunnerSchema } from '../waverunnergamestate/WaveRunnerSchema'
 import { IServerGameState, ServerGameState } from '../serverstate/ServerGameState'
 
 export interface IWaveRunnerGameState extends IServerGameState {
-
+  waveRunner: WaveRunnerSchema
 }
 
 export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerGameState {
   type: string = 'waverunner'
   @type(WaveRunnerSchema)
-  waveRunner?: WaveRunnerSchema
+  waveRunner: WaveRunnerSchema = new WaveRunnerSchema()
   @type('boolean')
   waveGameHasStarted: boolean = false
 
@@ -24,8 +24,6 @@ export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerG
   beginWaveRunnerGame() {
     log('WaveRunnerGameState', 'beginWaveRunnerGame')
 
-    this.waveRunner = new WaveRunnerSchema()
-    this.waveRunner.initialize()
   }
 
   update() {

@@ -1,7 +1,7 @@
 import { GameLoop } from '../gameloop/GameLoop'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Events } from '../model/events/Events'
-import { WaveSchema } from '../network/schema/waverunnergamestate/WaveRunnerSchema'
+import { WaveSchema } from '../network/schema/waverunnergamestate/WaveSchema'
 import { importantLog, log } from '../service/Flogger'
 import { Emitter } from '../utils/Emitter'
 import { asyncTimeout, functionExists } from '../utils/Utils'

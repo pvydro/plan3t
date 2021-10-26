@@ -18,7 +18,7 @@ export interface IGameMapManager extends IUpdatable {
 export class GameMapManager implements IGameMapManager {
     private static Instance: IGameMapManager
     _initialized: boolean = false
-    _gameMap?: GameMap
+    _gameMap: GameMap
     clientManager: IClientManager
 
     static getInstance() {
@@ -31,6 +31,7 @@ export class GameMapManager implements IGameMapManager {
 
     private constructor() {
         this.clientManager = ClientManager.getInstance()
+        this._gameMap = GameMap.getInstance()
     }
 
     async initialize(sphericalData?: SphericalData) {
@@ -41,7 +42,6 @@ export class GameMapManager implements IGameMapManager {
         }
 
         this._initialized = true
-        this._gameMap = GameMap.getInstance()
         this.stage.addChildAtLayer(this._gameMap, CameraLayer.GameMap)
         
         if (sphericalData !== undefined) {

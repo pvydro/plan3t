@@ -1,16 +1,21 @@
 import { Dimension } from '../../engine/math/Dimension'
-import { MapBuildingType } from '../../gamemap/mapbuilding/MapBuilding'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Environment } from '../../main/Environment'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
 import { IServerGameState } from '../../network/schema/serverstate/ServerGameState'
+import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 import { WaveRunnerSchema } from '../../network/schema/waverunnergamestate/WaveRunnerSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
 import { WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
 import { RoomManager, RoomManagerOptions } from './RoomManager'
+
+enum ServerStateType {
+    WaveRunner = 'waverunner',
+    Planet = 'planet'
+}
 
 export interface IRoomStateManager {
     currentState?: IServerGameState
@@ -37,13 +42,15 @@ export class RoomStateManager implements IRoomStateManager {
 
             Environment.IsHost = true
         }
-        // if (state instanceof PlanetGameState && state.planetHasBeenSet) {
-        
-        //     if (state.planetSpherical !== undefined) {
-        //         await this.parseRoomSpherical(state.planetSpherical)
-        //     }
-        // }
-        // await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
+    }
+
+    handleWaveRunnerState(newState: IWaveRunnerGameState) {
+        if (newState.waveRunner && newState.waveRunner.currentWave) {
+            const wave = newState.waveRunner.currentWave
+            if (wave.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
+                this.gameMapManager.initializeBuilding(wave.currentMap)
+            }
+        }
     }
 
     stateChanged(newState: IServerGameState) {
@@ -56,6 +63,10 @@ export class RoomStateManager implements IRoomStateManager {
         if (ChatService._serverMessages !== messages) {
             ChatService._serverMessages = messages
             ChatService.fetchChatHistoryFromRoom()
+        }
+
+        if (newState.type === ServerStateType.WaveRunner) {
+            this.handleWaveRunnerState(newState as IWaveRunnerGameState)
         }
     }
 
