@@ -9,6 +9,7 @@ export interface IWaveRunnerGameState extends IServerGameState {
 }
 
 export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerGameState {
+  type: string = 'waverunner'
   @type(WaveRunnerSchema)
   waveRunner?: WaveRunnerSchema
   @type('boolean')

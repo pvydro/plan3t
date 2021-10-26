@@ -1,5 +1,6 @@
 import { Client } from 'colyseus'
 import { log } from '../../service/Flogger'
+import { GameRoom } from '../rooms/GameRoom'
 import { PlanetRoom } from '../rooms/planetroom/PlanetRoom'
 import { ClientMessage } from '../rooms/ServerMessages'
 
@@ -8,10 +9,10 @@ export interface IWaveRunnerWorker {
 }
 
 export class WaveRunnerWorker implements IWaveRunnerWorker {
-    room: PlanetRoom
+    room: GameRoom
     currentWave: number = 0
 
-    constructor(room: PlanetRoom) {
+    constructor(room: GameRoom) {
         this.room = room
     }
 

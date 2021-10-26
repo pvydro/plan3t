@@ -50,9 +50,6 @@ export class GameplayState extends GameState implements IGameplayState {
         
         this.roomManager.initializeRoom().then(async (room: Room) => {
             log('GameplayState', 'Room initialized')
-            
-            const mapWidth = this.gameMapManager.gameMap.width// * this.camera.zoom
-            const cameraWidth = this.camera.viewport.width * this.camera.zoom
 
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             await this.inGameHUD.initializeHUD()

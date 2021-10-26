@@ -8,9 +8,9 @@ export interface IPlanetGameState extends IServerGameState {
 }
 
 export class PlanetGameState extends ServerGameState implements IPlanetGameState {
+  type: string = 'planet'
   @type(PlanetSphericalSchema)
   planetSpherical?: PlanetSphericalSchema
-
   @type('boolean')
   planetHasBeenSet: boolean = false
 

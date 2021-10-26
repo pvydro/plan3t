@@ -17,7 +17,7 @@ import basicAuth from 'express-basic-auth'
 import socialRoutes from '@colyseus/social/express'
 import { monitor } from '@colyseus/monitor'
 
-import { PlanetRoom } from '../network/rooms/planetroom/PlanetRoom'
+import { WaveRunnerRoom } from '../network/rooms/waverunnerroom/WaveRunnerRoom'
 
 export const port = Number(process.env.PORT || 8080)
 export const endpoint = 'localhost'
@@ -30,7 +30,7 @@ const gameServer = new Server({
   express: app
 })
 
-gameServer.define('GameRoom', PlanetRoom)
+gameServer.define('GameRoom', WaveRunnerRoom)
 
 if (process.env.NODE_ENV !== 'production') {
     const webpackCompiler = webpack(webpackConfig({}))

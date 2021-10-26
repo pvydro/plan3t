@@ -4,7 +4,7 @@ import { SphericalBiome, SphericalData } from '../../gamemap/spherical/Spherical
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Environment } from '../../main/Environment'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
-import { ServerGameState } from '../../network/schema/serverstate/ServerGameState'
+import { IServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { WaveRunnerSchema } from '../../network/schema/waverunnergamestate/WaveRunnerSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, VerboseLogging } from '../../service/Flogger'
@@ -13,21 +13,21 @@ import { WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
 import { RoomManager, RoomManagerOptions } from './RoomManager'
 
 export interface IRoomStateManager {
-    currentState?: ServerGameState
-    stateChanged(newState: ServerGameState): void
-    setInitialState(state: ServerGameState): Promise<void>
+    currentState?: IServerGameState
+    stateChanged(newState: IServerGameState): void
+    setInitialState(state: IServerGameState): Promise<void>
     configureLocalWaveRunner(schema: WaveRunnerSchema): void
 }
 
 export class RoomStateManager implements IRoomStateManager {
-    currentState?: ServerGameState
+    currentState?: IServerGameState
     gameMapManager: IGameMapManager
 
     constructor(options: RoomManagerOptions) {
         this.gameMapManager = options.gameMapManager
     }
 
-    async setInitialState(state: ServerGameState) {
+    async setInitialState(state: IServerGameState) {
         log('RoomStateManager', 'setInitialState')
 
         this.stateChanged(state)
@@ -43,10 +43,10 @@ export class RoomStateManager implements IRoomStateManager {
         //         await this.parseRoomSpherical(state.planetSpherical)
         //     }
         // }
-        await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
+        // await this.gameMapManager.initializeBuilding(MapBuildingType.Dojo)
     }
 
-    stateChanged(newState: ServerGameState) {
+    stateChanged(newState: IServerGameState) {
         if (VerboseLogging) log('RoomStateManager', 'newState', newState)
 
         this.currentState = newState

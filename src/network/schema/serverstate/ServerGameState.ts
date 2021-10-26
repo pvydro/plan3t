@@ -26,10 +26,15 @@ export interface CreatePlayerOptions extends CreateEntityOptions {
 }
 
 export interface IServerGameState {
-
+    players: MapSchema<PlayerSchema>
+    creatures: MapSchema<CreatureSchema>
+    projectiles: SetSchema<ProjectileSchema>
+    messages: SetSchema<ChatMessageSchema>
+    hostId: string
+    type: string
 }
 
-export class ServerGameState extends Schema implements IServerGameState {
+export abstract class ServerGameState extends Schema implements IServerGameState {
     @type({ map: PlayerSchema })
     players = new MapSchema<PlayerSchema>()
     @type({ map: CreatureSchema })
@@ -40,6 +45,8 @@ export class ServerGameState extends Schema implements IServerGameState {
     messages = new SetSchema<ChatMessageSchema>()
     @type('string')
     hostId: string = ''
+    @type('string')
+    type: string = 'server'
 
     gravityController!: ServerGravityController
     playerController!: ServerPlayerController
