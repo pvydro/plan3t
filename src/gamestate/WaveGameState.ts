@@ -29,8 +29,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
         await super.initialize()
         
         asyncTimeout(500).then(() => {
-            this.waveManager.initialize()
-            
             // this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
             //     sound.play()
             // })
@@ -50,7 +48,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
 
     update() {
         super.update()
-        this.waveManager.update()
     }
 
     gameOver() {

@@ -1,15 +1,11 @@
-import { Key } from 'ts-keycode-enum'
-import { InputEvents, InputProcessor } from '../../input/InputProcessor'
-import { IUpdatable } from '../../interface/IUpdatable'
-import { IWaveSchema } from '../../network/schema/waverunnergamestate/WaveSchema'
-import { importantLog, log } from '../../service/Flogger'
+import { WaveSchema } from '../../network/schema/waverunnergamestate/WaveSchema'
+import { log } from '../../service/Flogger'
 import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { IWave, Wave } from '../../waverunner/Wave'
 import { IRoomManager, RoomManager } from '../roommanager/RoomManager'
-import { SpawnPointManager } from '../spawnpointmanager/SpawnPointManager'
 
 export interface IWaveRunnerManager {
-    registerWave(schema: IWaveSchema): void
+    registerWave(schema: WaveSchema): void
     currentWaveIndex: number
 }
 
@@ -33,7 +29,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.roomManager = RoomManager.getInstance()
     }
 
-    registerWave(schema: IWaveSchema) {
+    registerWave(schema: WaveSchema) {
         log('WaveRunnerManager', 'registerWave', 'schema', schema)
 
         this.currentWaveIndex = schema.waveIndex

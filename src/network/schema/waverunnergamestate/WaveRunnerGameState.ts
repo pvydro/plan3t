@@ -28,6 +28,5 @@ export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerG
 
   update() {
     super.update()
-    if (this.waveRunner) this.waveRunner.update()
   }
 }
