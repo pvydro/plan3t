@@ -8,7 +8,7 @@ import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/W
 import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
-import { IWaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
+import { IWaveRunnerManager, WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
 import { RoomManager, RoomManagerOptions } from './RoomManager'
 
 enum ServerStateType {
@@ -29,6 +29,7 @@ export class RoomStateManager implements IRoomStateManager {
 
     constructor(options: RoomManagerOptions) {
         this.gameMapManager = options.gameMapManager
+        this.waveRunnerManager = WaveRunnerManager.getInstance()
     }
 
     async setInitialState(state: IServerGameState) {
@@ -45,15 +46,18 @@ export class RoomStateManager implements IRoomStateManager {
 
     handleWaveRunnerState(newState: IWaveRunnerGameState) {
         if (newState.waveRunner && newState.waveRunner.currentWave) {
-            const wave = newState.waveRunner.currentWave
+            const wave = newState.waveRunner?.currentWave ?? undefined
 
-            if (wave.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
-                this.gameMapManager.initializeBuilding(wave.currentMap)
+            if (wave) {
+                if (wave.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
+                    this.gameMapManager.initializeBuilding(wave.currentMap)
+                }
+    
+                if (wave.waveIndex !== this.waveRunnerManager.currentWaveIndex) {
+                    this.waveRunnerManager.registerWave(wave)
+                }
             }
 
-            if (wave.waveIndex !== this.waveRunnerManager.currentWaveIndex) {
-                
-            }
         }
     }
 

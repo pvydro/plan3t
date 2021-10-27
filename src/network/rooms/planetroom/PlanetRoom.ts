@@ -9,11 +9,7 @@ export interface IPlanetRoom extends IGameRoom {
 }
 
 export class PlanetRoom extends GameRoom implements IPlanetRoom {
-  // waveRunnerWorker!: IWaveRunnerWorker
-
   initialize() {
-    // this.waveRunnerWorker = new WaveRunnerWorker(this)
-    
     this.setState(new PlanetGameState())
 
     super.initialize()
