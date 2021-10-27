@@ -5,11 +5,10 @@ import { Environment } from '../../main/Environment'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
 import { IServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
-import { WaveRunnerSchema } from '../../network/schema/waverunnergamestate/WaveRunnerSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { IGameMapManager } from '../GameMapManager'
-import { WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
+import { IWaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
 import { RoomManager, RoomManagerOptions } from './RoomManager'
 
 enum ServerStateType {
@@ -21,12 +20,12 @@ export interface IRoomStateManager {
     currentState?: IServerGameState
     stateChanged(newState: IServerGameState): void
     setInitialState(state: IServerGameState): Promise<void>
-    configureLocalWaveRunner(schema: WaveRunnerSchema): void
 }
 
 export class RoomStateManager implements IRoomStateManager {
     currentState?: IServerGameState
     gameMapManager: IGameMapManager
+    waveRunnerManager: IWaveRunnerManager
 
     constructor(options: RoomManagerOptions) {
         this.gameMapManager = options.gameMapManager
@@ -47,8 +46,13 @@ export class RoomStateManager implements IRoomStateManager {
     handleWaveRunnerState(newState: IWaveRunnerGameState) {
         if (newState.waveRunner && newState.waveRunner.currentWave) {
             const wave = newState.waveRunner.currentWave
+
             if (wave.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
                 this.gameMapManager.initializeBuilding(wave.currentMap)
+            }
+
+            if (wave.waveIndex !== this.waveRunnerManager.currentWaveIndex) {
+                
             }
         }
     }
@@ -68,12 +72,6 @@ export class RoomStateManager implements IRoomStateManager {
         if (newState.type === ServerStateType.WaveRunner) {
             this.handleWaveRunnerState(newState as IWaveRunnerGameState)
         }
-    }
-
-    configureLocalWaveRunner(schema: WaveRunnerSchema) {
-        log('RoomStateManager', 'configureLocalWaveRunner', 'schema', schema)
-
-        const waveRunner = WaveRunnerManager.getInstance()
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {
