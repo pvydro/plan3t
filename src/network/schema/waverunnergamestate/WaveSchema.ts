@@ -1,4 +1,5 @@
 import { Schema, ArraySchema, type } from '@colyseus/schema'
+import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
 import { MapBuildingType } from '../../utils/Enum'
 import { CreatureSchema } from '../CreatureSchema'
 
@@ -15,4 +16,8 @@ export class WaveSchema extends Schema {
     totalEnemies: number = 0
     @type([ CreatureSchema ])
     currentEnemies!: ArraySchema<CreatureSchema>
+
+    update() {
+        this.elapsedTime += PlanetRoom.Delta
+    }
 }

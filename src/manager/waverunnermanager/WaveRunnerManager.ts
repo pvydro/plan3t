@@ -7,6 +7,7 @@ import { IRoomManager, RoomManager } from '../roommanager/RoomManager'
 export interface IWaveRunnerManager {
     registerWave(schema: WaveSchema): void
     currentWaveIndex: number
+    currentWave: IWave
 }
 
 export class WaveRunnerManager implements IWaveRunnerManager {

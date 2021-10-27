@@ -11,6 +11,7 @@ export interface IWave extends IUpdatable {
     currentTime: number
     currentTimePercentage: number
     waveIndex: number
+    elapsedTime: number
     startSpawnIntervals(): void
 }
 
