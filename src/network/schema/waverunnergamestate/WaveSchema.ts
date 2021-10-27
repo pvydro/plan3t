@@ -7,17 +7,23 @@ export class WaveSchema extends Schema {
     @type('string')
     currentMap: MapBuildingType = MapBuildingType.Castle
     @type('number')
-    waveIndex: number = 3
+    waveIndex: number = 0
     @type('number')
-    totalTime!: number
+    totalTime: number = 3000
     @type('number')
     elapsedTime: number = 0
     @type('number')
     totalEnemies: number = 0
     @type([ CreatureSchema ])
     currentEnemies!: ArraySchema<CreatureSchema>
+    @type('boolean')
+    complete: boolean = false
 
     update() {
         this.elapsedTime += PlanetRoom.Delta
+
+        if (this.elapsedTime >= this.totalTime) {
+            this.complete = true
+        }
     }
 }

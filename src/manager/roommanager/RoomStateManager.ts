@@ -57,6 +57,7 @@ export class RoomStateManager implements IRoomStateManager {
                     this.waveRunnerManager.registerWave(wave)
                 } else {
                     this.waveRunnerManager.currentWave.elapsedTime = wave.elapsedTime
+                    this.waveRunnerManager.currentWave.totalTime = wave.totalTime
                 }
             }
         }

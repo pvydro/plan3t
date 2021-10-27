@@ -8,6 +8,7 @@ import { asyncTimeout, functionExists } from '../utils/Utils'
 
 export interface IWave extends IUpdatable {
     totalEnemies: number
+    totalTime: number
     currentTime: number
     currentTimePercentage: number
     waveIndex: number
@@ -29,7 +30,7 @@ export class Wave extends Emitter implements IWave {
     _isCompleted: boolean = false
     shouldTimeout: boolean = false
     totalEnemies: number = 2
-    totalTime: number = 3000
+    totalTime: number = 0
     elapsedTime: number = 0
     spawnIntervalTime: number = 500
     startDelayTime: number = 3000
