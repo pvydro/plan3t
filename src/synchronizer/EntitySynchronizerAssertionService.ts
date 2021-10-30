@@ -50,10 +50,10 @@ export class EntitySynchronizerAssertionService implements IEntitySynchronizerAs
     applyChangesToSynchronizable(sessionId: string, entity: EntitySchema) {
         Flogger.log('EntitySynchronizerAssertionService', 'applyChangesToSynchronizable')
         
-        const entityPlayer = entity as PlayerSchema
+        const entityPlayer = entity instanceof PlayerSchema
         const isPlayer = entityPlayer !== undefined
         const synchEntity = this.synchronizables.get(sessionId)
-        const synchEntityPlayer = synchEntity as PlayerSchema
+        const synchEntityPlayer = synchEntity instanceof PlayerSchema
 
         if (sessionId !== undefined && synchEntity !== undefined) {
 

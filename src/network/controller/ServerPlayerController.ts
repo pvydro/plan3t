@@ -53,18 +53,18 @@ export class ServerPlayerController implements IServerPlayerController {
             }
 
             // Legs state
-            switch (p.legsState) {
-                case PlayerLegsState.Jumping:
-                    if (p.isOnGround) {
-                        p.yVel = -playerJumpingHeight
-                        p.isOnGround = false
-                    }
-                    break
-            }
+            // switch (p.legsState) {
+            //     case PlayerLegsState.Jumping:
+            //         if (p.isOnGround) {
+            //             p.yVel = -playerJumpingHeight
+            //             p.isOnGround = false
+            //         }
+            //         break
+            // }
 
-            if (p.isOnGround === false && p.yVel !== 0) {
-                p.yVel += ((p.weight / 3) * 1) * PlanetRoom.Delta
-            }
+            // if (p.isOnGround === false && p.yVel !== 0) {
+            //     p.yVel += ((p.weight / 3) * 1) * PlanetRoom.Delta
+            // }
         })
     }
 

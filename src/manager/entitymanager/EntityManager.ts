@@ -46,7 +46,7 @@ export interface IEntityManager extends IUpdatable {
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number): void
     registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
-    getEntity(sessionId: string): EntitySchema
+    getSchema(sessionId: string): EntitySchema
     createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
 }
 
@@ -91,9 +91,11 @@ export class EntityManager implements IEntityManager {
         this.enemyManager = new EnemyManager({ entityManager })
 
         // Test key listeners
+        let cid = 0
         InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
             if (ev.which == Key.C) {
-                this.createPassiveCreature()
+                this.createPassiveCreature(`creat${cid}`)
+                cid++
             }
         })
     }
@@ -120,20 +122,20 @@ export class EntityManager implements IEntityManager {
         this.synchronizer.updateEntity(entity, sessionId, changes)
     }
 
-    createCreature(entity: CreatureSchema) {
-        this.creatureCreator.createCreature({
-            type: entity.creatureType,
+    createCreature(schema: CreatureSchema) {
+        this.creatureCreator.createCreature(schema.id, {
+            type: schema.creatureType,
             position: {
-                x: entity.x,
-                y: entity.y
+                x: schema.x,
+                y: schema.y
             }
         })
     }
 
-    createPassiveCreature() {
+    createPassiveCreature(id: string) {
         log('EntityManager', 'createPassiveCreature')
 
-        this.creatureCreator.createCreature({
+        this.creatureCreator.createCreature(id, {
             type: CreatureType.Koini
         })
     }
@@ -197,7 +199,7 @@ export class EntityManager implements IEntityManager {
         this._clientEntities.clear()
     }
 
-    getEntity(sessionId: string) {
+    getSchema(sessionId: string): EntitySchema {
         return this._clientEntities[sessionId]
     }
 

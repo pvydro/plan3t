@@ -1,3 +1,4 @@
+import { log } from '../../../service/Flogger'
 import { asyncTimeout, getRandomBool, getRandomValueFromArray } from '../../../utils/Utils'
 import { CreatureType } from '../../utils/Enum'
 import { CreatureSchema } from '../CreatureSchema'
@@ -34,6 +35,8 @@ export class WaveCreatureSpawner implements IWaveCreatureSpawner {
     async start(options: WaveCreatureSpawningConfig) {
         this.spawnCount = Math.round(options.spawnCount + (Math.random() * options.spawnCountVariance))
 
+        log('WaveCreatureSpawner', 'start', 'spawnCount', this.spawnCount)
+
         while (this.spawnCount > 0) {
             await asyncTimeout(this.calculateTimeBetweenSpawns(options))
 
@@ -47,7 +50,8 @@ export class WaveCreatureSpawner implements IWaveCreatureSpawner {
         const spawnPoint = getRandomValueFromArray(this.spawnPoints)
         const creatureSchema = new CreatureSchema().assign({
             creatureType,
-            x: spawnPoint, y: -50
+            x: spawnPoint, y: -50,
+            xVel: 0, yVel: 0
         })
 
         this.gameState.createCreature(creatureSchema)

@@ -13,7 +13,7 @@ export interface EnemyManagerOptions {
     entityManager: IEntityManager
 }
 
-// TODO: EntityEnemyCreator, follow path of EntityCreatureCreator
+// TODO: Delete this
 export class EnemyManager implements IEnemyManager {
     private static Instance: IEnemyManager
     entityManager: IEntityManager

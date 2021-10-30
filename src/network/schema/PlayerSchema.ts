@@ -32,6 +32,36 @@ export class PlayerSchema extends EntitySchema {
     hasSpawned: boolean = false
     @type('boolean')
     isOnGround: boolean = true
+    
+
+    // TODO: move to GravityEntitySchema
+    jumpHeight: number = 5
+    friction: number = 5
+
+    update(deltaTime: number) {
+        // switch (this.bodyState) {
+        //     case PlayerBodyState.Idle:
+        //         if (this.xVel !== 0) {
+        //             this.xVel += ((0 - this.xVel) / this.friction) * deltaTime
+        //         }
+        //         break
+        //     case PlayerBodyState.Walking:
+        //         break
+        // }
+
+        // switch (this.legsState) {
+        //     case PlayerLegsState.Jumping:
+        //         if (this.isOnGround) {
+        //             this.yVel = -this.jumpHeight
+        //             this.isOnGround = false
+        //         }
+        //         break
+        // }
+
+        // if (!this.isOnGround && this.yVel !== 0) {  // yVel !== 0 is interim solution to not check every frame
+        //     this.yVel += ((this.weight / 3) * 1) * deltaTime
+        // }    
+    }
 
     moveLeft() {
         this.xVel = -1.5

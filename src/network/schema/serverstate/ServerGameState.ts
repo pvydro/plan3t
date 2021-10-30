@@ -8,6 +8,7 @@ import { ServerGravityController } from '../../controller/ServerGravityControlle
 import { ServerPlayerController } from '../../controller/ServerPlayerController'
 import { exists } from '../../../utils/Utils'
 import { v4 } from 'uuid'
+import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
 
 interface CreateEntityOptions {
     x?: number
@@ -58,14 +59,13 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     }
 
     update() {
-        // this.players.forEach((player: PlayerSchema) => {
-        //     player.x += player.xVel * GameRoom.Delta
-        //     player.y += player.yVel * GameRoom.Delta
-        // })
-
         // TODO: Instead of updating these in the state, update these outside, setting the state. <- tf do you mean
         if (this.playerController) this.playerController.update()
         if (this.gravityController) this.gravityController.update()
+
+        this.creatures.forEach((creature: CreatureSchema) => {
+            creature.update(PlanetRoom.Delta)
+        })
     }
 
     createPlayer(options: CreatePlayerOptions) {
@@ -86,9 +86,9 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     }
 
     createCreature(schema: CreatureSchema) {
-        log('ServerGameState', 'createCreature', schema)
-
-        this.creatures.set(schema.id ?? v4(), schema)
+        schema.id = schema.id ?? v4()
+        log('ServerGameState', 'createCreature', schema.id)
+        this.creatures.set(schema.id, schema)
     }
 
     createProjectile(options: CreateProjectileOptions) {

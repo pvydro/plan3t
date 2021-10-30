@@ -2,11 +2,13 @@ import { Dimension } from '../../engine/math/Dimension'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Environment } from '../../main/Environment'
+import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
 import { IServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 import { ChatService } from '../../service/chatservice/ChatService'
-import { importantLog, log, VerboseLogging } from '../../service/Flogger'
+import { importantLog, log, logError, VerboseLogging } from '../../service/Flogger'
+import { EntityManager, IEntityManager } from '../entitymanager/EntityManager'
 import { IGameMapManager } from '../GameMapManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
 import { RoomManager, RoomManagerOptions } from './RoomManager'
@@ -26,10 +28,12 @@ export class RoomStateManager implements IRoomStateManager {
     currentState?: IServerGameState
     gameMapManager: IGameMapManager
     waveRunnerManager: IWaveRunnerManager
+    entityManager: IEntityManager
 
     constructor(options: RoomManagerOptions) {
         this.gameMapManager = options.gameMapManager
         this.waveRunnerManager = WaveRunnerManager.getInstance()
+        this.entityManager = EntityManager.getInstance()
     }
 
     async setInitialState(state: IServerGameState) {
@@ -78,6 +82,18 @@ export class RoomStateManager implements IRoomStateManager {
         if (newState.type === ServerStateType.WaveRunner) {
             this.handleWaveRunnerState(newState as IWaveRunnerGameState)
         }
+
+        // Apply creature state to creatures
+        // newState.creatures.forEach((creature: CreatureSchema) => {
+        //     const entity = this.entityManager.clientEntities.get(creature.id).clientEntity
+
+        //     if (entity) {
+        //         entity.x = creature.x
+        //         entity.y = creature.y
+        //     } else {
+        //         logError('RoomStateManager', 'Creature unaccounted for', creature.id)
+        //     } 
+        // })
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {
