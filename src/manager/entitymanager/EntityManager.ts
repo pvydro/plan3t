@@ -20,6 +20,7 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { IVector2 } from '../../engine/math/Vector2'
 import { ServerGameState } from '../../network/schema/serverstate/ServerGameState'
+import { PlayerSchema } from '../../network/schema/PlayerSchema'
 
 export interface EntityCreatorOptions {
     entity?: EntitySchema
@@ -37,8 +38,8 @@ export interface IEntityManager extends IUpdatable {
     roomState: ServerGameState
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
-    createClientPlayer(entity?: EntitySchema, sessionId?: string): ClientPlayer
-    createCoPlayer(entity: EntitySchema, sessionId: string): ClientPlayer
+    createClientPlayer(schema?: PlayerSchema, sessionId?: string): ClientPlayer
+    createCoPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
     createCreature(Creature?: CreatureSchema)
     clearClientEntities(): void
@@ -140,7 +141,7 @@ export class EntityManager implements IEntityManager {
     createOfflinePlayer() {
         log('EntityManager', 'createOfflinePlayer')
 
-        const player = this.playerCreator.createPlayer({
+        const player = this.playerCreator.createPlayer('offlineplayer', {
             isClientPlayer: true,
             isOfflinePlayer: true
         })
@@ -148,11 +149,11 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createClientPlayer(entity?: EntitySchema, sessionId?: string) {
+    createClientPlayer(schema: PlayerSchema, sessionId?: string) {
         log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer({
-            entity, sessionId,
+        const player = this.playerCreator.createPlayer(sessionId, {
+            entity: schema,
             isClientPlayer: true
         })
 
@@ -161,11 +162,11 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createCoPlayer(entity: EntitySchema, sessionId: string) {
+    createCoPlayer(schema: EntitySchema, sessionId: string) {
         log('EntityManager', 'createCoPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer({
-            entity, sessionId,
+        const player = this.playerCreator.createPlayer(sessionId, {
+            entity: schema,
             isClientPlayer: false
         })
 

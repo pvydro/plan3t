@@ -6,12 +6,11 @@ import { userProfile } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
-    createPlayer(options: PlayerCreationOptions): ClientPlayer
+    createPlayer(id: string, options: PlayerCreationOptions): ClientPlayer
     clearRegisteredPlayer(): void
 }
 
 export interface PlayerCreationOptions extends EntityCreatorOptions {
-    sessionId?: string
     isClientPlayer?: boolean
     isOfflinePlayer?: boolean
 }
@@ -28,16 +27,15 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         this.entityManager = options.entityManager
     }
 
-    createPlayer(options: PlayerCreationOptions): ClientPlayer {
-        const sessionId = options.sessionId ?? 'localplayer'
-        Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', sessionId, 'isClientPlayer', options.isClientPlayer)
+    createPlayer(id: string, options: PlayerCreationOptions): ClientPlayer {
+        Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', id, 'isClientPlayer', options.isClientPlayer)
 
         if (options.isClientPlayer && this._currentClientPlayer) {
             return this._currentClientPlayer
         }
 
-        const player = this.getPlayer(options)
-        this.entityManager.registerEntity(sessionId, {
+        const player = this.getPlayer(id, options)
+        this.entityManager.registerEntity(id, {
             clientEntity: player,
             serverEntity: options.entity
         })
@@ -45,13 +43,13 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         // Client player camera follow
         if (options.isClientPlayer) {
             // this.camera.follow(this._currentClientPlayer as PIXI.DisplayObject)
-            this.markPlayerAsSpawned(sessionId)
+            this.markPlayerAsSpawned(id)
         }
 
         return player
     }
 
-    private getPlayer(options: PlayerCreationOptions): ClientPlayer {
+    private getPlayer(id: string, options: PlayerCreationOptions): ClientPlayer {
         let player
 
         if (options.isClientPlayer) {
@@ -59,19 +57,20 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                 return this._currentClientPlayer
             } else {
                 this._currentClientPlayer = ClientPlayer.getInstance({
+                    sessionId: id,
                     clientControl: true,
                     offlineControl: options.isOfflinePlayer ?? false,
                     entity: options.entity,
                     entityManager: this.entityManager,
-                    sessionId: options.sessionId,
                     playerName: userProfile.username
                 })
+                
                 player = this._currentClientPlayer
             }
         } else {
             player = new ClientPlayer({
                 entity: options.entity,
-                playerName: options.sessionId
+                playerName: id
             })
         }
 

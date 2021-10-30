@@ -18,22 +18,22 @@ export class TravelkinMovementController implements ITravelkinMovementController
     }
     
     update() {
-        // if (this.travelkin.ai.currentNode !== undefined) {
-        //     this.goToCurrentNode()
-        // }
+        if (this.travelkin.ai.currentNode !== undefined) {
+            this.goToCurrentNode()
+        }
     }
 
-    // goToCurrentNode() {
-    //     const currentNode = this.travelkin.ai.currentNode
+    goToCurrentNode() {
+        const currentNode = this.travelkin.ai.currentNode
 
-    //     if (currentNode) {
-    //         if (currentNode.x > this.travelkin.x) {
-    //             this.moveRight()
-    //         } else if (currentNode.x < this.travelkin.x) {
-    //             this.moveLeft()
-    //         }
-    //     }
-    // }
+        if (currentNode) {
+            if (currentNode.x > this.travelkin.x) {
+                this.moveRight()
+            } else if (currentNode.x < this.travelkin.x) {
+                this.moveLeft()
+            }
+        }
+    }
 
     moveLeft() {
         this.travelkin.direction = Direction.Left
