@@ -18,50 +18,22 @@ export class TravelkinMovementController implements ITravelkinMovementController
     }
     
     update() {
-        if (this.travelkin.ai.currentNode !== undefined) {
-            this.goToCurrentNode()
-        }
-
-        const movementState = this.travelkin.movementState
-        const direction = this.travelkin.direction
-        const targetXVel = this.travelkin.walkSpeed * direction
-        
-        if (movementState === TravelkinMovementState.Dead) {
-
-            this.travelkin.comeToStop()
-            this.travelkin.showDyingSprite()
-
-        } else {
-            switch (movementState) {
-                case TravelkinMovementState.Walking:
-    
-                    this.travelkin.xVel += (targetXVel - this.travelkin.xVel) / 3
-    
-                    break
-                case TravelkinMovementState.Idle:
-    
-                    this.travelkin.comeToStop()
-                
-                    break
-            }
-    
-            if (this.travelkin.ai.checkIfReachedNode()) {
-                this.travelkin.movementState = TravelkinMovementState.Idle
-            }
-        }
+        // if (this.travelkin.ai.currentNode !== undefined) {
+        //     this.goToCurrentNode()
+        // }
     }
 
-    goToCurrentNode() {
-        const currentNode = this.travelkin.ai.currentNode
+    // goToCurrentNode() {
+    //     const currentNode = this.travelkin.ai.currentNode
 
-        if (currentNode) {
-            if (currentNode.x > this.travelkin.x) {
-                this.moveRight()
-            } else if (currentNode.x < this.travelkin.x) {
-                this.moveLeft()
-            }
-        }
-    }
+    //     if (currentNode) {
+    //         if (currentNode.x > this.travelkin.x) {
+    //             this.moveRight()
+    //         } else if (currentNode.x < this.travelkin.x) {
+    //             this.moveLeft()
+    //         }
+    //     }
+    // }
 
     moveLeft() {
         this.travelkin.direction = Direction.Left

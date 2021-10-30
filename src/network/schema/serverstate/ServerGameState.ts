@@ -7,6 +7,7 @@ import { ProjectileSchema } from '../ProjectileSchema'
 import { ServerGravityController } from '../../controller/ServerGravityController'
 import { ServerPlayerController } from '../../controller/ServerPlayerController'
 import { exists } from '../../../utils/Utils'
+import { v4 } from 'uuid'
 
 interface CreateEntityOptions {
     x?: number
@@ -85,7 +86,9 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     }
 
     createCreature(schema: CreatureSchema) {
+        log('ServerGameState', 'createCreature', schema)
 
+        this.creatures.set(schema.id ?? v4(), schema)
     }
 
     createProjectile(options: CreateProjectileOptions) {

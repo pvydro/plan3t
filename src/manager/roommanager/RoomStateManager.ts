@@ -81,10 +81,7 @@ export class RoomStateManager implements IRoomStateManager {
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {
-        log('RoomManager', 'parseRoomSpherical', 'schema', {
-            'biome': schema.biome,
-            'dimension': schema.dimension
-        })
+        log('RoomManager', 'parseRoomSpherical', 'schema', { 'biome': schema.biome, 'dimension': schema.dimension })
 
         const parsedPoints = []
 

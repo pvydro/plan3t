@@ -12,8 +12,8 @@ export interface IGroundPatherAI extends IAI, IUpdatable {
     currentDistanceFromEdge: number
     currentNode: AINode | undefined
     currentState: GroundPatherState
-    findPointOnCurrentGround(): void
-    findNewGround(): void
+    // findPointOnCurrentGround(): void
+    // findNewGround(): void
     checkIfReachedNode(): boolean
     stopForSomeTime(): void
     stop(): void

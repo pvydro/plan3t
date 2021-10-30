@@ -53,6 +53,10 @@ export function double(value: number): number {
     return value * 2
 }
 
+export function getRandomBool(): boolean {
+    return Math.random() >= 0.5
+}
+
 export function getRandomIntBetween(minimum: number, maximum: number) {
     return Math.floor(Math.random() * maximum) + minimum
 }
@@ -63,6 +67,10 @@ export function asyncTimeout(time: number) {
 
 export function isArray(obj: any) {
     return Array.isArray(obj)
+}
+
+export function getRandomValueFromArray(array: any[]) {
+    return array[getRandomIntBetween(0, array.length - 1)]
 }
 
 export class Utils {

@@ -11,7 +11,7 @@ export interface IWaveRunnerGameState extends IServerGameState {
 export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerGameState {
   type: string = 'waverunner'
   @type(WaveRunnerSchema)
-  waveRunner: WaveRunnerSchema = new WaveRunnerSchema()
+  waveRunner: WaveRunnerSchema = new WaveRunnerSchema(this)
   @type('boolean')
   waveGameHasStarted: boolean = false
 

@@ -1,6 +1,8 @@
 import { Schema, type } from '@colyseus/schema'
 
 export class EntitySchema extends Schema {
+    @type('string')
+    id!: string
     @type('float64')
     x!: number 
     @type('float64')

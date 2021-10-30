@@ -1,6 +1,7 @@
 import { IGravityEntity } from '../cliententity/GravityEntity'
 import { IGravityOrganism } from '../cliententity/gravityorganism/GravityOrganism'
 import { IVector2 } from '../engine/math/Vector2'
+import { AIAction } from './AIAction'
 
 export interface AINode extends IVector2 {
 
@@ -9,7 +10,9 @@ export interface AINode extends IVector2 {
 export interface IAI {
     target: IGravityEntity
     initialize(): void
-    die(): void
+    // die(): void
+    requestAction(action: AIAction): void
+    receiveAction(action: AIAction): void
 }
 
 export interface AIOptions {
@@ -38,5 +41,13 @@ export abstract class AI implements IAI {
 
     get isDead() {
         return this._isDead
+    }
+
+    requestAction(action: AIAction) {
+
+    }
+
+    receiveAction(action: AIAction) {
+
     }
 }
