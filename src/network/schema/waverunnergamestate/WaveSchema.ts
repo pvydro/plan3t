@@ -1,7 +1,6 @@
-import { Schema, ArraySchema, type } from '@colyseus/schema'
+import { Schema, type } from '@colyseus/schema'
 import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
 import { MapBuildingType } from '../../utils/Enum'
-import { CreatureSchema } from '../CreatureSchema'
 
 export class WaveSchema extends Schema {
     @type('string')

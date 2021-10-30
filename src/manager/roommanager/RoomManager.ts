@@ -109,6 +109,7 @@ export class RoomManager implements IRoomManager {
         }
         this.currentRoom.state.creatures.onAdd = (creature: CreatureSchema, key: string) => {
             // this
+            this.addCreature(creature)
         }
     }
 

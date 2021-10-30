@@ -16,6 +16,8 @@ export class WaveRunnerSchema extends Schema {
             gameState,
             spawnPoints: [ 0, 50 ]
         })
+
+        this.nextWave()
     }
 
     update() {

@@ -120,9 +120,12 @@ export class EntityManager implements IEntityManager {
     }
 
     createCreature(entity: CreatureSchema) {
-        // this.
         this.creatureCreator.createCreature({
-            type: entity.creatureType
+            type: entity.creatureType,
+            position: {
+                x: entity.x,
+                y: entity.y
+            }
         })
     }
 

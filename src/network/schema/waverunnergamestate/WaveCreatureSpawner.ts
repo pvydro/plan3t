@@ -37,14 +37,13 @@ export class WaveCreatureSpawner implements IWaveCreatureSpawner {
         while (this.spawnCount > 0) {
             await asyncTimeout(this.calculateTimeBetweenSpawns(options))
 
+            this.spawnCount--
             this.spawnCreature(options.type)
         }
     }
 
     spawnCreature(type: CreatureType | CreatureType[]): void {
-        if (typeof type === 'string') type = [ type ]
-
-        const creatureType = getRandomValueFromArray(type)
+        const creatureType = Array.isArray(type) ? getRandomValueFromArray(type) : type
         const spawnPoint = getRandomValueFromArray(this.spawnPoints)
         const creatureSchema = new CreatureSchema().assign({
             creatureType,
