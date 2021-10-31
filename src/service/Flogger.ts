@@ -1,6 +1,6 @@
 export class Flogger {
   static isLoggingEnabled: boolean = true
-  static Verbose: boolean = true
+  static Verbose: boolean = false
   private static _color: string = 'slategray'
   private static tempColor: string = Flogger._color
   private static style = 'color: ' + Flogger._color

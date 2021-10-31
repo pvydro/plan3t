@@ -2,7 +2,7 @@ import { EntitySchema } from '../../network/schema/EntitySchema'
 import { RoomManager } from '../roommanager/RoomManager'
 import { Camera } from '../../camera/Camera'
 import { ClientEntity } from '../../cliententity/ClientEntity'
-import { Flogger, log } from '../../service/Flogger'
+import { Flogger, log, VerboseLogging } from '../../service/Flogger'
 import { GravityManager, IGravityManager } from '../GravityManager'
 import { Game } from '../../main/Game'
 import { ProjectileType } from '../../weapon/projectile/Bullet'
@@ -102,7 +102,7 @@ export class EntityManager implements IEntityManager {
     }
     
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any) {
-        log('EntityManager', 'updateEntity', 'sessionId', sessionId)
+        if (VerboseLogging) log('EntityManager', 'updateEntity', 'sessionId', sessionId)
 
         this.synchronizer.updateEntity(entity, sessionId, changes)
     }

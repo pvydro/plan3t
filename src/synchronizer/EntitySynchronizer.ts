@@ -21,7 +21,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     }
 
     updateEntity(schema: EntitySchema, sessionId: string, changes?: any) {
-        log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId, VerboseLogging ? 'changes: ' + JSON.stringify(changes) : null)
+        if (VerboseLogging) log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId, `changes ${changes}`)
 
         const entity: LocalEntity = this.clientEntities.get(sessionId)
 
