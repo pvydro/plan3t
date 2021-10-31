@@ -6,6 +6,7 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { IVector2 } from '../engine/math/Vector2'
 import { EntityFlashOptions, EntityFlashPlugin, IEntityFlashPlugin } from './plugins/EntityFlashPlugin'
 import { EntityKnockbackOptions, EntityKnockbackPlugin, IEntityKnockbackPlugin } from './plugins/EntityKnockbackPlugin'
+import { lerp } from '../utils/Math'
 
 export interface IClientEntity extends IContainer, IUpdatable {
     x: number
@@ -54,6 +55,7 @@ export class ClientEntity extends Container implements IClientEntity {
     entity?: EntitySchema
     x: number
     y: number
+    targetServerPosition: IVector2 = { x: undefined, y: undefined }
     type: EntityType
     plugins: IClientEntityPlugins = {}
 
@@ -90,6 +92,13 @@ export class ClientEntity extends Container implements IClientEntity {
 
     update() {
         if (this.plugins.flashPlugin) this.plugins.flashPlugin.update()
+
+        if (this.targetServerPosition.x !== undefined) {
+            this.x = lerp(this.x, this.targetServerPosition.x, 0.1)
+        }
+        // if (this.targetServerPosition.y !== undefined) {
+        //     this.y = lerp(this.y, this.targetServerPosition.y, 0.1)
+        // }
     }
 
     flash(options?: EntityFlashOptions) {

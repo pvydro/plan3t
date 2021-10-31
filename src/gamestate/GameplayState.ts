@@ -53,17 +53,10 @@ export class GameplayState extends GameState implements IGameplayState {
 
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             await this.inGameHUD.initializeHUD()
-
             await asyncTimeout(1000)
 
-            this.player = this.entityManager.createClientPlayer(undefined, room.id)//this.entityManager.createOfflinePlayer()
-            this.cameraStage.addChildAtLayer(this.player, CameraLayer.Players)
+            this.player = this.entityManager.createClientPlayer(undefined, room.id)
             this.camera.follow(this.player)
-
-            // this.player.pos = {
-            //     x: 512,
-            //     y: -256
-            // }
         })
     }
 

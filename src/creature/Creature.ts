@@ -75,8 +75,8 @@ export abstract class Creature extends GravityOrganism implements ICreature {
     }
 
     update() {
-        super.update()
         this.attacker.update()
+        super.update()
     }
 
     interact() {

@@ -1,7 +1,7 @@
 import { IUpdatable } from '../interface/IUpdatable'
 import { EntitySchema } from '../network/schema/EntitySchema'
 import { log, VerboseLogging } from '../service/Flogger'
-import { IEntityManager } from '../manager/entitymanager/EntityManager'
+import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 
 export interface IEntitySynchronizer {
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any)
@@ -23,10 +23,10 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     updateEntity(schema: EntitySchema, sessionId: string, changes?: any) {
         log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId, VerboseLogging ? 'changes: ' + JSON.stringify(changes) : null)
 
+        const entity: LocalEntity = this.clientEntities.get(sessionId)
 
-        const clientEntity = this.clientEntities.get(sessionId).clientEntity    
-
-        clientEntity.x = schema.x
+        entity.clientEntity.targetServerPosition.x = schema.x
+        entity.serverEntity = schema
 
         // // TODO: Deprecate synchronizables system
         // // this.assertionService.applyChangesToSynchronizable(sessionId, entity)
