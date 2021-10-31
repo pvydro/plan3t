@@ -5,7 +5,17 @@
                 <h1 class="title">Welcome</h1>
                 <h3 class="subtitle">Login</h3>
 
-                <input class="input-user-name" type="text" placeholder="Username">
+                <div class="row">
+                    <input class="input-user-name" type="text" placeholder="Username"
+                        :class="{ loading: isLoading }" />
+                </div>
+
+                <div class="buttons">
+                    <button class="join-button" v-on:click="join"
+                        :class="{ loading: isLoading }">
+                        Join
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -17,14 +27,28 @@ import { onMounted } from 'vue'
 
 export default {
     name: 'WelcomeModal',
+    data() {
+        return {
+            isLoading: false
+        }
+    },
     setup() {
         onMounted(() => {})
+    },
+    methods: {
+        join: function() {
+            console.log('WelcomeModal clicked join')
+            this.isLoading = true
+        }
     }
 }
 </script>
 
 
 <style lang="scss">
+    .row {
+        width: 100%;
+    }
     #welcome-modal {
         color: white;
         position: absolute;
@@ -45,7 +69,7 @@ export default {
             transform: translate(-50%, -50%);
         }
 
-        input {
+        button, input {
             padding: 6px 3px;
             background: none;
             border: none;
@@ -55,8 +79,37 @@ export default {
             color: white;
         }
 
-        .input-user-name {
+        .buttons, .input-user-name {
             margin-top: 60px;
+        }
+
+        .input-user-name {
+            position: relative;
+            overflow: visible;
+            &.loading {
+                &::after {
+                    content: '...';
+                    background-color: red;
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
+                    width: 20%;
+                    z-index: 999;
+                }
+            }
+        }
+
+        button {
+            padding: 6px 18px;
+            border-radius: 50px;
+            border-bottom: 4px solid white;
+        }
+
+        .join-button {
+            &.loading {
+                transition: 0.5s;
+                color: rgba(255, 255, 255, 0)
+            }
         }
     }
 </style>
