@@ -1,19 +1,9 @@
-import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
-import { Direction } from '../engine/math/Direction'
 import { IUpdatable } from '../interface/IUpdatable'
 import { EntitySchema } from '../network/schema/EntitySchema'
-import { PlayerSchema } from '../network/schema/PlayerSchema'
-import { PlayerBodyState, PlayerLegsState } from '../network/utils/Enum'
 import { log, VerboseLogging } from '../service/Flogger'
-import { RoomManager } from '../manager/roommanager/RoomManager'
 import { IEntityManager } from '../manager/entitymanager/EntityManager'
-import { EntitySynchronizerAssertionService, IEntitySynchronizerAssertionService } from './EntitySynchronizerAssertionService'
-import { exists } from '../utils/Utils'
-import { WeaponName } from '../weapon/WeaponName'
-import { CreatureSchema } from '../network/schema/CreatureSchema'
 
-export interface IEntitySynchronizer extends IUpdatable {
-    assertionService: IEntitySynchronizerAssertionService
+export interface IEntitySynchronizer {
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any)
 }
 
@@ -23,21 +13,16 @@ export interface EntitySynchronizerOptions {
 
 export class EntitySynchronizer implements IEntitySynchronizer {
     entityManager: IEntityManager
-    assertionService: IEntitySynchronizerAssertionService
 
     constructor(options: EntitySynchronizerOptions) {
         const synchronizer = this
 
         this.entityManager = options.entityManager
-        this.assertionService = new EntitySynchronizerAssertionService({ synchronizer })
-    }
-
-    update() {
-        this.assertionService.update()
     }
 
     updateEntity(schema: EntitySchema, sessionId: string, changes?: any) {
         log('EntitySynchronizer', 'updateEntity', 'sessionId', sessionId, VerboseLogging ? 'changes: ' + JSON.stringify(changes) : null)
+
 
         const clientEntity = this.clientEntities.get(sessionId).clientEntity    
 
@@ -46,6 +31,8 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         // // TODO: Deprecate synchronizables system
         // // this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 
+        // if (schema instanceof PlayerSchema
+        //     && RoomManager.isSessionALocalPlayer(sessionId)) return
         // const isClientPlayer: boolean = RoomManager.isSessionALocalPlayer(sessionId)
         // const isPlayer: boolean = (entity instanceof PlayerSchema)
         // const isCreature: boolean = (entity instanceof CreatureSchema)

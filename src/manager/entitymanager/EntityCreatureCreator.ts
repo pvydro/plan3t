@@ -20,7 +20,6 @@ export interface EntityCreatureCreatorOptions {
 
 export class EntityCreatureCreator implements IEntityCreatureCreator {
     entityManager: IEntityManager
-    // creatures: Map<string, Creature> = new Map()
 
     constructor(options: EntityCreatureCreatorOptions) {
         this.entityManager = options.entityManager
@@ -28,21 +27,16 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
 
     createCreature(id: string, options: CreatureCreationOptions) {
         const creature = CreatureFactory.createCreatureForType(options.type)
+
         creature.entityId = id
+        creature.x = options.schema.x ?? 0
+        creature.y = options.schema.y ?? 0
 
         this.cameraStage.addChildAtLayer(creature, CameraLayer.Creatures)
         this.entityManager.registerEntity(id, {
             clientEntity: creature,
-            serverEntity: options.entity
+            serverEntity: options.schema
         })
-        // this.creatures.set(id, creature)
-        
-        // creature.x = //512 + (Math.random() * 128)
-        // creature.y = //-64
-        if (options.position) {
-            creature.x = options.position.x
-            creature.y = options.position.y
-        }
 
         return creature
     }

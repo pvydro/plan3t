@@ -36,7 +36,7 @@ export interface IClientPlayer extends IClientPlayerState {
 }
 
 export interface ClientPlayerOptions {
-    entity: EntitySchema
+    schema: EntitySchema
     clientControl?: boolean
     offlineControl?: boolean
     entityManager?: IEntityManager

@@ -30,19 +30,19 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
     createPlayer(id: string, options: PlayerCreationOptions): ClientPlayer {
         Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', id, 'isClientPlayer', options.isClientPlayer)
 
-        if (options.isClientPlayer && this._currentClientPlayer) {
-            return this._currentClientPlayer
-        }
+        if (options.isClientPlayer && this._currentClientPlayer) return this._currentClientPlayer
 
         const player = this.getPlayer(id, options)
+        player.x = options.schema.x ?? 0
+        player.y = options.schema.y ?? 0
+
         this.entityManager.registerEntity(id, {
             clientEntity: player,
-            serverEntity: options.entity
+            serverEntity: options.schema
         })
         
         // Client player camera follow
         if (options.isClientPlayer) {
-            // this.camera.follow(this._currentClientPlayer as PIXI.DisplayObject)
             this.markPlayerAsSpawned(id)
         }
 
@@ -60,7 +60,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                     sessionId: id,
                     clientControl: true,
                     offlineControl: options.isOfflinePlayer ?? false,
-                    entity: options.entity,
+                    schema: options.schema,
                     entityManager: this.entityManager,
                     playerName: userProfile.username
                 })
@@ -69,14 +69,9 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             }
         } else {
             player = new ClientPlayer({
-                entity: options.entity,
+                schema: options.schema,
                 playerName: id
             })
-        }
-
-        if (options.entity) {
-            player.x = options.entity.x
-            player.y = options.entity.y
         }
 
         return player

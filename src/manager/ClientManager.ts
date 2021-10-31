@@ -61,8 +61,6 @@ export class ClientManager implements IClientManager {
         if (this._gameStateManager) {
             this._gameStateManager.update()
         }
-
-        this._entityManager.update()
     }
 
     clearEntityManager() {

@@ -18,13 +18,11 @@ import { EnemyManager, IEnemyManager } from '../enemymanager/EnemyManager'
 import { CreatureType } from '../../creature/CreatureType'
 import { CameraLayer } from '../../camera/CameraStage'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
-import { IVector2 } from '../../engine/math/Vector2'
 import { ServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 
 export interface EntityCreatorOptions {
-    entity?: EntitySchema
-    position?: IVector2
+    schema: EntitySchema
 }
 
 export interface LocalEntity {
@@ -32,7 +30,7 @@ export interface LocalEntity {
     clientEntity?: ClientEntity
 }
 
-export interface IEntityManager extends IUpdatable {
+export interface IEntityManager {
     clientEntities: Map<string, LocalEntity>
     camera: Camera
     roomState: ServerGameState
@@ -89,19 +87,6 @@ export class EntityManager implements IEntityManager {
         this.projectileCreator = new EntityProjectileCreator({ entityManager })
         this.synchronizer = new EntitySynchronizer({ entityManager })
         this.enemyManager = new EnemyManager({ entityManager })
-
-        // Test key listeners
-        let cid = 0
-        InputProcessor.on(InputEvents.KeyDown, (ev: KeyboardEvent) => {
-            if (ev.which == Key.C) {
-                this.createPassiveCreature(`creat${cid}`)
-                cid++
-            }
-        })
-    }
-
-    update() {
-        this.synchronizer.update()
     }
 
     removeEntity(sessionId: string, layer?: number) {
@@ -124,19 +109,8 @@ export class EntityManager implements IEntityManager {
 
     createCreature(schema: CreatureSchema) {
         this.creatureCreator.createCreature(schema.id, {
+            schema,
             type: schema.creatureType,
-            position: {
-                x: schema.x,
-                y: schema.y
-            }
-        })
-    }
-
-    createPassiveCreature(id: string) {
-        log('EntityManager', 'createPassiveCreature')
-
-        this.creatureCreator.createCreature(id, {
-            type: CreatureType.Koini
         })
     }
 
@@ -144,6 +118,7 @@ export class EntityManager implements IEntityManager {
         log('EntityManager', 'createOfflinePlayer')
 
         const player = this.playerCreator.createPlayer('offlineplayer', {
+            schema: new PlayerSchema(),
             isClientPlayer: true,
             isOfflinePlayer: true
         })
@@ -154,12 +129,8 @@ export class EntityManager implements IEntityManager {
     createClientPlayer(schema: PlayerSchema, sessionId?: string) {
         log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer(sessionId, {
-            entity: schema,
-            isClientPlayer: true
-        })
-
-        this.synchronizer.assertionService.clientPlayer = player
+        const player = this.playerCreator.createPlayer(sessionId, { schema: schema, isClientPlayer: true })
+        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
 
         return player
     }
@@ -167,11 +138,7 @@ export class EntityManager implements IEntityManager {
     createCoPlayer(schema: EntitySchema, sessionId: string) {
         log('EntityManager', 'createCoPlayer', 'sessionId', sessionId)
 
-        const player = this.playerCreator.createPlayer(sessionId, {
-            entity: schema,
-            isClientPlayer: false
-        })
-
+        const player = this.playerCreator.createPlayer(sessionId, { schema: schema, isClientPlayer: false })
         this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
 
         return player
@@ -183,13 +150,13 @@ export class EntityManager implements IEntityManager {
         this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
     }
 
-    registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity) {
-        log('EntityManager', 'registerEntity', 'sessionId', sessionId)
+    registerEntity(id: string, localEntity: LocalEntity | ClientEntity) {
+        log('EntityManager', 'registerEntity', 'sessionId', id)
 
         localEntity = (localEntity instanceof ClientEntity)
             ? { clientEntity: localEntity } : localEntity
 
-        this._clientEntities.set(sessionId, localEntity)
+        this._clientEntities.set(id, localEntity)
     }
 
     clearClientEntities() {
@@ -199,8 +166,8 @@ export class EntityManager implements IEntityManager {
         this._clientEntities.clear()
     }
 
-    getSchema(sessionId: string): EntitySchema {
-        return this._clientEntities[sessionId]
+    getSchema(id: string): EntitySchema {
+        return this._clientEntities[id]
     }
 
     get camera() {
