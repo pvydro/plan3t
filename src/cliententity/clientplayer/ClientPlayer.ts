@@ -134,6 +134,7 @@ export class ClientPlayer extends ClientPlayerState {
             this.messenger.update()
         }
 
+        // TMP
         if (this.y > 312) {
             this.yVel = 0
             this.y = 0

@@ -56,6 +56,7 @@ export class ClientEntity extends Container implements IClientEntity {
     x: number
     y: number
     targetServerPosition: IVector2 = { x: undefined, y: undefined }
+    targetServerLerpRate: number = 0.2
     type: EntityType
     plugins: IClientEntityPlugins = {}
 
@@ -94,7 +95,7 @@ export class ClientEntity extends Container implements IClientEntity {
         if (this.plugins.flashPlugin) this.plugins.flashPlugin.update()
 
         if (this.targetServerPosition.x !== undefined) {
-            this.x = lerp(this.x, this.targetServerPosition.x, 0.1)
+            this.x = lerp(this.x, this.targetServerPosition.x, this.targetServerLerpRate)
         }
         // if (this.targetServerPosition.y !== undefined) {
         //     this.y = lerp(this.y, this.targetServerPosition.y, 0.1)

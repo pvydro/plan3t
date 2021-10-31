@@ -60,6 +60,7 @@ export abstract class Creature extends GravityOrganism implements ICreature {
 
         const attackerOptions: CreatureAttackerOptions = { ...options.attackOptions, creature: this }
 
+        this.targetServerLerpRate = 0.75
         this.entityId = 'Creature' + Creature.CreatureIdIteration++
         this.spriteStore = new CreatureSpriteStore(options.sprites)
         this.attacker = new CreatureAttacker(attackerOptions)
