@@ -1,16 +1,20 @@
 <template>
   <div id="wrapper">
     <iframe id="game-frame" src="http://localhost:8080/" frameborder="0"></iframe>
+
+    <WelcomeModal />
   </div>
 </template>
 
 <script>
 import { onMounted, computed } from 'vue'
+import WelcomeModal from './components/WelcomeModal.vue'
 
 export default {
   name: 'App',
-  components: {},
-  methods: {},
+  components: {
+    WelcomeModal
+  },
   setup() {
     onMounted(() => {
       const introLogStyle = computed(() => { return `
