@@ -6,7 +6,8 @@ export enum RoomMessage {
     GetPlanet = 'r_get_planet',
     NewWaveRunner = 'r_new_wave_runner',
     PlayerUpdate = 'r_player_update',
-    PlayerShoot = 'r_player_shoot'
+    PlayerShoot = 'r_player_shoot',
+    AIAction = 'r_ai_action'
     // PlayerBodyStateChanged = 'r_player_body_state_changed',
     // PlayerLegsStateChanged = 'r_player_legs_state_changed',
     // PlayerConciousnessStateChanged = 'r_player_conciousness_state_changed',
@@ -20,6 +21,7 @@ export enum ClientMessage {
     ServerHasPlanet = 'c_server_has_planet',
     NeedNewPlanet = 'c_need_new_planet',
     UpdateChat = 'c_update_chat',
+    AIAction = 'c_ai_action',
 
     WaveRunnerStarted = 'c_wave_runner_started'
 }

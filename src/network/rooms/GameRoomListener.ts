@@ -2,14 +2,12 @@ import { Client } from 'colyseus'
 import { log } from '../../service/Flogger'
 import { ChatMessagePayload, PlayerPayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
 import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
-import { Emitter } from '../../utils/Emitter'
 import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { IGameRoom } from './GameRoom'
 
 export interface IGameRoomListener {
   startListening(): void
-  dispatcher: Emitter
 }
 
 export interface IRoomListenerDelegate {
@@ -20,20 +18,14 @@ export interface IRoomListenerDelegate {
 
 export class GameRoomListener implements IGameRoomListener {
   delegate: IGameRoom
-  dispatcher: Emitter
   roomStream$: Observable<RoomEvent<any>>
 
   constructor(delegate: IGameRoom) {
     this.delegate = delegate
-    this.dispatcher = new Emitter()
-
-    this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
-      // Re-route server messages to internal dispatcher
-      this.dispatcher.emit('roomEvent', this.buildRoomEvent(type, message, client))
-    })
-    this.roomStream$ = new Observable((observer) => {
-      // Base internal observable on internal dispatcher
-      this.dispatcher.on('roomEvent', (value: IRoomEvent<any>) => observer.next(value))
+    this.roomStream$ = new Observable(observer => {
+      this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
+        observer.next(this.buildRoomEvent(type, message, client))
+      })
     })
   }
 
