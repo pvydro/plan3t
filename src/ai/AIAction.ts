@@ -3,6 +3,7 @@ export enum AIAction {
     GoToNode = 'GoToNode',
     Stop = 'Stop',
     SetDirection = 'SetDirection',
+    Die = 'Die'
 }
 
 export interface AIActionData {
@@ -11,5 +12,5 @@ export interface AIActionData {
 
 export interface AIActionPayload {
     action: AIAction
-    data: AIActionData
+    data?: AIActionData
 }

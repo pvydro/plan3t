@@ -30,7 +30,7 @@ export abstract class AI implements IAI {
     }
 
     protected delegateActions() {
-        
+        this.delegate(AIAction.Die, this.die)
     }
 
     initialize() {
@@ -43,6 +43,10 @@ export abstract class AI implements IAI {
 
     die() {
         this._isDead = true
+    }
+
+    protected delegate(action: AIAction, handler: Function) {
+        return this.messenger.delegateAction(action, handler.bind(this))
     }
 
     get target() {

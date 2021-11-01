@@ -1,8 +1,8 @@
 import { filter, Observable } from 'rxjs'
-import { RoomManager } from '../manager/roommanager/RoomManager'
-import { ClientMessage } from '../network/rooms/ServerMessages'
+import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
+import { ClientMessage, RoomMessage } from '../network/rooms/ServerMessages'
 import { IAI } from './AI'
-import { AIAction, AIActionPayload } from './AIAction'
+import { AIAction, AIActionData, AIActionPayload } from './AIAction'
 
 export interface IAIMessenger {
     requestAction(action: AIAction): void
@@ -10,22 +10,22 @@ export interface IAIMessenger {
 }
 
 export class AIMessenger implements IAIMessenger {
+    roomMan: IRoomManager
     ai: IAI
     actionStream$: Observable<AIActionPayload>
 
     constructor(ai: IAI) {
-        const roomMan = RoomManager.getInstance()
-
+        this.roomMan = RoomManager.getInstance()
         this.ai = ai
         this.actionStream$ = new Observable(observer => {
-            roomMan.currentRoom.onMessage(ClientMessage.AIAction, (payload: AIActionPayload) => {
+            this.roomMan.currentRoom.onMessage(ClientMessage.AIAction, (payload: AIActionPayload) => {
                 observer.next(payload)
             })
         })
     }
 
-    requestAction(action: AIAction) {
-        
+    requestAction(action: AIAction, data?: AIActionData) {
+        this.roomMan.currentRoom.send(RoomMessage.AIAction, { action, data })
     }
 
     delegateAction(action: AIAction, handler: Function) {
