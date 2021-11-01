@@ -69,7 +69,7 @@ export class Camera implements ICamera {
     _y: number = 0
     extraXOffset: number = 0
     extraYOffset: number = 0
-    baseYOffset: number = -12//-24
+    baseYOffset: number = 24//-24
     offsetEaseDamping: number = 20
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero
@@ -120,9 +120,6 @@ export class Camera implements ICamera {
         this.viewport.addChild(this.cameraFlashPlugin)
         this.viewport.addChild(this.cameraLetterboxPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
-        
-        // this.stage.x = -(stageWidth / 2) + (GameWindow.halfWidth)
-        // this.stage.y = -(stageHeight / 4)
 
         this.trackMousePosition()
         this.setZoom(this.baseZoom)
@@ -151,8 +148,8 @@ export class Camera implements ICamera {
                 + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
         }
 
-        this.stage.x += this.instantOffset.x
-        this.stage.y += this.instantOffset.x
+        this.stage.x += this.instantOffset.x + this.transformOffset.x
+        this.stage.y += this.instantOffset.y + this.transformOffset.y
         
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
@@ -215,11 +212,8 @@ export class Camera implements ICamera {
             })
         }
 
-        const stageWidth = 1080
-        const stageHeight = 720
         this.resize(window.innerWidth, GameWindow.fullWindowHeight)
         this.stage.x = GameWindow.halfWidth
-        this.stage.y = -(stageHeight / 4)
     }
 
     setZoom(amount: number) {
