@@ -1,5 +1,5 @@
 export class Environment {
-    static IsHost: boolean = false
+    static isHost: boolean = false
     
     private constructor() {
 

@@ -44,7 +44,7 @@ export class RoomStateManager implements IRoomStateManager {
         if (RoomManager.clientSessionId === state.hostId) {
             importantLog('Host sessionId found, setting in Environment', 'sessionId', RoomManager.clientSessionId)
 
-            Environment.IsHost = true
+            Environment.isHost = true
         }
     }
 

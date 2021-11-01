@@ -5,6 +5,7 @@ import { ChatMessageSchema } from '../schema/ChatMessageSchema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { GameRoomListener, IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
 import { ChatMessagePayload, ClientMessage, PlayerPayload, WeaponStatusPayload } from './ServerMessages'
+import { AIActionPayload } from '../../ai/AIAction'
 
 export interface IGameRoom extends IRoomListenerDelegate {
     state: ServerGameState
@@ -79,6 +80,12 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         if (shouldShoot) {
             this.createProjectile(event.data)
         }
+    }
+
+    handleAIActionEvent(event: IRoomEvent<AIActionPayload>) {
+        const entity = this.state.creatures.get(event.data.actionData.entityID)
+
+
     }
 
     get players() {

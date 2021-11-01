@@ -2,9 +2,10 @@ import { Client } from 'colyseus'
 import { log } from '../../service/Flogger'
 import { ChatMessagePayload, PlayerPayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
 import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
-import { Observable } from 'rxjs'
-import { filter } from 'rxjs/operators'
+import { Observable, iif, of } from 'rxjs'
+import { filter, mapTo } from 'rxjs/operators'
 import { IGameRoom } from './GameRoom'
+import { AIActionPayload } from '../../ai/AIAction'
 
 export interface IGameRoomListener {
   startListening(): void
@@ -14,6 +15,7 @@ export interface IRoomListenerDelegate {
   handleChatEvent(event: IRoomEvent<ChatMessagePayload>): void
   handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>): void
   handlePlayerEvent(event: IRoomEvent<PlayerPayload>): void
+  handleAIActionEvent(event: IRoomEvent<AIActionPayload>): void
 }
 
 export class GameRoomListener implements IGameRoomListener {
@@ -35,6 +37,15 @@ export class GameRoomListener implements IGameRoomListener {
     this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
     this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleWeaponEvent)
     this.delegateMessage(RoomMessage.PlayerUpdate, this.delegate.handlePlayerEvent)
+    // this.delegateMessage(RoomMessage.AIAction, this.delegate.handleAIActionEvent)
+    // this.roomStream$.subscribe((ev: IRoomEvent<any>) => {
+    //   console.log('ROOMSTRE' + ev.type)
+
+    //   // if (ev.type === message) {
+    //   //   console.log('DELE' + ev.type)
+    //   //   delegate(ev)
+    //   // }
+    // })
   }
 
   buildRoomEvent(type: string | number, message: any, client: Client) {
