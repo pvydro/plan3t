@@ -121,8 +121,8 @@ export class Camera implements ICamera {
         this.viewport.addChild(this.cameraLetterboxPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
         
-        this.stage.x = -(stageWidth / 2) + (GameWindow.halfWidth)
-        this.stage.y = -(stageHeight / 4)
+        // this.stage.x = -(stageWidth / 2) + (GameWindow.halfWidth)
+        // this.stage.y = -(stageHeight / 4)
 
         this.trackMousePosition()
         this.setZoom(this.baseZoom)
@@ -158,16 +158,6 @@ export class Camera implements ICamera {
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
         
         this.stage.update()
-    }
-
-    reposition(addListener?: boolean) {
-        if (addListener) {
-            InputProcessor.on(InputEvents.Resize, () => {
-                this.reposition(false)
-            })
-        }
-
-        this.resize(GameWindow.width, GameWindow.fullWindowHeight)
     }
 
     clear() {
@@ -216,6 +206,20 @@ export class Camera implements ICamera {
         this._resizeScale = width / this.baseWidth
 
         this.setZoom(this._zoom)
+    }
+
+    reposition(addListener?: boolean) {
+        if (addListener) {
+            InputProcessor.on(InputEvents.Resize, () => {
+                this.reposition(false)
+            })
+        }
+
+        const stageWidth = 1080
+        const stageHeight = 720
+        this.resize(window.innerWidth, GameWindow.fullWindowHeight)
+        this.stage.x = GameWindow.halfWidth
+        this.stage.y = -(stageHeight / 4)
     }
 
     setZoom(amount: number) {
@@ -288,11 +292,11 @@ export class Camera implements ICamera {
     }
 
     get width() {
-        return GameWindow.width
+        return GameWindow.fullWindowWidth
     }
 
     get height() {
-        return GameWindow.height
+        return GameWindow.fullWindowHeight
     }
 
     get halfWidth() {

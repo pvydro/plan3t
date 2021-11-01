@@ -141,12 +141,6 @@ export class PlayerController implements IPlayerController {
     }
 
     private triggerJump() {
-        // if (!this.player.isOnGround) {
-        //     return
-        // }
-
-        // this.player.onGround = false
-        // this.player.yVel = -this.playerJumpingHeight
         this.player.jump()
     }
 
@@ -157,10 +151,9 @@ export class PlayerController implements IPlayerController {
 
     changeDirectionBasedOnMouse() {
         const projectedPlayerPos = {
-            x: (GameWindow.width / 2) - this.player.body.width,
-            y: GameWindow.height / 2
+            x: GameWindow.halfWidth - this.player.body.width,
+            y: GameWindow.halfHeight
         }
-        // const projectedPlayerPos = Camera.toScreen({ x: this.player.middleX, y: this.player.middleY })
 
         if (this.mousePos.x < projectedPlayerPos.x) {
             this.player.direction = Direction.Left
