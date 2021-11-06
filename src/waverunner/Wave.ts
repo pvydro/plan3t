@@ -16,17 +16,7 @@ export interface IWave extends IUpdatable {
     startSpawnIntervals(): void
 }
 
-export interface WaveOptions {
-    waveIndex: number
-    totalTime: number
-    elapsedTime: number
-    onSpawn?: Function
-    onComplete?: Function
-}
-
 export class Wave extends Emitter implements IWave {
-    _onSpawn: Function
-    _onComplete: Function
     _isCompleted: boolean = false
     shouldTimeout: boolean = false
     totalEnemies: number = 2
@@ -37,12 +27,11 @@ export class Wave extends Emitter implements IWave {
     totalSpawns: number = 0
     waveIndex: number = 0
 
-    constructor(options: WaveOptions | WaveSchema) {
+    constructor(options: WaveSchema) {
         super()
 
         this.waveIndex = options.waveIndex ?? 0
-        this._onSpawn = (options as WaveOptions).onSpawn ?? function() {}
-        this._onComplete = (options as WaveOptions).onComplete
+        this.totalEnemies = options.totalEnemies
     }
 
     update() {

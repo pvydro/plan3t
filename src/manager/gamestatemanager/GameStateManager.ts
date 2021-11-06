@@ -3,6 +3,7 @@ import { GameState, IGameState } from '../../gamestate/GameState'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { Game } from '../../main/Game'
 import { log } from '../../service/Flogger'
+import { gameStateMan } from '../../shared/Dependencies'
 
 export interface IGameStateManager extends IDemolishable {
     currentState: IGameState
@@ -29,25 +30,18 @@ export enum GameStateID {
     StartMenu = 'StartMenu',
     StyleMenu = 'StyleMenu',
     LoadoutMenu = 'LoadoutMenu',
+    WagerMenu = 'WagerMenu'
 }
 
 export class GameStateManager implements IGameStateManager {
     private static Instance: IGameStateManager
     _currentState?: IGameState
     _currentStateID: GameStateID
-    _defaultState: GameStateID = GameStateID.WaveRunnerGame
+    _defaultState: GameStateID = GameStateID.StartMenu
     factory: IGameStateFactory
     game?: Game
 
-    static getInstance() {
-        if (!GameStateManager.Instance) {
-            GameStateManager.Instance = new GameStateManager()
-        }
-
-        return GameStateManager.Instance
-    }
-
-    private constructor() {
+    constructor() {
         this.factory = new GameStateFactory()
     }
 
@@ -116,7 +110,7 @@ export class GameStateManager implements IGameStateManager {
     }
 
     static getCurrentStateID() {
-        return GameStateManager.getInstance().currentStateID
+        return gameStateMan.currentStateID
     }
 
     setGame(game: Game) {

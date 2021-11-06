@@ -1,9 +1,9 @@
 import { Key } from 'ts-keycode-enum'
 import { SmallBlastParticle } from '../../engine/display/particle/SmallBlastParticle'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
-import { GameStateManager } from '../../manager/gamestatemanager/GameStateManager'
 import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
+import { gameStateMan } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
 import { HealthController, IHealthController } from '../gravityorganism/HealthController'
 import { IClientPlayer } from './ClientPlayer'
@@ -63,7 +63,7 @@ export class PlayerHealthController extends HealthController implements IPlayerH
         this.player.consciousnessState = PlayerConsciousnessState.Dead
         this.displayDeathEffects()
 
-        GameStateManager.getInstance().gameOver()
+        gameStateMan.gameOver()
     }
 
     private displayDamageEffects(damageAmount: number) {

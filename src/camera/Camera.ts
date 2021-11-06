@@ -138,7 +138,7 @@ export class Camera implements ICamera {
         
         if (exists(this._target)) {
             this.offset.x += (this.transformOffset.x - this.offset.x) / this.offsetEaseDamping
-            this.offset.y += ((this.transformOffset.y) - this.offset.y) / this.offsetEaseDamping
+            this.offset.y += (this.transformOffset.y - this.offset.y) / this.offsetEaseDamping
             this.mouseOffset.x += (this.targetMouseOffset.x - this.mouseOffset.x) / this.mouseFollowDamping
             this.mouseOffset.y += (this.targetMouseOffset.y - this.mouseOffset.y) / this.mouseFollowDamping
 

@@ -1,6 +1,7 @@
 import { CRTFilter } from 'pixi-filters'
 import { Container } from '../../../engine/display/Container'
-import { GameStateID, GameStateManager } from '../../../manager/gamestatemanager/GameStateManager'
+import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
+import { gameStateMan } from '../../../shared/Dependencies'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { UIButton } from '../../uibutton/UIButton'
@@ -13,7 +14,8 @@ export interface IStartScreen extends IUIScreen {
 }
 
 export class StartScreen extends UIScreen implements IStartScreen {
-    playButton: UIButton//PlayButton
+    wagerButton: UIButton
+    waveRunnerButton: UIButton//PlayButton
     settingsButton: UIButton
     styleButton: UIButton
     loadoutButton: UIButton
@@ -40,10 +42,16 @@ export class StartScreen extends UIScreen implements IStartScreen {
         this.titleLogo = new TitleLogo()
         this.buttonContainer = new Container()
         this.buttons = [
-            this.playButton = new UIWoodButton({
-                text: { text: 'play' },
+            this.wagerButton = new UIWoodButton({
+                text: { text: 'wager' },
                 onTrigger: () => {
-                    GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
+
+                }
+            }),
+            this.waveRunnerButton = new UIWoodButton({
+                text: { text: 'waverunner' },
+                onTrigger: () => {
+                    gameStateMan.enterState(GameStateID.WaveRunnerGame)
                 }
             }),
             this.settingsButton = new UIWoodButton({
@@ -52,13 +60,13 @@ export class StartScreen extends UIScreen implements IStartScreen {
             this.styleButton = new UIWoodButton({
                 text: { text: 'style' },
                 onTrigger: () => {
-                    GameStateManager.getInstance().enterState(GameStateID.StyleMenu)
+                    gameStateMan.enterState(GameStateID.StyleMenu)
                 }
             }),
             this.loadoutButton = new UIWoodButton({
                 text: { text: 'loadout' },
                 onTrigger: () => {
-                    GameStateManager.getInstance().enterState(GameStateID.LoadoutMenu)
+                    gameStateMan.enterState(GameStateID.LoadoutMenu)
                 }
             })
         ]
@@ -76,7 +84,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
     update() {
         super.update()
 
-        this.playButton.update()
+        this.waveRunnerButton.update()
         this.settingsButton.update()
         this.loadoutButton.update()
     }

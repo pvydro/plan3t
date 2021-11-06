@@ -1,8 +1,9 @@
 import { Key } from 'ts-keycode-enum'
 import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { Sprite } from '../../../../engine/display/Sprite'
-import { GameStateID, GameStateManager } from '../../../../manager/gamestatemanager/GameStateManager'
+import { GameStateID } from '../../../../manager/gamestatemanager/GameStateManager'
 import { Flogger } from '../../../../service/Flogger'
+import { gameStateMan } from '../../../../shared/Dependencies'
 import { HomeshipicalModule, IHomeShipicalModule } from '../HomeshipicalModule'
 
 export interface IBeamMeUpModule extends IHomeShipicalModule {
@@ -23,7 +24,7 @@ export class BeamMeUpModule extends HomeshipicalModule implements IBeamMeUpModul
             interactKey: Key.E,
             shouldAddTooltip: true,
             onInteract: () => {
-                GameStateManager.getInstance().enterState(GameStateID.WaveRunnerGame)
+                gameStateMan.enterState(GameStateID.WaveRunnerGame)
 
                 // if (this.didInteract) return
 
