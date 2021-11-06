@@ -1,6 +1,6 @@
 {
   "name": "planet",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "paydro - plan3t",
   "main": "index.js",
   "scripts": {

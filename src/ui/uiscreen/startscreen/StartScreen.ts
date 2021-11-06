@@ -8,6 +8,7 @@ import { UIButton } from '../../uibutton/UIButton'
 import { UIWoodButton } from '../../uibutton/UIWoodButton'
 import { IUIScreen, UIScreen } from '../UIScreen'
 import { TitleLogo } from './TitleLogo'
+import { VersionInfoComponent } from './VersionInfoComponent'
 
 export interface IStartScreen extends IUIScreen {
     
@@ -22,6 +23,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
     titleLogo: TitleLogo
     buttonContainer: Container
     buttons: UIButton[]
+    versionInfo: VersionInfoComponent
 
     constructor() {
         super({
@@ -43,6 +45,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
         })
 
         this.titleLogo = new TitleLogo()
+        this.versionInfo = new VersionInfoComponent()
         this.buttonContainer = new Container()
         this.buttons = [
             this.wagerButton = new UIWoodButton({
@@ -80,6 +83,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
         }
 
         this.addChild(this.titleLogo)
+        this.addChild(this.versionInfo)
         this.addChild(this.buttonContainer)
         this.applyScale()
         this.reposition(true)
@@ -96,7 +100,8 @@ export class StartScreen extends UIScreen implements IStartScreen {
     applyScale() {
         const toScale = [
             ...this.buttons,
-            this.titleLogo
+            this.titleLogo,
+            this.versionInfo
         ]
         
         super.applyScale(toScale)
@@ -106,26 +111,28 @@ export class StartScreen extends UIScreen implements IStartScreen {
         super.reposition(addListeners)
 
         const scale = UIDefaults.UIScale
-        const margin = 1 * scale//UIDefaults.UIMargin * scale
+        const margin = UIDefaults.UIMargin * scale
+        const buttonMargin = 1 * scale
         let lastButtonProperties = { height: 0, y: 0 }
 
         for (let i in this.buttons) {
             const btn = this.buttons[i]
 
             btn.position.x = -btn.halfWidth * scale
-            btn.position.y = lastButtonProperties.y + lastButtonProperties.height + margin
+            btn.position.y = lastButtonProperties.y + lastButtonProperties.height + buttonMargin
 
             lastButtonProperties.height = btn.height
             lastButtonProperties.y = btn.y
         }
 
-        this.buttonContainer.pos = {
-            x: GameWindow.halfWidth,
-            y: GameWindow.halfHeight
-        }
+        this.buttonContainer.pos = { x: GameWindow.halfWidth, y: GameWindow.halfHeight }
         this.titleLogo.pos = {
             x: GameWindow.halfWidth - this.titleLogo.halfWidth,
-            y: this.buttonContainer.y - this.titleLogo.height - margin
+            y: this.buttonContainer.y - this.titleLogo.height - buttonMargin
+        }
+        this.versionInfo.pos = {
+            x: margin,
+            y: GameWindow.fullWindowHeight - margin - this.versionInfo.height
         }
     }
 }
