@@ -34,6 +34,5 @@ export class StartMenuState extends GameState implements IStartMenuState {
         await this.startScreen.hide()
         this.startScreen.exit()
         this.camera.viewport.removeChild(this.startScreen)
-        this.camera.viewport.removeChild(this.inGameHUD)
     }
 }

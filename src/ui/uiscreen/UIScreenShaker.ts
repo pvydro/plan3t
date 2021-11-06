@@ -73,6 +73,5 @@ export class UIScreenShaker implements IUIScreenShaker {
 
             }
         }).play()
-
     }
 }

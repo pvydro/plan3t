@@ -48,7 +48,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
             this.wagerButton = new UIWoodButton({
                 text: { text: 'wager' },
                 onTrigger: () => {
-
+                    gameStateMan.enterState(GameStateID.WagerMenu)
                 }
             }),
             this.waveRunnerButton = new UIWoodButton({

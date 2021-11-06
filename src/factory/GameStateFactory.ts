@@ -4,6 +4,7 @@ import { HomeshipState } from '../gamestate/HomeshipState'
 import { LoadoutMenuState } from '../gamestate/menustate/LoadoutMenuState'
 import { StartMenuState } from '../gamestate/menustate/StartMenuState'
 import { StyleMenuState } from '../gamestate/menustate/StyleMenuState'
+import { WagerMenuState } from '../gamestate/menustate/WagerMenuState'
 import { WaveGameState } from '../gamestate/WaveGameState'
 import { Game } from '../main/Game'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
@@ -13,8 +14,6 @@ export interface IGameStateFactory {
 }
 
 export class GameStateFactory implements IGameStateFactory {
-    
-
     constructor() {
 
     }
@@ -44,6 +43,9 @@ export class GameStateFactory implements IGameStateFactory {
                 break
             case GameStateID.LoadoutMenu:
                 state = new LoadoutMenuState(options)
+                break
+            case GameStateID.WagerMenu:
+                state = new WagerMenuState(options)
                 break
         }
 
