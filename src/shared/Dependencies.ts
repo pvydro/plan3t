@@ -1,5 +1,5 @@
-import { IUserProfile, UserProfile } from '../userprofile/UserProfile'
 import 'reflect-metadata'
+import { IUserProfile, UserProfile } from '../userprofile/UserProfile'
 import { container } from 'tsyringe'
 import { IMusicPlayer, MusicPlayer } from '../music/MusicPlayer'
 import { IMusicLoader, MusicLoader } from '../music/MusicLoader'
