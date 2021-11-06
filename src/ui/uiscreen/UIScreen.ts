@@ -7,6 +7,7 @@ import { InGameScreenID } from '../ingamemenu/InGameMenu'
 import { ISharedScreenBackground, SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIScreenHeader, UIScreenHeaderOptions } from './UIScreenHeader'
+import { UIScreenShakeOptions, UIScreenShaker } from './UIScreenShaker'
 
 export interface IUIScreen extends IUIComponent {
     backgroundGraphic?: Graphix
@@ -18,8 +19,10 @@ export interface UIScreenBackgroundOptions {
     backgroundColor?: number
     useSharedBackground?: boolean
 }
+
 export interface UIScreenOptions extends UIComponentOptions {
     background?: UIScreenBackgroundOptions
+    shakeOptions?: UIScreenShakeOptions
     header?: UIScreenHeaderOptions
 }
 
@@ -27,6 +30,7 @@ export class UIScreen extends UIComponent implements IUIScreen {
     backgroundGraphic?: Graphix
     sharedBackground?: ISharedScreenBackground
     screenHeader?: UIScreenHeader
+    screenShaker?: UIScreenShaker
 
     constructor(options?: UIScreenOptions) {
         options = options ?? {}
@@ -40,6 +44,9 @@ export class UIScreen extends UIComponent implements IUIScreen {
             }
             if (exists(options.header)) {
                 this.createScreenHeader(options.header)
+            }
+            if (exists(options.shakeOptions)) {
+                this.screenShaker = new UIScreenShaker(this, options.shakeOptions)
             }
         }
     }

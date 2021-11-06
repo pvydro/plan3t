@@ -1,5 +1,6 @@
+import { getRandomBool } from '../../../utils/Math'
 import { log } from '../../../service/Flogger'
-import { asyncTimeout, getRandomBool, getRandomValueFromArray } from '../../../utils/Utils'
+import { asyncTimeout, getRandomValueFromArray } from '../../../utils/Utils'
 import { CreatureType } from '../../utils/Enum'
 import { CreatureSchema } from '../CreatureSchema'
 import { ServerGameState } from '../serverstate/ServerGameState'

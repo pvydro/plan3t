@@ -1,6 +1,6 @@
 import { Assets, AssetUrls } from '../../../../asset/Assets'
 import { Sprite } from '../../../../engine/display/Sprite'
-import { NumberUtils } from '../../../../utils/NumberUtils'
+import { getRandomIntBetween } from '../../../../utils/Math'
 import { SphericalTile } from '../SphericalTile'
 
 export interface ISphericalTileFoliage {
@@ -23,7 +23,7 @@ export class SphericalTileFoliage extends Sprite implements ISphericalTileFoliag
     }
 
     private static findFoliageAssetUrlForTile(tile: SphericalTile) {
-        const chosenFoliage = NumberUtils.getRandomIntegerBetween(0, SphericalTileFoliage.TotalFoliages)
+        const chosenFoliage = getRandomIntBetween(0, SphericalTileFoliage.TotalFoliages)
         const assetUrl = Assets.TileDir + tile.biome + '/foliage' + chosenFoliage
 
         return assetUrl

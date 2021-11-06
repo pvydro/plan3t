@@ -1,4 +1,5 @@
 import { IDimension } from '../engine/math/Dimension'
+import { getRandomIntBetween } from '../utils/Math'
 import { IRect } from '../engine/math/Rect'
 
 export function exists(item): boolean {
@@ -53,13 +54,6 @@ export function double(value: number): number {
     return value * 2
 }
 
-export function getRandomBool(): boolean {
-    return Math.random() >= 0.5
-}
-
-export function getRandomIntBetween(minimum: number, maximum: number) {
-    return Math.floor(Math.random() * maximum) + minimum
-}
  
 export function asyncTimeout(time: number) {
     return new Promise(resolve => setTimeout(resolve, time))

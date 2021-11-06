@@ -85,6 +85,7 @@ export class Camera implements ICamera {
     cameraShakePlugin: ICameraShakePlugin
     cameraPlayerSynchPlugin: ICameraPlayerSynchPlugin
     cameraLetterboxPlugin: CameraLetterboxPlugin
+    // cameraZoomPlugin: CameraZoomPlugin
     plugins: any[]
 
     public static getInstance() {

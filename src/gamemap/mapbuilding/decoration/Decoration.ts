@@ -1,5 +1,5 @@
 import { Container, IContainer } from '../../../engine/display/Container'
-import { getRandomIntBetween } from '../../../utils/Utils'
+import { getRandomIntBetween } from '../../../utils/Math'
 import { DecorationDirectory } from '../DecorationDirectory'
 import { MapBuildingType } from '../MapBuilding'
 import { IMapBuildingFloor } from '../MapBuildingFloor'
