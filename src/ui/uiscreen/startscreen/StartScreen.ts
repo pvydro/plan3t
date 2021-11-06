@@ -15,7 +15,7 @@ export interface IStartScreen extends IUIScreen {
 
 export class StartScreen extends UIScreen implements IStartScreen {
     wagerButton: UIButton
-    waveRunnerButton: UIButton//PlayButton
+    waveRunnerButton: UIButton
     settingsButton: UIButton
     styleButton: UIButton
     loadoutButton: UIButton
@@ -78,6 +78,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
             const btn = this.buttons[i]
             this.buttonContainer.addChild(btn)
         }
+
         this.addChild(this.titleLogo)
         this.addChild(this.buttonContainer)
         this.applyScale()
@@ -94,11 +95,9 @@ export class StartScreen extends UIScreen implements IStartScreen {
 
     applyScale() {
         const toScale = [
+            ...this.buttons,
             this.titleLogo
         ]
-        for (const i in this.buttons) {
-            toScale.push(this.buttons[i])
-        }
         
         super.applyScale(toScale)
     }
