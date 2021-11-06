@@ -13,12 +13,14 @@ export class WagerScreen extends UIScreen implements IWagerScreen {
 
     constructor() {
         super({
+            filters: [],
             header: {
                 text: 'Wager'
             },
             background: {
                 useSharedBackground: true
-            }
+            },
+            addBackButton: true
         })
 
         const components = [

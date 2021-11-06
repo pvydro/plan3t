@@ -9,8 +9,6 @@ export interface IUIHoloButton extends IUIButton {
 }
 
 export class UIHoloButton extends UIButton implements IUIHoloButton {
-    backgroundGraphics: Graphix
-
     constructor(options?: UIButtonOptions) {
         options = UIHoloButton.applyDefaults(options)
 

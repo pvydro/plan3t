@@ -12,7 +12,8 @@ export interface IGameStateManager extends IDemolishable {
     initialize(): void
     update(): void
     gameOver(): void
-    setGame(game: Game)
+    setGame(game: Game): void
+    goBack(): void
 }
 
 export interface GameStateManagerOptions {
@@ -37,6 +38,7 @@ export class GameStateManager implements IGameStateManager {
     private static Instance: IGameStateManager
     _currentState?: IGameState
     _currentStateID: GameStateID
+    _previousStateID?: GameStateID
     _defaultState: GameStateID = GameStateID.StartMenu
     factory: IGameStateFactory
     game?: Game
@@ -77,6 +79,7 @@ export class GameStateManager implements IGameStateManager {
         
         if (this.currentState) {
             await this.currentState.exit()
+            this._previousStateID = this._currentStateID
             this._currentState = undefined
         }
     }
@@ -85,6 +88,14 @@ export class GameStateManager implements IGameStateManager {
         log('GameStateManager', 'gameOver', 'id', this.currentStateID)
 
         this.currentState.gameOver()
+    }
+
+    goBack() {
+        log('GameStateManager', 'goBack', 'currentId', this.currentStateID, 'previousID', this._previousStateID)
+
+        if (this._previousStateID) {
+            this.enterState(this._previousStateID)
+        }
     }
 
     demolish() {

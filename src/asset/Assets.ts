@@ -241,12 +241,13 @@ export class AssetUrls {
     // Buttons
     static ButtonRectDefault = 'assets/image/ui/generic/buttons/midbutton'
     static ButtonRectDefaultHovered = 'assets/image/ui/generic/buttons/midbuttonhovered'
+    static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
+    static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
     static ButtonRoundRectSmall = 'assets/image/ui/generic/buttons/smbutton'
     static ButtonRoundRectSmallHovered = 'assets/image/ui/generic/buttons/smbuttonhovered'
     static ButtonWood = 'assets/image/ui/generic/buttons/woodbutton'
     static ButtonWoodClicked = 'assets/image/ui/generic/buttons/woodbuttonclicked'
-    static ButtonMetalMd = 'assets/image/ui/generic/midbuttonmetal'
-    static ButtonHoloLg = 'assets/image/ui/generic/holobuttonbg'
+    static ButtonSquare = 'assets/image/ui/generic/buttons/squarebutton'
     // ButtonDecor
     static ButtonDecorWoodSeed = 'assets/image/ui/generic/buttons/buttondecor/woodbuttonseed'
 

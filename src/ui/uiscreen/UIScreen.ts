@@ -1,9 +1,12 @@
 import { Graphix } from '../../engine/display/Graphix'
 import { log } from '../../service/Flogger'
+import { gameStateMan } from '../../shared/Dependencies'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
 import { exists } from '../../utils/Utils'
 import { ISharedScreenBackground, SharedScreenBackground } from '../sharedbackground/SharedScreenBackground'
+import { UIButton } from '../uibutton/UIButton'
+import { UISquareButton } from '../uibutton/UISquareButton'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIScreenHeader, UIScreenHeaderOptions } from './UIScreenHeader'
 import { UIScreenShakeOptions, UIScreenShaker } from './UIScreenShaker'
@@ -24,6 +27,7 @@ export interface UIScreenOptions extends UIComponentOptions {
     background?: UIScreenBackgroundOptions
     shakeOptions?: UIScreenShakeOptions
     header?: UIScreenHeaderOptions
+    addBackButton?: boolean
 }
 
 export class UIScreen extends UIComponent implements IUIScreen {
@@ -31,6 +35,7 @@ export class UIScreen extends UIComponent implements IUIScreen {
     sharedBackground?: ISharedScreenBackground
     screenHeader?: UIScreenHeader
     screenShaker?: UIScreenShaker
+    backButton?: UIButton
 
     constructor(options?: UIScreenOptions) {
         options = options ?? {}
@@ -48,12 +53,18 @@ export class UIScreen extends UIComponent implements IUIScreen {
             if (exists(options.shakeOptions)) {
                 this.screenShaker = new UIScreenShaker(this, options.shakeOptions)
             }
+            if (options.addBackButton) {
+                this.createBackButton()
+            }
         }
     }
 
     update() {
         if (this.sharedBackground) {
             this.sharedBackground.update()
+        }
+        if (this.backButton) {
+            this.backButton.update()
         }
     }
 
@@ -102,12 +113,39 @@ export class UIScreen extends UIComponent implements IUIScreen {
         this.addChild(this.screenHeader)
     }
 
+    protected createBackButton() {
+        log('UIScreen', 'createBackButton')
+
+        this.backButton = new UISquareButton({
+            darkenerOptions: {
+                shouldDarken: true
+            },
+            onTrigger: () => {
+                gameStateMan.goBack()
+            }
+        })
+
+        this.backButton.scale.x = UIDefaults.UIScale
+        this.backButton.scale.y = UIDefaults.UIScale
+
+        this.addChild(this.backButton)
+    }
+
     reposition(addListener?: boolean) {
         super.reposition(addListener)
+        const margin = UIDefaults.UIMargin * UIDefaults.UIScale
 
         if (this.backgroundGraphic !== undefined) {
             this.backgroundGraphic.width = GameWindow.width
             this.backgroundGraphic.height = GameWindow.height
+        }
+
+        if (this.backButton) {
+            this.backButton.pos = { x: margin, y: margin }
+
+            if (this.screenHeader) {
+                this.screenHeader.x = this.backButton.x + this.backButton.width + margin
+            }
         }
     }
 
