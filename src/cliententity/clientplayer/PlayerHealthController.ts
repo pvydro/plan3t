@@ -1,9 +1,8 @@
 import { Key } from 'ts-keycode-enum'
 import { SmallBlastParticle } from '../../engine/display/particle/SmallBlastParticle'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
-import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { Flogger } from '../../service/Flogger'
-import { gameStateMan } from '../../shared/Dependencies'
+import { gameStateMan, particleMan } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
 import { HealthController, IHealthController } from '../gravityorganism/HealthController'
 import { IClientPlayer } from './ClientPlayer'
@@ -67,10 +66,9 @@ export class PlayerHealthController extends HealthController implements IPlayerH
     }
 
     private displayDamageEffects(damageAmount: number) {
-        const particleManager = ParticleManager.getInstance()
         const damageString = '-' + damageAmount
         
-        particleManager.addTextParticle({
+        particleMan.addTextParticle({
             text: damageString,
             position: { x: this.player.x, y: this.player.y },
             positionRandomization: { randomizationRange: 32 }
@@ -78,9 +76,7 @@ export class PlayerHealthController extends HealthController implements IPlayerH
     }
 
     private displayDeathEffects() {
-        const particleManager = ParticleManager.getInstance()
-
-        particleManager.addParticle(new SmallBlastParticle({
+        particleMan.addParticle(new SmallBlastParticle({
             position: { x: this.player.x, y: this.player.y }
         }))
     }

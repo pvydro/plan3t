@@ -6,6 +6,7 @@ import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { IRoomManager } from '../manager/roommanager/RoomManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
+import { particleMan } from '../shared/Dependencies'
 import { exists } from '../utils/Utils'
 
 export interface IGameLoop {
@@ -25,7 +26,6 @@ export class GameLoop implements IGameLoop {
     static CustomDelta: number = 1
     _initialized: boolean = false
     clientManager?: IClientManager
-    particleManager?: ParticleManager
     tooltipManager?: TooltipManager
     entityManager?: IEntityManager
     gravityManager: IGravityManager
@@ -34,7 +34,6 @@ export class GameLoop implements IGameLoop {
     constructor(options: GameLoopOptions) {
         this.assignOptions(options)
 
-        this.particleManager = ParticleManager.getInstance()
         this.tooltipManager = TooltipManager.getInstance()
     }
 
@@ -80,8 +79,8 @@ export class GameLoop implements IGameLoop {
 
             // Update current state
             this.clientManager.update()
-            this.particleManager.update()
             this.tooltipManager.update()
+            particleMan.update()
         }
 
         requestAnimationFrame(this.gameLoop.bind(this))

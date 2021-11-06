@@ -12,6 +12,7 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
+import { particleMan } from '../shared/Dependencies'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -33,15 +34,13 @@ export class GameplayState extends GameState implements IGameplayState {
     }
     
     async initialize() {
-        const particleManager = ParticleManager.getInstance()
-        
         this.camera.cameraLetterboxPlugin.show()
         this.inGameHUD.showHUDComponents()
 
         // this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
         this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-        this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
-        this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+        this.cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
+        this.cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
         this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
         // this.musicManager.
 

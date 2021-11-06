@@ -4,7 +4,7 @@ import { EntityType } from '../../cliententity/ClientEntity'
 import { GravityEntity, IGravityEntity } from '../../cliententity/GravityEntity'
 import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
-import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
+import { particleMan } from '../../shared/Dependencies'
 import { GlobalScale } from '../../utils/Constants'
 import { PhysDefaults } from '../../utils/Defaults'
 
@@ -62,9 +62,7 @@ export class Bullet extends GravityEntity implements IBullet {
     }
 
     emitGroundHitParticles() {
-        const particleManager = ParticleManager.getInstance()
-
-        particleManager.addDustParticle({
+        particleMan.addDustParticle({
             position: { x: this.x, y: this.y }
         })
     }

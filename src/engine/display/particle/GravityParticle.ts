@@ -1,6 +1,6 @@
 import { GameLoop } from '../../../gameloop/GameLoop'
 import { ICanDie } from '../../../interface/ICanDie'
-import { ParticleManager } from '../../../manager/particlemanager/ParticleManager'
+import { particleMan } from '../../../shared/Dependencies'
 import { IRect } from '../../math/Rect'
 import { Graphix } from '../Graphix'
 import { IParticle, Particle, ParticleOptions } from './Particle'
@@ -114,7 +114,7 @@ export class GravityParticle extends Particle implements IGravityParticle {
     }
 
     demolish() {
-        ParticleManager.getInstance().removeParticle(this)
+        particleMan.removeParticle(this)
         delete this.sprite
     }
 }

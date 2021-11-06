@@ -10,7 +10,15 @@ import { IUpdatable } from '../../interface/IUpdatable'
 import { IParticleCollisionManager, ParticleCollisionManager } from './ParticleCollisionManager'
 
 export interface IParticleManager extends IUpdatable {
-
+    container: Container
+    overlayContainer: Container
+    addTextParticle(options: TextParticleOptions): void
+    addBloodParticles(options: GravityParticleOptions): void
+    addDustParticle(options: DustParticleOptions): void
+    addDeathSkullParticle(options: GravityParticleOptions): void
+    addGravityParticles(options: GravityParticleOptions): void
+    removeParticle(particle: Particle, container?: Container): void
+    addParticle(particle: Particle, container?: Container): void
 }
 
 export interface ParticleManagerOptions {
@@ -18,25 +26,13 @@ export interface ParticleManagerOptions {
 }
 
 export class ParticleManager implements IParticleManager {
-    private static Instance: ParticleManager
     collisionManager: IParticleCollisionManager
-    container: Container
-    overlayContainer: Container
-    particles: Set<IParticle>
+    container: Container = new Container()
+    overlayContainer: Container = new Container()
+    particles: Set<IParticle> = new Set()
 
-    static getInstance() {
-        if (ParticleManager.Instance === undefined) {
-            ParticleManager.Instance = new ParticleManager()
-        }
-
-        return ParticleManager.Instance
-    }
-
-    private constructor() {
+    constructor() {
         this.collisionManager = new ParticleCollisionManager()
-        this.container = new Container()
-        this.overlayContainer = new Container()
-        this.particles = new Set()
     }
 
     update() {

@@ -2,7 +2,6 @@ import { CameraLayer } from '../camera/CameraStage'
 import { GameplayAmbientLight } from '../engine/display/lighting/GameplayAmbientLight'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { TooltipManager } from '../manager/TooltipManager'
-import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { log } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
@@ -10,6 +9,7 @@ import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
+import { particleMan } from '../shared/Dependencies'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -38,7 +38,6 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             log(this.name, 'Homeship initialized')
 
             const player = this.entityManager.createOfflinePlayer()
-            const particleManager = ParticleManager.getInstance()
             const tooltipManager = TooltipManager.getInstance()
 
             player.light.disableHardLights()
@@ -52,8 +51,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
             this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
             this.cameraStage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
-            this.cameraStage.addChildAtLayer(particleManager.container, CameraLayer.Particle)
-            this.cameraStage.addChildAtLayer(particleManager.overlayContainer, CameraLayer.OverlayParticle)
+            this.cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
+            this.cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
 
             Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             super.initialize()

@@ -1,7 +1,7 @@
 import { Camera } from '../camera/Camera'
 import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Direction } from '../engine/math/Direction'
-import { ParticleManager } from '../manager/particlemanager/ParticleManager'
+import { particleMan } from '../shared/Dependencies'
 import { GlobalScale } from '../utils/Constants'
 import { Weapon } from './Weapon'
 
@@ -60,7 +60,7 @@ export class WeaponEffects implements IWeaponEffects {
                 particle.scale.x = (particle.scale.x * -1)
             }
 
-            ParticleManager.getInstance().addParticle(particle)
+            particleMan.addParticle(particle)
         }
     }
 

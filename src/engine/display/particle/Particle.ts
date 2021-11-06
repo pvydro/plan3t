@@ -1,6 +1,6 @@
 import { IDemolishable } from '../../../interface/IDemolishable'
 import { IUpdatable } from '../../../interface/IUpdatable'
-import { ParticleManager } from '../../../manager/particlemanager/ParticleManager'
+import { particleMan } from '../../../shared/Dependencies'
 import { IVector2 } from '../../math/Vector2'
 import { AnimatedSprite, AnimationOptions } from '../AnimatedSprite'
 import { Container } from '../Container'
@@ -64,7 +64,7 @@ export class Particle extends Container implements IParticle {
     }
     
     demolish(): void {
-        ParticleManager.getInstance().removeParticle(this)
+        particleMan.removeParticle(this)
         if (this.sprite) {
             delete this.sprite
         }

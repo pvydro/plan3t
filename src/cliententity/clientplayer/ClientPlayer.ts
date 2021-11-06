@@ -23,6 +23,7 @@ import { TheDevil } from './superme/TheDevil'
 import { PlayerBadgeFloat } from './PlayerBadgeFloat'
 import { IPlayerCustomization, PlayerCustomization } from './customization/PlayerCustomization'
 import { PlayerHairType } from '../../model/PlayerCustomizationTypes'
+import { particleMan } from '../../shared/Dependencies'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
@@ -151,7 +152,7 @@ export class ClientPlayer extends ClientPlayerState {
         // Weapon-name particle
         const particlePosition = { x: this.position.x, y: this.position.y - 24 }
 
-        ParticleManager.getInstance().addTextParticle({
+        particleMan.addTextParticle({
             text: weapon.name.toUpperCase(),
             position: particlePosition,
             startAlpha: 0.75

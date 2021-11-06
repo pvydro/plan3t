@@ -7,6 +7,7 @@ import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { TrackerPatherAI } from '../ai/trackerpather/TrackerPatherAI'
 import { EnemyDebugger } from './EnemyDebugger'
 import { DebugConstants } from '../utils/Constants'
+import { particleMan } from '../shared/Dependencies'
 
 export interface IEnemy extends ITravelkinCreature {
 }
@@ -48,17 +49,16 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
 
         const camera = Camera.getInstance()
         const dmg = (damage instanceof Bullet) ? damage.damage : damage
-        const particleManager = ParticleManager.getInstance()
         const damageString = '-' + dmg
         
         camera.shakeAndFlash(2.5)
 
-        particleManager.addTextParticle({
+        particleMan.addTextParticle({
             text: damageString,
             position: { x: this.x, y: this.y },
             positionRandomization: { randomizationRange: 32 }
         })
-        particleManager.addBloodParticles({
+        particleMan.addBloodParticles({
             position: { x: this.x, y: this.y },
             positionRandomization: { randomizationRange: 8 }
         })
@@ -67,7 +67,7 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
     async die() {
         if (this.isDead) return
 
-        ParticleManager.getInstance().addDeathSkullParticle({
+        particleMan.addDeathSkullParticle({
             position: { x: this.x, y: this.y },
             positionRandomization: { randomizationRange: 8 }
         })

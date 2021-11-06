@@ -7,7 +7,6 @@ import { EntityManager, IEntityManager } from '../manager/entitymanager/EntityMa
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { Assets } from '../asset/Assets'
 import { Camera } from '../camera/Camera'
-import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Viewport } from '../camera/Viewport'
 import { Fonts } from '../asset/Fonts'
 import { Tween } from '../engine/display/tween/Tween'
@@ -33,7 +32,6 @@ export class Game implements IGame {
     _clientCamera: Camera
     _clientManager: IClientManager
     _entityManager: IEntityManager
-    _particleManager: ParticleManager
     _loadingScreen: LoadingScreen
     gameLoop: IGameLoop
 
@@ -52,7 +50,6 @@ export class Game implements IGame {
         this._entityManager = EntityManager.getInstance({ game })
         this._clientCamera = Camera.getInstance()
         this._clientManager = ClientManager.getInstance({ game, entityManager: this.entityManager })
-        this._particleManager = ParticleManager.getInstance()
         this._loadingScreen = LoadingScreen.getInstance()
     }
 
