@@ -13,6 +13,7 @@ export interface IUIScreen extends IUIComponent {
     backgroundGraphic?: Graphix
     sharedBackground?: ISharedScreenBackground
     applyScale(components?: any[]): void
+    exit(): void
 }
 
 export interface UIScreenBackgroundOptions {
@@ -108,6 +109,12 @@ export class UIScreen extends UIComponent implements IUIScreen {
         if (this.backgroundGraphic !== undefined) {
             this.backgroundGraphic.width = GameWindow.width
             this.backgroundGraphic.height = GameWindow.height
+        }
+    }
+
+    exit() {
+        if (this.screenShaker) {
+            this.screenShaker.stopShake()
         }
     }
 }

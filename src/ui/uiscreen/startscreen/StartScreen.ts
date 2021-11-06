@@ -36,6 +36,9 @@ export class StartScreen extends UIScreen implements IStartScreen {
             ],
             background: {
                 useSharedBackground: true
+            },
+            shakeOptions: {
+                shouldShake: true
             }
         })
 

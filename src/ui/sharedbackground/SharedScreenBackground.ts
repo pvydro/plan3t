@@ -36,7 +36,7 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
                     //     lineContrast: 0.025,
                     //     vignetting: 0.25
                     // }),
-                new KawaseBlurFilter(8.5, 6),
+                // new KawaseBlurFilter(8.5, 6),
                 // new GodrayFilter({
                 //     angle: -45,
                 //     alpha: 1.0,
