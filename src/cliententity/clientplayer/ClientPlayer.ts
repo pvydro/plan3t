@@ -24,6 +24,7 @@ import { PlayerBadgeFloat } from './PlayerBadgeFloat'
 import { IPlayerCustomization, PlayerCustomization } from './customization/PlayerCustomization'
 import { PlayerHairType } from '../../model/PlayerCustomizationTypes'
 import { particleMan } from '../../shared/Dependencies'
+import { PlayerHairColor } from './customization/PlayerHair'
 
 export interface IClientPlayer extends IClientPlayerState {
     sessionId: string
@@ -117,7 +118,8 @@ export class ClientPlayer extends ClientPlayerState {
             secondaryWeaponName: WeaponName.Komp9
         })
         this.customization.apply({
-            hair: PlayerHairType.FadeFro
+            hair: PlayerHairType.FadeFro,
+            hairColor: PlayerHairColor.SlateBlue
         })
     }
     

@@ -55,7 +55,7 @@ export class DebugConstants {
     static DisableFoliage: boolean = false
     static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false
-    static ShowCameraProjectionDebug: boolean = true
+    static ShowCameraProjectionDebug: boolean = false
     static ShowPlayerSynchDebug: boolean = false
     static ShowCollisionDebug: boolean = false
     static ShowInteractiveContainerDebug: boolean = true

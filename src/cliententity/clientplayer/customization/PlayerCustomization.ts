@@ -2,7 +2,7 @@ import { PlayerHairType } from '../../../model/PlayerCustomizationTypes'
 import { log } from '../../../service/Flogger'
 import { IClientPlayer } from '../ClientPlayer'
 import { PlayerHairFactory } from './helper/PlayerHairFactory'
-import { IPlayerHair, PlayerHair } from './PlayerHair'
+import { IPlayerHair, PlayerHair, PlayerHairColor } from './PlayerHair'
 
 export interface IPlayerCustomization extends PlayerCustomizationPieces {
     apply(config: PlayerCustomizationConfig)
@@ -14,6 +14,7 @@ export interface PlayerCustomizationOptions {
 
 export interface PlayerCustomizationConfig {
     hair?: PlayerHairType
+    hairColor?: PlayerHairColor
 }
 
 interface PlayerCustomizationPieces {
@@ -36,7 +37,7 @@ export class PlayerCustomization implements IPlayerCustomization {
         this.configApplied = true
 
         if (config.hair) {
-            this.hair = new PlayerHair(config.hair) // PlayerHairFactory.createHairForType(config.hair)
+            this.hair = new PlayerHair(config.hair, config.hairColor)
         }
 
         this.attachPiecesToBodyParts(this)
