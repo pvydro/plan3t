@@ -6,7 +6,7 @@ export interface IMultiStoryMapBuilding {
 }
 
 export interface MultiStoryMapBuildingOptions {
-    totalStories: number
+    stories: number
     type: MapBuildingType
 
     // storyHeight: number ?
@@ -21,19 +21,25 @@ export class MultiStoryMapBuilding extends GameMapContainer implements IMultiSto
     constructor(options: MultiStoryMapBuildingOptions) {
         super()
 
-        this.totalStories = options.totalStories
+        this.totalStories = options.stories ?? 2
         this.type = options.type
     }
 
     async initializeMap() {
+        this.clearChildren()
+        this.collisionRects = []
+
         for (let i = 0; i < this.totalStories; i++) {
             const floor = new MapBuilding({
                 type: this.type
             })
+            await floor.initializeMap()
+            this.collisionRects.push(...floor.collisionRects)
 
-            if (i > 0) {
+            if (i >= 1) {
                 const lastFloorY = this.stories.get(i - 1).y
 
+                floor.x = 0
                 floor.y = lastFloorY - floor.height
             }
 
@@ -48,4 +54,8 @@ export class MultiStoryMapBuilding extends GameMapContainer implements IMultiSto
     update() {
 
     }
+
+    // get collisionRects() {
+
+    // }
 }

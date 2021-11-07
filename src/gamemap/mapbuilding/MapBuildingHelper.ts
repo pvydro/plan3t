@@ -1,6 +1,8 @@
 import { Assets } from '../../asset/Assets'
 import { MapBuilding, MapBuildingType } from './MapBuilding'
 import { logError } from '../../service/Flogger'
+import { GameMapContainer } from '../GameMapContainer'
+import { MultiStoryMapBuilding } from './MultiStoryMapBuilding'
 
 const MapBuildings = require('../../json/MapBuildings.json')
 
@@ -13,8 +15,13 @@ export class MapBuildingHelper {
         
     }
 
-    static getMapBuildingForType(type: MapBuildingType): MapBuilding {
-        return new MapBuilding({ type })
+    static getMapBuildingForType(type: MapBuildingType, stories?: number): GameMapContainer {
+        if (!stories || stories === 1) {
+            return new MapBuilding({ type })
+        } else {
+            console.log('%cMultiStoryComplex', 'background-color: red; font-size: 300%')
+            return new MultiStoryMapBuilding({ type, stories })
+        }
     }
 
     static getBackgroundAssetForType(type: MapBuildingType): PIXI.Texture {

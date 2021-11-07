@@ -41,16 +41,16 @@ export class GameMapContainer extends Container implements IGameMapContainer {
     }
 
     async initializeMap() {
-        if (this.collisionRects !== undefined) {
-            if (DebugConstants.ShowCollisionDebug) {
-                this.collisionDebugger = new CollisionDebugger({
-                    lineWidth: 0.5,
-                    collisionRects: this.collisionRects
-                })
+        // if (this.collisionRects !== undefined) {
+        //     if (DebugConstants.ShowCollisionDebug) {
+        //         this.collisionDebugger = new CollisionDebugger({
+        //             lineWidth: 0.5,
+        //             collisionRects: this.collisionRects
+        //         })
 
-                this.addChild(this.collisionDebugger)
-            }
-        }
+        //         this.addChild(this.collisionDebugger)
+        //     }
+        // }
     }
 
     async transitionIn(outElements?: PositionAndAlphaAnimateable[]) {

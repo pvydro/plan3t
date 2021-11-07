@@ -1,6 +1,7 @@
 import { CameraLayer } from '../camera/CameraStage'
 import { GameMap } from '../gamemap/GameMap'
 import { MapBuildingType } from '../gamemap/mapbuilding/MapBuilding'
+import { MultiStoryMapBuilding } from '../gamemap/mapbuilding/MultiStoryMapBuilding'
 import { SphericalData } from '../gamemap/spherical/SphericalData'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
@@ -69,7 +70,10 @@ export class GameMapManager implements IGameMapManager {
     }
 
     async transitionToMap(type: MapBuildingType) {
-        return this._gameMap.transitionToMap(type)
+        console.log('%ctransitionToMap temporarily ommitted', 'background-color: red; font-size: 400%')
+        // if (this._gameMap.currentMap instanceof MultiStoryMapBuilding) {
+        // }
+        // return this._gameMap.transitionToMap(type)
     }
 
     update() {

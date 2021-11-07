@@ -55,7 +55,7 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
             this.addChild(this.walls)
             this.addChild(this.floor)
             
-            this.reposition()            
+            this.reposition()
             this.collisionRects = this.buildCollisionRects()
             
             super.initializeMap()

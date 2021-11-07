@@ -101,7 +101,8 @@ export class Crosshair extends UIComponent implements ICrosshair {
             y: this.state === CrosshairState.Cursor ? 12 : 0
         }
         
-        if (GameStateManager.getCurrentStateID() === GameStateID.StartMenu) {
+        if (GameStateManager.getCurrentStateID() === GameStateID.StartMenu
+        || GameStateManager.getCurrentStateID() === GameStateID.WagerMenu) {
             positionOffsetDivisor = 2
             posOffset.y += 152
         }

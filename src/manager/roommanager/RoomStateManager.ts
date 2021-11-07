@@ -50,7 +50,7 @@ export class RoomStateManager implements IRoomStateManager {
     }
 
     handlePVPRoomState(newState: IPVPGameRoomState) {
-        if (newState.currentMap) {
+        if (newState.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
             this.gameMapManager.initializeBuilding(newState.currentMap)
         }
         // if (newState.players) {
