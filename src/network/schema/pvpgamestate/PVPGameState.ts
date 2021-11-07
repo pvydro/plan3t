@@ -1,11 +1,16 @@
+import { type } from '@colyseus/schema'
+import { MapBuildingType } from '../../utils/Enum'
 import { ChatMessageSchema } from '../ChatMessageSchema'
-import { ServerGameState } from '../serverstate/ServerGameState'
+import { IServerGameState, ServerGameState } from '../serverstate/ServerGameState'
 
-export interface IPVPGameState {
+export interface IPVPGameState extends IServerGameState {
+    currentMap: MapBuildingType
 }
 
-export class PVPGameState extends ServerGameState {
+export class PVPGameState extends ServerGameState implements IPVPGameState {
     type: string = 'pvp'
+    @type('string')
+    currentMap: MapBuildingType = MapBuildingType.Castle
 
     initialize() {
         super.initialize()

@@ -7,20 +7,20 @@ export interface IPlanetGameState extends IServerGameState {
 
 }
 
-export class PlanetGameState extends ServerGameState implements IPlanetGameState {
-  type: string = 'planet'
-  @type(PlanetSphericalSchema)
-  planetSpherical?: PlanetSphericalSchema
-  @type('boolean')
-  planetHasBeenSet: boolean = false
+// export class PlanetGameState extends ServerGameState implements IPlanetGameState {
+//   type: string = 'planet'
+//   @type(PlanetSphericalSchema)
+//   planetSpherical?: PlanetSphericalSchema
+//   @type('boolean')
+//   planetHasBeenSet: boolean = false
 
-  initialize() {
-    super.initialize()
+//   initialize() {
+//     super.initialize()
 
-    this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'Starting...' }))
-  }
+//     this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'Starting...' }))
+//   }
 
-  update() {
-    super.update()
-  }
-}
+//   update() {
+//     super.update()
+//   }
+// }

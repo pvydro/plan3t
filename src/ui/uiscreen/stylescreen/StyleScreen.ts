@@ -12,7 +12,8 @@ export class StyleScreen extends UIScreen implements IStyleScreen {
             },
             header: {
                 text: 'Style'
-            }
+            },
+            addBackButton: true
         })
 
         this.applyScale()

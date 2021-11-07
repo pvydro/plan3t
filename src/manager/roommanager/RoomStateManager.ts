@@ -2,9 +2,9 @@ import { Dimension } from '../../engine/math/Dimension'
 import { SphericalBiome, SphericalData } from '../../gamemap/spherical/SphericalData'
 import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Environment } from '../../main/Environment'
-import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
 import { IServerGameState } from '../../network/schema/serverstate/ServerGameState'
+import { IPVPGameState } from '../../network/schema/pvpgamestate/PVPGameState'
 import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, logError, VerboseLogging } from '../../service/Flogger'
@@ -15,7 +15,8 @@ import { RoomManager, RoomManagerOptions } from './RoomManager'
 
 enum ServerStateType {
     WaveRunner = 'waverunner',
-    Planet = 'planet'
+    Planet = 'planet',
+    Pvp = 'pvp'
 }
 
 export interface IRoomStateManager {
@@ -48,7 +49,25 @@ export class RoomStateManager implements IRoomStateManager {
         }
     }
 
-    handleWaveRunnerState(newState: IWaveRunnerGameState) {
+    handlePVPRoomState(newState: IPVPGameState) {
+        if (newState.currentMap) {
+            this.gameMapManager.initializeBuilding(newState.currentMap)
+        }
+        // if (newState.players) {
+        //     newState.players.forEach((player) => {
+        //         const entity = this.entityManager.clientEntities.get(player.id).clientEntity
+
+        //         if (entity) {
+        //             entity.x = player.x
+        //             entity.y = player.y
+        //         } else {
+        //             logError('RoomStateManager', 'Player unaccounted for', player.id)
+        //         } 
+        //     })
+        // }
+    }
+
+    handleWaveRunnerRoomState(newState: IWaveRunnerGameState) {
         if (newState.waveRunner && newState.waveRunner.currentWave) {
             const wave = newState.waveRunner?.currentWave ?? undefined
 
@@ -80,7 +99,9 @@ export class RoomStateManager implements IRoomStateManager {
         }
 
         if (newState.type === ServerStateType.WaveRunner) {
-            this.handleWaveRunnerState(newState as IWaveRunnerGameState)
+            this.handleWaveRunnerRoomState(newState as IWaveRunnerGameState)
+        } else if (newState.type === ServerStateType.Pvp) {
+            this.handlePVPRoomState(newState as IPVPGameState)
         }
 
         // Apply creature state to creatures

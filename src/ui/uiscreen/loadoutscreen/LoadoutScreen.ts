@@ -12,7 +12,8 @@ export class LoadoutScreen extends UIScreen implements ILoadoutScreen {
             },
             header: {
                 text: 'Loadout'
-            }
+            },
+            addBackButton: true
         })
 
         this.applyScale()

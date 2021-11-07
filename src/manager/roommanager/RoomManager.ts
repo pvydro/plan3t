@@ -15,6 +15,7 @@ import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { ChatService } from '../../service/chatservice/ChatService'
 import { IServerGameState, ServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { WaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
+import { PVPGameState } from '../../network/schema/pvpgamestate/PVPGameState'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -59,7 +60,7 @@ export class RoomManager implements IRoomManager {
         log('RoomManager', 'initializeRoom')
         const client = this.clientManager.client
 
-        this.currentRoom = await client.joinOrCreate<WaveRunnerGameState>('GameRoom')
+        this.currentRoom = await client.joinOrCreate<PVPGameState>('GameRoom')
 
         RoomManager.clientSessionId = this.currentRoom.sessionId
         RoomMessenger._isOnline = true
