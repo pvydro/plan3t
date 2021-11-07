@@ -67,7 +67,7 @@ export class WeaponEffects implements IWeaponEffects {
     applyScreenEffects() {
         const camera = Camera.getInstance()
 
-        camera.shake(1.25)
+        camera.shake(5)
         camera.flash({
             minimumBrightness: 0.15,
             maximumBrightness: 0.3

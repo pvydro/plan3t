@@ -31,7 +31,7 @@ export interface ICameraTarget {
 
 export interface ICamera extends IUpdatable, IReposition {
     resize(width: number, height: number): void
-    toScreen(point: IVector2 | PIXI.ObservablePoint): IVector2
+    toScreen(point: IVector2 | PIXI.ObservablePoint | PositionAnimateable): IVector2
     follow(object: {}): void
     clearFollowTarget(): void
     clear(): void
@@ -56,8 +56,9 @@ export class Camera implements ICamera {
     private static Instance: Camera
     private baseZoom: number = 3.5
     private baseWidth: number = 1280
-    static Zero: Vector2 = Vector2.Zero
-    static Mouse: Vector2 = Vector2.Zero
+    static Zero: IVector2 = Vector2.Zero
+    static Mouse: IVector2 = Vector2.Zero
+    static UnprojectedMouse: IVector2 = Vector2.Zero
     _mouseX: number = 0
     _mouseY: number = 0
     _resizeScale: number = 1
@@ -70,10 +71,10 @@ export class Camera implements ICamera {
     extraXOffset: number = 0
     extraYOffset: number = 0
     baseYOffset: number = 24//-24
-    offsetEaseDamping: number = 20
+    offsetEaseDamping: number = 5
     targetMouseOffset: IVector2 = Vector2.Zero
     mouseOffset: IVector2 = Vector2.Zero
-    mouseFollowDamping: number = 50
+    mouseFollowDamping: number = 5
     offset: IVector2 = Vector2.Zero
     transformOffset: IVector2 = Vector2.Zero
     instantOffset: IVector2 = Vector2.Zero
@@ -154,6 +155,7 @@ export class Camera implements ICamera {
         
         Camera.Zero = this.toScreen({ x: 0, y: 0 })
         Camera.Mouse = this.toScreen({ x: this._mouseX, y: this._mouseY })
+        Camera.UnprojectedMouse = { x: this._mouseX, y: this._mouseY }
         
         this.stage.update()
     }
@@ -230,17 +232,20 @@ export class Camera implements ICamera {
             - (this.stage.x / this.zoom)
         const newY = (point.y / this.zoom)
             - (this.stage.y / this.zoom)
-        const newVec = new Vector2(newX, newY)
 
-        return newVec
+        point.x = newX
+        point.y = newY
+
+        return point
     }
 
     trackMousePosition() {
         InputProcessor.on(InputEvents.MouseMove, (event: MouseEvent) => {
             this._mouseX = event.clientX
             this._mouseY = event.clientY
-
+            
             this.updateMouseFollowOffset(this._mouseX, this._mouseY)
+            this.cameraDebuggerPlugin.toScreenDebugPosition = Camera.Mouse
         })
 
         // TODO: Temporary
@@ -261,7 +266,7 @@ export class Camera implements ICamera {
 
     snapToTarget() {
         this.x = this._target.x + this.offset.x + double(this.instantOffset.x)
-                + this.extraXOffset + this.mouseOffset.x
+            + this.extraXOffset + this.mouseOffset.x
         this.y = this._target.y + this.offset.y + double(this.instantOffset.y)
             + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
     }

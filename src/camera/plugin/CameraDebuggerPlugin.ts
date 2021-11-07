@@ -7,7 +7,7 @@ import { DebugConstants } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
 export interface ICameraDebuggerPlugin {
-
+    toScreenDebugPosition: IVector2
 }
 
 export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPlugin {
@@ -27,9 +27,8 @@ export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPl
         }
     }
 
-    update(x: number, y: number) {
+    update() {
         if (this.toScreenGraphics !== undefined) {
-            this.toScreenDebugPosition = this.camera.toScreen(new Vector2(x, y))
             this.toScreenGraphics.position.set(this.toScreenDebugPosition.x, this.toScreenDebugPosition.y)
         }
     }
@@ -50,7 +49,7 @@ export class CameraDebuggerPlugin extends Container implements ICameraDebuggerPl
         Flogger.log('CameraDebuggerPlugin', 'applyMouseListener')
 
         InputProcessor.on(InputEvents.MouseMove, (ev: MouseEvent) => {
-            this.update(ev.x - 2.5, ev.y - 2.5)
+            // this.update(ev.x - 2.5, ev.y - 2.5)
         })
     }
 }

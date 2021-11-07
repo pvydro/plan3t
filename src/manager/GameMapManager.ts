@@ -70,10 +70,9 @@ export class GameMapManager implements IGameMapManager {
     }
 
     async transitionToMap(type: MapBuildingType) {
-        console.log('%ctransitionToMap temporarily ommitted', 'background-color: red; font-size: 400%')
         // if (this._gameMap.currentMap instanceof MultiStoryMapBuilding) {
         // }
-        // return this._gameMap.transitionToMap(type)
+        return this._gameMap.transitionToMap(type)
     }
 
     update() {

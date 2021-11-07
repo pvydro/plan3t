@@ -6,6 +6,7 @@ import { Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { DebugConstants, GameWindow } from '../../utils/Constants'
 import { PlayerBodyState, PlayerConsciousnessState, PlayerLegsState } from './ClientPlayerState'
+import { Camera } from '../../camera/Camera'
 
 export interface IPlayerController {
     update(): void
@@ -150,14 +151,9 @@ export class PlayerController implements IPlayerController {
     }
 
     changeDirectionBasedOnMouse() {
-        const projectedPlayerPos = {
-            x: GameWindow.halfWidth - this.player.body.width,
-            y: GameWindow.halfHeight
-        }
-
-        if (this.mousePos.x < projectedPlayerPos.x) {
+        if (Camera.Mouse.x < this.player.position.x) {
             this.player.direction = Direction.Left
-        } else if (this.mousePos.x > projectedPlayerPos.x) {
+        } else if (Camera.Mouse.x > this.player.position.x) {
             this.player.direction = Direction.Right
         }
     }
@@ -211,10 +207,10 @@ export class PlayerController implements IPlayerController {
         })
 
         // Mouse
-        InputProcessor.on(InputEvents.MouseMove, (e: MouseEvent) => {
-            this.mousePos.x = e.clientX
-            this.mousePos.y = e.clientY
-        })
+        // InputProcessor.on(InputEvents.MouseMove, (e: MouseEvent) => {
+        //     this.mousePos.x = e.clientX
+        //     this.mousePos.y = e.clientY
+        // })
     }
 
     get walkDivisor() {

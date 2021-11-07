@@ -19,7 +19,6 @@ export class MapBuildingHelper {
         if (!stories || stories === 1) {
             return new MapBuilding({ type })
         } else {
-            console.log('%cMultiStoryComplex', 'background-color: red; font-size: 300%')
             return new MultiStoryMapBuilding({ type, stories })
         }
     }
