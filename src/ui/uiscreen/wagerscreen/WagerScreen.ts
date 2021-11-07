@@ -1,3 +1,5 @@
+import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
+import { gameStateMan } from '../../../shared/Dependencies'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
 import { UIButton } from '../../uibutton/UIButton'
@@ -27,7 +29,7 @@ export class WagerScreen extends UIScreen implements IWagerScreen {
             this.playButton = new UIWoodButton({
                 text: { text: 'Play' },
                 onTrigger: () => {
-                    
+                    gameStateMan.enterState(GameStateID.PVPGame)
                 }
             })
         ]
