@@ -3,11 +3,11 @@ import { MapBuildingType } from '../../utils/Enum'
 import { ChatMessageSchema } from '../ChatMessageSchema'
 import { IServerGameState, ServerGameState } from '../serverstate/ServerGameState'
 
-export interface IPVPGameState extends IServerGameState {
+export interface IPVPGameRoomState extends IServerGameState {
     currentMap: MapBuildingType
 }
 
-export class PVPGameState extends ServerGameState implements IPVPGameState {
+export class PVPGameRoomState extends ServerGameState implements IPVPGameRoomState {
     type: string = 'pvp'
     @type('string')
     currentMap: MapBuildingType = MapBuildingType.Castle

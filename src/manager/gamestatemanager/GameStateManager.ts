@@ -25,6 +25,7 @@ export enum GameStateID {
     // Game
     Gameplay = 'Gameplay',
     WaveRunnerGame = 'WaveGame',
+    PVPGame = 'PVPGame',
     Homeship = 'Spaceship',
     Empty = 'Empty',
     // Menu

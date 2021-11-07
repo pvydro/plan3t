@@ -5,6 +5,7 @@ import { LoadoutMenuState } from '../gamestate/menustate/LoadoutMenuState'
 import { StartMenuState } from '../gamestate/menustate/StartMenuState'
 import { StyleMenuState } from '../gamestate/menustate/StyleMenuState'
 import { WagerMenuState } from '../gamestate/menustate/WagerMenuState'
+import { PVPGameState } from '../gamestate/PVPGameState'
 import { WaveGameState } from '../gamestate/WaveGameState'
 import { Game } from '../main/Game'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
@@ -32,6 +33,9 @@ export class GameStateFactory implements IGameStateFactory {
                 break
             case GameStateID.WaveRunnerGame:
                 state = new WaveGameState(options)
+                break
+            case GameStateID.PVPGame:
+                state = new PVPGameState(options)
                 break
             
             // Menu

@@ -4,7 +4,7 @@ import { SphericalPoint } from '../../gamemap/spherical/SphericalPoint'
 import { Environment } from '../../main/Environment'
 import { PlanetSphericalSchema } from '../../network/schema/planetgamestate/PlanetSphericalSchema'
 import { IServerGameState } from '../../network/schema/serverstate/ServerGameState'
-import { IPVPGameState } from '../../network/schema/pvpgamestate/PVPGameState'
+import { IPVPGameRoomState } from '../../network/schema/pvpgamestate/PVPGameRoomState'
 import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, logError, VerboseLogging } from '../../service/Flogger'
@@ -49,7 +49,7 @@ export class RoomStateManager implements IRoomStateManager {
         }
     }
 
-    handlePVPRoomState(newState: IPVPGameState) {
+    handlePVPRoomState(newState: IPVPGameRoomState) {
         if (newState.currentMap) {
             this.gameMapManager.initializeBuilding(newState.currentMap)
         }
@@ -101,7 +101,7 @@ export class RoomStateManager implements IRoomStateManager {
         if (newState.type === ServerStateType.WaveRunner) {
             this.handleWaveRunnerRoomState(newState as IWaveRunnerGameState)
         } else if (newState.type === ServerStateType.Pvp) {
-            this.handlePVPRoomState(newState as IPVPGameState)
+            this.handlePVPRoomState(newState as IPVPGameRoomState)
         }
 
         // Apply creature state to creatures

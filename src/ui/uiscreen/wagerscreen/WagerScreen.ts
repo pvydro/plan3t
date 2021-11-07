@@ -27,7 +27,7 @@ export class WagerScreen extends UIScreen implements IWagerScreen {
             this.playButton = new UIWoodButton({
                 text: { text: 'Play' },
                 onTrigger: () => {
-    
+                    
                 }
             })
         ]
