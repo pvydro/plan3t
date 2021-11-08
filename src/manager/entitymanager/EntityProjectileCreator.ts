@@ -1,11 +1,12 @@
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
+import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 import { Flogger } from '../../service/Flogger'
 import { Bullet, ProjectileType } from '../../weapon/projectile/Bullet'
 import { IEntityManager } from './EntityManager'
 
 export interface IEntityProjectileCreator {
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number): Bullet
+    createProjectile(schema: ProjectileSchema): Bullet
 }
 
 export interface EntityProjectileCreatorOptions {
@@ -19,20 +20,21 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
         this.entityManager = options.entityManager
     }
 
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number): Bullet {
-        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type])
+    createProjectile(schema: ProjectileSchema): Bullet {
+        Flogger.log('EntityManager', 'createProjectile')
         
         const bullet = new Bullet({
-            rotation,
+            id: schema.id,
+            rotation: schema.rotation,
             entityManager: this.entityManager
         })
         
         bullet.sprite.anchor.set(0.5, 0.5)
-        bullet.x = x
-        bullet.y = y
+        bullet.x = schema.x
+        bullet.y = schema.y
 
         this.cameraStage.addChildAtLayer(bullet, CameraLayer.Bullet)
-        this.entityManager.registerEntity(bullet.entityId, bullet)
+        this.entityManager.registerEntity(schema.id, bullet)
 
         return bullet
     }

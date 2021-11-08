@@ -105,7 +105,7 @@ export abstract class ServerGameState extends Schema implements IServerGameState
             y: options.y,
             rotation: options.rotation,
             xVel, yVel,
-            sessionId: options.sessionId
+            id: options.sessionId
         }))
     }
 }

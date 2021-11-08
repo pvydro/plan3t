@@ -6,6 +6,7 @@ import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { GameRoomListener, IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
 import { ChatMessagePayload, ClientMessage, PlayerPayload, WeaponStatusPayload } from './ServerMessages'
 import { AIActionPayload } from '../../ai/AIAction'
+import { uuid } from 'uuidv4'
 
 export interface IGameRoom extends IRoomListenerDelegate {
     state: ServerGameState
@@ -100,7 +101,7 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
             x: weaponPayload.bulletX,
             y: weaponPayload.bulletY,
             rotation: weaponPayload.rotation,
-            sessionId: weaponPayload.sessionId,
+            sessionId: uuid(),
         })
     }
 }

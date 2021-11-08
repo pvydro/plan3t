@@ -103,18 +103,6 @@ export class RoomStateManager implements IRoomStateManager {
         } else if (newState.type === ServerStateType.Pvp) {
             this.handlePVPRoomState(newState as IPVPGameRoomState)
         }
-
-        // Apply creature state to creatures
-        // newState.creatures.forEach((creature: CreatureSchema) => {
-        //     const entity = this.entityManager.clientEntities.get(creature.id).clientEntity
-
-        //     if (entity) {
-        //         entity.x = creature.x
-        //         entity.y = creature.y
-        //     } else {
-        //         logError('RoomStateManager', 'Creature unaccounted for', creature.id)
-        //     } 
-        // })
     }
 
     async parseRoomSpherical(schema: PlanetSphericalSchema) {

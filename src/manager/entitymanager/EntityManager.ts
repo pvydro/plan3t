@@ -20,6 +20,7 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { ServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
+import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 
 export interface EntityCreatorOptions {
     schema: EntitySchema
@@ -45,7 +46,7 @@ export interface IEntityManager {
     removeEntity(sessionId: string, layer?: number): void
     registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
     getSchema(sessionId: string): EntitySchema
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, bulletVelocity?: number): void
+    createProjectile(schema: ProjectileSchema): void
 }
 
 export interface EntityManagerOptions {
@@ -144,10 +145,10 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number): void {
-        log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'x', x, 'y', y, 'rotation', rotation)
+    createProjectile(schema: ProjectileSchema): void {
+        log('EntityManager', 'createProjectile', 'schema', schema)
 
-        this.projectileCreator.createProjectile(type, x, y, rotation)
+        this.projectileCreator.createProjectile(schema)
     }
 
     registerEntity(id: string, localEntity: LocalEntity | ClientEntity) {

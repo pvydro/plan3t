@@ -98,9 +98,9 @@ export class ClientEntity extends Container implements IClientEntity {
         if (this.targetServerPosition.x !== undefined) {
             this.x = lerp(this.x, this.targetServerPosition.x, this.targetServerLerpRate)
         }
-        // if (this.targetServerPosition.y !== undefined) {
-        //     this.y = lerp(this.y, this.targetServerPosition.y, 0.1)
-        // }
+        if (this.targetServerPosition.y !== undefined) {
+            this.y = lerp(this.y, this.targetServerPosition.y, this.targetServerLerpRate)
+        }
     }
 
     flash(options?: EntityFlashOptions) {

@@ -18,6 +18,7 @@ export interface IBullet extends IGravityEntity {
 }
 
 export interface BulletOptions {
+    id: string
     rotation?: number
     velocity?: number
     damaage?: number
@@ -25,8 +26,7 @@ export interface BulletOptions {
 }
 
 export class Bullet extends GravityEntity implements IBullet {
-    private static BulletIdIteration = 0
-    _id: number
+    _id: string
     entityManager?: IEntityManager
     // velocity: number
     damage: number
@@ -41,20 +41,14 @@ export class Bullet extends GravityEntity implements IBullet {
             boundingBoxAnchor: { x: 0.5, y: 0.5 }
         })
         
-        this._id = Bullet.BulletIdIteration++
+        this._id = options.id
+        this.entityId = 'Bullet' + this._id
         this.rotation = options.rotation ?? 0
-        // this.velocity = options.velocity ?? PhysDefaults.bulletVelocity
         this.damage = options.damaage ?? 10
         this.entityManager = options.entityManager
-
-        // this.xVel = this.velocity * Math.cos(this.rotation)
-        // this.yVel = this.velocity * Math.sin(this.rotation)
-
+        this.targetServerLerpRate = 0.75
         this.type = EntityType.Bullet
-
         this.scale.set(GlobalScale, GlobalScale)
-
-        this.entityId = 'Bullet' + this._id
     }
 
     get id() {
