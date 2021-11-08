@@ -101,7 +101,6 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
             y: weaponPayload.bulletY,
             rotation: weaponPayload.rotation,
             sessionId: weaponPayload.sessionId,
-            bulletVelocity: weaponPayload.bulletVelocity ?? 0
         })
     }
 }

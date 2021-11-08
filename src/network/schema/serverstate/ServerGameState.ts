@@ -20,7 +20,6 @@ interface CreateEntityOptions {
 
 export interface CreateProjectileOptions extends CreateEntityOptions {
     rotation: number
-    bulletVelocity: number
 }
 
 export interface CreatePlayerOptions extends CreateEntityOptions {
@@ -97,15 +96,15 @@ export abstract class ServerGameState extends Schema implements IServerGameState
             return
         }
 
-        const xVel = options.bulletVelocity * Math.cos(options.rotation)
-        const yVel = options.bulletVelocity * Math.sin(options.rotation)
+        const bulletVelocity = 5
+        const xVel = bulletVelocity * Math.cos(options.rotation)
+        const yVel = bulletVelocity * Math.sin(options.rotation)
 
         this.projectiles.add(new ProjectileSchema().assign({
             x: options.x,
             y: options.y,
             rotation: options.rotation,
             xVel, yVel,
-            velocity: options.bulletVelocity,
             sessionId: options.sessionId
         }))
     }

@@ -144,10 +144,10 @@ export class EntityManager implements IEntityManager {
         return player
     }
 
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): void {
-        log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity, 'x', x, 'y', y, 'rotation', rotation)
+    createProjectile(type: ProjectileType, x: number, y: number, rotation: number): void {
+        log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'x', x, 'y', y, 'rotation', rotation)
 
-        this.projectileCreator.createProjectile(type, x, y, rotation, velocity)
+        this.projectileCreator.createProjectile(type, x, y, rotation)
     }
 
     registerEntity(id: string, localEntity: LocalEntity | ClientEntity) {

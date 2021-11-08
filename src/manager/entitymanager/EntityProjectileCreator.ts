@@ -5,7 +5,7 @@ import { Bullet, ProjectileType } from '../../weapon/projectile/Bullet'
 import { IEntityManager } from './EntityManager'
 
 export interface IEntityProjectileCreator {
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): Bullet
+    createProjectile(type: ProjectileType, x: number, y: number, rotation: number): Bullet
 }
 
 export interface EntityProjectileCreatorOptions {
@@ -19,11 +19,11 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
         this.entityManager = options.entityManager
     }
 
-    createProjectile(type: ProjectileType, x: number, y: number, rotation: number, velocity?: number): Bullet {
-        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type], 'velocity', velocity)
+    createProjectile(type: ProjectileType, x: number, y: number, rotation: number): Bullet {
+        Flogger.log('EntityManager', 'createProjectile', 'type', ProjectileType[type])
         
         const bullet = new Bullet({
-            rotation, velocity,
+            rotation,
             entityManager: this.entityManager
         })
         

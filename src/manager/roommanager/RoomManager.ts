@@ -134,7 +134,7 @@ export class RoomManager implements IRoomManager {
 
     addProjectile(schema: ProjectileSchema) {
         this.entityManager.createProjectile(ProjectileType.Bullet,
-            schema.x, schema.y, schema.rotation, schema.velocity)
+            schema.x, schema.y, schema.rotation)
     }
 
     addCreature(schema: CreatureSchema, id: string) {

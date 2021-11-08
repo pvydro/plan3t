@@ -10,6 +10,4 @@ export class ProjectileSchema extends EntitySchema {
     xVel!: number
     @type('number')
     yVel!: number
-    @type('number')
-    velocity!: number
 }

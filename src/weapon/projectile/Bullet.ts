@@ -28,7 +28,7 @@ export class Bullet extends GravityEntity implements IBullet {
     private static BulletIdIteration = 0
     _id: number
     entityManager?: IEntityManager
-    velocity: number
+    // velocity: number
     damage: number
 
     constructor(options?: BulletOptions) {
@@ -43,7 +43,7 @@ export class Bullet extends GravityEntity implements IBullet {
         
         this._id = Bullet.BulletIdIteration++
         this.rotation = options.rotation ?? 0
-        this.velocity = options.velocity ?? PhysDefaults.bulletVelocity
+        // this.velocity = options.velocity ?? PhysDefaults.bulletVelocity
         this.damage = options.damaage ?? 10
         this.entityManager = options.entityManager
 
