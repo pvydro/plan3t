@@ -104,9 +104,9 @@ export class RoomManager implements IRoomManager {
         }
 
         this.currentRoom.state.projectiles.onAdd = (schema: ProjectileSchema, key: number) => {
-            if (schema.sessionId !== RoomManager.clientSessionId) {
-                this.addProjectile(schema)
-            }
+            // if (schema.sessionId !== RoomManager.clientSessionId) {
+            this.addProjectile(schema)
+            // }
         }
         this.currentRoom.state.creatures.onAdd = (creature: CreatureSchema, key: string) => {
             // this

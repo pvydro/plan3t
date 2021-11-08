@@ -1,6 +1,7 @@
 import { IClientEntity } from '../../cliententity/ClientEntity'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
+import { IVector2 } from '../../engine/math/Vector2'
 import { Constants, DebugConstants } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
@@ -19,8 +20,12 @@ export class CameraServerDebugPlugin extends Container implements ICameraServerD
 
     update() {
         this.debugEntities.forEach((entity: IClientEntity, id: string) => {
-            this.debugGraphics.get(id).position.set(
-                entity.targetServerPosition.x, entity.targetServerPosition.y)
+            const serverPos: IVector2 = {
+                x: entity.targetServerPosition.x ?? entity.x,
+                y: entity.targetServerPosition.y ?? entity.y
+            }
+
+            this.debugGraphics.get(id).position.set(serverPos.x, serverPos.y)
         })
     }
 
@@ -49,8 +54,9 @@ export class CameraServerDebugPlugin extends Container implements ICameraServerD
         color = color || 0xffffff
 
         g.beginFill(color)
-        g.drawCircle(0, 0, 5)
+        g.drawCircle(0, 0, 2)
         g.endFill()
+        g.alpha = 0.5
 
         return g
     }

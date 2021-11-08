@@ -6,6 +6,7 @@ import { Observable, iif, of } from 'rxjs'
 import { filter, mapTo } from 'rxjs/operators'
 import { IGameRoom } from './GameRoom'
 import { AIActionPayload } from '../../ai/AIAction'
+import EventEmitter from 'eventemitter3'
 
 export interface IGameRoomListener {
   startListening(): void
@@ -20,14 +21,13 @@ export interface IRoomListenerDelegate {
 
 export class GameRoomListener implements IGameRoomListener {
   delegate: IGameRoom
-  roomStream$: Observable<RoomEvent<any>>
+  emitter: EventEmitter = new EventEmitter()
 
   constructor(delegate: IGameRoom) {
     this.delegate = delegate
-    this.roomStream$ = new Observable(observer => {
-      this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
-        observer.next(this.buildRoomEvent(type, message, client))
-      })
+    this.delegate.onMessage('*', (client: Client, type: string | number, message: any) => {
+      const roomEvent = this.buildRoomEvent(type, message, client)
+      this.emitter.emit(roomEvent.type, roomEvent)
     })
   }
 
@@ -37,15 +37,6 @@ export class GameRoomListener implements IGameRoomListener {
     this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
     this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleWeaponEvent)
     this.delegateMessage(RoomMessage.PlayerUpdate, this.delegate.handlePlayerEvent)
-    // this.delegateMessage(RoomMessage.AIAction, this.delegate.handleAIActionEvent)
-    // this.roomStream$.subscribe((ev: IRoomEvent<any>) => {
-    //   console.log('ROOMSTRE' + ev.type)
-
-    //   // if (ev.type === message) {
-    //   //   console.log('DELE' + ev.type)
-    //   //   delegate(ev)
-    //   // }
-    // })
   }
 
   buildRoomEvent(type: string | number, message: any, client: Client) {
@@ -59,9 +50,9 @@ export class GameRoomListener implements IGameRoomListener {
 
     delegate = delegate.bind(this.delegate)
 
-    this.roomStream$.pipe(
-      filter((ev: IRoomEvent<any>) => ev.type === message)
-    ).subscribe((ev: IRoomEvent<any>) => delegate(ev))
+    this.emitter.on(message, (event: RoomEvent<any>) => {
+      delegate(event)
+    })
   }
 }
 

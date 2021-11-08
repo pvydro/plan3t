@@ -75,6 +75,8 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     }
 
     handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
+        log('GameRoom', 'handleWeaponEvent', event.client.id)
+
         const { shouldShoot } = event.data
 
         if (shouldShoot) {
