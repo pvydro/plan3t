@@ -1,4 +1,4 @@
-import { Assets, AssetUrls } from '../../../asset/Assets'
+import { Assets } from '../../../asset/Assets'
 import { Sprite } from '../../../engine/display/Sprite'
 import { PlayerHairType } from '../../../model/PlayerCustomizationTypes'
 import { IPlayerHead } from '../bodyparts/PlayerHead'
@@ -9,7 +9,8 @@ export enum PlayerHairColor {
     YellowBlonde = 0xe0c56c,
     Black = 0x545454,
     Purple = 0xb182d1,
-    SlateBlue = 0x7b91b8
+    SlateBlue = 0x7b91b8,
+    Silver = 0xb0b0b0
 }
 
 export interface IPlayerHair extends IPlayerCustomizationPiece {

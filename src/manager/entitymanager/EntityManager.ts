@@ -157,6 +157,8 @@ export class EntityManager implements IEntityManager {
             ? { clientEntity: localEntity } : localEntity
 
         this._clientEntities.set(id, localEntity)
+
+        Camera.getInstance().addDebugEntity(localEntity.clientEntity)
     }
 
     clearClientEntities() {

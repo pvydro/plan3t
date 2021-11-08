@@ -119,7 +119,7 @@ export class ClientPlayer extends ClientPlayerState {
         })
         this.customization.apply({
             hair: PlayerHairType.FadeFro,
-            hairColor: PlayerHairColor.SlateBlue
+            hairColor: PlayerHairColor.Silver
         })
     }
     

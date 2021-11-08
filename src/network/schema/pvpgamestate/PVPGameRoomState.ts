@@ -10,7 +10,7 @@ export interface IPVPGameRoomState extends IServerGameState {
 export class PVPGameRoomState extends ServerGameState implements IPVPGameRoomState {
     type: string = 'pvp'
     @type('string')
-    currentMap: MapBuildingType = MapBuildingType.Castle
+    currentMap: MapBuildingType = MapBuildingType.Dojo
 
     initialize() {
         super.initialize()

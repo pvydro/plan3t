@@ -26,6 +26,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         const entity: LocalEntity = this.clientEntities.get(sessionId)
 
         entity.clientEntity.targetServerPosition.x = schema.x
+        entity.clientEntity.targetServerPosition.y = schema.y
         entity.serverEntity = schema
 
         // // TODO: Deprecate synchronizables system

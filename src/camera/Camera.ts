@@ -13,12 +13,14 @@ import { CameraShakePlugin, ICameraShakePlugin } from './plugin/CameraShakePlugi
 import { log } from '../service/Flogger'
 import { double, exists } from '../utils/Utils'
 import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
-import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerSynchPlugin'
+import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerTargetPlugin'
 import { GameWindow } from '../utils/Constants'
 import { CameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
 import { IReposition } from '../interface/IReposition'
 import { PositionAnimateable } from '../engine/display/Animator'
 import { PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayerState'
+import { CameraServerDebugPlugin } from './plugin/CameraServerDebuggerPlugin'
+import { IClientEntity } from '../cliententity/ClientEntity'
 
 export interface ICameraTarget {
     x: number
@@ -78,7 +80,7 @@ export class Camera implements ICamera {
     offset: IVector2 = Vector2.Zero
     transformOffset: IVector2 = Vector2.Zero
     instantOffset: IVector2 = Vector2.Zero
-
+ 
     cameraDebuggerPlugin: CameraDebuggerPlugin
     cameraFlashPlugin: CameraFlashPlugin
     cameraOverlayEffectsPlugin: ICameraOverlayEffectsPlugin
@@ -86,6 +88,7 @@ export class Camera implements ICamera {
     cameraShakePlugin: ICameraShakePlugin
     cameraPlayerSynchPlugin: ICameraPlayerSynchPlugin
     cameraLetterboxPlugin: CameraLetterboxPlugin
+    cameraServerDebugPlugin: CameraServerDebugPlugin
     // cameraZoomPlugin: CameraZoomPlugin
     plugins: any[]
 
@@ -110,7 +113,8 @@ export class Camera implements ICamera {
             this.cameraSwayPlugin = new CameraSwayPlugin(this),
             this.cameraShakePlugin = new CameraShakePlugin(this),
             this.cameraPlayerSynchPlugin = new CameraPlayerSynchPlugin(this),
-            this.cameraLetterboxPlugin = new CameraLetterboxPlugin(this)
+            this.cameraLetterboxPlugin = new CameraLetterboxPlugin(this),
+            this.cameraServerDebugPlugin = new CameraServerDebugPlugin(this)
         ]
 
         const stageWidth = 1080
@@ -122,6 +126,7 @@ export class Camera implements ICamera {
         this.viewport.addChild(this.cameraFlashPlugin)
         this.viewport.addChild(this.cameraLetterboxPlugin)
         this.stage.addChild(this.cameraDebuggerPlugin)
+        this.stage.addChild(this.cameraServerDebugPlugin)
 
         this.trackMousePosition()
         this.setZoom(this.baseZoom)
@@ -269,6 +274,10 @@ export class Camera implements ICamera {
             + this.extraXOffset + this.mouseOffset.x
         this.y = this._target.y + this.offset.y + double(this.instantOffset.y)
             + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
+    }
+
+    addDebugEntity(clientEntity: IClientEntity) {
+        this.cameraServerDebugPlugin.trackEntity(clientEntity)
     }
 
     static toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {

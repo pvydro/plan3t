@@ -1,7 +1,6 @@
 import { TweenLite } from 'gsap/all'
 import { Sounds, SoundUrls } from '../asset/Sounds'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
-import { WeaponStateFormatter } from '../cliententity/clientplayer/state/WeaponStateFormatter'
 import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { Tween } from '../engine/display/tween/Tween'

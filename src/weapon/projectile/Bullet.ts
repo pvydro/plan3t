@@ -47,8 +47,8 @@ export class Bullet extends GravityEntity implements IBullet {
         this.damage = options.damaage ?? 10
         this.entityManager = options.entityManager
 
-        this.xVel = this.velocity * Math.cos(this.rotation)
-        this.yVel = this.velocity * Math.sin(this.rotation)
+        // this.xVel = this.velocity * Math.cos(this.rotation)
+        // this.yVel = this.velocity * Math.sin(this.rotation)
 
         this.type = EntityType.Bullet
 

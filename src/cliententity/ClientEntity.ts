@@ -17,6 +17,7 @@ export interface IClientEntity extends IContainer, IUpdatable {
     yVel: number
     type: string
     position: IVector2
+    targetServerPosition: IVector2
     entityId: string
     sprite: ISprite | IContainer
     getAllSprites(): (Container | Sprite)[]
