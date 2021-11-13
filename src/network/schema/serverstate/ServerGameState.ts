@@ -9,6 +9,7 @@ import { ServerPlayerController } from '../../controller/ServerPlayerController'
 import { exists } from '../../../utils/Utils'
 import { v4 } from 'uuid'
 import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
+import { EntitySchema } from '../EntitySchema'
 
 interface CreateEntityOptions {
     x?: number
@@ -40,6 +41,8 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     players = new MapSchema<PlayerSchema>()
     @type({ map: CreatureSchema })
     creatures = new MapSchema<CreatureSchema>()
+    @type({ map: EntitySchema })
+    gravityEntities = new MapSchema<EntitySchema>()
     @type({ set: ProjectileSchema })
     projectiles = new SetSchema<ProjectileSchema>()
     @type({ set: ChatMessageSchema })

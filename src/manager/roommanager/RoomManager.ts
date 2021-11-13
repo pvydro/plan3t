@@ -16,6 +16,7 @@ import { ChatService } from '../../service/chatservice/ChatService'
 import { IServerGameState, ServerGameState } from '../../network/schema/serverstate/ServerGameState'
 import { WaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 import { PVPGameRoomState } from '../../network/schema/pvpgamestate/PVPGameRoomState'
+import { matchMaker } from '../../shared/Dependencies'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
@@ -58,9 +59,8 @@ export class RoomManager implements IRoomManager {
 
     async initializeRoom(): Promise<Room> {
         log('RoomManager', 'initializeRoom')
-        const client = this.clientManager.client
 
-        this.currentRoom = await client.joinOrCreate<PVPGameRoomState>('GameRoom')
+        this.currentRoom = await matchMaker.client.joinOrCreate<PVPGameRoomState>('GameRoom')
 
         RoomManager.clientSessionId = this.currentRoom.sessionId
         RoomMessenger._isOnline = true
@@ -180,10 +180,6 @@ export class RoomManager implements IRoomManager {
 
     set currentRoom(value) {
         RoomManager._room = value
-    }
-
-    get client() {
-        return this.clientManager.client
     }
 
     get roomState() {

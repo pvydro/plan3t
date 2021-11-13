@@ -75,3 +75,7 @@ export class SoundUrls {
 
     static GunshotA: string = Sounds.BaseSoundsDir + '/gunshot/a.wav'
 }
+
+export function playSound(soundKey: string, options?: PlaySoundOptions) {
+    return Sounds.play(soundKey, options)
+}

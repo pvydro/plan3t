@@ -1,16 +1,12 @@
-import { Client } from 'colyseus.js';
-import { ENDPOINT } from '../network/Network'
-import { Camera, ICamera } from '../camera/Camera'
+import { ICamera } from '../camera/Camera'
 import { IEntityManager } from './entitymanager/EntityManager'
 import { GameMap, IGameMap } from '../gamemap/GameMap'
-import { IGameStateManager } from './gamestatemanager/GameStateManager'
 import { Game } from '../main/Game'
 import { IUpdatable } from '../interface/IUpdatable'
-import { Flogger, log } from '../service/Flogger';
-import { gameStateMan } from '../shared/Dependencies';
+import { Flogger, log } from '../service/Flogger'
+import { gameStateMan } from '../shared/Dependencies'
 
 export interface IClientManager extends IUpdatable {
-    client: Client
     clientCamera: ICamera
     entityManager: IEntityManager
     gameMap: IGameMap
@@ -25,7 +21,6 @@ export interface ClientManagerOptions {
 
 export class ClientManager implements IClientManager {
     private static Instance: IClientManager
-    _client: Client
     _camera: ICamera
     _gameMap: GameMap
     _game: Game
@@ -50,7 +45,6 @@ export class ClientManager implements IClientManager {
     }
 
     async initialize() {
-        this._client = new Client(ENDPOINT)
         gameStateMan.setGame(this._game)
         await gameStateMan.initialize()
     }
@@ -63,10 +57,6 @@ export class ClientManager implements IClientManager {
         log('ClientManager', 'clearEntityManager')
         
         this._entityManager.clearClientEntities()
-    }
-
-    get client() {
-        return this._client
     }
 
     get clientCamera() {

@@ -14,7 +14,7 @@ import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
 import { MusicLoader } from '../music/MusicLoader'
-import { musicLoader } from '../shared/Dependencies'
+import { matchMaker, musicLoader } from '../shared/Dependencies'
 import { DecorationDirectory } from '../gamemap/mapbuilding/DecorationDirectory'
 
 export interface IGame {
@@ -64,6 +64,7 @@ export class Game implements IGame {
         await Tween.initializePlugins()
         await DecorationDirectory.assembleDirectory()
         
+        await matchMaker.initializeClient()
         await this.clientManager.initialize()
 
         this.stage.addChild(this.cameraViewport)
@@ -80,7 +81,7 @@ export class Game implements IGame {
         this._application = new PIXI.Application({
             width: GameWindow.fullWindowWidth,
             height: GameWindow.fullWindowHeight,
-            backgroundColor: 0x080808,//0x0c0c0c,
+            backgroundColor: 0x080808,
             antialias: false,
             view: gameCanvas
         })
