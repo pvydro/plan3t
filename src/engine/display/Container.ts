@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../interface/IDemolishable'
+import { IUIContainer } from '../../ui/UIContainer'
 import { IDimension } from '../math/Dimension'
 import { IVector2 } from '../math/Vector2'
 
@@ -32,6 +33,16 @@ export class Container extends PIXI.Container implements IContainer {
             this.removeChild(child)
             child.destroy()
         }
+    }
+
+    addChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0] {
+        super.addChild(...children as PIXI.DisplayObject[])
+        return children[0]
+    }
+
+    removeChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0] {
+        super.removeChild(...children as PIXI.DisplayObject[])
+        return children[0]
     }
 
     hasChild(child: any) {

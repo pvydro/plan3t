@@ -2,9 +2,9 @@ import { AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { log } from '../../../service/Flogger'
+import { inGameHUD } from '../../../shared/Dependencies'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
-import { InGameHUD } from '../../ingamehud/InGameHUD'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIButton, UIButton, UIButtonType } from '../../uibutton/UIButton'
 
@@ -44,7 +44,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
 
         super.trigger()
 
-        InGameHUD.getInstance().closeMenuScreen(InGameScreenID.RespawnScreen)
+        inGameHUD.closeMenuScreen(InGameScreenID.RespawnScreen)
         ClientPlayer.getInstance().requestRespawn()
     }
 

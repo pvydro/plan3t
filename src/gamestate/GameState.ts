@@ -1,11 +1,9 @@
 import { CameraServerDebugPlugin } from '../camera/plugin/CameraServerDebuggerPlugin'
 import { Game } from '../main/Game'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
-import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { log } from '../service/Flogger'
-import { camera, entityMan } from '../shared/Dependencies'
+import { camera, entityMan, inGameHUD } from '../shared/Dependencies'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
-import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 
 export interface IGameState {
     initialize(): Promise<void>
@@ -22,23 +20,19 @@ export interface GameStateOptions {
 export abstract class GameState implements IGameState {
     id: GameStateID
     game: Game
-    inGameHUD: InGameHUD
-    musicManager: IMusicManager
     
     constructor(options: GameStateOptions) {
         this.id = options.id ?? GameStateID.Empty
         this.game = options.game
 
-        this.musicManager = MusicManager.getInstance()
-        this.inGameHUD = InGameHUD.getInstance()
     }
 
     async initialize() {
         log('GameState', 'initialize', 'id', this.id)
 
-        this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
-        this.inGameHUD.crosshair.show()
-        camera.viewport.addChild(this.inGameHUD.crosshair)
+        inGameHUD.requestCrosshairState(CrosshairState.Cursor)
+        inGameHUD.crosshair.show()
+        camera.viewport.addChild(inGameHUD.crosshair)
         
         await Game.showLoadingScreen(false)
     }

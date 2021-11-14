@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js'
+import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../../interface/IDemolishable'
 import { UIComponent } from '../../../ui/UIComponent'
 import { GameWindow } from '../../../utils/Constants'

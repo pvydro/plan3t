@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js'
 import { Darkener } from '../../engine/display/lighting/Darkener'
 import { AttachmentsScreen } from '../uiscreen/attachmentsscreen/AttachmentsScreen'
 import { BeamMeUpScreen } from '../uiscreen/beamemupscreen/BeamMeUpScreen'

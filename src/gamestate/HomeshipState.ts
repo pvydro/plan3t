@@ -9,7 +9,7 @@ import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
-import { camera, entityMan, gameMapMan, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameMapMan, inGameHUD, particleMan } from '../shared/Dependencies'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -18,7 +18,6 @@ export interface ISpaceshipState extends IGameState {
 export class HomeshipState extends GameState implements ISpaceshipState {
     backgroundGraphics: Graphix
     ambientLight: GameplayAmbientLight
-    inGameHUD: InGameHUD
 
     constructor(options: GameStateOptions) {
         super({
@@ -26,13 +25,12 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             id: GameStateID.Homeship
         })
 
-        this.inGameHUD = InGameHUD.getInstance()
         this.ambientLight = new GameplayAmbientLight()
     }
 
     async initialize() {
         await this.initializeBackground()
-        camera.viewport.addChild(this.inGameHUD)
+        camera.viewport.addChild(inGameHUD)
 
         gameMapMan.initializeHomeship().then(async () => {
             log(this.name, 'Homeship initialized')
@@ -45,8 +43,8 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             player.holster.holsterWeapon()
             player.x = 32
 
-            await this.inGameHUD.initializeHUD()
-            this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
+            await inGameHUD.initializeHUD()
+            inGameHUD.requestCrosshairState(CrosshairState.Cursor)
             
             camera.follow(player)
             cameraStage.addChildAtLayer(player, CameraLayer.Players)
@@ -64,7 +62,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
     update() {
         gameMapMan.update()
         this.ambientLight.update()
-        this.inGameHUD.update()
+        inGameHUD.update()
     }
 
     async exit() {
@@ -73,7 +71,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         await Game.showLoadingScreen(true)
 
         this.ambientLight.demolish()
-        await this.inGameHUD.showHUDComponents(false)
+        await inGameHUD.showHUDComponents(false)
 
         super.exit()
     }

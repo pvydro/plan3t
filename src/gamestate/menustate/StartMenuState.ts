@@ -1,7 +1,7 @@
 import { StartScreen } from '../../ui/uiscreen/startscreen/StartScreen'
 import { GameState, GameStateOptions, IGameState } from '../GameState'
 import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
-import { camera } from '../../shared/Dependencies'
+import { camera, inGameHUD } from '../../shared/Dependencies'
 
 export interface IStartMenuState extends IGameState {
 
@@ -28,7 +28,7 @@ export class StartMenuState extends GameState implements IStartMenuState {
 
     update() {
         this.startScreen.update()
-        this.inGameHUD.update()
+        inGameHUD.update()
     }
 
     async exit() {

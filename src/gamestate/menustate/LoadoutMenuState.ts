@@ -1,5 +1,5 @@
 import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
-import { camera } from '../../shared/Dependencies'
+import { camera, inGameHUD } from '../../shared/Dependencies'
 import { LoadoutScreen } from '../../ui/uiscreen/loadoutscreen/LoadoutScreen'
 import { GameState, GameStateOptions } from '../GameState'
 
@@ -28,12 +28,11 @@ export class LoadoutMenuState extends GameState implements IWeaponLoadoutState {
 
     update() {
         this.loadoutScreen.update()
-        this.inGameHUD.update()
     }
     
     async exit() {
         await this.loadoutScreen.hide()
         camera.viewport.removeChild(this.loadoutScreen)
-        camera.viewport.removeChild(this.inGameHUD)
+        camera.viewport.removeChild(inGameHUD)
     }
 }

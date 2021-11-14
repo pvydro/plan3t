@@ -1,6 +1,7 @@
 import { Key } from 'ts-keycode-enum'
 import { InputEvents, InputProcessor } from '../../input/InputProcessor'
 import { log, logError } from '../../service/Flogger'
+import { inGameHUD } from '../../shared/Dependencies'
 import { AmmoStatusComponent } from '../../ui/ingamehud/ammostatus/AmmoStatusComponent'
 import { InGameHUD } from '../../ui/ingamehud/InGameHUD'
 import { UIComponentType } from '../../ui/UIComponentFactory'
@@ -98,7 +99,7 @@ export class PlayerWeaponHolster implements IPlayerWeaponHolster {
     }
 
     setLoadout(loadout: WeaponHolsterLoadout) {
-        const ammoStatusComponent = (InGameHUD.getInstance().getComponent(UIComponentType.HUDAmmoStatus) as AmmoStatusComponent)
+        const ammoStatusComponent = (inGameHUD.getComponent(UIComponentType.HUDAmmoStatus) as AmmoStatusComponent)
 
         if (loadout.primaryWeaponName !== undefined) {
             this.primaryWeapon.configureByName(loadout.primaryWeaponName)

@@ -7,7 +7,7 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
-import { camera, entityMan, gameMapMan, matchMaker, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameMapMan, inGameHUD, matchMaker, particleMan } from '../shared/Dependencies'
 
 export interface IGameplayState extends IGameState {
 }
@@ -30,15 +30,15 @@ export class GameplayState extends GameState implements IGameplayState {
         camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
         camera.stage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
         camera.stage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
-        camera.viewport.addChild(this.inGameHUD)
+        camera.viewport.addChild(inGameHUD)
 
-        this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
-        this.inGameHUD.showHUDComponents()
+        inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
+        inGameHUD.showHUDComponents()
         
         await matchMaker.createMatch()
         await matchMaker.joinMatch(matchMaker.matchId)
         await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
-        await this.inGameHUD.initializeHUD()
+        await inGameHUD.initializeHUD()
         await asyncTimeout(1000)
 
         // REF: Do this based on server
@@ -50,7 +50,6 @@ export class GameplayState extends GameState implements IGameplayState {
     update() {
         gameMapMan.update()
         this.ambientLight.update()
-        this.inGameHUD.update()
     }
 
     demolish() {

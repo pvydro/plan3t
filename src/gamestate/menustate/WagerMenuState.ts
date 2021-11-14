@@ -26,7 +26,6 @@ export class WagerMenuState extends GameState implements IWagerMenuState {
 
     update() {
         this.screen.update()
-        this.inGameHUD.update()
     }
 
     async exit() {

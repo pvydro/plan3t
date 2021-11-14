@@ -1,12 +1,13 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { FourWayDirection } from '../../../engine/math/Direction'
 import { log } from '../../../service/Flogger'
+import { inGameHUD } from '../../../shared/Dependencies'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'
-import { UIButton, UIButtonState, UIButtonType } from '../../uibutton/UIButton'
+import { IUIButton, UIButton, UIButtonState, UIButtonType } from '../../uibutton/UIButton'
 import { CrosshairState } from '../crosshair/Crosshair'
-import { InGameHUD } from '../InGameHUD'
-export interface IPauseButton {
+
+export interface IPauseButton extends IUIButton {
 
 }
 
@@ -39,7 +40,7 @@ export class PauseButton extends UIButton implements IPauseButton {
 
     async hover() {
         if (this.state !== UIButtonState.Hovered) {
-            InGameHUD.getInstance().requestCrosshairState(CrosshairState.Cursor)
+            inGameHUD.requestCrosshairState(CrosshairState.Cursor)
         }
         
         super.hover()
@@ -47,7 +48,7 @@ export class PauseButton extends UIButton implements IPauseButton {
 
     async unhover() {
         if (this.state !== UIButtonState.Idle) {
-            InGameHUD.getInstance().requestCrosshairState(CrosshairState.Gameplay)
+            inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
         }
 
         super.unhover()

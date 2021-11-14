@@ -3,7 +3,7 @@ import { LocalEntity } from '../manager/entitymanager/EntityManager'
 import { IGravityManager } from '../manager/GravityManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
-import { camera, entityMan, gameStateMan, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameStateMan, inGameHUD, particleMan } from '../shared/Dependencies'
 import { exists } from '../utils/Utils'
 
 export interface IGameLoop {
@@ -58,6 +58,7 @@ export class GameLoop implements IGameLoop {
             camera.update()
             gameStateMan.update()
             particleMan.update()
+            inGameHUD.update()
             this.tooltipManager.update()
         }
 

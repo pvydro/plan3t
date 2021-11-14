@@ -20,12 +20,14 @@ import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 
 export interface IInGameHUD extends IUpdatable, IReposition {
     waveRunnerCounter?: WaveRunnerCounter
+    crosshair: Crosshair
     initializeHUD(): Promise<void>
     showHUDComponents(shouldShow?: boolean): Promise<void>
     addComponent(type: UIComponentType): UIComponent
     addComponentTemporarily(type: UIComponentType, hideHUD?: boolean, lifetime?: number): Promise<void>
     getComponent(type: UIComponentType): IUIComponent
     requestMenuScreen(id: InGameScreenID): Promise<void>
+    closeMenuScreen(id: InGameScreenID): Promise<void>
     requestCrosshairState(state: CrosshairState): void
     loadWave(wave: IWave): void
     // requestRespawnScreen(): Promise<void>
@@ -33,7 +35,6 @@ export interface IInGameHUD extends IUpdatable, IReposition {
 }
 
 export class InGameHUD extends UIScreen implements IInGameHUD {
-    private static Instance: InGameHUD
     _initialized: boolean
     _waveUIInitialized: boolean
     hudContainer: UIContainer
@@ -42,16 +43,8 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     menus: InGameMenu
     queuedHealthBars: OverheadHealthBar[]
     creator: IUIComponentCreator
-    
-    static getInstance() {
-        if (!this.Instance) {
-            this.Instance = new InGameHUD()
-        }
 
-        return this.Instance
-    }
-
-    private constructor() {
+    constructor() {
         super()
 
         this._initialized = false

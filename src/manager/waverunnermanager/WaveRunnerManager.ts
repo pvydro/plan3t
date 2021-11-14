@@ -1,6 +1,6 @@
 import { WaveSchema } from '../../network/schema/waverunnergamestate/WaveSchema'
 import { log } from '../../service/Flogger'
-import { IInGameHUD, InGameHUD } from '../../ui/ingamehud/InGameHUD'
+import { inGameHUD } from '../../shared/Dependencies'
 import { IWave, Wave } from '../../waverunner/Wave'
 
 export interface IWaveRunnerManager {
@@ -13,7 +13,6 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     private static Instance: IWaveRunnerManager
     currentWaveIndex: number
     currentWave: IWave
-    hud: IInGameHUD
 
     static getInstance() {
         if (!this.Instance) {
@@ -24,7 +23,7 @@ export class WaveRunnerManager implements IWaveRunnerManager {
     }
 
     private constructor() {
-        this.hud = InGameHUD.getInstance()
+        
     }
 
     registerWave(schema: WaveSchema) {
@@ -33,6 +32,6 @@ export class WaveRunnerManager implements IWaveRunnerManager {
         this.currentWaveIndex = schema.waveIndex
         this.currentWave = new Wave(schema)
         
-        this.hud.loadWave(this.currentWave)
+        inGameHUD.loadWave(this.currentWave)
     }
 }

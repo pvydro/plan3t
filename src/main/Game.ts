@@ -53,6 +53,7 @@ export class Game implements IGame {
         await DecorationDirectory.assembleDirectory()
         
         gameStateMan.setGame(this)
+        gameStateMan.initialize()
         this.gameLoop.startGameLoop()
         
         this.stage.addChild(camera.viewport)

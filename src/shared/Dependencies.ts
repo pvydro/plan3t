@@ -9,13 +9,19 @@ import { IMatchMaker, MatchMaker } from '../matchmaker/MatchMaker'
 import { IGameMapManager, GameMapManager } from '../manager/GameMapManager'
 import { Camera, ICamera } from '../camera/Camera'
 import { IEntityManager, EntityManager } from '../manager/entitymanager/EntityManager'
+import { IInGameHUD, InGameHUD } from '../ui/ingamehud/InGameHUD'
 
-export const camera: ICamera = container.resolve(Camera)
+// Services
 export const userProfile: IUserProfile = container.resolve(UserProfile)
 export const musicLoader: IMusicLoader = container.resolve(MusicLoader)
 export const musicPlayer: IMusicPlayer = container.resolve(MusicPlayer)
 export const matchMaker: IMatchMaker = container.resolve(MatchMaker)
 
+// Constant containers
+export const camera: ICamera = container.resolve(Camera)
+export const inGameHUD: IInGameHUD = container.resolve(InGameHUD)
+
+// Managers
 export const gameStateMan: IGameStateManager = container.resolve(GameStateManager)
 export const gameMapMan: IGameMapManager = container.resolve(GameMapManager)
 export const particleMan: IParticleManager = container.resolve(ParticleManager)

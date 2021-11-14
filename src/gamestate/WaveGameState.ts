@@ -4,7 +4,7 @@ import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
 import { ChatService } from '../service/chatservice/ChatService'
-import { gameMapMan } from '../shared/Dependencies'
+import { gameMapMan, inGameHUD } from '../shared/Dependencies'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { InGameScreenID } from '../ui/ingamemenu/InGameMenu'
 import { asyncTimeout } from '../utils/Utils'
@@ -57,6 +57,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
     gameOver() {
         super.gameOver()
 
-        InGameHUD.getInstance().requestMenuScreen(InGameScreenID.WaveRunnerOver)
+        inGameHUD.requestMenuScreen(InGameScreenID.WaveRunnerOver)
     }
 }
