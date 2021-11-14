@@ -8,7 +8,7 @@ import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
 import { matchMaker } from '../../shared/Dependencies'
 
 export interface IRoomManager {
-    initializeRoom(): Promise<Room>
+    // initializeRoom(): Promise<Room>
     // currentRoom: Room
 }
 
@@ -34,27 +34,28 @@ export class RoomManager implements IRoomManager {
         this.entityManager = this.clientManager.entityManager
     }
 
-    async initializeRoom(): Promise<Room> {
-        log('RoomManager', 'initializeRoom')
+    // async initializeRoom(): Promise<Room> {
+    //     log('RoomManager', 'initializeRoom')
 
-        // this.currentRoom = await matchMaker.client.joinOrCreate<PVPGameRoomState>('GameRoom')
+    //     // this.currentRoom = await matchMaker.client.joinOrCreate<PVPGameRoomState>('GameRoom')
 
-        // RoomManager.clientSessionId = this.currentRoom.sessionId
-        // RoomMessenger._isOnline = true
+    //     // RoomManager.clientSessionId = this.currentRoom.sessionId
+    //     // RoomMessenger._isOnline = true
         
-        this.initializeCurrentRoomEntities()
+    //     this.initializeCurrentRoomEntities()
 
-        return new Promise((resolve) => {
-            // First state change
-            // this.currentRoom.onStateChange.once((state: ServerGameState) => {
-            //     this.roomStateManager.setInitialState(state).then(() => {
-            //         resolve(this.currentRoom)
-            //     })
-            // })
+    //     return new Promise((resolve) => {
+    //         // First state change
+    //         // this.currentRoom.onStateChange.once((state: ServerGameState) => {
+    //         //     this.roomStateManager.setInitialState(state).then(() => {
+    //         //         resolve(this.currentRoom)
+    //         //     })
+    //         // })
 
-            // this.startListening()
-        })
-    }
+    //         // this.startListening()
+    //         // resolve()
+    //     })
+    // }
 
     startListening() {
         log('RoomManager', 'startListening')

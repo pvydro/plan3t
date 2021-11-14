@@ -1,5 +1,4 @@
 import { Client, Room } from 'colyseus.js'
-import { zip } from 'rxjs'
 import { ENDPOINT } from '../network/Network'
 import { PVPGameRoomState } from '../network/schema/pvpgamestate/PVPGameRoomState'
 import { ServerGameState } from '../network/schema/serverstate/ServerGameState'
@@ -10,8 +9,9 @@ export interface IMatchMaker {
     currentRoom: Room<any>
     currentState: ServerGameState
     initializeClient(): void
-    createMatch(): void
-    joinMatch(matchId: string): void
+    createMatch(): Promise<Room<ServerGameState>>
+    joinMatch(matchId: string): Promise<Room<ServerGameState>>
+    joinOrCreate(): Promise<Room<ServerGameState>>
     leaveMatch(): void
 }
 
@@ -29,10 +29,23 @@ export class MatchMaker implements IMatchMaker {
 
     async createMatch() {
         try {
-            this.currentRoom = await this.client.create<PVPGameRoomState>('GameRoom')
+            this.currentRoom = await this.client.create<PVPGameRoomState>('PVPGameRoom')
             this.matchId = this.currentRoom.id
+
+            return this.currentRoom
         } catch (error) {
             logError('Error creating match', error)
+        }
+    }
+
+    async joinOrCreate() {
+        try {
+            this.currentRoom = await this.client.joinOrCreate<PVPGameRoomState>('PVPGameRoom')
+            this.matchId = this.currentRoom.id
+
+            return this.currentRoom
+        } catch (error) {
+            logError('Error in joinOrCreate', error)
         }
     }
 
@@ -40,6 +53,8 @@ export class MatchMaker implements IMatchMaker {
         try {
             this.currentRoom = await this.client.joinById(matchId)
             this.matchId = matchId
+
+            return this.currentRoom
         } catch (error) {
             logError(`Error joining match by ID of ${ matchId }`, error)
         }

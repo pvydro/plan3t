@@ -33,8 +33,8 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         if (options.isClientPlayer && this._currentClientPlayer) return this._currentClientPlayer
 
         const player = this.getPlayer(id, options)
-        player.x = options.schema.x ?? 0
-        player.y = options.schema.y ?? 0
+        player.x = options?.schema?.x ?? 0
+        player.y = options?.schema?.y ?? 0
 
         this.entityManager.registerEntity(id, {
             clientEntity: player,

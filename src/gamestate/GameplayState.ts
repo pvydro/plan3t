@@ -12,7 +12,7 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
-import { gameMapMan, particleMan } from '../shared/Dependencies'
+import { gameMapMan, matchMaker, particleMan } from '../shared/Dependencies'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -47,16 +47,18 @@ export class GameplayState extends GameState implements IGameplayState {
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
         
-        this.roomManager.initializeRoom().then(async (room: Room) => {
+        await matchMaker.joinOrCreate()
+        // this.roomManager.initializeRoom().then(async (room: Room) => {
             log('GameplayState', 'Room initialized')
 
             await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             await this.inGameHUD.initializeHUD()
             await asyncTimeout(1000)
 
-            this.player = this.entityManager.createClientPlayer(undefined, room.id)
+            // REF: Do this
+            this.player = this.entityManager.createClientPlayer(undefined, 'test')//room.id)
             this.camera.follow(this.player)
-        })
+        // })
     }
 
     update() {
