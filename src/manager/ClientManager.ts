@@ -36,7 +36,7 @@ export class ClientManager implements IClientManager {
     }
 
     async initialize() {
-        gameStateMan.setGame(this._game)
+        // gameStateMan.setGame(this._game)
         await gameStateMan.initialize()
     }
 

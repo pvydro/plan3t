@@ -14,7 +14,7 @@ import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
 import { MusicLoader } from '../music/MusicLoader'
-import { camera, matchMaker, musicLoader } from '../shared/Dependencies'
+import { camera, gameStateMan, matchMaker, musicLoader } from '../shared/Dependencies'
 import { DecorationDirectory } from '../gamemap/mapbuilding/DecorationDirectory'
 
 export interface IGame {
@@ -57,12 +57,17 @@ export class Game implements IGame {
         await Sounds.loadSounds()
         await Tween.initializePlugins()
         await DecorationDirectory.assembleDirectory()
+        gameStateMan.setGame(this)
         
-        await this.clientManager.initialize()
+        this.gameLoop = new GameLoop({
+            clientManager: this.clientManager
+        })
 
+        await this.clientManager.initialize()
+        this.gameLoop.startGameLoop()
+        
         this.stage.addChild(camera.viewport)
         this.stage.addChild(this._loadingScreen)
-        this.initializeGameLoop()
     }
 
     instantiateApplication() {
@@ -78,15 +83,6 @@ export class Game implements IGame {
             antialias: false,
             view: gameCanvas
         })
-    }
-
-    initializeGameLoop() {
-        this.gameLoop = new GameLoop({
-            clientManager: this.clientManager
-            // roomManager: this.roomManager
-        })
-
-        this.gameLoop.startGameLoop()
     }
 
     static async showLoadingScreen(shouldShow: boolean, timeout?: number) {
