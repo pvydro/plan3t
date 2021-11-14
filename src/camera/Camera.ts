@@ -92,18 +92,8 @@ export class Camera implements ICamera {
     cameraPlayerSynchPlugin: ICameraPlayerSynchPlugin
     cameraLetterboxPlugin: CameraLetterboxPlugin
     cameraServerDebugPlugin: CameraServerDebugPlugin
-    // cameraZoomPlugin: CameraZoomPlugin
     plugins: any[]
 
-    // public static getInstance() {
-    //     if (Camera.Instance === undefined) {
-    //         Camera.Instance = new Camera()
-    //     }
-
-    //     return Camera.Instance
-    // }
-
-    // private constructor() {
     constructor() {
         const camera = this
 

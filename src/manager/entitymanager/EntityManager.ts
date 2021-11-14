@@ -28,16 +28,17 @@ export interface IEntityManager {
     clientEntities: Map<string, LocalEntity>
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
-    createClientPlayer(schema?: PlayerSchema, sessionId?: string): ClientPlayer
-    createCoPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
+    // createClientPlayer(schema?: PlayerSchema, sessionId?: string): ClientPlayer
+    // createCoPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
+    createPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
     createCreature(Creature?: CreatureSchema)
     clearClientEntities(): void
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number): void
     registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
     getSchema(sessionId: string): EntitySchema
-    createProjectile(schema: ProjectileSchema): void
+    // createProjectile(schema: ProjectileSchema): void
 }
 
 export interface EntityManagerOptions {
@@ -106,6 +107,11 @@ export class EntityManager implements IEntityManager {
         })
     }
 
+    createPlayer(schema: PlayerSchema, sessionId?: string): ClientPlayer {
+        return ClientPlayer.getInstance()
+        // return this.playerCreator.createPlayer(schema, sessionId)
+    }
+
     createOfflinePlayer() {
         log('EntityManager', 'createOfflinePlayer')
 
@@ -116,30 +122,6 @@ export class EntityManager implements IEntityManager {
         })
 
         return player
-    }
-
-    createClientPlayer(schema: PlayerSchema, sessionId?: string) {
-        log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
-
-        const player = this.playerCreator.createPlayer(sessionId, { schema: schema, isClientPlayer: true })
-        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
-
-        return player
-    }
-
-    createCoPlayer(schema: EntitySchema, sessionId: string) {
-        log('EntityManager', 'createCoPlayer', 'sessionId', sessionId)
-
-        const player = this.playerCreator.createPlayer(sessionId, { schema: schema, isClientPlayer: false })
-        this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
-
-        return player
-    }
-
-    createProjectile(schema: ProjectileSchema): void {
-        log('EntityManager', 'createProjectile', 'schema', schema)
-
-        this.projectileCreator.createProjectile(schema)
     }
 
     registerEntity(id: string, localEntity: LocalEntity | ClientEntity) {
@@ -176,3 +158,41 @@ export class EntityManager implements IEntityManager {
         return this._clientEntities
     }
 }
+
+
+
+    // createOfflinePlayer() {
+    //     log('EntityManager', 'createOfflinePlayer')
+
+    //     const player = this.playerCreator.createPlayer('offlineplayer', {
+    //         schema: new PlayerSchema(),
+    //         isClientPlayer: true,
+    //         isOfflinePlayer: true
+    //     })
+
+    //     return player
+    // }
+
+    // createClientPlayer(schema: PlayerSchema, sessionId?: string) {
+    //     log('EntityManager', 'createClientPlayer', 'sessionId', sessionId)
+
+    //     const player = this.playerCreator.createPlayer(sessionId, { schema: schema, isClientPlayer: true })
+    //     this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
+
+    //     return player
+    // }
+
+    // createCoPlayer(schema: EntitySchema, sessionId: string) {
+    //     log('EntityManager', 'createCoPlayer', 'sessionId', sessionId)
+
+    //     const player = this.playerCreator.createPlayer(sessionId, { schema: schema, isClientPlayer: false })
+    //     this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
+
+    //     return player
+    // }
+
+    // createProjectile(schema: ProjectileSchema): void {
+    //     log('EntityManager', 'createProjectile', 'schema', schema)
+
+    //     this.projectileCreator.createProjectile(schema)
+    // }
