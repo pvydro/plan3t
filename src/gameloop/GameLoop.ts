@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { IClientManager } from '../manager/ClientManager'
-import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
+import { LocalEntity } from '../manager/entitymanager/EntityManager'
 import { IGravityManager } from '../manager/GravityManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
@@ -12,30 +11,22 @@ export interface IGameLoop {
     stopGameLoop(): void
 }
 
-export interface GameLoopOptions {
-    clientManager?: IClientManager
-}
 
 export class GameLoop implements IGameLoop {
     static ShouldLoop: boolean = true
     static Delta: number = 1
     static CustomDelta: number = 1
     _initialized: boolean = false
-    clientManager?: IClientManager
     tooltipManager?: TooltipManager
     gravityManager: IGravityManager
 
-    constructor(options: GameLoopOptions) {
-        this.assignOptions(options)
-
+    constructor() {
         this.tooltipManager = TooltipManager.getInstance()
     }
 
-    startGameLoop(options?: GameLoopOptions) {
+    startGameLoop() {
         Flogger.log('GameLoop', 'startGameLoop')
         GameLoop.ShouldLoop = true
-
-        this.assignOptions(options)
         
         requestAnimationFrame(this.gameLoop.bind(this))
     }
@@ -71,11 +62,5 @@ export class GameLoop implements IGameLoop {
         }
 
         requestAnimationFrame(this.gameLoop.bind(this))
-    }
-
-    assignOptions(options: GameLoopOptions) {
-        if (options !== undefined) {
-            this.clientManager = options.clientManager ?? this.clientManager
-        }
     }
 }

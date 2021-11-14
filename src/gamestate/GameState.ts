@@ -1,6 +1,5 @@
 import { CameraServerDebugPlugin } from '../camera/plugin/CameraServerDebuggerPlugin'
 import { Game } from '../main/Game'
-import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { log } from '../service/Flogger'
@@ -24,14 +23,12 @@ export abstract class GameState implements IGameState {
     id: GameStateID
     game: Game
     inGameHUD: InGameHUD
-    clientManager: IClientManager
     musicManager: IMusicManager
     
     constructor(options: GameStateOptions) {
         this.id = options.id ?? GameStateID.Empty
         this.game = options.game
 
-        this.clientManager = this.game.clientManager
         this.musicManager = MusicManager.getInstance()
         this.inGameHUD = InGameHUD.getInstance()
     }
@@ -48,8 +45,6 @@ export abstract class GameState implements IGameState {
 
     async exit() {
         log('GameState', 'exit', 'id', this.id)
-        
-        const clientManager = ClientManager.getInstance()
 
         camera.clear()
         camera.clearFollowTarget()

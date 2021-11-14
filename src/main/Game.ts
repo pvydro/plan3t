@@ -2,18 +2,13 @@ import * as PIXI from 'pixi.js'
 import { Flogger, log } from '../service/Flogger'
 import { Spritesheets } from '../asset/Spritesheets'
 import { GameWindow } from '../utils/Constants'
-import { ClientManager, IClientManager } from '../manager/ClientManager'
-import { EntityManager, IEntityManager } from '../manager/entitymanager/EntityManager'
 import { IGameLoop, GameLoop } from '../gameloop/GameLoop'
 import { Assets } from '../asset/Assets'
-import { Camera } from '../camera/Camera'
-import { Viewport } from '../camera/Viewport'
 import { Fonts } from '../asset/Fonts'
 import { Tween } from '../engine/display/tween/Tween'
 import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
-import { MusicLoader } from '../music/MusicLoader'
 import { camera, gameStateMan, matchMaker, musicLoader } from '../shared/Dependencies'
 import { DecorationDirectory } from '../gamemap/mapbuilding/DecorationDirectory'
 
@@ -27,7 +22,6 @@ export interface IGame {
 export class Game implements IGame {
     private static Instance: IGame
     _application: PIXI.Application
-    _clientManager: IClientManager
     _loadingScreen: LoadingScreen
     gameLoop: IGameLoop
 
@@ -43,8 +37,8 @@ export class Game implements IGame {
         this.instantiateApplication()
 
         const game = this
-        this._clientManager = ClientManager.getInstance({ game })
         this._loadingScreen = LoadingScreen.getInstance()
+        this.gameLoop = new GameLoop()
     }
 
     async bootstrap() {
@@ -57,13 +51,8 @@ export class Game implements IGame {
         await Sounds.loadSounds()
         await Tween.initializePlugins()
         await DecorationDirectory.assembleDirectory()
-        gameStateMan.setGame(this)
         
-        this.gameLoop = new GameLoop({
-            clientManager: this.clientManager
-        })
-
-        await this.clientManager.initialize()
+        gameStateMan.setGame(this)
         this.gameLoop.startGameLoop()
         
         this.stage.addChild(camera.viewport)
@@ -99,10 +88,6 @@ export class Game implements IGame {
         }
     }
 
-    get gameMap() {
-        return this.clientManager.gameMap
-    }
-
     get application(): PIXI.Application {
         return this._application
     }
@@ -117,9 +102,5 @@ export class Game implements IGame {
 
     get stage() {
         return this._application.stage
-    }
-
-    get clientManager() {
-        return this._clientManager
     }
 }
