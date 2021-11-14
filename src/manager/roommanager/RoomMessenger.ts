@@ -1,7 +1,6 @@
 import { log, logError } from '../../service/Flogger'
 import { matchMaker } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
-import { RoomManager } from './RoomManager'
 
 export interface IRoomMessenger {
 
@@ -15,9 +14,7 @@ export class RoomMessenger implements IRoomMessenger {
 
         if (DebugConstants.ShowPlayerMessengerLogs) log('RoomMessenger', 'send', 'endpoint', endpoint, 'message', message, 'isOnline', isOnline)
 
-        const roomManager = RoomManager.getInstance()
-
-        if (roomManager === undefined || !isOnline) {
+        if (!isOnline) {
             logError('Tried to send message but Room not initialized', 'endpoint', endpoint, 'message', message)
 
             return

@@ -1,9 +1,7 @@
 import { Game } from '../main/Game'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
-import { GameMapManager, IGameMapManager } from '../manager/GameMapManager'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
-import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { log } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
@@ -24,7 +22,6 @@ export abstract class GameState implements IGameState {
     id: GameStateID
     game: Game
     inGameHUD: InGameHUD
-    roomManager: IRoomManager
     clientManager: IClientManager
     musicManager: IMusicManager
     
@@ -33,7 +30,6 @@ export abstract class GameState implements IGameState {
         this.game = options.game
 
         this.clientManager = this.game.clientManager
-        this.roomManager = RoomManager.getInstance()
         this.musicManager = MusicManager.getInstance()
         this.inGameHUD = InGameHUD.getInstance()
     }

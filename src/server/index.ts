@@ -31,7 +31,7 @@ const gameServer = new Server({
   express: app
 })
 
-gameServer.define('GameRoom', PVPRoom)
+gameServer.define('PVPGameRoom', PVPRoom)
 
 if (process.env.NODE_ENV !== 'production') {
     const webpackCompiler = webpack(webpackConfig({}))

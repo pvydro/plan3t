@@ -8,6 +8,7 @@ export interface IMatchMaker {
     client: Client
     currentRoom: Room<any>
     currentState: ServerGameState
+    matchId: string
     initializeClient(): void
     createMatch(): Promise<Room<ServerGameState>>
     joinMatch(matchId: string): Promise<Room<ServerGameState>>
@@ -24,11 +25,13 @@ export class MatchMaker implements IMatchMaker {
     }
 
     initializeClient() {
+        if (this.client !== undefined) return
         this.client = new Client(ENDPOINT)
     }
 
     async createMatch() {
         try {
+            this.initializeClient()
             this.currentRoom = await this.client.create<PVPGameRoomState>('PVPGameRoom')
             this.matchId = this.currentRoom.id
 
@@ -40,6 +43,7 @@ export class MatchMaker implements IMatchMaker {
 
     async joinOrCreate() {
         try {
+            this.initializeClient()
             this.currentRoom = await this.client.joinOrCreate<PVPGameRoomState>('PVPGameRoom')
             this.matchId = this.currentRoom.id
 
@@ -51,6 +55,7 @@ export class MatchMaker implements IMatchMaker {
 
     async joinMatch(matchId: string) {
         try {
+            this.initializeClient()
             this.currentRoom = await this.client.joinById(matchId)
             this.matchId = matchId
 

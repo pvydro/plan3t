@@ -47,18 +47,16 @@ export class GameplayState extends GameState implements IGameplayState {
         // await this.initializeBackground()
         this.camera.viewport.addChild(this.inGameHUD)
         
-        await matchMaker.joinOrCreate()
-        // this.roomManager.initializeRoom().then(async (room: Room) => {
-            log('GameplayState', 'Room initialized')
+        await matchMaker.createMatch()
+        await matchMaker.joinMatch(matchMaker.matchId)
+        await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
+        await this.inGameHUD.initializeHUD()
 
-            await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
-            await this.inGameHUD.initializeHUD()
-            await asyncTimeout(1000)
+        await asyncTimeout(1000)
 
-            // REF: Do this
-            this.player = this.entityManager.createClientPlayer(undefined, 'test')//room.id)
-            this.camera.follow(this.player)
-        // })
+        // REF: Do this based on server
+        this.player = this.entityManager.createClientPlayer(undefined, 'test')//room.id)
+        this.camera.follow(this.player)
     }
 
     update() {

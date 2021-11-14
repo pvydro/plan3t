@@ -1,4 +1,5 @@
 import { AssetUrls } from '../../../asset/Assets'
+import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { TextStyles } from '../../../engine/display/TextStyles'
 import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { log } from '../../../service/Flogger'
@@ -45,7 +46,7 @@ export class RespawnButton extends UIButton implements IRespawnButton {
         super.trigger()
 
         InGameHUD.getInstance().closeMenuScreen(InGameScreenID.RespawnScreen)
-        RoomManager.getInstance().requestClientPlayerRespawn()
+        ClientPlayer.getInstance().requestRespawn()
     }
 
     reposition(addListener?: boolean) {

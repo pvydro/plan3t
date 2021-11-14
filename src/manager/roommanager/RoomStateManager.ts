@@ -10,8 +10,7 @@ import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { EntityManager, IEntityManager } from '../entitymanager/EntityManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
-import { RoomManager } from './RoomManager'
-import { gameMapMan } from '../../shared/Dependencies'
+import { gameMapMan, matchMaker } from '../../shared/Dependencies'
 
 enum ServerStateType {
     WaveRunner = 'waverunner',
@@ -40,9 +39,7 @@ export class RoomStateManager implements IRoomStateManager {
 
         this.stateChanged(state)
 
-        if (RoomManager.clientSessionId === state.hostId) {
-            importantLog('Host sessionId found, setting in Environment', 'sessionId', RoomManager.clientSessionId)
-
+        if (matchMaker.currentRoom.id === state.hostId) {
             Environment.isHost = true
         }
     }

@@ -12,12 +12,10 @@ export interface IAIMessenger {
 }
 
 export class AIMessenger implements IAIMessenger {
-    roomMan: IRoomManager
     ai: IAI
     actionStream$: Observable<AIActionPayload>
 
     constructor(ai: IAI) {
-        this.roomMan = RoomManager.getInstance()
         this.ai = ai
         this.actionStream$ = new Observable(observer => {
             matchMaker.currentRoom.onMessage(ClientMessage.AIAction, (payload: AIActionPayload) => {

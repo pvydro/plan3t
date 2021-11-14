@@ -64,7 +64,6 @@ export class Game implements IGame {
         await Tween.initializePlugins()
         await DecorationDirectory.assembleDirectory()
         
-        await matchMaker.initializeClient()
         await this.clientManager.initialize()
 
         this.stage.addChild(this.cameraViewport)
