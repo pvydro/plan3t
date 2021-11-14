@@ -1,7 +1,6 @@
 import { AssetUrls } from '../../../asset/Assets'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { TextStyles } from '../../../engine/display/TextStyles'
-import { RoomManager } from '../../../manager/roommanager/RoomManager'
 import { log } from '../../../service/Flogger'
 import { GameWindow } from '../../../utils/Constants'
 import { UIDefaults } from '../../../utils/Defaults'

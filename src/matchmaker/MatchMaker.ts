@@ -6,9 +6,9 @@ import { logError } from '../service/Flogger'
 
 export interface IMatchMaker {
     client: Client
-    currentRoom: Room<any>
     currentState: ServerGameState
-    matchId: string
+    currentRoom?: Room<any>
+    matchId?: string
     initializeClient(): void
     createMatch(): Promise<Room<ServerGameState>>
     joinMatch(matchId: string): Promise<Room<ServerGameState>>
@@ -18,8 +18,8 @@ export interface IMatchMaker {
 
 export class MatchMaker implements IMatchMaker {
     client: Client
-    matchId: string
-    currentRoom: Room<any>
+    matchId?: string
+    currentRoom?: Room<any>
 
     constructor() {
     }
@@ -38,6 +38,7 @@ export class MatchMaker implements IMatchMaker {
             return this.currentRoom
         } catch (error) {
             logError('Error creating match', error)
+            throw error
         }
     }
 
@@ -50,6 +51,7 @@ export class MatchMaker implements IMatchMaker {
             return this.currentRoom
         } catch (error) {
             logError('Error in joinOrCreate', error)
+            throw error
         }
     }
 
@@ -62,18 +64,18 @@ export class MatchMaker implements IMatchMaker {
             return this.currentRoom
         } catch (error) {
             logError(`Error joining match by ID of ${ matchId }`, error)
+            throw error
         }
     }
 
     async leaveMatch() {
-        // this.client.leave(this.matchId, (err: any, match: any) => {
-        //     if (err) {
-        //         console.log('Matchmaker error', err)
-        //     } else {
-        //         this.matchId = null
-        //         this.match = null
-        //     }
-        // }
+        try {
+            this.currentRoom.leave(true)
+            this.matchId = undefined
+        } catch (error) {
+            logError('Error leaving match', error)
+            throw error
+        }
     }
 
     get currentState() {
