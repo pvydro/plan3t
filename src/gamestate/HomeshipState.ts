@@ -9,7 +9,7 @@ import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
-import { camera, entityMan, gameMapMan, inGameHUD, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameMapMan, inGameHUD, particleMan, toolTipMan } from '../shared/Dependencies'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -36,7 +36,6 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             log(this.name, 'Homeship initialized')
 
             const player = entityMan.createOfflinePlayer()
-            const tooltipManager = TooltipManager.getInstance()
             const cameraStage = camera.stage
 
             player.light.disableHardLights()
@@ -49,7 +48,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             camera.follow(player)
             cameraStage.addChildAtLayer(player, CameraLayer.Players)
             cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-            cameraStage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
+            cameraStage.addChildAtLayer(toolTipMan.container, CameraLayer.Tooltips)
             cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
             cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
 

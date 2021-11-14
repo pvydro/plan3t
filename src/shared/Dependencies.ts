@@ -11,6 +11,7 @@ import { Camera, ICamera } from '../camera/Camera'
 import { IEntityManager, EntityManager } from '../manager/entitymanager/EntityManager'
 import { IInGameHUD, InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
+import { ITooltipManager, TooltipManager } from '../manager/TooltipManager'
 
 // Services
 export const userProfile: IUserProfile = container.resolve(UserProfile)
@@ -28,3 +29,4 @@ export const gameStateMan: IGameStateManager = container.resolve(GameStateManage
 export const gameMapMan: IGameMapManager = container.resolve(GameMapManager)
 export const particleMan: IParticleManager = container.resolve(ParticleManager)
 export const entityMan: IEntityManager = container.resolve(EntityManager)
+export const toolTipMan: ITooltipManager = container.resolve(TooltipManager)

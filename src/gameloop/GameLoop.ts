@@ -3,7 +3,7 @@ import { LocalEntity } from '../manager/entitymanager/EntityManager'
 import { IGravityManager } from '../manager/GravityManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
-import { camera, entityMan, gameStateMan, inGameHUD, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameStateMan, inGameHUD, particleMan, toolTipMan } from '../shared/Dependencies'
 import { exists } from '../utils/Utils'
 
 export interface IGameLoop {
@@ -17,11 +17,9 @@ export class GameLoop implements IGameLoop {
     static Delta: number = 1
     static CustomDelta: number = 1
     _initialized: boolean = false
-    tooltipManager?: TooltipManager
     gravityManager: IGravityManager
 
     constructor() {
-        this.tooltipManager = TooltipManager.getInstance()
     }
 
     startGameLoop() {
@@ -59,7 +57,7 @@ export class GameLoop implements IGameLoop {
             gameStateMan.update()
             particleMan.update()
             inGameHUD.update()
-            this.tooltipManager.update()
+            toolTipMan.update()
         }
 
         requestAnimationFrame(this.gameLoop.bind(this))

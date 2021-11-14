@@ -5,7 +5,7 @@ import { Tween } from '../../../engine/display/tween/Tween'
 import { IInteractiveContainer, InteractiveContainer, InteractiveContainerOptions } from '../../../engine/interaction/InteractiveContainer'
 import { IRect } from '../../../engine/math/Rect'
 import { IUpdatable } from '../../../interface/IUpdatable'
-import { TooltipManager } from '../../../manager/TooltipManager'
+import { toolTipMan } from '../../../shared/Dependencies'
 import { InGameTooltip, TooltipType } from '../../../ui/ingametooltip/InGameTooltip'
 import { SphericalHelper } from '../../spherical/SphericalHelper'
 
@@ -48,7 +48,7 @@ export class HomeshipicalModule extends InteractiveContainer implements IHomeShi
                 const keyText = Key[this.interactKey]
                 const tooltipPadding = 4
 
-                this.tooltip = TooltipManager.getInstance().addTooltip({
+                this.tooltip = toolTipMan.addTooltip({
                     type: TooltipType.Key,
                     text: { text: keyText },
                     hideByDefault: true,

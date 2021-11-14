@@ -4,24 +4,17 @@ import { IInGameTooltip, InGameTooltip, InGameTooltipOptions } from '../ui/ingam
 import { IInGameTooltipFactory, InGameTooltipFactory } from '../factory/InGameTooltipFactory'
 
 export interface ITooltipManager extends IUpdatable {
-
+    container: Container
+    addTooltip(options: InGameTooltipOptions): InGameTooltip
+    removeTooltip(tooltip: InGameTooltip): void
 }
 
 export class TooltipManager implements ITooltipManager {
-    private static Instance: TooltipManager
     container: Container
     factory: IInGameTooltipFactory
     tooltips: Set<IInGameTooltip>
-    
-    static getInstance() {
-        if (TooltipManager.Instance === undefined) {
-            TooltipManager.Instance = new TooltipManager()
-        }
 
-        return TooltipManager.Instance
-    }
-
-    private constructor() {
+    constructor() {
         this.factory = new InGameTooltipFactory()
         this.container = new Container()
         this.tooltips = new Set()
