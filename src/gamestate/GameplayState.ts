@@ -7,7 +7,7 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
-import { camera, gameMapMan, matchMaker, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameMapMan, matchMaker, particleMan } from '../shared/Dependencies'
 
 export interface IGameplayState extends IGameState {
 }
@@ -42,8 +42,8 @@ export class GameplayState extends GameState implements IGameplayState {
         await asyncTimeout(1000)
 
         // REF: Do this based on server
-        this.player = this.entityManager.createOfflinePlayer()
-        camera.stage.addChild(this.player)
+        this.player = entityMan.createOfflinePlayer()
+        camera.stage.addChildAtLayer(this.player, CameraLayer.Players)
         camera.follow(this.player)
     }
 

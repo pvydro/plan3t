@@ -41,15 +41,10 @@ export interface IEntityManager {
     // createProjectile(schema: ProjectileSchema): void
 }
 
-export interface EntityManagerOptions {
-    game?: Game
-}
-
 export class EntityManager implements IEntityManager {
     private static Instance: IEntityManager
     _clientEntities: Map<string, LocalEntity> = new Map()
 
-    game: Game
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
     playerCreator: IEntityPlayerCreator
@@ -57,22 +52,16 @@ export class EntityManager implements IEntityManager {
     projectileCreator: IEntityProjectileCreator
     synchronizer: IEntitySynchronizer
 
-    static getInstance(options?: EntityManagerOptions) {
+    static getInstance() {
         if (!this.Instance) {
-            if (options !== undefined) {
-                this.Instance = new EntityManager(options)
-            } else {
-                Flogger.error('Tried to get new ClientManager.Instance with no options')
-            }
+            this.Instance = new EntityManager()
         }
 
         return this.Instance
     }
 
-    private constructor(options: EntityManagerOptions) {
+    constructor() {
         const entityManager = this
-
-        this.game = options.game
         
         this.gravityManager = new GravityManager({ enemyManager: entityManager.enemyManager })
         this.playerCreator = new EntityPlayerCreator({ entityManager })

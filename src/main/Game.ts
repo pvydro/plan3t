@@ -28,7 +28,6 @@ export class Game implements IGame {
     private static Instance: IGame
     _application: PIXI.Application
     _clientManager: IClientManager
-    _entityManager: IEntityManager
     _loadingScreen: LoadingScreen
     gameLoop: IGameLoop
 
@@ -44,8 +43,7 @@ export class Game implements IGame {
         this.instantiateApplication()
 
         const game = this
-        this._entityManager = EntityManager.getInstance({ game })
-        this._clientManager = ClientManager.getInstance({ game, entityManager: this.entityManager })
+        this._clientManager = ClientManager.getInstance({ game })
         this._loadingScreen = LoadingScreen.getInstance()
     }
 
@@ -84,8 +82,7 @@ export class Game implements IGame {
 
     initializeGameLoop() {
         this.gameLoop = new GameLoop({
-            clientManager: this.clientManager,
-            gravityManager: this.entityManager.gravityManager
+            clientManager: this.clientManager
             // roomManager: this.roomManager
         })
 
@@ -124,10 +121,6 @@ export class Game implements IGame {
 
     get stage() {
         return this._application.stage
-    }
-
-    get entityManager() {
-        return this._entityManager
     }
 
     get clientManager() {

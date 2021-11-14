@@ -4,7 +4,7 @@ import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { log } from '../service/Flogger'
-import { camera } from '../shared/Dependencies'
+import { camera, entityMan } from '../shared/Dependencies'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 
@@ -53,7 +53,7 @@ export abstract class GameState implements IGameState {
 
         camera.clear()
         camera.clearFollowTarget()
-        clientManager.clearEntityManager()
+        entityMan.clearClientEntities()
     }
 
     gameOver() {
@@ -67,10 +67,6 @@ export abstract class GameState implements IGameState {
 
     get stage() {
         return this.game.stage
-    }
-
-    get entityManager() {
-        return this.clientManager.entityManager
     }
 
     get name() {

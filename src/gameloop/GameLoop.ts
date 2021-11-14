@@ -4,7 +4,7 @@ import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityMana
 import { IGravityManager } from '../manager/GravityManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
-import { camera, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, gameStateMan, particleMan } from '../shared/Dependencies'
 import { exists } from '../utils/Utils'
 
 export interface IGameLoop {
@@ -14,7 +14,6 @@ export interface IGameLoop {
 
 export interface GameLoopOptions {
     clientManager?: IClientManager
-    gravityManager?: IGravityManager
 }
 
 export class GameLoop implements IGameLoop {
@@ -24,7 +23,6 @@ export class GameLoop implements IGameLoop {
     _initialized: boolean = false
     clientManager?: IClientManager
     tooltipManager?: TooltipManager
-    entityManager?: IEntityManager
     gravityManager: IGravityManager
 
     constructor(options: GameLoopOptions) {
@@ -53,27 +51,23 @@ export class GameLoop implements IGameLoop {
 
         if (GameLoop.ShouldLoop) {
             // Update all ClientEntities
-            if (this.entityManager && this.gravityManager) {
-                this.entityManager.clientEntities.forEach((localEntity: LocalEntity) => {
-                    const clientEntity = localEntity.clientEntity
+            entityMan.clientEntities.forEach((localEntity: LocalEntity) => {
+                const clientEntity = localEntity.clientEntity
 
-                    if (exists(clientEntity)) {
-                        if (typeof clientEntity.update === 'function') {
-                            clientEntity.update()
-                        }
-                        
-                        // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
-                        this.gravityManager.applyVelocityToEntity(clientEntity)
+                if (exists(clientEntity)) {
+                    if (typeof clientEntity.update === 'function') {
+                        clientEntity.update()
                     }
-                })
-            }
+                    
+                    // Check x + xVel for entity if colliding or in path colliding via CollisionManager B)
+                    entityMan.gravityManager.applyVelocityToEntity(clientEntity)
+                }
+            })
 
             camera.update()
-
-            // Update current state
-            this.clientManager.update()
-            this.tooltipManager.update()
+            gameStateMan.update()
             particleMan.update()
+            this.tooltipManager.update()
         }
 
         requestAnimationFrame(this.gameLoop.bind(this))
@@ -81,9 +75,7 @@ export class GameLoop implements IGameLoop {
 
     assignOptions(options: GameLoopOptions) {
         if (options !== undefined) {
-            this.gravityManager = options.gravityManager ?? this.gravityManager
             this.clientManager = options.clientManager ?? this.clientManager
-            this.entityManager = this.clientManager.entityManager ?? this.entityManager
         }
     }
 }
