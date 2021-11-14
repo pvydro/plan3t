@@ -11,20 +11,11 @@ export interface ILoadingScreen extends IUIScreen {
 }
 
 export class LoadingScreen extends UIScreen implements ILoadingScreen {
-    private static Instance: LoadingScreen
     backgroundGraphic: Graphix
     loadingIcon: LoadingIcon
     animator: ILoadingScreenAnimator
 
-    static getInstance() {
-        if (!this.Instance) {
-            this.Instance = new LoadingScreen()
-        }
-
-        return this.Instance
-    }
-
-    private constructor() {
+    constructor() {
         super({
             background: { backgroundColor: 0x101010 },
             filters: []

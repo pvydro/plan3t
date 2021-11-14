@@ -1,5 +1,5 @@
 import { Assets, AssetUrls } from '../asset/Assets'
-import { Container } from '../engine/display/Container'
+import { Container, IContainer } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { Dimension, IDimension } from '../engine/math/Dimension'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
@@ -33,7 +33,7 @@ export const CameraLayer = {
     DebugOverlay: layerIndex++
 }
 
-export interface ICameraStage extends IUpdatable, IReposition {
+export interface ICameraStage extends IContainer, IUpdatable, IReposition {
     targetX: number
     targetY: number
     setBackground(background: CameraStageBackgroundType): void

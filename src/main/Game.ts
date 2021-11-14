@@ -9,7 +9,7 @@ import { Tween } from '../engine/display/tween/Tween'
 import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
-import { camera, gameStateMan, matchMaker, musicLoader } from '../shared/Dependencies'
+import { camera, gameStateMan, loadingScreen, matchMaker, musicLoader } from '../shared/Dependencies'
 import { DecorationDirectory } from '../gamemap/mapbuilding/DecorationDirectory'
 
 export interface IGame {
@@ -22,7 +22,6 @@ export interface IGame {
 export class Game implements IGame {
     private static Instance: IGame
     _application: PIXI.Application
-    _loadingScreen: LoadingScreen
     gameLoop: IGameLoop
 
     static getInstance() {
@@ -37,16 +36,17 @@ export class Game implements IGame {
         this.instantiateApplication()
 
         const game = this
-        this._loadingScreen = LoadingScreen.getInstance()
         this.gameLoop = new GameLoop()
     }
 
     async bootstrap() {
         Flogger.log('Game', 'bootstrap')
 
+        await Fonts.loadFonts()
+        this.stage.addChild(loadingScreen)
+        
         await Assets.loadImages()
         await musicLoader.loadSongs()
-        await Fonts.loadFonts()
         await Spritesheets.loadSpritesheets()
         await Sounds.loadSounds()
         await Tween.initializePlugins()
@@ -57,7 +57,6 @@ export class Game implements IGame {
         this.gameLoop.startGameLoop()
         
         this.stage.addChild(camera.viewport)
-        this.stage.addChild(this._loadingScreen)
     }
 
     instantiateApplication() {
@@ -79,13 +78,11 @@ export class Game implements IGame {
         log('Game', 'showLoadingScreen', 'shouldShow', shouldShow)
 
         if (timeout !== undefined) await asyncTimeout(timeout)
-        
-        const screen = LoadingScreen.getInstance()
 
         if (shouldShow) {
-            return screen.show()
+            return loadingScreen.show()
         } else {
-            return screen.hide()
+            return loadingScreen.hide()
         }
     }
 

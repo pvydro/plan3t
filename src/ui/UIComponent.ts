@@ -4,12 +4,11 @@ import { Tween } from '../engine/display/tween/Tween'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { IReposition } from '../interface/IReposition'
 import { IShowHide, ShowOptions } from '../interface/IShowHide'
-import { IUpdatable } from '../interface/IUpdatable'
 import { asyncTimeout } from '../utils/Utils'
 import { UIComponentBorder, UIComponentBorderOptions } from './UIComponentBorder'
-import { UIContainer, UIContainerOptions } from './UIContainer'
+import { IUIContainer, UIContainer, UIContainerOptions } from './UIContainer'
 
-export interface IUIComponent extends IUpdatable, IShowHide, IReposition {
+export interface IUIComponent extends IUIContainer, IShowHide, IReposition {
     name: string 
     accessible: boolean
     accessibleChildren: boolean

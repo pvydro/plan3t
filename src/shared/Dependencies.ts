@@ -10,6 +10,7 @@ import { IGameMapManager, GameMapManager } from '../manager/GameMapManager'
 import { Camera, ICamera } from '../camera/Camera'
 import { IEntityManager, EntityManager } from '../manager/entitymanager/EntityManager'
 import { IInGameHUD, InGameHUD } from '../ui/ingamehud/InGameHUD'
+import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 
 // Services
 export const userProfile: IUserProfile = container.resolve(UserProfile)
@@ -20,6 +21,7 @@ export const matchMaker: IMatchMaker = container.resolve(MatchMaker)
 // Constant containers
 export const camera: ICamera = container.resolve(Camera)
 export const inGameHUD: IInGameHUD = container.resolve(InGameHUD)
+export const loadingScreen: LoadingScreen = container.resolve(LoadingScreen)
 
 // Managers
 export const gameStateMan: IGameStateManager = container.resolve(GameStateManager)
