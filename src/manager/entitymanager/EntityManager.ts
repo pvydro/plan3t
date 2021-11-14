@@ -34,7 +34,6 @@ export interface LocalEntity {
 export interface IEntityManager {
     clientEntities: Map<string, LocalEntity>
     camera: Camera
-    roomState: ServerGameState
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
     createClientPlayer(schema?: PlayerSchema, sessionId?: string): ClientPlayer
@@ -187,9 +186,5 @@ export class EntityManager implements IEntityManager {
 
     get clientEntities() {
         return this._clientEntities
-    }
-
-    get roomState() {
-        return RoomManager._room ? RoomManager._room.state : undefined
     }
 }

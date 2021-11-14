@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Camera } from '../../camera/Camera'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Flogger } from '../../service/Flogger'
-import { userProfile } from '../../shared/Dependencies'
+import { matchMaker, userProfile } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
@@ -82,9 +82,10 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         
         setTimeout(() => {
             Flogger.log('EntityPlayerCreator', 'markPlayerAsSpawned', 'sessionId', sessionId)
+            const currentState = matchMaker.currentState
 
-            if (this.roomState !== undefined) {
-                const fetchedPlayer = this.roomState.players.get(sessionId)
+            if (currentState) {
+                const fetchedPlayer = currentState.players.get(sessionId)
     
                 if (fetchedPlayer !== undefined) {
                     fetchedPlayer.hasSpawned = true
@@ -95,10 +96,6 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
 
     clearRegisteredPlayer() {
         this._currentClientPlayer = undefined
-    }
-
-    get roomState() {
-        return this.entityManager.roomState
     }
 
     get camera(): Camera {

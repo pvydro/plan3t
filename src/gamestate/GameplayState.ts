@@ -12,7 +12,7 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
-import { particleMan } from '../shared/Dependencies'
+import { gameMapMan, particleMan } from '../shared/Dependencies'
 
 export interface IGameplayState extends IGameState {
     cameraViewport: Viewport
@@ -60,7 +60,7 @@ export class GameplayState extends GameState implements IGameplayState {
     }
 
     update() {
-        this.gameMapManager.update()
+        gameMapMan.update()
         this.ambientLight.update()
         this.inGameHUD.update()
         // this.hornet.update()

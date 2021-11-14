@@ -7,11 +7,11 @@ import { IServerGameState } from '../../network/schema/serverstate/ServerGameSta
 import { IPVPGameRoomState } from '../../network/schema/pvpgamestate/PVPGameRoomState'
 import { IWaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
 import { ChatService } from '../../service/chatservice/ChatService'
-import { importantLog, log, logError, VerboseLogging } from '../../service/Flogger'
+import { importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { EntityManager, IEntityManager } from '../entitymanager/EntityManager'
-import { IGameMapManager } from '../GameMapManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
-import { RoomManager, RoomManagerOptions } from './RoomManager'
+import { RoomManager } from './RoomManager'
+import { gameMapMan } from '../../shared/Dependencies'
 
 enum ServerStateType {
     WaveRunner = 'waverunner',
@@ -27,12 +27,10 @@ export interface IRoomStateManager {
 
 export class RoomStateManager implements IRoomStateManager {
     currentState?: IServerGameState
-    gameMapManager: IGameMapManager
     waveRunnerManager: IWaveRunnerManager
     entityManager: IEntityManager
 
-    constructor(options: RoomManagerOptions) {
-        this.gameMapManager = options.gameMapManager
+    constructor() {
         this.waveRunnerManager = WaveRunnerManager.getInstance()
         this.entityManager = EntityManager.getInstance()
     }
@@ -50,8 +48,10 @@ export class RoomStateManager implements IRoomStateManager {
     }
 
     handlePVPRoomState(newState: IPVPGameRoomState) {
-        if (newState.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
-            this.gameMapManager.initializeBuilding(newState.currentMap)
+        if (newState.pvpGameHasStarted) {
+            if (newState.currentMap !== gameMapMan.gameMap.currentMapBuildingType) {
+                gameMapMan.initializeBuilding(newState.currentMap)
+            }
         }
         // if (newState.players) {
         //     newState.players.forEach((player) => {
@@ -72,8 +72,8 @@ export class RoomStateManager implements IRoomStateManager {
             const wave = newState.waveRunner?.currentWave ?? undefined
 
             if (wave) {
-                if (wave.currentMap !== this.gameMapManager.gameMap.currentMapBuildingType) {
-                    this.gameMapManager.initializeBuilding(wave.currentMap)
+                if (wave.currentMap !== gameMapMan.gameMap.currentMapBuildingType) {
+                    gameMapMan.initializeBuilding(wave.currentMap)
                 }
     
                 if (wave.waveIndex !== this.waveRunnerManager.currentWaveIndex) {
@@ -129,7 +129,7 @@ export class RoomStateManager implements IRoomStateManager {
             dimension: new Dimension(schema.dimension.width, schema.dimension.height)
         })
 
-        await this.gameMapManager.initialize(sphericalData)
+        await gameMapMan.initialize(sphericalData)
     }
 
 }

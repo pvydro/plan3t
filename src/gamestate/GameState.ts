@@ -26,7 +26,6 @@ export abstract class GameState implements IGameState {
     inGameHUD: InGameHUD
     roomManager: IRoomManager
     clientManager: IClientManager
-    gameMapManager: IGameMapManager
     musicManager: IMusicManager
     
     constructor(options: GameStateOptions) {
@@ -34,11 +33,7 @@ export abstract class GameState implements IGameState {
         this.game = options.game
 
         this.clientManager = this.game.clientManager
-        this.gameMapManager = GameMapManager.getInstance()
-        this.roomManager = RoomManager.getInstance({
-            clientManager: this.clientManager,
-            gameMapManager: this.gameMapManager
-        })
+        this.roomManager = RoomManager.getInstance()
         this.musicManager = MusicManager.getInstance()
         this.inGameHUD = InGameHUD.getInstance()
     }

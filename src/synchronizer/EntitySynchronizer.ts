@@ -84,7 +84,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         return this.entityManager.clientEntities
     }
 
-    get roomState() {
-        return this.entityManager.roomState
-    }
+    // get roomState() {
+    //     return this.entityManager.roomState
+    // }
 }

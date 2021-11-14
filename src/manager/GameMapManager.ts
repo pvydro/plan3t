@@ -17,27 +17,19 @@ export interface IGameMapManager extends IUpdatable {
 }
 
 export class GameMapManager implements IGameMapManager {
-    private static Instance: IGameMapManager
     _initialized: boolean = false
     _gameMap: GameMap
-    clientManager: IClientManager
+    // clientManager: IClientManager
 
-    static getInstance() {
-        if (!this.Instance) {
-            this.Instance = new GameMapManager()
-        }
-
-        return this.Instance
-    }
-
-    private constructor() {
-        this.clientManager = ClientManager.getInstance()
-        this._gameMap = GameMap.getInstance()
+    constructor() {
+        // this.clientManager = ClientManager.getInstance()
+        
     }
 
     async initialize(sphericalData?: SphericalData) {
         Flogger.log('GameMapManager', 'initializeGameMap')
-        
+        this._gameMap = GameMap.getInstance()
+
         if (this._initialized) {
             this.stage.removeFromLayer(this._gameMap, CameraLayer.GameMap)
         }
@@ -90,7 +82,7 @@ export class GameMapManager implements IGameMapManager {
     }
 
     get camera() {
-        return this.clientManager.clientCamera
+        return ClientManager.getInstance().clientCamera
     }
 
     get gameMap() {

@@ -4,6 +4,7 @@ import { ClientMessage, RoomMessage } from '../network/rooms/ServerMessages'
 import { IAI } from './AI'
 import { AIAction, AIActionData, AIActionPayload } from './AIAction'
 import { Environment } from '../main/Environment'
+import { matchMaker } from '../shared/Dependencies'
 
 export interface IAIMessenger {
     requestAction(action: AIAction): void
@@ -19,7 +20,7 @@ export class AIMessenger implements IAIMessenger {
         this.roomMan = RoomManager.getInstance()
         this.ai = ai
         this.actionStream$ = new Observable(observer => {
-            this.roomMan.currentRoom.onMessage(ClientMessage.AIAction, (payload: AIActionPayload) => {
+            matchMaker.currentRoom.onMessage(ClientMessage.AIAction, (payload: AIActionPayload) => {
                 observer.next(payload)
             })
         })
@@ -30,7 +31,7 @@ export class AIMessenger implements IAIMessenger {
 
         const actionData: AIActionData = data || { entityID: this.ai.target.entityId }
         const payload: AIActionPayload = { action, actionData }
-        this.roomMan.currentRoom.send(RoomMessage.AIAction, payload)
+        matchMaker.currentRoom.send(RoomMessage.AIAction, payload)
     }
 
     delegateAction(action: AIAction, handler: Function) {

@@ -1,117 +1,94 @@
 import { Room, SchemaSerializer } from 'colyseus.js'
-import { EntitySchema } from '../../network/schema/EntitySchema'
 import { ClientManager, IClientManager } from '../ClientManager'
 import { IEntityManager } from '../entitymanager/EntityManager'
 import { importantLog, log } from '../../service/Flogger'
-import { IGameMapManager } from '../GameMapManager'
-import { ClientMessage } from '../../network/rooms/ServerMessages'
-import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
-import { RoomMessenger } from './RoomMessenger'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
-import { ProjectileType } from '../../weapon/projectile/Bullet'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { IRoomStateManager, RoomStateManager } from './RoomStateManager'
-import { CreatureSchema } from '../../network/schema/CreatureSchema'
-import { ChatService } from '../../service/chatservice/ChatService'
-import { IServerGameState, ServerGameState } from '../../network/schema/serverstate/ServerGameState'
-import { WaveRunnerGameState } from '../../network/schema/waverunnergamestate/WaveRunnerGameState'
-import { PVPGameRoomState } from '../../network/schema/pvpgamestate/PVPGameRoomState'
 import { matchMaker } from '../../shared/Dependencies'
 
 export interface IRoomManager {
     initializeRoom(): Promise<Room>
-    currentRoom: Room
-}
-
-export interface RoomManagerOptions {
-    clientManager: IClientManager
-    gameMapManager: IGameMapManager
+    // currentRoom: Room
 }
 
 export class RoomManager implements IRoomManager {
     private static Instance: RoomManager
     private static _clientSessionId = 'local'
-    static _room: Room<any>
     
     roomStateManager: IRoomStateManager
-    gameMapManager: IGameMapManager
     clientManager: IClientManager
     entityManager: IEntityManager
 
-    static getInstance(options?: RoomManagerOptions): RoomManager | undefined {
+    static getInstance(): RoomManager | undefined {
         if (RoomManager.Instance === undefined) {
-            if (options === undefined) {
-                return undefined
-            } else {
-                RoomManager.Instance = new RoomManager(options)
-            }
+            RoomManager.Instance = new RoomManager()
         }
 
         return RoomManager.Instance
     }
 
-    private constructor(options: RoomManagerOptions) {
-        this.roomStateManager = new RoomStateManager(options)
+    private constructor() {
+        // this.roomStateManager = new RoomStateManager(options)
         this.clientManager = ClientManager.getInstance()
-        this.gameMapManager = options.gameMapManager
         this.entityManager = this.clientManager.entityManager
     }
 
     async initializeRoom(): Promise<Room> {
         log('RoomManager', 'initializeRoom')
 
-        this.currentRoom = await matchMaker.client.joinOrCreate<PVPGameRoomState>('GameRoom')
+        // this.currentRoom = await matchMaker.client.joinOrCreate<PVPGameRoomState>('GameRoom')
 
-        RoomManager.clientSessionId = this.currentRoom.sessionId
-        RoomMessenger._isOnline = true
+        // RoomManager.clientSessionId = this.currentRoom.sessionId
+        // RoomMessenger._isOnline = true
         
         this.initializeCurrentRoomEntities()
 
         return new Promise((resolve) => {
             // First state change
-            this.currentRoom.onStateChange.once((state: ServerGameState) => {
-                this.roomStateManager.setInitialState(state).then(() => {
-                    resolve(this.currentRoom)
-                })
-            })
+            // this.currentRoom.onStateChange.once((state: ServerGameState) => {
+            //     this.roomStateManager.setInitialState(state).then(() => {
+            //         resolve(this.currentRoom)
+            //     })
+            // })
 
-            this.startListening()
+            // this.startListening()
         })
     }
 
     startListening() {
         log('RoomManager', 'startListening')
 
-        this.currentRoom.onStateChange((state: ServerGameState) => {
-            importantLog('onStateChange')
-            this.roomStateManager.stateChanged(state)
-        })
+        // this.currentRoom.onStateChange((state: ServerGameState) => {
+        //     importantLog('onStateChange')
+        //     this.roomStateManager.stateChanged(state)
+        // })
 
-        this.currentRoom.onMessage(ClientMessage.UpdateChat, (message) => {
-            if (ChatService._serverMessages !== message) {
-                ChatService._serverMessages = message
-                ChatService.fetchChatHistoryFromRoom()
-            }
-        })
+        // this.currentRoom.onMessage(ClientMessage.UpdateChat, (message) => {
+        //     if (ChatService._serverMessages !== message) {
+        //         ChatService._serverMessages = message
+        //         ChatService.fetchChatHistoryFromRoom()
+        //     }
+        // })
     }
 
     initializeCurrentRoomEntities() {
-        this.currentRoom.state.players.onAdd = (player: PlayerSchema, sessionId: string) => {
-            this.addPlayer(player, sessionId)
-        }
-        this.currentRoom.state.players.onRemove = (player: PlayerSchema, sessionId: string) => {
-            this.removePlayer(sessionId)
-        }
+        // this.currentRoom.state.players.onAdd = (player: PlayerSchema, sessionId: string) => {
+        //     this.addPlayer(player, sessionId)
+        // }
+        // this.currentRoom.state.players.onRemove = (player: PlayerSchema, sessionId: string) => {
+        //     this.removePlayer(sessionId)
+        // }
 
-        this.currentRoom.state.projectiles.onAdd = (schema: ProjectileSchema, key: number) => {
-            // if (schema.sessionId !== RoomManager.clientSessionId) {
-            this.addProjectile(schema)
-            // }
-        }
-        this.currentRoom.state.creatures.onAdd = (creature: CreatureSchema, key: string) => {
-            // this
-            this.addCreature(creature, creature.id)
-        }
+        // this.currentRoom.state.projectiles.onAdd = (schema: ProjectileSchema, key: number) => {
+        //     // if (schema.sessionId !== RoomManager.clientSessionId) {
+        //     this.addProjectile(schema)
+        //     // }
+        // }
+        // this.currentRoom.state.creatures.onAdd = (creature: CreatureSchema, key: string) => {
+        //     // this
+        //     this.addCreature(creature, creature.id)
+        // }
     }
 
     addPlayer(schema: PlayerSchema, id: string) {
@@ -126,25 +103,25 @@ export class RoomManager implements IRoomManager {
         schema.onChange = changes => this.entityManager.updateEntity(schema, id, changes)
     }
 
-    removePlayer(id: string) {
-        importantLog('RoomManager', 'removePlayer', 'sessionId', id)
+    // removePlayer(id: string) {
+    //     importantLog('RoomManager', 'removePlayer', 'sessionId', id)
 
-        this.entityManager.removeEntity(id)
-    }
+    //     this.entityManager.removeEntity(id)
+    // }
 
-    addProjectile(schema: ProjectileSchema) {
-        this.entityManager.createProjectile(schema)
+    // addProjectile(schema: ProjectileSchema) {
+    //     this.entityManager.createProjectile(schema)
 
-        schema.onChange = changes => this.entityManager.updateEntity(schema, schema.id, changes)
-    }
+    //     schema.onChange = changes => this.entityManager.updateEntity(schema, schema.id, changes)
+    // }
 
-    addCreature(schema: CreatureSchema, id: string) {
-        importantLog('RoomManager', 'addCreature', 'creature', 'type', schema.creatureType)
+    // addCreature(schema: CreatureSchema, id: string) {
+    //     importantLog('RoomManager', 'addCreature', 'creature', 'type', schema.creatureType)
 
-        this.entityManager.createCreature(schema)
+    //     this.entityManager.createCreature(schema)
 
-        schema.onChange = changes => this.entityManager.updateEntity(schema, id, changes)
-    }
+    //     schema.onChange = changes => this.entityManager.updateEntity(schema, id, changes)
+    // }
 
     requestClientPlayerRespawn() {
         const clientPlayer = ClientPlayer.getInstance()
@@ -170,20 +147,8 @@ export class RoomManager implements IRoomManager {
         return this._clientSessionId
     }
 
-    get isHost() {
-        return (RoomManager.clientSessionId === this.currentRoom.state.hostId)
-    }
-
-    get currentRoom() {
-        return RoomManager._room
-    }
-
-    set currentRoom(value) {
-        RoomManager._room = value
-    }
-
     get roomState() {
-        return this.currentRoom.state
+        return matchMaker.currentRoom?.state
     }
 }
 

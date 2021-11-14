@@ -1,8 +1,10 @@
 import { Key } from 'ts-keycode-enum'
+import { MapBuildingType } from '../gamemap/mapbuilding/MapBuilding'
 import { InputEvents, InputProcessor } from '../input/InputProcessor'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../manager/waverunnermanager/WaveRunnerManager'
 import { ChatService } from '../service/chatservice/ChatService'
+import { gameMapMan } from '../shared/Dependencies'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { InGameScreenID } from '../ui/ingamemenu/InGameMenu'
 import { asyncTimeout } from '../utils/Utils'
@@ -32,6 +34,8 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             // this.musicManager.fetchSong(SongKeyCodes.Meiko).then((sound: Sound) => {
             //     sound.play()
             // })
+
+            gameMapMan.initializeBuilding(MapBuildingType.Dojo)
 
             ChatService.fetchChatHistoryFromRoom()
         })

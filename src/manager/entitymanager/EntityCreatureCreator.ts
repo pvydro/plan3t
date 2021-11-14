@@ -1,4 +1,3 @@
-import { create } from 'colyseus/lib/MatchMaker'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Creature } from '../../creature/Creature'
@@ -39,10 +38,6 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
         })
 
         return creature
-    }
-
-    get roomState() {
-        return this.entityManager.roomState
     }
 
     get camera(): Camera {
