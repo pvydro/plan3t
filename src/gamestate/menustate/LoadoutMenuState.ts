@@ -1,4 +1,5 @@
 import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
+import { camera } from '../../shared/Dependencies'
 import { LoadoutScreen } from '../../ui/uiscreen/loadoutscreen/LoadoutScreen'
 import { GameState, GameStateOptions } from '../GameState'
 
@@ -19,8 +20,8 @@ export class LoadoutMenuState extends GameState implements IWeaponLoadoutState {
 
     async initialize() {
         this.loadoutScreen = new LoadoutScreen()
-        this.camera.cameraLetterboxPlugin.hide()
-        this.camera.viewport.addChild(this.loadoutScreen)
+        camera.cameraLetterboxPlugin.hide()
+        camera.viewport.addChild(this.loadoutScreen)
         
         await super.initialize()
     }
@@ -32,7 +33,7 @@ export class LoadoutMenuState extends GameState implements IWeaponLoadoutState {
     
     async exit() {
         await this.loadoutScreen.hide()
-        this.camera.viewport.removeChild(this.loadoutScreen)
-        this.camera.viewport.removeChild(this.inGameHUD)
+        camera.viewport.removeChild(this.loadoutScreen)
+        camera.viewport.removeChild(this.inGameHUD)
     }
 }

@@ -1,7 +1,7 @@
 import { RectGradient } from '../../engine/display/extra/RectGradient'
 import { Graphix, IGraphix } from '../../engine/display/Graphix'
 import { FourWayDirection } from '../../engine/math/Direction'
-import { UIComponent } from '../../ui/UIComponent'
+import { IUIComponent, UIComponent } from '../../ui/UIComponent'
 import { IUIContainer, UIContainer } from '../../ui/UIContainer'
 import { GameWindow } from '../../utils/Constants'
 import { UIDefaults } from '../../utils/Defaults'
@@ -9,12 +9,12 @@ import { rect } from '../../utils/Utils'
 import { ICamera } from '../Camera'
 import { CameraLayer } from '../CameraStage'
 
-export interface ICameraLetterboxPlugin extends IUIContainer {
+export interface ICameraLetterboxPlugin extends IUIComponent {
     topBox: IGraphix
     bottomBox: IGraphix
 }
 
-export class CameraLetterboxPlugin extends UIComponent {
+export class CameraLetterboxPlugin extends UIComponent implements ICameraLetterboxPlugin {
     _boxes: Graphix[]
     _gradients: RectGradient[]
     boxColor: number = 0x000000//0x080808

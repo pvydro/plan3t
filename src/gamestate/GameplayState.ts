@@ -12,15 +12,13 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
-import { gameMapMan, matchMaker, particleMan } from '../shared/Dependencies'
+import { camera, gameMapMan, matchMaker, particleMan } from '../shared/Dependencies'
 
 export interface IGameplayState extends IGameState {
-    cameraViewport: Viewport
 }
 
 export class GameplayState extends GameState implements IGameplayState {
     ambientLight: GameplayAmbientLight
-    // hornet: PassiveHornet
     player: ClientPlayer
 
     constructor(options: GameStateOptions) {
@@ -30,22 +28,20 @@ export class GameplayState extends GameState implements IGameplayState {
         })
 
         this.ambientLight = new GameplayAmbientLight()
-        // this.hornet = new PassiveHornet()
     }
     
     async initialize() {
-        this.camera.cameraLetterboxPlugin.show()
+        const cameraStage = camera.stage
+
+        camera.cameraLetterboxPlugin.show()
         this.inGameHUD.showHUDComponents()
 
-        // this.cameraStage.addChildAtLayer(this.hornet, CameraLayer.GameMapOverlay)    
-        this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-        this.cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
-        this.cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
+        cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+        cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
+        cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
         this.inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
-        // this.musicManager.
 
-        // await this.initializeBackground()
-        this.camera.viewport.addChild(this.inGameHUD)
+        camera.viewport.addChild(this.inGameHUD)
         
         await matchMaker.createMatch()
         await matchMaker.joinMatch(matchMaker.matchId)
@@ -56,7 +52,7 @@ export class GameplayState extends GameState implements IGameplayState {
 
         // REF: Do this based on server
         this.player = this.entityManager.createClientPlayer(undefined, 'test')//room.id)
-        this.camera.follow(this.player)
+        camera.follow(this.player)
     }
 
     update() {

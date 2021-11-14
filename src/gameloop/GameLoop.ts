@@ -2,11 +2,9 @@ import * as PIXI from 'pixi.js'
 import { IClientManager } from '../manager/ClientManager'
 import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
 import { IGravityManager } from '../manager/GravityManager'
-import { ParticleManager } from '../manager/particlemanager/ParticleManager'
-import { IRoomManager } from '../manager/roommanager/RoomManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
-import { particleMan } from '../shared/Dependencies'
+import { camera, particleMan } from '../shared/Dependencies'
 import { exists } from '../utils/Utils'
 
 export interface IGameLoop {
@@ -16,7 +14,6 @@ export interface IGameLoop {
 
 export interface GameLoopOptions {
     clientManager?: IClientManager
-    roomManager?: IRoomManager
     gravityManager?: IGravityManager
 }
 
@@ -29,7 +26,6 @@ export class GameLoop implements IGameLoop {
     tooltipManager?: TooltipManager
     entityManager?: IEntityManager
     gravityManager: IGravityManager
-    roomManager?: IRoomManager
 
     constructor(options: GameLoopOptions) {
         this.assignOptions(options)
@@ -72,10 +68,7 @@ export class GameLoop implements IGameLoop {
                 })
             }
 
-            // Update camera & client manager
-            if (this.clientManager !== undefined) {
-                this.clientManager.clientCamera.update()
-            }
+            camera.update()
 
             // Update current state
             this.clientManager.update()
@@ -91,7 +84,6 @@ export class GameLoop implements IGameLoop {
             this.gravityManager = options.gravityManager ?? this.gravityManager
             this.clientManager = options.clientManager ?? this.clientManager
             this.entityManager = this.clientManager.entityManager ?? this.entityManager
-            this.roomManager = options.roomManager ?? this.roomManager
         }
     }
 }

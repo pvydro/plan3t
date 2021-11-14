@@ -8,6 +8,7 @@ import { Graphix } from '../../engine/display/Graphix'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { log } from '../../service/Flogger'
+import { camera } from '../../shared/Dependencies'
 
 export interface IHomeshipicalOutline extends IContainer {
     initialize(): void
@@ -63,7 +64,6 @@ export class HomeshipicalOutline extends Container implements IHomeshipicalOutli
 
 
     initializeEdgeCovers() {
-        const camera = Camera.getInstance()
         const edgeWidth = 256
         const bleedAmount = 128
 
@@ -96,8 +96,6 @@ export class HomeshipicalOutline extends Container implements IHomeshipicalOutli
     }
 
     removeEdgeCovers() {
-        const camera = Camera.getInstance()
-
         camera.stage.removeFromLayer(this.leftSideEdgeCover, CameraLayer.GameMapOverlay)
     }
 

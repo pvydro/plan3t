@@ -3,6 +3,7 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { Creature } from '../../creature/Creature'
 import { CreatureType } from '../../creature/CreatureType'
 import { CreatureFactory } from '../../factory/CreatureFactory'
+import { camera } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityCreatureCreator {
@@ -31,20 +32,12 @@ export class EntityCreatureCreator implements IEntityCreatureCreator {
         creature.x = options.schema.x ?? 0
         creature.y = options.schema.y ?? 0
 
-        this.cameraStage.addChildAtLayer(creature, CameraLayer.Creatures)
+        camera.stage.addChildAtLayer(creature, CameraLayer.Creatures)
         this.entityManager.registerEntity(id, {
             clientEntity: creature,
             serverEntity: options.schema
         })
 
         return creature
-    }
-
-    get camera(): Camera {
-        return this.entityManager.camera
-    }
-
-    get cameraStage() {
-        return this.camera.stage
     }
 }

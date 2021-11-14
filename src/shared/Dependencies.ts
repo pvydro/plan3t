@@ -7,7 +7,9 @@ import { IGameStateManager, GameStateManager } from '../manager/gamestatemanager
 import { IParticleManager, ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { IMatchMaker, MatchMaker } from '../matchmaker/MatchMaker'
 import { IGameMapManager, GameMapManager } from '../manager/GameMapManager'
+import { Camera, ICamera } from '../camera/Camera'
 
+export const camera: ICamera = container.resolve(Camera)
 export const userProfile: IUserProfile = container.resolve(UserProfile)
 export const musicLoader: IMusicLoader = container.resolve(MusicLoader)
 export const musicPlayer: IMusicPlayer = container.resolve(MusicPlayer)

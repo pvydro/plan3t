@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Key } from 'ts-keycode-enum'
 import { InputProcessor } from '../../input/InputProcessor'
 import { IGame, Game } from '../../main/Game'
+import { camera } from '../../shared/Dependencies'
 import { GameWindow } from '../../utils/Constants'
 
 window.PIXI = PIXI
@@ -15,7 +16,7 @@ game.bootstrap().then(() => {
     const gameCanvas = document.getElementById('game-canvas')
 
     window.addEventListener('resize', () => {
-        game.camera.resize(GameWindow.fullWindowWidth, GameWindow.fullWindowHeight)
+        camera.resize(GameWindow.fullWindowWidth, GameWindow.fullWindowHeight)
         game.renderer.resize(GameWindow.fullWindowWidth, GameWindow.fullWindowHeight)
     })
 

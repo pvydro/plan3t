@@ -97,12 +97,4 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
     clearRegisteredPlayer() {
         this._currentClientPlayer = undefined
     }
-
-    get camera(): Camera {
-        return this.entityManager.camera
-    }
-
-    get cameraStage() {
-        return this.camera.stage
-    }
 }

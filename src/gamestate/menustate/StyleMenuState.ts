@@ -1,4 +1,5 @@
 import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
+import { camera } from '../../shared/Dependencies'
 import { StyleScreen } from '../../ui/uiscreen/stylescreen/StyleScreen'
 import { GameState, GameStateOptions, IGameState } from '../GameState'
 
@@ -19,8 +20,8 @@ export class StyleMenuState extends GameState implements IStyleMenuState {
     async initialize() {
         this.styleScreen = new StyleScreen()
 
-        this.camera.cameraLetterboxPlugin.hide()
-        this.camera.viewport.addChild(this.styleScreen)
+        camera.cameraLetterboxPlugin.hide()
+        camera.viewport.addChild(this.styleScreen)
         
         await super.initialize()
     }
@@ -32,7 +33,7 @@ export class StyleMenuState extends GameState implements IStyleMenuState {
     
     async exit() {
         await this.styleScreen.hide()
-        this.camera.viewport.removeChild(this.styleScreen)
-        this.camera.viewport.removeChild(this.inGameHUD)
+        camera.viewport.removeChild(this.styleScreen)
+        camera.viewport.removeChild(this.inGameHUD)
     }
 }

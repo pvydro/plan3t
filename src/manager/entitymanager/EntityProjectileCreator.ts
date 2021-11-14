@@ -1,8 +1,8 @@
-import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 import { Flogger } from '../../service/Flogger'
-import { Bullet, ProjectileType } from '../../weapon/projectile/Bullet'
+import { camera } from '../../shared/Dependencies'
+import { Bullet } from '../../weapon/projectile/Bullet'
 import { IEntityManager } from './EntityManager'
 
 export interface IEntityProjectileCreator {
@@ -33,17 +33,9 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
         bullet.x = schema.x
         bullet.y = schema.y
 
-        this.cameraStage.addChildAtLayer(bullet, CameraLayer.Bullet)
+        camera.stage.addChildAtLayer(bullet, CameraLayer.Bullet)
         this.entityManager.registerEntity(schema.id, bullet)
 
         return bullet
-    }
-
-    get camera(): Camera {
-        return this.entityManager.camera
-    }
-
-    get cameraStage() {
-        return this.camera.stage
     }
 }

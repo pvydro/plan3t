@@ -1,4 +1,3 @@
-import { ICamera } from '../camera/Camera'
 import { IEntityManager } from './entitymanager/EntityManager'
 import { GameMap, IGameMap } from '../gamemap/GameMap'
 import { Game } from '../main/Game'
@@ -7,7 +6,6 @@ import { Flogger, log } from '../service/Flogger'
 import { gameStateMan } from '../shared/Dependencies'
 
 export interface IClientManager extends IUpdatable {
-    clientCamera: ICamera
     entityManager: IEntityManager
     gameMap: IGameMap
     initialize(): Promise<void>
@@ -21,7 +19,6 @@ export interface ClientManagerOptions {
 
 export class ClientManager implements IClientManager {
     private static Instance: IClientManager
-    _camera: ICamera
     _gameMap: GameMap
     _game: Game
     _entityManager: IEntityManager
@@ -40,7 +37,6 @@ export class ClientManager implements IClientManager {
 
     private constructor(options: ClientManagerOptions) {
         this._game = options.game
-        this._camera = options.game.camera
         this._entityManager = options.entityManager
     }
 
@@ -57,10 +53,6 @@ export class ClientManager implements IClientManager {
         log('ClientManager', 'clearEntityManager')
         
         this._entityManager.clearClientEntities()
-    }
-
-    get clientCamera() {
-        return this._camera
     }
 
     get entityManager() {

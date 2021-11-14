@@ -9,6 +9,7 @@ import { IRect } from '../../engine/math/Rect'
 import { point } from '../../engine/math/Vector2'
 import { IUpdatable } from '../../interface/IUpdatable'
 import { Flogger } from '../../service/Flogger'
+import { camera } from '../../shared/Dependencies'
 import { AIDebugConstants } from '../../utils/Constants'
 import { exists } from '../../utils/Utils'
 import { IGroundPatherAI } from './GroundPatherAI'
@@ -95,7 +96,6 @@ export class GroundPatherDebugger implements IGroundPatherDebugger {
 
     createDebugGraphics() {
         Flogger.log('GroundPatherDebugger', 'createDebugGraphics')
-        const camera = Camera.getInstance()
         const targetDotSize = this.debugValues.targetDotSize
         const jumperSensorDimension: IDimension = {
             width: this.groundPather.jumper.sensor.width,

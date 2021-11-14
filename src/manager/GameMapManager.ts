@@ -5,8 +5,7 @@ import { MultiStoryMapBuilding } from '../gamemap/mapbuilding/MultiStoryMapBuild
 import { SphericalData } from '../gamemap/spherical/SphericalData'
 import { IUpdatable } from '../interface/IUpdatable'
 import { Flogger } from '../service/Flogger'
-import { ClientManager, IClientManager } from './ClientManager'
-
+import { camera } from '../shared/Dependencies'
 export interface IGameMapManager extends IUpdatable {
     gameMap: GameMap
     initialize(sphericalData?: SphericalData): Promise<void>
@@ -19,23 +18,19 @@ export interface IGameMapManager extends IUpdatable {
 export class GameMapManager implements IGameMapManager {
     _initialized: boolean = false
     _gameMap: GameMap
-    // clientManager: IClientManager
 
-    constructor() {
-        // this.clientManager = ClientManager.getInstance()
-        
-    }
+    constructor() {}
 
     async initialize(sphericalData?: SphericalData) {
         Flogger.log('GameMapManager', 'initializeGameMap')
         this._gameMap = GameMap.getInstance()
 
         if (this._initialized) {
-            this.stage.removeFromLayer(this._gameMap, CameraLayer.GameMap)
+            camera.stage.removeFromLayer(this._gameMap, CameraLayer.GameMap)
         }
 
         this._initialized = true
-        this.stage.addChildAtLayer(this._gameMap, CameraLayer.GameMap)
+        camera.stage.addChildAtLayer(this._gameMap, CameraLayer.GameMap)
         
         if (sphericalData !== undefined) {
             this._gameMap.initializePremadeSpherical(sphericalData)
@@ -71,18 +66,6 @@ export class GameMapManager implements IGameMapManager {
         if (this._gameMap) {
             this._gameMap.update()
         }
-    }
-
-    get stage() {
-        return this.camera.stage
-    }
-
-    get viewport() {
-        return this.camera.viewport
-    }
-
-    get camera() {
-        return ClientManager.getInstance().clientCamera
     }
 
     get gameMap() {

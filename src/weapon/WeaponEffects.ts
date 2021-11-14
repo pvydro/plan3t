@@ -1,7 +1,7 @@
 import { Camera } from '../camera/Camera'
 import { MuzzleFlashParticle } from '../engine/display/particle/MuzzleFlashParticle'
 import { Direction } from '../engine/math/Direction'
-import { particleMan } from '../shared/Dependencies'
+import { camera, particleMan } from '../shared/Dependencies'
 import { GlobalScale } from '../utils/Constants'
 import { Weapon } from './Weapon'
 
@@ -65,8 +65,6 @@ export class WeaponEffects implements IWeaponEffects {
     }
 
     applyScreenEffects() {
-        const camera = Camera.getInstance()
-
         camera.shake(5)
         camera.flash({
             minimumBrightness: 0.15,

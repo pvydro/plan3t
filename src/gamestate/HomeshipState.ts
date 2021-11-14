@@ -9,7 +9,7 @@ import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
-import { gameMapMan, particleMan } from '../shared/Dependencies'
+import { camera, gameMapMan, particleMan } from '../shared/Dependencies'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -32,27 +32,28 @@ export class HomeshipState extends GameState implements ISpaceshipState {
 
     async initialize() {
         await this.initializeBackground()
-        this.camera.viewport.addChild(this.inGameHUD)
+        camera.viewport.addChild(this.inGameHUD)
 
         gameMapMan.initializeHomeship().then(async () => {
             log(this.name, 'Homeship initialized')
 
             const player = this.entityManager.createOfflinePlayer()
             const tooltipManager = TooltipManager.getInstance()
+            const cameraStage = camera.stage
 
             player.light.disableHardLights()
             player.holster.holsterWeapon()
             player.x = 32
 
             await this.inGameHUD.initializeHUD()
-            this.camera.follow(player)
             this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
-
-            this.cameraStage.addChildAtLayer(player, CameraLayer.Players)
-            this.cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-            this.cameraStage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
-            this.cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
-            this.cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
+            
+            camera.follow(player)
+            cameraStage.addChildAtLayer(player, CameraLayer.Players)
+            cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+            cameraStage.addChildAtLayer(tooltipManager.container, CameraLayer.Tooltips)
+            cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
+            cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
 
             Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             super.initialize()

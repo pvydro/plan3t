@@ -14,14 +14,12 @@ import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { asyncTimeout } from '../utils/Utils'
 import { Sounds } from '../asset/Sounds'
 import { MusicLoader } from '../music/MusicLoader'
-import { matchMaker, musicLoader } from '../shared/Dependencies'
+import { camera, matchMaker, musicLoader } from '../shared/Dependencies'
 import { DecorationDirectory } from '../gamemap/mapbuilding/DecorationDirectory'
 
 export interface IGame {
     view: any
     renderer: PIXI.Renderer
-    camera: Camera
-    cameraViewport: Viewport
 
     bootstrap(): Promise<void>
 }
@@ -29,7 +27,6 @@ export interface IGame {
 export class Game implements IGame {
     private static Instance: IGame
     _application: PIXI.Application
-    _clientCamera: Camera
     _clientManager: IClientManager
     _entityManager: IEntityManager
     _loadingScreen: LoadingScreen
@@ -48,7 +45,6 @@ export class Game implements IGame {
 
         const game = this
         this._entityManager = EntityManager.getInstance({ game })
-        this._clientCamera = Camera.getInstance()
         this._clientManager = ClientManager.getInstance({ game, entityManager: this.entityManager })
         this._loadingScreen = LoadingScreen.getInstance()
     }
@@ -66,7 +62,7 @@ export class Game implements IGame {
         
         await this.clientManager.initialize()
 
-        this.stage.addChild(this.cameraViewport)
+        this.stage.addChild(camera.viewport)
         this.stage.addChild(this._loadingScreen)
         this.initializeGameLoop()
     }
@@ -136,13 +132,5 @@ export class Game implements IGame {
 
     get clientManager() {
         return this._clientManager
-    }
-
-    get camera() {
-        return this._clientCamera
-    }
-
-    get cameraViewport() {
-        return this._clientCamera.viewport
     }
 }

@@ -15,12 +15,13 @@ import { double, exists } from '../utils/Utils'
 import { EntityFlashOptions } from '../cliententity/plugins/EntityFlashPlugin'
 import { CameraPlayerSynchPlugin, ICameraPlayerSynchPlugin } from './plugin/CameraPlayerTargetPlugin'
 import { GameWindow } from '../utils/Constants'
-import { CameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
+import { ICameraLetterboxPlugin, CameraLetterboxPlugin } from './plugin/CameraLetterboxPlugin'
 import { IReposition } from '../interface/IReposition'
 import { PositionAnimateable } from '../engine/display/Animator'
 import { PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPlayerState'
 import { CameraServerDebugPlugin } from './plugin/CameraServerDebuggerPlugin'
 import { IClientEntity } from '../cliententity/ClientEntity'
+import { camera } from '../shared/Dependencies'
 
 export interface ICameraTarget {
     x: number
@@ -41,8 +42,10 @@ export interface ICamera extends IUpdatable, IReposition {
     flash(options: CameraFlashOptions): void
     shakeAndFlash(shakeAmount: number, flashOptions?: EntityFlashOptions): void
     snapToTarget(): void
+    addDebugEntity(clientEntity: IClientEntity)
     viewport: Viewport
     stage: CameraStage
+    cameraLetterboxPlugin: ICameraLetterboxPlugin
     offset: IVector2
     transformOffset: IVector2
     instantOffset: IVector2
@@ -55,7 +58,7 @@ export interface ICamera extends IUpdatable, IReposition {
 }
 
 export class Camera implements ICamera {
-    private static Instance: Camera
+    // private static Instance: Camera
     private baseZoom: number = 3.5
     private baseWidth: number = 1280
     static Zero: IVector2 = Vector2.Zero
@@ -92,15 +95,16 @@ export class Camera implements ICamera {
     // cameraZoomPlugin: CameraZoomPlugin
     plugins: any[]
 
-    public static getInstance() {
-        if (Camera.Instance === undefined) {
-            Camera.Instance = new Camera()
-        }
+    // public static getInstance() {
+    //     if (Camera.Instance === undefined) {
+    //         Camera.Instance = new Camera()
+    //     }
 
-        return Camera.Instance
-    }
+    //     return Camera.Instance
+    // }
 
-    private constructor() {
+    // private constructor() {
+    constructor() {
         const camera = this
 
         this._viewport = new Viewport()
@@ -281,7 +285,7 @@ export class Camera implements ICamera {
     }
 
     static toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {
-        return Camera.getInstance().toScreen(point)
+        return camera.toScreen(point)
     }
 
     get target() {

@@ -7,7 +7,7 @@ import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { TrackerPatherAI } from '../ai/trackerpather/TrackerPatherAI'
 import { EnemyDebugger } from './EnemyDebugger'
 import { DebugConstants } from '../utils/Constants'
-import { particleMan } from '../shared/Dependencies'
+import { camera, particleMan } from '../shared/Dependencies'
 
 export interface IEnemy extends ITravelkinCreature {
 }
@@ -47,7 +47,6 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
 
         super.takeDamage(damage)
 
-        const camera = Camera.getInstance()
         const dmg = (damage instanceof Bullet) ? damage.damage : damage
         const damageString = '-' + dmg
         

@@ -9,10 +9,10 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { SphericalData } from './spherical/SphericalData'
 import { GameMapContainer } from './GameMapContainer'
 import { Homeshipical } from './homeship/Homeshipical'
-import { Camera } from '../camera/Camera'
 import { CameraStageBackgroundType } from '../camera/CameraStage'
 import { MapBuildingType } from './mapbuilding/MapBuilding'
 import { MapBuildingHelper } from './mapbuilding/MapBuildingHelper'
+import { camera } from '../shared/Dependencies'
 
 export interface IGameMap extends IDemolishable, IUpdatable {
     initializeRandomSpherical(): Promise<void>
@@ -50,7 +50,7 @@ export class GameMap extends Container implements IGameMap {
 
         const homeship = Homeshipical.getInstance()
 
-        this.camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
+        camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
 
         await this.applyGameMapContainer(homeship)
     }
@@ -77,7 +77,7 @@ export class GameMap extends Container implements IGameMap {
 
         const spherical = new Spherical(data)
 
-        this.camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
+        camera.stage.setBackground(CameraStageBackgroundType.BlueSky)
         await this.applyGameMapContainer(spherical)
     }
 
@@ -127,9 +127,5 @@ export class GameMap extends Container implements IGameMap {
 
     get collidableRects() {
         return (this.currentMap && this.currentMap.collisionRects) ? this.currentMap.collisionRects : []
-    }
-
-    get camera() {
-        return Camera.getInstance()
     }
 }

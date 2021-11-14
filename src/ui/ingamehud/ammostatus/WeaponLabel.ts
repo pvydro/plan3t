@@ -3,6 +3,7 @@ import { TextSprite } from '../../../engine/display/TextSprite'
 import { scaleFontSize, TextStyles } from '../../../engine/display/TextStyles'
 import { Tween } from '../../../engine/display/tween/Tween'
 import { Easing } from '../../../engine/display/tween/TweenEasing'
+import { camera } from '../../../shared/Dependencies'
 import { Defaults } from '../../../utils/Defaults'
 import { IWeapon, WeaponState } from '../../../weapon/Weapon'
 import { UIComponent } from '../../UIComponent'
@@ -79,11 +80,8 @@ export class WeaponLabel extends UIComponent implements IWeaponLabel {
     }
 
     triggerNoAmmoAnim() {        
-        if (this.tintAnimation === undefined) {
-            const camera = Camera.getInstance()
-            
+        if (this.tintAnimation === undefined) {            
             this.textSprite.tint = this.noAmmoTint
-
             this.tintAnimation = Tween.to(this.textSprite, {
                 pixi: {
                     tint: 0xFFFFFF,

@@ -1,5 +1,4 @@
 import { filter, Observable } from 'rxjs'
-import { IRoomManager, RoomManager } from '../manager/roommanager/RoomManager'
 import { ClientMessage, RoomMessage } from '../network/rooms/ServerMessages'
 import { IAI } from './AI'
 import { AIAction, AIActionData, AIActionPayload } from './AIAction'

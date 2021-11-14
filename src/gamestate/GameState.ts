@@ -1,8 +1,10 @@
+import { CameraServerDebugPlugin } from '../camera/plugin/CameraServerDebuggerPlugin'
 import { Game } from '../main/Game'
 import { ClientManager, IClientManager } from '../manager/ClientManager'
 import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { IMusicManager, MusicManager } from '../manager/musicmanager/MusicManager'
 import { log } from '../service/Flogger'
+import { camera } from '../shared/Dependencies'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 
@@ -39,7 +41,7 @@ export abstract class GameState implements IGameState {
 
         this.inGameHUD.requestCrosshairState(CrosshairState.Cursor)
         this.inGameHUD.crosshair.show()
-        this.camera.viewport.addChild(this.inGameHUD.crosshair)
+        camera.viewport.addChild(this.inGameHUD.crosshair)
         
         await Game.showLoadingScreen(false)
     }
@@ -49,8 +51,8 @@ export abstract class GameState implements IGameState {
         
         const clientManager = ClientManager.getInstance()
 
-        this.camera.clear()
-        this.camera.clearFollowTarget()
+        camera.clear()
+        camera.clearFollowTarget()
         clientManager.clearEntityManager()
     }
 
@@ -61,18 +63,6 @@ export abstract class GameState implements IGameState {
 
     update() {
         return
-    }
-    
-    get camera() {
-        return this.game.camera
-    }
-
-    get cameraStage() {
-        return this.camera.stage
-    }
-
-    get cameraViewport() {
-        return this.game.cameraViewport
     }
 
     get stage() {

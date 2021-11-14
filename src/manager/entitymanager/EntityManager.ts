@@ -1,5 +1,4 @@
 import { EntitySchema } from '../../network/schema/EntitySchema'
-import { Camera } from '../../camera/Camera'
 import { ClientEntity } from '../../cliententity/ClientEntity'
 import { Flogger, log, VerboseLogging } from '../../service/Flogger'
 import { GravityManager, IGravityManager } from '../GravityManager'
@@ -14,6 +13,7 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
+import { camera } from '../../shared/Dependencies'
 
 export interface EntityCreatorOptions {
     schema: EntitySchema
@@ -26,7 +26,6 @@ export interface LocalEntity {
 
 export interface IEntityManager {
     clientEntities: Map<string, LocalEntity>
-    camera: Camera
     gravityManager: IGravityManager
     enemyManager: IEnemyManager
     createClientPlayer(schema?: PlayerSchema, sessionId?: string): ClientPlayer
@@ -151,7 +150,7 @@ export class EntityManager implements IEntityManager {
 
         this._clientEntities.set(id, localEntity)
 
-        Camera.getInstance().addDebugEntity(localEntity.clientEntity)
+        camera.addDebugEntity(localEntity.clientEntity)
     }
 
     clearClientEntities() {
@@ -165,16 +164,12 @@ export class EntityManager implements IEntityManager {
         return this._clientEntities[id]
     }
 
-    get camera() {
-        return this.game.camera
-    }
-
     get cameraViewport() {
-        return this.camera.viewport
+        return camera.viewport
     }
 
     get cameraStage() {
-        return this.camera.stage
+        return camera.stage
     }
 
     get clientEntities() {

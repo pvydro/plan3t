@@ -1,4 +1,5 @@
 import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
+import { camera } from '../../shared/Dependencies'
 import { WagerScreen } from '../../ui/uiscreen/wagerscreen/WagerScreen'
 import { GameState, GameStateOptions } from '../GameState'
 
@@ -18,7 +19,7 @@ export class WagerMenuState extends GameState implements IWagerMenuState {
 
     async initialize() {
         this.screen = new WagerScreen()
-        this.camera.viewport.addChild(this.screen)
+        camera.viewport.addChild(this.screen)
 
         await super.initialize()
     }
@@ -31,6 +32,6 @@ export class WagerMenuState extends GameState implements IWagerMenuState {
     async exit() {
         await this.screen.hide()
         this.screen.exit()
-        this.camera.viewport.removeChild(this.screen)
+        camera.viewport.removeChild(this.screen)
     }
 }

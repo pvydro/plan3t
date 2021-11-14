@@ -1,6 +1,7 @@
 import { StartScreen } from '../../ui/uiscreen/startscreen/StartScreen'
 import { GameState, GameStateOptions, IGameState } from '../GameState'
 import { GameStateID } from '../../manager/gamestatemanager/GameStateManager'
+import { camera } from '../../shared/Dependencies'
 
 export interface IStartMenuState extends IGameState {
 
@@ -19,8 +20,8 @@ export class StartMenuState extends GameState implements IStartMenuState {
     async initialize() {
         this.startScreen = new StartScreen()
 
-        this.camera.cameraLetterboxPlugin.hide()
-        this.camera.viewport.addChild(this.startScreen)
+        camera.cameraLetterboxPlugin.hide()
+        camera.viewport.addChild(this.startScreen)
         
         await super.initialize()
     }
@@ -33,6 +34,6 @@ export class StartMenuState extends GameState implements IStartMenuState {
     async exit() {
         await this.startScreen.hide()
         this.startScreen.exit()
-        this.camera.viewport.removeChild(this.startScreen)
+        camera.viewport.removeChild(this.startScreen)
     }
 }
