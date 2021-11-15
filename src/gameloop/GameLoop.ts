@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { LocalEntity } from '../manager/entitymanager/EntityManager'
 import { IGravityManager } from '../manager/GravityManager'
-import { TooltipManager } from '../manager/TooltipManager'
 import { Flogger } from '../service/Flogger'
 import { camera, entityMan, gameStateMan, inGameHUD, particleMan, toolTipMan } from '../shared/Dependencies'
 import { exists } from '../utils/Utils'
@@ -10,7 +9,6 @@ export interface IGameLoop {
     startGameLoop(): void
     stopGameLoop(): void
 }
-
 
 export class GameLoop implements IGameLoop {
     static ShouldLoop: boolean = true

@@ -4,7 +4,6 @@ import { GameStateID } from '../manager/gamestatemanager/GameStateManager'
 import { TooltipManager } from '../manager/TooltipManager'
 import { log } from '../service/Flogger'
 import { CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
-import { InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { GameState, GameStateOptions, IGameState } from './GameState'
 import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
@@ -36,7 +35,6 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             log(this.name, 'Homeship initialized')
 
             const player = entityMan.createOfflinePlayer()
-            const cameraStage = camera.stage
 
             player.light.disableHardLights()
             player.holster.holsterWeapon()
@@ -46,11 +44,11 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             inGameHUD.requestCrosshairState(CrosshairState.Cursor)
             
             camera.follow(player)
-            cameraStage.addChildAtLayer(player, CameraLayer.Players)
-            cameraStage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
-            cameraStage.addChildAtLayer(toolTipMan.container, CameraLayer.Tooltips)
-            cameraStage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
-            cameraStage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
+            camera.stage.addChildAtLayer(player, CameraLayer.Players)
+            camera.stage.addChildAtLayer(this.ambientLight, CameraLayer.Lighting)
+            camera.stage.addChildAtLayer(toolTipMan.container, CameraLayer.Tooltips)
+            camera.stage.addChildAtLayer(particleMan.container, CameraLayer.Particle)
+            camera.stage.addChildAtLayer(particleMan.overlayContainer, CameraLayer.OverlayParticle)
 
             Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
             super.initialize()
