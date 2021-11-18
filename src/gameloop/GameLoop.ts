@@ -3,7 +3,7 @@ import { LocalEntity } from '../manager/entitymanager/EntityManager'
 import { IGravityManager } from '../manager/GravityManager'
 import { Flogger } from '../service/Flogger'
 import { camera, entityMan, gameStateMan, inGameHUD, particleMan, toolTipMan } from '../shared/Dependencies'
-import { exists } from '../utils/Utils'
+import { exists, functionExists } from '../utils/Utils'
 
 export interface IGameLoop {
     startGameLoop(): void
@@ -42,7 +42,7 @@ export class GameLoop implements IGameLoop {
                 const clientEntity = localEntity.clientEntity
 
                 if (exists(clientEntity)) {
-                    if (typeof clientEntity.update === 'function') {
+                    if (functionExists(clientEntity.update)) {
                         clientEntity.update()
                     }
                     

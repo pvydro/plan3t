@@ -17,7 +17,7 @@ export class MapBuildingHelper {
 
     static getMapBuildingForType(type: MapBuildingType, stories?: number): GameMapContainer {
         if (!stories || stories === 1) {
-            return new MapBuilding({ type })
+            return new MapBuilding({ type, includeHaze: true })
         } else {
             return new MultiStoryMapBuilding({ type, stories })
         }

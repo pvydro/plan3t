@@ -184,6 +184,9 @@ export class AssetUrls {
     // Nature
     static BushTicberry = 'assets/image/gamemap/bush/bush_ticberry'
     static TreeDefault = 'assets/image/gamemap/trees/tree1'
+    
+    // Haze
+    static Haze = 'assets/image/gamemap/overlays/haze'
 
     // Projectiles
     static ProjectileBullet = 'assets/image/weapons/projectiles/bullet'
