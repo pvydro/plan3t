@@ -5,11 +5,11 @@ import { GameWindow } from '../../utils/Constants'
 import { ICreature, Creature } from '../Creature'
 import { CreatureType } from '../CreatureType'
 
-export interface IPassiveHornet extends ICreature {
+export interface IPassiveFly extends ICreature {
 
 }
 
-export class PassiveHornet extends Creature implements IPassiveHornet {
+export class PassiveFly extends Creature implements IPassiveFly {
     hornetSprite: Sprite
     flyCoolDown: number = 100
     maxFlyCoolDown: number = 200

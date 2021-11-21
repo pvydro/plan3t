@@ -1,7 +1,7 @@
 import { SormEnemy } from '../enemy/sorm/SormEnemy'
 import { Creature } from '../creature/Creature'
 import { Koini } from '../creature/koini/Koini'
-import { PassiveHornet } from '../creature/passivehornet/PassiveHornet'
+import { PassiveFly } from '../creature/passivefly/PassiveFly'
 import { CreatureType } from '../creature/CreatureType'
 import { NenjEnemy } from '../enemy/nenj/NenjEnemy'
 import { TorkEnemy } from '../enemy/tork/TorkEnemy'
@@ -20,7 +20,7 @@ export class CreatureFactory {
                 creature = new Koini()
                 break
             case CreatureType.PassiveHornet:
-                creature = new PassiveHornet()
+                creature = new PassiveFly()
                 break
 
             // Enemies

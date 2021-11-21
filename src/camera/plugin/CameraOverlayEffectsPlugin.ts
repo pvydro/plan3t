@@ -22,7 +22,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         const colorMatrixFilter = Filters.getColorMatrixFilter({
             vintage: true,
             polaroid: true,
-            brightness: 1.15
+            brightness: 1.15,
         })
         const crtFilter = new CRTFilter({
             curvature: 2.5,
@@ -31,8 +31,10 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
             lineContrast: 0.025,
             vignetting: 0
         })
+
+        // colorMatrixFilter.blackAndWhite(true)
         
-        // colorMatrixFilter.greyscale(0.35, false)
+        colorMatrixFilter.greyscale(0.35, false)
         // colorMatrixFilter.vintage(true)
         // colorMatrixFilter.polaroid(true)    
         // colorMatrixFilter.desaturate()

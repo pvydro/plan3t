@@ -2,7 +2,7 @@ import { CRTFilter, GodrayFilter, KawaseBlurFilter } from 'pixi-filters'
 import * as PIXI from 'pixi.js'
 import { Assets, AssetUrls } from '../../asset/Assets'
 import { Camera } from '../../camera/Camera'
-import { PassiveHornet } from '../../creature/passivehornet/PassiveHornet'
+import { PassiveFly } from '../../creature/passivefly/PassiveFly'
 import { Sprite } from '../../engine/display/Sprite'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { GameWindow } from '../../utils/Constants'
@@ -16,7 +16,7 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
     private static Instance: SharedScreenBackground
     backgroundSprite: Sprite
     backgroundOriginalPos: IVector2
-    hornet: PassiveHornet
+    hornet: PassiveFly
 
     static getInstance() {
         if (!this.Instance) {
@@ -49,7 +49,7 @@ export class SharedScreenBackground extends UIComponent implements ISharedScreen
             ]
         })
         
-        this.hornet = new PassiveHornet()
+        this.hornet = new PassiveFly()
         this.backgroundSprite = new Sprite({ texture: PIXI.Texture.from(Assets.get(AssetUrls.SharedBackground2)) })
 
         this.hornet.scale.set(3, 3)
