@@ -2,10 +2,9 @@ import { GravityEntity } from '../cliententity/GravityEntity'
 import { IEnemy } from '../enemy/Enemy'
 import { Rect } from '../engine/math/Rect'
 import { GameMap } from '../gamemap/GameMap'
-import { Environment } from '../main/Environment'
+import { entityMan } from '../shared/Dependencies'
 import { Bullet } from '../weapon/projectile/Bullet'
 import { IEnemyManager } from './enemymanager/EnemyManager'
-import { EntityManager } from './entitymanager/EntityManager'
 
 export interface ICollisionManager {
     checkEntityCollision(entity: GravityEntity): GravityEntity
@@ -66,7 +65,7 @@ export class CollisionManager implements ICollisionManager {
 
     private checkEntityCollisionAgainstEnemies(entity: GravityEntity): boolean {
         let hit = false
-        const enemies = EntityManager.getInstance().enemyManager.enemies
+        const enemies = entityMan.enemyManager.enemies
 
         // if (!Environment.IsHost) return
 

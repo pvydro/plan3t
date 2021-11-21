@@ -14,6 +14,7 @@ import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
 import { camera } from '../../shared/Dependencies'
+import { Environment } from '../../main/Environment'
 
 export interface EntityCreatorOptions {
     schema: EntitySchema
@@ -32,13 +33,13 @@ export interface IEntityManager {
     // createCoPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
     createOfflinePlayer(): ClientPlayer
     createPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
-    createCreature(Creature?: CreatureSchema)
+    // createCreature(Creature?: CreatureSchema)
     clearClientEntities(): void
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any): void
     removeEntity(sessionId: string, layer?: number): void
     registerEntity(sessionId: string, localEntity: LocalEntity | ClientEntity): void
     getSchema(sessionId: string): EntitySchema
-    // createProjectile(schema: ProjectileSchema): void
+    createProjectile(schema: ProjectileSchema, entityId: string): void
 }
 
 export class EntityManager implements IEntityManager {
@@ -52,23 +53,15 @@ export class EntityManager implements IEntityManager {
     projectileCreator: IEntityProjectileCreator
     synchronizer: IEntitySynchronizer
 
-    static getInstance() {
-        if (!this.Instance) {
-            this.Instance = new EntityManager()
-        }
-
-        return this.Instance
-    }
-
     constructor() {
         const entityManager = this
         
         this.gravityManager = new GravityManager({ enemyManager: entityManager.enemyManager })
         this.playerCreator = new EntityPlayerCreator({ entityManager })
-        this.creatureCreator = new EntityCreatureCreator({ entityManager })
+        this.creatureCreator = new EntityCreatureCreator()
         this.projectileCreator = new EntityProjectileCreator({ entityManager })
         this.synchronizer = new EntitySynchronizer({ entityManager })
-        this.enemyManager = new EnemyManager({ entityManager })
+        this.enemyManager = new EnemyManager()
     }
 
     removeEntity(sessionId: string, layer?: number) {
@@ -96,19 +89,25 @@ export class EntityManager implements IEntityManager {
         })
     }
 
-    createPlayer(schema: PlayerSchema, sessionId?: string): ClientPlayer {
-        return ClientPlayer.getInstance()
-        // return this.playerCreator.createPlayer(schema, sessionId)
+    createProjectile(schema: ProjectileSchema, entityId: string) {
+        schema.id = entityId
+        schema.onChange = (changes: any) => this.updateEntity(schema, entityId, changes)
+
+        this.projectileCreator.createProjectile(schema)
+    }
+
+    createPlayer(schema: PlayerSchema, entityId: string): ClientPlayer {
+        schema.id = entityId
+        return this.playerCreator.createPlayer(schema)
     }
 
     createOfflinePlayer() {
         log('EntityManager', 'createOfflinePlayer')
 
-        const player = this.playerCreator.createPlayer('offlineplayer', {
-            schema: new PlayerSchema(),
-            isClientPlayer: true,
-            isOfflinePlayer: true
-        })
+        const player = this.playerCreator.createPlayer(new PlayerSchema().assign({
+            id: 'offlineplayer'//Environment.sessionId
+        }))
+        
 
         return player
     }

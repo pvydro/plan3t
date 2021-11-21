@@ -1,7 +1,6 @@
+import { WeaponStatePack } from '../../../cliententity/clientplayer/state/WeaponStatePack'
 import { Flogger } from '../../../service/Flogger'
-// import { PlanetGameState } from '../../schema/planetgamestate/PlanetGameState'
 import { IRoomEvent } from '../../event/RoomEvent'
-import { WeaponStatusPayload } from '../ServerMessages'
 import { GameRoom, IGameRoom } from '../GameRoom'
 
 export interface IPlanetRoom extends IGameRoom {
@@ -15,7 +14,7 @@ export class PlanetRoom extends GameRoom implements IPlanetRoom {
     super.initialize()
   }
 
-  handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
+  handleWeaponEvent(event: IRoomEvent<WeaponStatePack>) {
     Flogger.log('PlanetRoom', 'handleWeaponEvent', event.data.name)
 
     super.handleWeaponEvent(event)

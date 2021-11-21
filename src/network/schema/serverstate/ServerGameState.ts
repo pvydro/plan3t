@@ -21,6 +21,7 @@ interface CreateEntityOptions {
 
 export interface CreateProjectileOptions extends CreateEntityOptions {
     rotation: number
+    playerId: string
 }
 
 export interface CreatePlayerOptions extends CreateEntityOptions {
@@ -30,7 +31,7 @@ export interface CreatePlayerOptions extends CreateEntityOptions {
 export interface IServerGameState {
     players: MapSchema<PlayerSchema>
     creatures: MapSchema<CreatureSchema>
-    projectiles: SetSchema<ProjectileSchema>
+    projectiles: MapSchema<ProjectileSchema>
     messages: SetSchema<ChatMessageSchema>
     hostId: string
     type: string
@@ -43,8 +44,8 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     creatures = new MapSchema<CreatureSchema>()
     @type({ map: EntitySchema })
     gravityEntities = new MapSchema<EntitySchema>()
-    @type({ set: ProjectileSchema })
-    projectiles = new SetSchema<ProjectileSchema>()
+    @type({ map: ProjectileSchema })
+    projectiles = new MapSchema<ProjectileSchema>()
     @type({ set: ChatMessageSchema })
     messages = new SetSchema<ChatMessageSchema>()
     @type('string')
@@ -94,6 +95,7 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     }
 
     createProjectile(options: CreateProjectileOptions) {
+        log('ServerGameState', 'createProjectile', 'sessionId', options.sessionId, 'playerId', options.playerId)
         if (!exists(options.x) || !exists(options.y)) {
             logError(`Tried to create projectile with no x or y. options: ${options}`)
             return
@@ -103,12 +105,13 @@ export abstract class ServerGameState extends Schema implements IServerGameState
         const xVel = bulletVelocity * Math.cos(options.rotation)
         const yVel = bulletVelocity * Math.sin(options.rotation)
 
-        this.projectiles.add(new ProjectileSchema().assign({
+        this.projectiles.set(options.sessionId, new ProjectileSchema().assign({
             x: options.x,
             y: options.y,
             rotation: options.rotation,
             xVel, yVel,
-            id: options.sessionId
+            id: options.sessionId,
+            playerId: options.playerId
         }))
     }
 }

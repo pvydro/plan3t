@@ -52,8 +52,6 @@ export class UIButtonBackground extends Container implements IUIButtonBackground
     }
 
     refreshBackgroundBasedOnState(value: UIButtonState) {
-        importantLog('refreshBackgroundBasedOnState', 'state', UIButtonState[value])
-
         this.backgroundSprite.alpha = 0
         this.backgroundSpriteHovered.alpha = 0
         this.backgroundSpriteTriggered.alpha = 0

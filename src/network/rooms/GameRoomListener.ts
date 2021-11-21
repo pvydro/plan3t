@@ -1,10 +1,11 @@
 import { Client } from 'colyseus'
 import { log } from '../../service/Flogger'
-import { ChatMessagePayload, PlayerPayload, RoomMessage, WeaponStatusPayload } from './ServerMessages'
+import { ChatMessagePayload, PlayerPayload, RoomMessage } from './ServerMessages'
 import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
 import { IGameRoom } from './GameRoom'
 import { AIActionPayload } from '../../ai/AIAction'
 import EventEmitter from 'eventemitter3'
+import { BulletStatePack, WeaponStatePack } from '../../cliententity/clientplayer/state/WeaponStatePack'
 
 export interface IGameRoomListener {
   startListening(): void
@@ -12,7 +13,8 @@ export interface IGameRoomListener {
 
 export interface IRoomListenerDelegate {
   handleChatEvent(event: IRoomEvent<ChatMessagePayload>): void
-  handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>): void
+  handleWeaponEvent(event: IRoomEvent<WeaponStatePack>): void
+  handleShootEvent(event: IRoomEvent<BulletStatePack>): void
   handlePlayerEvent(event: IRoomEvent<PlayerPayload>): void
   handleAIActionEvent(event: IRoomEvent<AIActionPayload>): void
 }
@@ -33,7 +35,7 @@ export class GameRoomListener implements IGameRoomListener {
     log('GameRoomListener', 'startListening')
 
     this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
-    this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleWeaponEvent)
+    this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleShootEvent)
     this.delegateMessage(RoomMessage.PlayerUpdate, this.delegate.handlePlayerEvent)
   }
 

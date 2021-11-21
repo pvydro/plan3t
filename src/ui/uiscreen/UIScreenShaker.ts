@@ -31,8 +31,6 @@ export class UIScreenShaker implements IUIScreenShaker {
     }
 
     startShake() {
-        log('UIScreenShaker', 'startShake')
-
         const shakeRandom = getRandomFloatBetween(0, 250)
         const shakeInterval = this.shakeInterval
             + (getRandomBool() ? shakeRandom : -shakeRandom)

@@ -32,11 +32,11 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
             vignetting: 0
         })
 
-        // colorMatrixFilter.blackAndWhite(true)
         
         colorMatrixFilter.greyscale(0.35, false)
         // colorMatrixFilter.vintage(true)
         // colorMatrixFilter.polaroid(true)    
+        // colorMatrixFilter.blackAndWhite(true)
         // colorMatrixFilter.desaturate()
         // colorMatrixFilter.night(0.35, true)
         

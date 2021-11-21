@@ -60,12 +60,15 @@ export class PlayerMessenger implements IPlayerMessenger {
     }
 
     sendShoot(weapon: Weapon) {
-        if (!this.player.isClientPlayer || this.player.isOfflinePlayer) return
-        const pack = WeaponStateFormatter.convertWeaponToPack(weapon)
-        pack.shouldShoot = true
-        if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendShoot', 'RoomMessage.PlayerShoot', 'pack', pack)
+        const pack = WeaponStateFormatter.convertWeaponToBullet(weapon)
 
         RoomMessenger.send(RoomMessage.PlayerShoot, pack)
+        // if (!this.player.isClientPlayer || this.player.isOfflinePlayer) return
+        // const pack = WeaponStateFormatter.convertWeaponToPack(weapon)
+        // pack.shouldShoot = true
+        // if (DebugConstants.ShowPlayerMessengerLogs) Flogger.log('PlayerMessenger', 'sendShoot', 'RoomMessage.PlayerShoot', 'pack', pack)
+
+        // RoomMessenger.send(RoomMessage.PlayerShoot, pack)
     }
 
     private sendWeaponStatus() {

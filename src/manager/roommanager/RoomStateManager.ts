@@ -10,7 +10,9 @@ import { ChatService } from '../../service/chatservice/ChatService'
 import { importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { EntityManager, IEntityManager } from '../entitymanager/EntityManager'
 import { IWaveRunnerManager, WaveRunnerManager } from '../waverunnermanager/WaveRunnerManager'
-import { gameMapMan, matchMaker } from '../../shared/Dependencies'
+import { entityMan, gameMapMan, matchMaker } from '../../shared/Dependencies'
+import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
+import { PlayerSchema } from '../../network/schema/PlayerSchema'
 
 enum ServerStateType {
     WaveRunner = 'waverunner',
@@ -22,16 +24,25 @@ export interface IRoomStateManager {
     currentState?: IServerGameState
     stateChanged(newState: IServerGameState): void
     setInitialState(state: IServerGameState): Promise<void>
+    startListening(): void
 }
 
 export class RoomStateManager implements IRoomStateManager {
     currentState?: IServerGameState
     waveRunnerManager: IWaveRunnerManager
-    entityManager: IEntityManager
 
     constructor() {
         this.waveRunnerManager = WaveRunnerManager.getInstance()
-        this.entityManager = EntityManager.getInstance()
+    }
+
+    startListening() {
+        log('RoomStateManager', 'startListening')
+
+        const room = matchMaker.currentRoom
+
+        room.onStateChange.once((state) => this.setInitialState(state))
+
+        room.onStateChange((state) => this.stateChanged(state))
     }
 
     async setInitialState(state: IServerGameState) {
@@ -41,6 +52,13 @@ export class RoomStateManager implements IRoomStateManager {
 
         if (matchMaker.currentRoom.id === state.hostId) {
             Environment.isHost = true
+        }
+
+        state.projectiles.onAdd = (item: ProjectileSchema, id: string) => {
+            entityMan.createProjectile(item, id)
+        }
+        state.players.onAdd = (item: PlayerSchema, id: string) => {
+
         }
     }
 

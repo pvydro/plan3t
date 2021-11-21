@@ -1,13 +1,10 @@
 import { EnemyHelper, EnemyProperties } from './helper/EnemyHelper'
 import { ITravelkinCreature, TravelkinCreature, TravelkinCreatureOptions } from '../creature/travelkin/TravelkinCreature'
-import { ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { Bullet } from '../weapon/projectile/Bullet'
-import { Camera } from '../camera/Camera'
-import { EntityManager } from '../manager/entitymanager/EntityManager'
 import { TrackerPatherAI } from '../ai/trackerpather/TrackerPatherAI'
 import { EnemyDebugger } from './EnemyDebugger'
 import { DebugConstants } from '../utils/Constants'
-import { camera, particleMan } from '../shared/Dependencies'
+import { camera, entityMan, particleMan } from '../shared/Dependencies'
 
 export interface IEnemy extends ITravelkinCreature {
 }
@@ -73,7 +70,7 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
 
         await super.die()
 
-        const enemyManager = EntityManager.getInstance().enemyManager
+        const enemyManager = entityMan.enemyManager
         enemyManager.removeEnemy(this)
     }
 }

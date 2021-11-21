@@ -1,7 +1,6 @@
 import { MapSchema, SetSchema } from '@colyseus/schema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { EntitySchema } from '../schema/EntitySchema'
-import { exists } from '../../utils/Utils'
 
 export interface IServerGravityController {
     update(): void
@@ -23,10 +22,8 @@ export class ServerGravityController implements IServerGravityController {
     applyVelocityToEntity(entity: EntitySchema | MapSchema<any> | SetSchema<any>) {
         if (entity instanceof MapSchema || entity instanceof SetSchema) {
             entity.forEach((e: EntitySchema) => {
-                if (exists(e.x) && exists(e.xVel)) {
-                    e.x += e.xVel
-                    e.y += e.yVel
-                }
+                e.x += e.xVel
+                e.y += e.yVel
             })
         } else {
             entity.x += entity.xVel

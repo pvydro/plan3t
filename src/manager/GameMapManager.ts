@@ -11,19 +11,18 @@ export interface IGameMapManager extends IUpdatable {
     initialize(sphericalData?: SphericalData): Promise<void>
     initializeRandomSpherical(): Promise<void>
     initializeHomeship(): Promise<void>
-    initializeBuilding(type: MapBuildingType): Promise<void>
+    initializeBuilding(type: MapBuildingType, stories?: number): Promise<void>
     transitionToMap(type: MapBuildingType): Promise<void>
 }
 
 export class GameMapManager implements IGameMapManager {
     _initialized: boolean = false
-    _gameMap: GameMap
+    _gameMap: GameMap = GameMap.getInstance()
 
     constructor() {}
 
     async initialize(sphericalData?: SphericalData) {
         Flogger.log('GameMapManager', 'initializeGameMap')
-        this._gameMap = GameMap.getInstance()
 
         if (this._initialized) {
             camera.stage.removeFromLayer(this._gameMap, CameraLayer.GameMap)
@@ -49,10 +48,10 @@ export class GameMapManager implements IGameMapManager {
         return this._gameMap.initializeRandomSpherical()
     }
 
-    async initializeBuilding(type: MapBuildingType) {
+    async initializeBuilding(type: MapBuildingType, stories?: number) {
         await this.initialize()
 
-        return this._gameMap.initializeBuilding(type)
+        return this._gameMap.initializeBuilding(type, stories)
         // const building
     }
 

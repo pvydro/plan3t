@@ -1,12 +1,14 @@
 import * as PIXI from 'pixi.js'
 import { Camera } from '../../camera/Camera'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
+import { Environment } from '../../main/Environment'
+import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { Flogger } from '../../service/Flogger'
 import { matchMaker, userProfile } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
-    createPlayer(id: string, options: PlayerCreationOptions): ClientPlayer
+    createPlayer(schema: PlayerSchema): ClientPlayer
     clearRegisteredPlayer(): void
 }
 
@@ -27,41 +29,44 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         this.entityManager = options.entityManager
     }
 
-    createPlayer(id: string, options: PlayerCreationOptions): ClientPlayer {
-        Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', id, 'isClientPlayer', options.isClientPlayer)
+    createPlayer(schema: PlayerSchema): ClientPlayer {
+        Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', schema.id)
 
-        if (options.isClientPlayer && this._currentClientPlayer) return this._currentClientPlayer
+        const player = this.getPlayer(schema)
+        const isClientPlayer = this.isClientPlayer(schema)
 
-        const player = this.getPlayer(id, options)
-        player.x = options?.schema?.x ?? 0
-        player.y = options?.schema?.y ?? 0
+        if (this.isClientPlayer && this._currentClientPlayer) {
+            return this._currentClientPlayer
+        }
+        
+        player.x = schema?.x ?? 0
+        player.y = schema?.y ?? 0
 
-        this.entityManager.registerEntity(id, {
+        this.entityManager.registerEntity(schema.id, {
             clientEntity: player,
-            serverEntity: options.schema
+            serverEntity: schema
         })
         
         // Client player camera follow
-        if (options.isClientPlayer) {
-            this.markPlayerAsSpawned(id)
+        if (isClientPlayer) {
+            this.markPlayerAsSpawned(schema.id)
         }
 
         return player
     }
 
-    private getPlayer(id: string, options: PlayerCreationOptions): ClientPlayer {
+    private getPlayer(schema: PlayerSchema): ClientPlayer {
         let player
+        const isClientPlayer = this.isClientPlayer(schema)
 
-        if (options.isClientPlayer) {
+        if (isClientPlayer) {
             if (this._currentClientPlayer) {
                 return this._currentClientPlayer
             } else {
                 this._currentClientPlayer = ClientPlayer.getInstance({
-                    sessionId: id,
+                    schema,
+                    sessionId: schema.id,
                     clientControl: true,
-                    offlineControl: options.isOfflinePlayer ?? false,
-                    schema: options.schema,
-                    entityManager: this.entityManager,
                     playerName: userProfile.username
                 })
                 
@@ -69,8 +74,8 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
             }
         } else {
             player = new ClientPlayer({
-                schema: options.schema,
-                playerName: id
+                schema,
+                playerName: schema.id
             })
         }
 
@@ -92,6 +97,10 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
                 }
             }
         }, 1000)
+    }
+
+    private isClientPlayer(schema: PlayerSchema) {
+        return (schema.id === Environment.sessionId)
     }
 
     clearRegisteredPlayer() {

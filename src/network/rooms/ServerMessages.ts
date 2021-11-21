@@ -44,17 +44,6 @@ export interface PlayerPayload extends EntityPayload {
     isOnGround: boolean
 }
 
-export interface WeaponStatusPayload {
-    direction: Direction
-    name: string
-    rotation: number
-    bulletX?: number
-    bulletY?: number
-    bulletVelocity?: number
-    shouldShoot?: boolean
-    sessionId: string
-}
-
 export interface EntityPayload {
     x: number
     y: number

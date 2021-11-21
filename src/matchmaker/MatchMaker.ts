@@ -1,8 +1,9 @@
 import { Client, Room } from 'colyseus.js'
+import { WaveGameState } from '../gamestate/WaveGameState'
 import { ENDPOINT } from '../network/Network'
-import { PVPGameRoomState } from '../network/schema/pvpgamestate/PVPGameRoomState'
 import { ServerGameState } from '../network/schema/serverstate/ServerGameState'
 import { logError } from '../service/Flogger'
+import { roomStateMan } from '../shared/Dependencies'
 
 export interface IMatchMaker {
     client: Client
@@ -32,7 +33,7 @@ export class MatchMaker implements IMatchMaker {
     async createMatch() {
         try {
             this.initializeClient()
-            this.currentRoom = await this.client.create<PVPGameRoomState>('PVPGameRoom')
+            this.currentRoom = await this.client.create<WaveGameState>('GameRoom')
             this.matchId = this.currentRoom.id
 
             return this.currentRoom
@@ -45,7 +46,7 @@ export class MatchMaker implements IMatchMaker {
     async joinOrCreate() {
         try {
             this.initializeClient()
-            this.currentRoom = await this.client.joinOrCreate<PVPGameRoomState>('PVPGameRoom')
+            this.currentRoom = await this.client.joinOrCreate<WaveGameState>('GameRoom')
             this.matchId = this.currentRoom.id
 
             return this.currentRoom
@@ -60,6 +61,7 @@ export class MatchMaker implements IMatchMaker {
             this.initializeClient()
             this.currentRoom = await this.client.joinById(matchId)
             this.matchId = matchId
+            roomStateMan.startListening()
 
             return this.currentRoom
         } catch (error) {

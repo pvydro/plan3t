@@ -12,6 +12,7 @@ import { IEntityManager, EntityManager } from '../manager/entitymanager/EntityMa
 import { IInGameHUD, InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { ITooltipManager, TooltipManager } from '../manager/TooltipManager'
+import { IRoomStateManager, RoomStateManager } from '../manager/roommanager/RoomStateManager'
 
 // Services
 export const userProfile: IUserProfile = container.resolve(UserProfile)
@@ -26,6 +27,7 @@ export const loadingScreen: LoadingScreen = container.resolve(LoadingScreen)
 
 // Managers
 export const gameStateMan: IGameStateManager = container.resolve(GameStateManager)
+export const roomStateMan: IRoomStateManager = container.resolve(RoomStateManager)
 export const gameMapMan: IGameMapManager = container.resolve(GameMapManager)
 export const particleMan: IParticleManager = container.resolve(ParticleManager)
 export const entityMan: IEntityManager = container.resolve(EntityManager)

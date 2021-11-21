@@ -8,13 +8,11 @@ import { Emitter } from '../../utils/Emitter'
 import { IPlayerHand, PlayerHand } from './bodyparts/PlayerHand'
 import { WeaponName } from '../../weapon/WeaponName'
 import { PlayerCollision } from './PlayerCollision'
-import { IEntityManager } from '../../manager/entitymanager/EntityManager'
 import { PlayerLight } from './PlayerLight'
 import { Weapon } from '../../weapon/Weapon'
 import { IPlayerWeaponHolster, PlayerWeaponHolster } from './PlayerWeaponHolster'
 import { RoomMessage } from '../../network/rooms/ServerMessages'
 import { exists } from '../../utils/Utils'
-import { ParticleManager } from '../../manager/particlemanager/ParticleManager'
 import { OverheadHealthBar } from '../../ui/ingamehud/healthbar/OverheadHealthBar'
 import { PlayerHealthController } from './PlayerHealthController'
 import { ClientPlayerState, IClientPlayerState, PlayerConsciousnessState } from './ClientPlayerState'
@@ -41,7 +39,6 @@ export interface ClientPlayerOptions {
     schema: EntitySchema
     clientControl?: boolean
     offlineControl?: boolean
-    entityManager?: IEntityManager
     sessionId?: string
     playerName: string
 }
@@ -49,7 +46,6 @@ export interface ClientPlayerOptions {
 export class ClientPlayer extends ClientPlayerState {
     private static Instance: ClientPlayer
     
-    _entityManager?: IEntityManager
     sessionId: string = ''
     playerName: string = ''
     head: PlayerHead
@@ -81,7 +77,6 @@ export class ClientPlayer extends ClientPlayerState {
         super(options)
         const player = this
 
-        if (options.entityManager) this._entityManager = options.entityManager
         if (exists(options.sessionId)) this.sessionId = options.sessionId
         this.playerName = options.playerName
 
@@ -198,10 +193,6 @@ export class ClientPlayer extends ClientPlayerState {
 
     get walkingDirection() {
         return this._walkingDirection
-    }
-
-    get entityManager() {
-        return this._entityManager
     }
 
     getPlayerHead() {

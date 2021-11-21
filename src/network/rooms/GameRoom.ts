@@ -4,9 +4,10 @@ import { IRoomEvent } from '../event/RoomEvent'
 import { ChatMessageSchema } from '../schema/ChatMessageSchema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { GameRoomListener, IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
-import { ChatMessagePayload, ClientMessage, PlayerPayload, WeaponStatusPayload } from './ServerMessages'
+import { ChatMessagePayload, ClientMessage, PlayerPayload } from './ServerMessages'
 import { AIActionPayload } from '../../ai/AIAction'
-import { uuid } from 'uuidv4'
+import { BulletStatePack, WeaponStatePack } from '../../cliententity/clientplayer/state/WeaponStatePack'
+import { v4 } from 'uuid'
 
 export interface IGameRoom extends IRoomListenerDelegate {
     state: ServerGameState
@@ -75,14 +76,20 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         player.xVel = payload.xVel
     }
 
-    handleWeaponEvent(event: IRoomEvent<WeaponStatusPayload>) {
+    handleWeaponEvent(event: IRoomEvent<WeaponStatePack>) {
         log('GameRoom', 'handleWeaponEvent', event.client.id)
 
-        const { shouldShoot } = event.data
+        // const { shouldShoot } = event.data
 
-        if (shouldShoot) {
-            this.createProjectile(event.data)
-        }
+        // if (shouldShoot) {
+        //     this.createProjectile(event.data)
+        // }
+    }
+
+    handleShootEvent(event: IRoomEvent<BulletStatePack>) {
+        log('GameRoom', 'handleShootEvent', event.data.playerId)
+
+        this.createProjectile(event.data)
     }
 
     handleAIActionEvent(event: IRoomEvent<AIActionPayload>) {
@@ -96,12 +103,10 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     }
 
     // Creators
-    protected createProjectile(weaponPayload: WeaponStatusPayload) {
+    protected createProjectile(payload: BulletStatePack) {
         this.state.createProjectile({
-            x: weaponPayload.bulletX,
-            y: weaponPayload.bulletY,
-            rotation: weaponPayload.rotation,
-            sessionId: uuid(),
+            ...payload,
+            sessionId: v4()
         })
     }
 }

@@ -21,7 +21,7 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
     }
 
     createProjectile(schema: ProjectileSchema): Bullet {
-        Flogger.log('EntityManager', 'createProjectile')
+        Flogger.log('EntityManager', 'createProjectile', 'id', schema.id)
         
         const bullet = new Bullet({
             id: schema.id,
