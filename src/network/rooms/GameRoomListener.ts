@@ -16,6 +16,7 @@ export interface IRoomListenerDelegate {
   handleWeaponEvent(event: IRoomEvent<WeaponStatePack>): void
   handleShootEvent(event: IRoomEvent<BulletStatePack>): void
   handlePlayerEvent(event: IRoomEvent<PlayerPayload>): void
+  handleRequestPlayer(event: IRoomEvent<any>): void
   handleAIActionEvent(event: IRoomEvent<AIActionPayload>): void
 }
 
@@ -37,6 +38,7 @@ export class GameRoomListener implements IGameRoomListener {
     this.delegateMessage(RoomMessage.NewChatMessage, this.delegate.handleChatEvent)
     this.delegateMessage(RoomMessage.PlayerShoot, this.delegate.handleShootEvent)
     this.delegateMessage(RoomMessage.PlayerUpdate, this.delegate.handlePlayerEvent)
+    this.delegateMessage(RoomMessage.RequestPlayer, this.delegate.handleRequestPlayer)
   }
 
   buildRoomEvent(type: string | number, message: any, client: Client) {

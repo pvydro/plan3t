@@ -39,7 +39,13 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     onJoin(client: Client, options: any) {
         log('GameRoom', 'id', client.sessionId, 'Player joined', 'options', options)
 
-        this.state.createPlayer({ sessionId: client.sessionId })
+        // this.state.createPlayer({ sessionId: client.sessionId })
+    }
+
+    handleRequestPlayer(event: IRoomEvent<any>) {
+        this.state.createPlayer({
+            sessionId: event.client.sessionId
+        })
     }
   
     onLeave(client: Client) {

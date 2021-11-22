@@ -33,7 +33,7 @@ export class CameraOverlayEffectsPlugin implements ICameraOverlayEffectsPlugin {
         })
 
         
-        colorMatrixFilter.greyscale(0.35, false)
+        // colorMatrixFilter.greyscale(0.35, false)
         // colorMatrixFilter.vintage(true)
         // colorMatrixFilter.polaroid(true)    
         // colorMatrixFilter.blackAndWhite(true)

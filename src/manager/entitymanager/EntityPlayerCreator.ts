@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js'
 import { Camera } from '../../camera/Camera'
+import { CameraLayer } from '../../camera/CameraStage'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
 import { Environment } from '../../main/Environment'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { Flogger } from '../../service/Flogger'
-import { matchMaker, userProfile } from '../../shared/Dependencies'
+import { camera, matchMaker, userProfile } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
@@ -32,12 +33,13 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
     createPlayer(schema: PlayerSchema): ClientPlayer {
         Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', schema.id)
 
-        const player = this.getPlayer(schema)
-        const isClientPlayer = this.isClientPlayer(schema)
-
-        if (this.isClientPlayer && this._currentClientPlayer) {
+        const isClientPlayer = (matchMaker.currentRoom.sessionId === schema.id)
+        
+        if (isClientPlayer && this._currentClientPlayer) {
             return this._currentClientPlayer
         }
+        
+        const player = this.getPlayer(schema)
         
         player.x = schema?.x ?? 0
         player.y = schema?.y ?? 0
@@ -50,6 +52,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         // Client player camera follow
         if (isClientPlayer) {
             this.markPlayerAsSpawned(schema.id)
+            camera.follow(player)
         }
 
         return player
@@ -57,27 +60,30 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
 
     private getPlayer(schema: PlayerSchema): ClientPlayer {
         let player
-        const isClientPlayer = this.isClientPlayer(schema)
+        console.log('%cGo fuck yourself', 'background-color: red; font-size: 300%;')
+        console.log(schema.id)
+        const isClientPlayer = (matchMaker.currentRoom.sessionId === schema.id)//this.isClientPlayer(schema)
+        console.log('ISAFUCKINGCLIENTPLAYER', isClientPlayer)
 
         if (isClientPlayer) {
-            if (this._currentClientPlayer) {
-                return this._currentClientPlayer
-            } else {
-                this._currentClientPlayer = ClientPlayer.getInstance({
-                    schema,
-                    sessionId: schema.id,
-                    clientControl: true,
-                    playerName: userProfile.username
-                })
+            console.log('%c is the fucking client', 'background-color: red; font-size: 300%;')
+            player = ClientPlayer.getInstance({
+                schema,
+                sessionId: schema.id,
+                clientControl: true,
+                playerName: userProfile.username
+            })
                 
-                player = this._currentClientPlayer
-            }
+            this._currentClientPlayer = player
         } else {
             player = new ClientPlayer({
                 schema,
+                sessionId: schema.id,
                 playerName: schema.id
             })
         }
+
+        camera.stage.addChildAtLayer(player, CameraLayer.Players)
 
         return player
     }
@@ -99,9 +105,9 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         }, 1000)
     }
 
-    private isClientPlayer(schema: PlayerSchema) {
-        return (schema.id === Environment.sessionId)
-    }
+    // private isClientPlayer(schema: PlayerSchema) {
+    //     return (schema.id == Environment.sessionId)
+    // }
 
     clearRegisteredPlayer() {
         this._currentClientPlayer = undefined

@@ -1,6 +1,7 @@
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 
 export enum RoomMessage {
+    RequestPlayer = 'r_request_player',
     NewChatMessage = 'r_new_chat',
     NewPlanet = 'r_new_planet',
     GetPlanet = 'r_get_planet',

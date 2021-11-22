@@ -9,6 +9,8 @@ import { Graphix } from '../engine/display/Graphix'
 import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { camera, entityMan, gameMapMan, inGameHUD, particleMan, toolTipMan } from '../shared/Dependencies'
+import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
+import { PlayerSchema } from '../network/schema/PlayerSchema'
 
 export interface ISpaceshipState extends IGameState {
 
@@ -34,7 +36,11 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         gameMapMan.initializeHomeship().then(async () => {
             log(this.name, 'Homeship initialized')
 
-            const player = entityMan.createOfflinePlayer()
+            // const player = entityMan.createOfflinePlayer()
+            const player = ClientPlayer.getInstance({
+                schema: new PlayerSchema(),
+                clientControl: true
+            })
 
             player.light.disableHardLights()
             player.holster.holsterWeapon()

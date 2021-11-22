@@ -21,7 +21,7 @@ export class PlayerBadgeFloat extends Container implements IPlayerBadgeFloat {
         super()
 
         this.textSprite = new TextSprite({
-            text: options.player.playerName,
+            text: options.player.playerName || 'Player',
             style: TextStyles.PlayerBadge
         })
         

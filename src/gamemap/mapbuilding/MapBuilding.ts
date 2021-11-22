@@ -61,7 +61,6 @@ export class MapBuilding extends GameMapContainer implements IMapBuilding {
             this.addChild(this.background)
             this.addChild(this.walls)
             if (this.includeHaze) {
-                console.log('%cadding ground haze', 'background-color: #00ff00; font-size: 300%')
                 this.groundHaze = new GroundHaze({
                     width: this.floor.width,
                 })

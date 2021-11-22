@@ -8,6 +8,8 @@ import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
 import { camera, entityMan, gameMapMan, inGameHUD, matchMaker, particleMan } from '../shared/Dependencies'
+import { RoomMessenger } from '../manager/roommanager/RoomMessenger'
+import { RoomMessage } from '../network/rooms/ServerMessages'
 
 export interface IGameplayState extends IGameState {
 }
@@ -40,11 +42,12 @@ export class GameplayState extends GameState implements IGameplayState {
         await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
         await inGameHUD.initializeHUD()
         await asyncTimeout(1000)
+        await RoomMessenger.send(RoomMessage.RequestPlayer, {})
 
         // REF: Do this based on server
-        this.player = entityMan.createOfflinePlayer()
-        camera.stage.addChildAtLayer(this.player, CameraLayer.Players)
-        camera.follow(this.player)
+        // this.player = entityMan.createOfflinePlayer()
+        // camera.stage.addChildAtLayer(this.player, CameraLayer.Players)
+        // camera.follow(this.player)
     }
 
     update() {

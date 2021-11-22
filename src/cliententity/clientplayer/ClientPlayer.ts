@@ -40,7 +40,7 @@ export interface ClientPlayerOptions {
     clientControl?: boolean
     offlineControl?: boolean
     sessionId?: string
-    playerName: string
+    playerName?: string
 }
 
 export class ClientPlayer extends ClientPlayerState {

@@ -1,6 +1,6 @@
 import { EntitySchema } from '../../network/schema/EntitySchema'
 import { ClientEntity } from '../../cliententity/ClientEntity'
-import { Flogger, log, VerboseLogging } from '../../service/Flogger'
+import { Flogger, importantLog, log, VerboseLogging } from '../../service/Flogger'
 import { GravityManager, IGravityManager } from '../GravityManager'
 import { Game } from '../../main/Game'
 import { EntityPlayerCreator, IEntityPlayerCreator } from './EntityPlayerCreator'
@@ -13,7 +13,7 @@ import { CameraLayer } from '../../camera/CameraStage'
 import { CreatureSchema } from '../../network/schema/CreatureSchema'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { ProjectileSchema } from '../../network/schema/ProjectileSchema'
-import { camera } from '../../shared/Dependencies'
+import { camera, entityMan } from '../../shared/Dependencies'
 import { Environment } from '../../main/Environment'
 
 export interface EntityCreatorOptions {
@@ -31,7 +31,7 @@ export interface IEntityManager {
     enemyManager: IEnemyManager
     // createClientPlayer(schema?: PlayerSchema, sessionId?: string): ClientPlayer
     // createCoPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
-    createOfflinePlayer(): ClientPlayer
+    // createOfflinePlayer(): ClientPlayer
     createPlayer(schema: PlayerSchema, sessionId: string): ClientPlayer
     // createCreature(Creature?: CreatureSchema)
     clearClientEntities(): void
@@ -97,20 +97,23 @@ export class EntityManager implements IEntityManager {
     }
 
     createPlayer(schema: PlayerSchema, entityId: string): ClientPlayer {
+        importantLog('CREATEPLAYER', 'entityId', entityId)
         schema.id = entityId
         return this.playerCreator.createPlayer(schema)
     }
 
-    createOfflinePlayer() {
-        log('EntityManager', 'createOfflinePlayer')
+    // createOfflinePlayer() {
+    //     log('EntityManager', 'createOfflinePlayer')
 
-        const player = this.playerCreator.createPlayer(new PlayerSchema().assign({
-            id: 'offlineplayer'//Environment.sessionId
-        }))
+    //     const player = this.playerCreator.createPlayer(new PlayerSchema().assign({
+    //         id: Environment.sessionId
+    //     }))
+
+    //     // entityMan.registerEntity(player.sessionId, player)
         
 
-        return player
-    }
+    //     return player
+    // }
 
     registerEntity(id: string, localEntity: LocalEntity | ClientEntity) {
         log('EntityManager', 'registerEntity', 'sessionId', id)

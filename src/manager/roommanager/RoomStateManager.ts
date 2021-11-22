@@ -54,12 +54,14 @@ export class RoomStateManager implements IRoomStateManager {
             Environment.isHost = true
         }
 
-        state.projectiles.onAdd = (item: ProjectileSchema, id: string) => {
-            entityMan.createProjectile(item, id)
-        }
-        state.players.onAdd = (item: PlayerSchema, id: string) => {
+        state.projectiles.onAdd = 
+            (item: ProjectileSchema, id: string) => entityMan.createProjectile(item, id)
+        state.players.onAdd = 
+            (item: PlayerSchema, id: string) => entityMan.createPlayer(item, id)
 
-        }
+        // state.players.forEach((player, id: string) => {
+        //     entityMan.createPlayer(player, id)
+        // })
     }
 
     handlePVPRoomState(newState: IPVPGameRoomState) {
