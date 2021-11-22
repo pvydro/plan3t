@@ -9,13 +9,6 @@ export enum RoomMessage {
     PlayerUpdate = 'r_player_update',
     PlayerShoot = 'r_player_shoot',
     AIAction = 'r_ai_action'
-    // PlayerBodyStateChanged = 'r_player_body_state_changed',
-    // PlayerLegsStateChanged = 'r_player_legs_state_changed',
-    // PlayerConciousnessStateChanged = 'r_player_conciousness_state_changed',
-    // PlayerDirectionChanged = 'r_player_direction_changed',
-    // PlayerLandedOnGround = 'r_player_landed_on_ground',
-    // PlayerLookAngleChanged = 'r_player_look_angle_changed',
-    // PlayerForceSetPosition = 'r_player_force_set_position'
 }
 
 export enum ClientMessage {

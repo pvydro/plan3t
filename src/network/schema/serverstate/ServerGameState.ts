@@ -101,9 +101,10 @@ export abstract class ServerGameState extends Schema implements IServerGameState
             return
         }
 
+        const player = this.players.get(options.playerId)
         const bulletVelocity = 5
-        const xVel = bulletVelocity * Math.cos(options.rotation)
-        const yVel = bulletVelocity * Math.sin(options.rotation)
+        const xVel = bulletVelocity * Math.cos(options.rotation) * player.direction
+        const yVel = bulletVelocity * Math.sin(options.rotation) * player.direction
 
         this.projectiles.set(options.sessionId, new ProjectileSchema().assign({
             x: options.x,

@@ -21,7 +21,7 @@ export class PlayerSchema extends EntitySchema {
     @type('int32')
     legsState: PlayerLegsState = PlayerLegsState.Standing
     @type('int32')
-    direction: Direction = Direction.Right
+    direction: Direction = Direction.Left
     @type('int32')
     walkingDirection: Direction = Direction.Right
     @type('float32')
