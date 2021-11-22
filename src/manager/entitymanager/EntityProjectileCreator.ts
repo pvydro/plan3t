@@ -34,7 +34,7 @@ export class EntityProjectileCreator implements IEntityProjectileCreator {
         bullet.y = schema.y
 
         camera.stage.addChildAtLayer(bullet, CameraLayer.Bullet)
-        this.entityManager.registerEntity(schema.id, bullet)
+        this.entityManager.registerEntity(schema.id, { clientEntity: bullet, serverEntity: schema })
 
         return bullet
     }

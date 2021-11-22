@@ -91,13 +91,12 @@ export class EntityManager implements IEntityManager {
 
     createProjectile(schema: ProjectileSchema, entityId: string) {
         schema.id = entityId
-        schema.onChange = (changes: any) => this.updateEntity(schema, entityId, changes)
+        // schema.onChange = (changes: any) => this.updateEntity(schema, entityId, changes)
 
         this.projectileCreator.createProjectile(schema)
     }
 
     createPlayer(schema: PlayerSchema, entityId: string): ClientPlayer {
-        importantLog('CREATEPLAYER', 'entityId', entityId)
         schema.id = entityId
         return this.playerCreator.createPlayer(schema)
     }
@@ -120,10 +119,26 @@ export class EntityManager implements IEntityManager {
 
         localEntity = (localEntity instanceof ClientEntity)
             ? { clientEntity: localEntity } : localEntity
+        const serverEntity = localEntity.serverEntity
+
+        if (serverEntity) {
+            serverEntity.onChange = (changes: any) => this.updateEntity(serverEntity, id, changes)
+        }
 
         this._clientEntities.set(id, localEntity)
 
         camera.addDebugEntity(localEntity.clientEntity)
+        // let loc: LocalEntity = localEntity as LocalEntity
+
+        // if (localEntity instanceof ClientEntity) {
+        //     loc = { clientEntity: localEntity }
+        // }
+
+        // if (loc.serverEntity) {
+        //     loc.serverEntity.onChange = (changes: any) => this.updateEntity(loc.serverEntity, id, changes)
+        // }
+
+        // camera.addDebugEntity(loc.clientEntity)
     }
 
     clearClientEntities() {

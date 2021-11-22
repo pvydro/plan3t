@@ -40,7 +40,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         }
         
         const player = this.getPlayer(schema)
-        
+
         player.x = schema?.x ?? 0
         player.y = schema?.y ?? 0
 
@@ -60,13 +60,9 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
 
     private getPlayer(schema: PlayerSchema): ClientPlayer {
         let player
-        console.log('%cGo fuck yourself', 'background-color: red; font-size: 300%;')
-        console.log(schema.id)
-        const isClientPlayer = (matchMaker.currentRoom.sessionId === schema.id)//this.isClientPlayer(schema)
-        console.log('ISAFUCKINGCLIENTPLAYER', isClientPlayer)
+        const isClientPlayer = (matchMaker.currentRoom.sessionId === schema.id)
 
         if (isClientPlayer) {
-            console.log('%c is the fucking client', 'background-color: red; font-size: 300%;')
             player = ClientPlayer.getInstance({
                 schema,
                 sessionId: schema.id,
