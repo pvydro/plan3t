@@ -33,7 +33,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
                     noise: 0.01,
                     lineWidth: 5,
                     lineContrast: 0.025,
-                    vignetting: 0//0.175
+                    vignetting: 0
                 })
             ],
             background: {
@@ -57,7 +57,7 @@ export class StartScreen extends UIScreen implements IStartScreen {
             this.waveRunnerButton = new UIWoodButton({
                 text: { text: 'waverunner' },
                 onTrigger: () => {
-                    gameStateMan.enterState(GameStateID.WaveRunnerGame)
+                    gameStateMan.enterState(GameStateID.WaveRunnerMenu)
                 }
             }),
             this.settingsButton = new UIWoodButton({
@@ -76,12 +76,8 @@ export class StartScreen extends UIScreen implements IStartScreen {
                 }
             })
         ]
-
-        for (var i in this.buttons) {
-            const btn = this.buttons[i]
-            this.buttonContainer.addChild(btn)
-        }
-
+        
+        this.buttonContainer.addChild(...this.buttons)
         this.addChild(this.titleLogo)
         this.addChild(this.versionInfo)
         this.addChild(this.buttonContainer)

@@ -1,4 +1,5 @@
 import { IUpdatable } from '../../../interface/IUpdatable'
+import { toRadians } from '../../../utils/Math'
 import { ICrosshair } from './Crosshair'
 
 export interface ICrosshairCursor extends IUpdatable {
@@ -27,6 +28,7 @@ export class CrosshairCursor implements ICrosshairCursor {
     }
     _nodesMagnetized: boolean = false
     crosshair: ICrosshair
+    idleRotation: number = toRadians(90)
 
     constructor(options: CrosshairCursorOptions) {
         this.crosshair = options.crosshair
@@ -54,6 +56,8 @@ export class CrosshairCursor implements ICrosshairCursor {
             this.nodeTwo.rotation += (nodeTwoTarget.rotation - this.nodeTwo.rotation) / rotationDivisor
             this.nodeThree.rotation += (nodeThreeTarget.rotation - this.nodeThree.rotation) / rotationDivisor
             this.nodeThree.skew.x += (nodeThreeTarget.skewX - this.nodeThree.skew.x) / rotationDivisor
+
+            this.crosshair.rotation += (0 - this.crosshair.rotation) / rotationDivisor
         } else {
             // Position
             this.nodeOne.x += (0 - this.nodeOne.x) / magnetizeDivisor
@@ -65,6 +69,8 @@ export class CrosshairCursor implements ICrosshairCursor {
             this.nodeTwo.rotation += (0 - this.nodeTwo.rotation) / magnetizeDivisor
             this.nodeThree.rotation += (0 - this.nodeThree.rotation) / magnetizeDivisor
             this.nodeThree.skew.x += (0 - this.nodeThree.skew.x) / magnetizeDivisor
+
+            this.crosshair.rotation += (this.idleRotation - this.crosshair.rotation) / rotationDivisor
         }
     }
 

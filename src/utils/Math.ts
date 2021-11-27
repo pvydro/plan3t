@@ -14,3 +14,7 @@ export function getRandomBool(): boolean {
 export function getRandomIntBetween(minimum: number, maximum: number) {
     return Math.floor(Math.random() * maximum) + minimum
 }
+
+export function toRadians(degrees: number): number {
+    return degrees * Math.PI / 180
+}

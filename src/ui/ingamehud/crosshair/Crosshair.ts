@@ -4,14 +4,13 @@ import { Container } from '../../../engine/display/Container'
 import { Graphix } from '../../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
-import { IUpdatable } from '../../../interface/IUpdatable'
 import { GameStateID, GameStateManager } from '../../../manager/gamestatemanager/GameStateManager'
 import { GameWindow } from '../../../utils/Constants'
-import { UIComponent } from '../../UIComponent'
+import { IUIComponent, UIComponent } from '../../UIComponent'
 import { CrosshairAnimator, ICrosshairAnimator } from './CrosshairAnimator'
 import { CrosshairCursor, ICrosshairCursor } from './CrosshairCursor'
 
-export interface ICrosshair extends IUpdatable {
+export interface ICrosshair extends IUIComponent {
     nodeOne: Graphix
     nodeTwo: Graphix
     nodeThree: Graphix
@@ -102,7 +101,8 @@ export class Crosshair extends UIComponent implements ICrosshair {
         }
         
         if (GameStateManager.getCurrentStateID() === GameStateID.StartMenu
-        || GameStateManager.getCurrentStateID() === GameStateID.WagerMenu) {
+        || GameStateManager.getCurrentStateID() === GameStateID.WagerMenu
+        || GameStateManager.getCurrentStateID() === GameStateID.WaveRunnerMenu) {
             positionOffsetDivisor = 2
             posOffset.y += 152
         }
