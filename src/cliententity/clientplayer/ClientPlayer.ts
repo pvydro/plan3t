@@ -122,7 +122,7 @@ export class ClientPlayer extends ClientPlayerState {
         this.controller.update()
     
         // TMP
-        this.targetServerPosition.y = undefined
+        // this.targetServerPosition.y = undefined
 
         super.update()
         

@@ -69,6 +69,9 @@ export abstract class ServerGameState extends Schema implements IServerGameState
         this.creatures.forEach((creature: CreatureSchema) => {
             creature.update(PlanetRoom.Delta)
         })
+        this.players.forEach((player: PlayerSchema) => {
+            player.update(PlanetRoom.Delta)
+        })
     }
 
     createPlayer(options: CreatePlayerOptions) {

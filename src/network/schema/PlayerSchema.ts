@@ -21,7 +21,7 @@ export class PlayerSchema extends EntitySchema {
     @type('int32')
     legsState: PlayerLegsState = PlayerLegsState.Standing
     @type('int32')
-    direction: Direction = Direction.Left
+    direction: Direction = Direction.Right
     @type('int32')
     walkingDirection: Direction = Direction.Right
     @type('float32')
@@ -31,7 +31,7 @@ export class PlayerSchema extends EntitySchema {
     @type('boolean')
     hasSpawned: boolean = false
     @type('boolean')
-    isOnGround: boolean = true
+    isOnGround: boolean = false
     
 
     // TODO: move to GravityEntitySchema
@@ -58,9 +58,12 @@ export class PlayerSchema extends EntitySchema {
         //         break
         // }
 
-        // if (!this.isOnGround && this.yVel !== 0) {  // yVel !== 0 is interim solution to not check every frame
-        //     this.yVel += ((this.weight / 3) * 1) * deltaTime
-        // }    
+        if (this.isOnGround) {
+        // && this.yVel !== 0) {  // yVel !== 0 is interim solution to not check every frame
+            this.yVel = 0
+        } else {
+            this.yVel += ((this.weight / 3) * 1) * deltaTime
+        }
     }
 
     moveLeft() {

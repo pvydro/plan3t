@@ -106,9 +106,11 @@ export class GravityEntity extends ClientEntity {
     landedOnGround(groundRect: Rect) {
         const difference = groundRect.y - this.bottomY
 
+        // this.yVel = difference
+        this.y = this.y + difference
+        this.yVel = 0
         this.onGround = true
         this._currentGroundRect = groundRect
-        this.yVel = difference
     }
 
     hitWall(wallRect: Rect) {

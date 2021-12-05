@@ -67,11 +67,11 @@ export class ClientPlayerState extends GravityOrganism {
     }
 
     set onGround(value: boolean) {
-        const shouldSendMessage = (this._onGround !== value)
+        if (this.onGround === value) return
 
         this._onGround = value
 
-        if (shouldSendMessage) this.messenger.send(RoomMessage.PlayerUpdate, {
+        this.messenger.send(RoomMessage.PlayerUpdate, {
             includePosition: true
         })
     }

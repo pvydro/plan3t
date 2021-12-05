@@ -73,11 +73,17 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         const payload = event.data
         const player = this.players.get(event.client.sessionId)
 
+        if (player.isOnGround !== payload.isOnGround) {
+            player.isOnGround = payload.isOnGround
+            player.y = payload.y
+            player.yVel = payload.yVel
+        }
+
         player.legsState = payload.legsState
         player.bodyState = payload.bodyState
         player.walkingDirection = payload.walkingDirection
         player.direction = payload.direction
-        player.isOnGround = payload.isOnGround
+        // player.isOnGround = payload.isOnGround
         player.x = payload.x
         player.xVel = payload.xVel
     }
