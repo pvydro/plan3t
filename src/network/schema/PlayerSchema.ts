@@ -32,10 +32,11 @@ export class PlayerSchema extends EntitySchema {
     hasSpawned: boolean = false
     @type('boolean')
     isOnGround: boolean = false
+    @type('number')
     
 
     // TODO: move to GravityEntitySchema
-    jumpHeight: number = 5
+    jumpHeight: number = 3
     friction: number = 5
 
     update(deltaTime: number) {
@@ -76,8 +77,11 @@ export class PlayerSchema extends EntitySchema {
 
     jump() {
         Flogger.log('Player', 'jump')
+
+        if (!this.isOnGround) return
         
-        this.yVel = 5 //-PlayerController.playerJumpingHeight
+        this.isOnGround = false
+        this.yVel = -this.jumpHeight
     }
 
     comeToStop() {

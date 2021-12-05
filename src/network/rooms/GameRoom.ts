@@ -8,6 +8,7 @@ import { ChatMessagePayload, ClientMessage, PlayerPayload } from './ServerMessag
 import { AIActionPayload } from '../../ai/AIAction'
 import { BulletStatePack, WeaponStatePack } from '../../cliententity/clientplayer/state/WeaponStatePack'
 import { v4 } from 'uuid'
+import { PlayerLegsState } from '../utils/Enum'
 
 export interface IGameRoom extends IRoomListenerDelegate {
     state: ServerGameState
@@ -74,6 +75,12 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         const player = this.players.get(event.client.sessionId)
 
         if (player.isOnGround !== payload.isOnGround) {
+            console.log(payload.legsState, PlayerLegsState.Jumping, player.legsState)
+
+            if (payload.legsState == PlayerLegsState.Jumping) {
+                player.jump()
+            }
+
             player.isOnGround = payload.isOnGround
             player.y = payload.y
             player.yVel = payload.yVel
@@ -83,7 +90,6 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         player.bodyState = payload.bodyState
         player.walkingDirection = payload.walkingDirection
         player.direction = payload.direction
-        // player.isOnGround = payload.isOnGround
         player.x = payload.x
         player.xVel = payload.xVel
     }

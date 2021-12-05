@@ -70,6 +70,7 @@ export class ClientPlayerState extends GravityOrganism {
         if (this.onGround === value) return
 
         this._onGround = value
+        this.legsState = PlayerLegsState.Standing
 
         this.messenger.send(RoomMessage.PlayerUpdate, {
             includePosition: true
@@ -102,6 +103,17 @@ export class ClientPlayerState extends GravityOrganism {
 
     set legsState(value: PlayerLegsState) {
         this._legsState = value
+
+        this.messenger.send(RoomMessage.PlayerUpdate, { includePosition: true })
+    }
+    
+    jump() {
+        this._legsState = PlayerLegsState.Jumping
+        this._yVel = -this.jumpHeight
+        this._onGround = false
+
+        this.messenger.send(RoomMessage.PlayerUpdate, { includePosition: true })
+        // this.onGround = false
     }
 
     get bodyState() {

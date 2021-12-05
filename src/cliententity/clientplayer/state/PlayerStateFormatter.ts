@@ -16,7 +16,7 @@ export class PlayerStateFormatter {
         payload.direction = player.direction as number
         payload.walkingDirection = player.walkingDirection as number
         payload.bodyState = player.bodyState as number
-        payload.legsState = player.legsState as number
+        payload.legsState = player.legsState// as number
         payload.isOnGround = player.isOnGround
         payload.x = player.x
         payload.y = player.y
@@ -28,10 +28,10 @@ export class PlayerStateFormatter {
             //     payload.x = player.x
             //     payload.y = player.y
             // }
-            if (rules.includeVelocity) {
-                payload.xVel = player.xVel
-                payload.yVel = player.yVel
-            }
+            // if (rules.includeVelocity) {
+            //     payload.xVel = player.xVel
+            //     payload.yVel = player.yVel
+            // }
         }
 
         return payload
