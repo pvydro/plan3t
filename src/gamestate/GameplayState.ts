@@ -39,6 +39,7 @@ export class GameplayState extends GameState implements IGameplayState {
         
         await matchMaker.createMatch()
         await matchMaker.joinMatch(matchMaker.matchId)
+        // await matchMaker.joinOrCreate()
         await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
         await inGameHUD.initializeHUD()
         await asyncTimeout(1000)

@@ -19,7 +19,7 @@ export class PVPGameRoomState extends ServerGameState implements IPVPGameRoomSta
     initialize() {
         super.initialize()
 
-        this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'New PVP' }))
+        this.messages.add(new ChatMessageSchema().assign({ sender: 'Server', text: 'New PVP' }))
     }
 
     beginPVPGame() {

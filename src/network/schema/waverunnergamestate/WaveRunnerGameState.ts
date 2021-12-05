@@ -18,7 +18,7 @@ export class WaveRunnerGameState extends ServerGameState implements IWaveRunnerG
   initialize() {
     super.initialize()
 
-    this.messages.add(new ChatMessageSchema().assign({ sender: '[ Server ]', text: 'Starting...' }))
+    this.messages.add(new ChatMessageSchema().assign({ sender: 'Server', text: 'Starting...' }))
   }
 
   beginWaveRunnerGame() {

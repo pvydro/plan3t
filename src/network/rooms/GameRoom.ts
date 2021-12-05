@@ -1,10 +1,10 @@
 import { Client, Room } from 'colyseus'
 import { log } from '../../service/Flogger'
-import { IRoomEvent } from '../event/RoomEvent'
+import { IRoomEvent, RoomEvent } from '../event/RoomEvent'
 import { ChatMessageSchema } from '../schema/ChatMessageSchema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { GameRoomListener, IGameRoomListener, IRoomListenerDelegate } from './GameRoomListener'
-import { ChatMessagePayload, ClientMessage, PlayerPayload } from './ServerMessages'
+import { ChatMessagePayload, ClientMessage, PlayerPayload, RoomMessage } from './ServerMessages'
 import { AIActionPayload } from '../../ai/AIAction'
 import { BulletStatePack, WeaponStatePack } from '../../cliententity/clientplayer/state/WeaponStatePack'
 import { v4 } from 'uuid'
@@ -24,6 +24,8 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
     onCreate() {
         this.listener = new GameRoomListener(this)
         this.initialize()
+
+        this.handleChatEvent(new RoomEvent(RoomMessage.NewChatMessage, { sender: 'Server', text: 'New Room ID: ' + this.roomId }, this.clients[0]))
     }
 
     initialize() {
