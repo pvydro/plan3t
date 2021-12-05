@@ -150,6 +150,9 @@ export class UIScreen extends UIComponent implements IUIScreen {
     }
 
     exit() {
+        if (this.isShown) {
+            this.hide()
+        }
         if (this.screenShaker) {
             this.screenShaker.stopShake()
         }

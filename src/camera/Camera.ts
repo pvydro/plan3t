@@ -43,6 +43,8 @@ export interface ICamera extends IUpdatable, IReposition {
     shakeAndFlash(shakeAmount: number, flashOptions?: EntityFlashOptions): void
     snapToTarget(): void
     addDebugEntity(clientEntity: IClientEntity)
+    setZoom(amount: number): void
+    revertZoom(): void
     viewport: Viewport
     stage: CameraStage
     cameraLetterboxPlugin: ICameraLetterboxPlugin
@@ -272,6 +274,10 @@ export class Camera implements ICamera {
 
     addDebugEntity(clientEntity: IClientEntity) {
         this.cameraServerDebugPlugin.trackEntity(clientEntity)
+    }
+
+    revertZoom() {
+        this.setZoom(this.baseZoom)
     }
 
     static toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {

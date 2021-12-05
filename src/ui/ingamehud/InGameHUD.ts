@@ -196,7 +196,7 @@ export class InGameHUD extends UIScreen implements IInGameHUD {
     async closeMenuScreen(id: InGameScreenID) {
         log('InGameHUD', 'closeScreen', 'id', id)
 
-        // await this.inGameMenu.hideScreen(id)
+        await this.menus.hideScreen()
         await this.showHUDComponents()
 
         this.requestCrosshairState(CrosshairState.Gameplay)

@@ -31,4 +31,8 @@ export class InputProcessor {
     public static on(event: string, callback: Function) {
         InputProcessor.Emitter.on(event, callback)
     }
+
+    public static off(event: string, callback: Function) {
+        InputProcessor.Emitter.removeListener(event, callback)
+    }
 }
