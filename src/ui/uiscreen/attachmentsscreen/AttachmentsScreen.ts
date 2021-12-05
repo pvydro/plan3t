@@ -19,7 +19,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     async show() {
-        camera.setZoom(4)
+        camera.zoomer.setZoom(4)
         
         this.addKeyListeners()
 
@@ -27,7 +27,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     async hide() {
-        camera.revertZoom()
+        camera.zoomer.revertZoom()
 
         this.removeKeyListeners()
 
@@ -48,7 +48,6 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     handleKeyPress(ev: KeyboardEvent) {
-        console.log('handlekey', ev)
         if (ev.key === 'Escape' || ev.key === 'Backspace') {
             this.exit()
         }

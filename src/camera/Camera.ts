@@ -22,6 +22,7 @@ import { PlayerConsciousnessState } from '../cliententity/clientplayer/ClientPla
 import { CameraServerDebugPlugin } from './plugin/CameraServerDebuggerPlugin'
 import { IClientEntity } from '../cliententity/ClientEntity'
 import { camera } from '../shared/Dependencies'
+import { CameraZoomPlugin, ICameraZoomPlugin } from './plugin/CameraZoomPlugin'
 
 export interface ICameraTarget {
     x: number
@@ -44,9 +45,9 @@ export interface ICamera extends IUpdatable, IReposition {
     snapToTarget(): void
     addDebugEntity(clientEntity: IClientEntity)
     setZoom(amount: number): void
-    revertZoom(): void
     viewport: Viewport
     stage: CameraStage
+    zoomer: ICameraZoomPlugin
     cameraLetterboxPlugin: ICameraLetterboxPlugin
     offset: IVector2
     transformOffset: IVector2
@@ -61,11 +62,11 @@ export interface ICamera extends IUpdatable, IReposition {
 
 export class Camera implements ICamera {
     // private static Instance: Camera
-    private baseZoom: number = 3.5
     private baseWidth: number = 1280
     static Zero: IVector2 = Vector2.Zero
     static Mouse: IVector2 = Vector2.Zero
     static UnprojectedMouse: IVector2 = Vector2.Zero
+    readonly baseZoom: number = 3.5
     _mouseX: number = 0
     _mouseY: number = 0
     _resizeScale: number = 1
@@ -94,6 +95,7 @@ export class Camera implements ICamera {
     cameraPlayerSynchPlugin: ICameraPlayerSynchPlugin
     cameraLetterboxPlugin: CameraLetterboxPlugin
     cameraServerDebugPlugin: CameraServerDebugPlugin
+    zoomer: ICameraZoomPlugin
     plugins: any[]
 
     constructor() {
@@ -110,7 +112,8 @@ export class Camera implements ICamera {
             this.cameraShakePlugin = new CameraShakePlugin(this),
             this.cameraPlayerSynchPlugin = new CameraPlayerSynchPlugin(this),
             this.cameraLetterboxPlugin = new CameraLetterboxPlugin(this),
-            this.cameraServerDebugPlugin = new CameraServerDebugPlugin(this)
+            this.cameraServerDebugPlugin = new CameraServerDebugPlugin(this),
+            this.zoomer = new CameraZoomPlugin(this)
         ]
 
         const stageWidth = 1080
@@ -274,10 +277,6 @@ export class Camera implements ICamera {
 
     addDebugEntity(clientEntity: IClientEntity) {
         this.cameraServerDebugPlugin.trackEntity(clientEntity)
-    }
-
-    revertZoom() {
-        this.setZoom(this.baseZoom)
     }
 
     static toScreen(point: Vector2 | PIXI.ObservablePoint | PositionAnimateable) {
