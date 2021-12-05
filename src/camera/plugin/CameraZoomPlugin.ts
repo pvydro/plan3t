@@ -23,12 +23,13 @@ export class CameraZoomPlugin implements ICameraZoomPlugin {
         this.easeTo(this.camera.baseZoom)
     }
 
-    private easeTo(value: number) {
-        let interpolation = { zoom: this.camera.zoom }
+    private easeTo(value: number, duration?: number) {
+        const baseZoom = (value === this.camera.baseZoom ? this.camera.zoom : this.camera.baseZoom)
+        let interpolation = { zoom: baseZoom }
 
         Tween.to(interpolation, {
             zoom: value,
-            duration: 1,
+            duration: duration ?? 1,
             easing: Easing.EaseOutCirc,
             onUpdate: () => {
                 this.camera.setZoom(interpolation.zoom)

@@ -19,7 +19,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     async show() {
-        camera.zoomer.setZoom(4)
+        camera.zoomer.setZoom(6)
         
         this.addKeyListeners()
 
