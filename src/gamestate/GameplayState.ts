@@ -7,9 +7,10 @@ import { Game } from '../main/Game'
 import { Defaults } from '../utils/Defaults'
 import { ClientPlayer } from '../cliententity/clientplayer/ClientPlayer'
 import { asyncTimeout } from '../utils/Utils'
-import { camera, entityMan, gameMapMan, inGameHUD, matchMaker, particleMan } from '../shared/Dependencies'
+import { camera, gameMapMan, inGameHUD, matchMaker, particleMan } from '../shared/Dependencies'
 import { RoomMessenger } from '../manager/roommanager/RoomMessenger'
 import { RoomMessage } from '../network/rooms/ServerMessages'
+import { getURLParameter } from '../utils/URLUtils'
 
 export interface IGameplayState extends IGameState {
 }
@@ -37,9 +38,10 @@ export class GameplayState extends GameState implements IGameplayState {
         inGameHUD.requestCrosshairState(CrosshairState.Gameplay)
         inGameHUD.showHUDComponents()
         
-        await matchMaker.createMatch()
-        await matchMaker.joinMatch(matchMaker.matchId)
+        // await matchMaker.createMatch()
+        // await matchMaker.joinMatch(matchMaker.matchId)
         // await matchMaker.joinOrCreate()
+        await this.createOrJoin()
         await Game.showLoadingScreen(false, Defaults.LoadingScreenCloseDelay)
         await inGameHUD.initializeHUD()
         await asyncTimeout(1000)
@@ -49,6 +51,19 @@ export class GameplayState extends GameState implements IGameplayState {
         // this.player = entityMan.createOfflinePlayer()
         // camera.stage.addChildAtLayer(this.player, CameraLayer.Players)
         // camera.follow(this.player)
+    }
+
+    async createOrJoin() {
+        const roomIdFromUrl = getURLParameter('room')
+
+        console.log('%cRoomID: ' + roomIdFromUrl, 'color: #ff0000;font-size:300%;')
+
+        if (roomIdFromUrl) {
+            await matchMaker.joinMatch(roomIdFromUrl)
+        } else {
+            await matchMaker.createMatch()
+            await matchMaker.joinMatch(matchMaker.matchId)
+        }
     }
 
     update() {
