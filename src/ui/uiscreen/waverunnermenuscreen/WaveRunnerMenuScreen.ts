@@ -37,8 +37,8 @@ export class WaveRunnerMenuScreen extends UIScreen implements IWaveRunnerMenuScr
         this.buttons = [
             new UIWoodButton({
                 text: { text: 'join' },
-                onTrigger: () => {
-
+                inputOptions: {
+                    showOnClick: true
                 }
             }),
             new UIWoodButton({

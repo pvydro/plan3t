@@ -8,6 +8,7 @@ import { functionExists } from '../../utils/Utils'
 import { IUIComponent, UIComponent, UIComponentOptions } from '../UIComponent'
 import { UIButtonDarkenerPlugin, UIButtonDarkenerPluginOptions as UIButtonDarkenerOptions } from './plugins/UIButtonDarkenerPlugin'
 import { UIButtonDebuggerPlugin } from './plugins/UIButtonDebuggerPlugin'
+import { UIButtonInputPlugin, UIButtonInputOptions } from './plugins/UIButtonInputPlugin'
 import { UIButtonNudgeOptions, UIButtonNudgePlugin } from './plugins/UIButtonNudgePlugin'
 import { UIButtonToolipOptions, UIButtonTooltipPlugin } from './plugins/UIButtonTooltipPlugin'
 import { IUIButtonBackground, UIButtonBackground } from './UIButtonBackground'
@@ -57,6 +58,7 @@ export interface UIButtonOptions extends UIComponentOptions {
     darkenerOptions?: UIButtonDarkenerOptions
     tooltipOptions?: UIButtonToolipOptions
     nudgeOptions?: UIButtonNudgeOptions
+    inputOptions?: UIButtonInputOptions
     clickedOffsetY?: number
 
     onHold?: () => void
@@ -79,6 +81,7 @@ export class UIButton extends UIComponent implements IUIButton {
     plugins: any[] = []
     debuggerPlugin: UIButtonDebuggerPlugin
     tooltipPlugin: UIButtonTooltipPlugin
+    inputPlugin: UIButtonInputPlugin
 
     extendedOnHold?: Function
     extendedOnTrigger?: Function
@@ -100,9 +103,10 @@ export class UIButton extends UIComponent implements IUIButton {
         this.clickedOffsetY = options.clickedOffsetY
 
         this.background = new UIButtonBackground()
-
+        this.background.applyBackgroundTexture(options.background)
+        this.addChild(this.background)
+        
         this.loadPlugins(options)
-        this.applyBackgroundTexture(options)
         this.applyPluginInternals(options)
         this.applyMouseListeners(options.addClickListeners ?? true)
         this.applyText(options)
@@ -243,16 +247,11 @@ export class UIButton extends UIComponent implements IUIButton {
         }
     }
 
-    applyBackgroundTexture(options: UIButtonOptions) {
-        this.background.applyBackgroundTexture(options.background)
-
-        this.addChild(this.background)
-    }
-
     loadPlugins(options: UIButtonOptions) {
         if (options.darkenerOptions)            this.plugins.push(new UIButtonDarkenerPlugin(this, options.darkenerOptions))
         if (options.nudgeOptions)               this.plugins.push(new UIButtonNudgePlugin(this, options.nudgeOptions))
         if (options.tooltipOptions)             this.plugins.push(this.tooltipPlugin = new UIButtonTooltipPlugin(this, options.tooltipOptions))
+        if (options.inputOptions)               this.plugins.push(this.inputPlugin = new UIButtonInputPlugin(this, options.inputOptions))
         if (DebugConstants.ShowUIButtonDebug)   this.plugins.push(this.debuggerPlugin = new UIButtonDebuggerPlugin(this))
     }
 
@@ -264,6 +263,10 @@ export class UIButton extends UIComponent implements IUIButton {
         if (this.debuggerPlugin) {
             this.debuggerPlugin.initialize()
             this.addChildAt(this.debuggerPlugin, 0)
+        }
+        if (this.inputPlugin) {
+            this.inputPlugin.initialize()
+            this.addChild(this.inputPlugin)
         }
     }
 
