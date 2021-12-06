@@ -79,7 +79,7 @@ export class AssetLoader implements IAssetLoader {
             
             const biomeKeys = Object.values(SphericalBiome)
             // const mapBuildingKeys = Object.values(MapBuildingType) // TODO: This is breaking for some reason
-            const mapBuildingKeys = [ 'dojo', 'castle' ]// MapBuildingHelper.getAllMapTypesInProperties() // TODO This needs to be dynamic & linked to {@link MapBuildingHelper}
+            const mapBuildingKeys = [ 'dojo', 'castle', 'cloningfacility' ]// MapBuildingHelper.getAllMapTypesInProperties() // TODO This needs to be dynamic & linked to {@link MapBuildingHelper}
             const tileValues = Object.values(SphericalTileValues)
             const tileAssets = []
             const totalFoliage = 10
@@ -116,25 +116,25 @@ export class AssetLoader implements IAssetLoader {
                 }
             })
 
-            mapBuildingKeys.forEach((mapBuilding: string) => {
-                const buildingDir = Assets.MapBuildingDir + mapBuilding
-                const platformDir = `${buildingDir}/platform`
-                // const totalBackgroundSprites = MapBuildingHelper.getTotalBackgroundTilesForType(mapBuilding)
+            // mapBuildingKeys.forEach((mapBuilding: string) => {
+            //     const buildingDir = Assets.MapBuildingDir + mapBuilding
+            //     const platformDir = `${buildingDir}/platform`
+            //     // const totalBackgroundSprites = MapBuildingHelper.getTotalBackgroundTilesForType(mapBuilding)
 
-                for (let i = 0; i < 5; i++) {//totalBackgroundSprites; i++) {
-                    const tileDir = `${buildingDir}/background/${i}`
+            //     for (let i = 0; i < 5; i++) {//totalBackgroundSprites; i++) {
+            //         const tileDir = `${buildingDir}/background/${i}`
 
-                    importantLog('Assets', 'Loading backgroundtile', 'tileDir', tileDir)
+            //         importantLog('Assets', 'Loading backgroundtile', 'tileDir', tileDir)
 
-                    try {
-                        tileAssets.push(Assets.get(tileDir))
-                    } catch (error) {
-                        Flogger.warn(`No background tile for ${mapBuilding}`)
-                    }
-                }
+            //         try {
+            //             tileAssets.push(Assets.get(tileDir))
+            //         } catch (error) {
+            //             Flogger.warn(`No background tile for ${mapBuilding}`)
+            //         }
+            //     }
 
-                tileAssets.push(Assets.get(platformDir))
-            })
+            //     tileAssets.push(Assets.get(platformDir))
+            // })
 
             PIXI.Loader.shared.add(tileAssets).load(() => {
                 Flogger.log('Assets', 'Finished loading images')

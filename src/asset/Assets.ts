@@ -78,7 +78,7 @@ export class Assets {
             
             const biomeKeys = Object.values(SphericalBiome)
             // const mapBuildingKeys = Object.values(MapBuildingType) // TODO: This is breaking for some reason
-            const mapBuildingKeys = [ 'dojo', 'castle' ]// MapBuildingHelper.getAllMapTypesInProperties() // TODO This needs to be dynamic & linked to {@link MapBuildingHelper}
+            const mapBuildingKeys = [ 'dojo', 'castle', 'cloningfacility' ]// MapBuildingHelper.getAllMapTypesInProperties() // TODO This needs to be dynamic & linked to {@link MapBuildingHelper}
             const tileValues = Object.values(SphericalTileValues)
             const tileAssets = []
             const totalFoliage = 10
