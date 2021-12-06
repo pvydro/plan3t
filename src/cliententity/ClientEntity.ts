@@ -18,6 +18,7 @@ export interface IClientEntity extends IContainer, IUpdatable {
     type: string
     position: IVector2
     targetServerPosition: IVector2
+    targetServerDimension: IDimension
     entityId: string
     sprite: ISprite | IContainer
     getAllSprites(): (Container | Sprite)[]
@@ -57,6 +58,7 @@ export class ClientEntity extends Container implements IClientEntity {
     x: number
     y: number
     targetServerPosition: IVector2 = { x: undefined, y: undefined }
+    targetServerDimension: IDimension = { width: undefined, height: undefined }
     targetServerLerpRate: number = 0.2
     type: EntityType
     plugins: IClientEntityPlugins = {}

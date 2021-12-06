@@ -1,6 +1,7 @@
 import { IClientEntity } from '../../cliententity/ClientEntity'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
+import { IDimension } from '../../engine/math/Dimension'
 import { IVector2 } from '../../engine/math/Vector2'
 import { DebugConstants } from '../../utils/Constants'
 import { ICamera } from '../Camera'
@@ -24,8 +25,15 @@ export class CameraServerDebugPlugin extends Container implements ICameraServerD
                 x: entity.targetServerPosition.x ?? entity.x,
                 y: entity.targetServerPosition.y ?? entity.y
             }
+            const serverDimension: IDimension = {
+                width: entity.targetServerDimension.width ?? entity.width,
+                height: entity.targetServerDimension.height ?? entity.height
+            }
 
-            this.debugGraphics.get(id).position.set(serverPos.x, serverPos.y)
+            this.debugGraphics.get(id).x = serverPos.x - (serverDimension.width / 2)
+            this.debugGraphics.get(id).y = serverPos.y - (serverDimension.height / 2)
+            this.debugGraphics.get(id).width = serverDimension.width
+            this.debugGraphics.get(id).height = serverDimension.height
         })
     }
 
@@ -50,14 +58,16 @@ export class CameraServerDebugPlugin extends Container implements ICameraServerD
     }
 
     private createDebugGraphic(color?: number) {
-        const g = new Graphix()
+        const serverEntityGraphic = new Graphix()
+        // const serverDim = new Graphix()
         color = color || 0xffffff
 
-        g.beginFill(color)
-        g.drawCircle(0, 0, 2)
-        g.endFill()
-        g.alpha = 0.5
+        serverEntityGraphic.beginFill(color)
+        // serverEntityGraphic.drawCircle(0, 0, 2)
+        serverEntityGraphic.drawRect(0, 0, 2, 2)
+        serverEntityGraphic.endFill()
+        serverEntityGraphic.alpha = 0.5
 
-        return g
+        return serverEntityGraphic
     }
 }

@@ -32,7 +32,9 @@ export class PlayerSchema extends EntitySchema {
     hasSpawned: boolean = false
     @type('boolean')
     isOnGround: boolean = false
-    @type('number')
+
+    width: number = 16
+    height: number = 48
     
 
     // TODO: move to GravityEntitySchema

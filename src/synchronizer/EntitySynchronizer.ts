@@ -27,6 +27,8 @@ export class EntitySynchronizer implements IEntitySynchronizer {
 
         entity.clientEntity.targetServerPosition.x = schema.x
         entity.clientEntity.targetServerPosition.y = schema.y
+        entity.clientEntity.targetServerDimension.width = schema.width
+        entity.clientEntity.targetServerDimension.height = schema.height
         entity.serverEntity = schema
 
         // // TODO: Deprecate synchronizables system
