@@ -35,7 +35,7 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             //     sound.play()
             // })
 
-            gameMapMan.initializeBuilding(MapBuildingType.Dojo)
+            gameMapMan.initializeBuilding(MapBuildingType.CloningFacility)
 
             ChatService.fetchChatHistoryFromRoom()
         })

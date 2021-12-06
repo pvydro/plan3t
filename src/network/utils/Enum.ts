@@ -28,6 +28,7 @@ export enum CreatureType {
 export enum MapBuildingType {
     Dojo = 'dojo',
     Castle = 'castle',
+    CloningFacility = 'cloningfacility',
     // ModernHome = 'modernhome',
     // Warehouse = 'warehouse'
 }
