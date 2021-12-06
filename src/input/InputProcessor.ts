@@ -32,6 +32,7 @@ export class InputProcessor {
         InputProcessor.Emitter.on(event, callback)
     }
 
+    // TODO: This doesnt work
     public static off(event: string, callback: Function) {
         InputProcessor.Emitter.removeListener(event, callback)
     }

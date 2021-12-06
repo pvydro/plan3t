@@ -35,7 +35,6 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     exit() {
-        // super.hide()
         inGameHUD.closeMenuScreen(InGameScreenID.Attachments)
     }
 
@@ -44,7 +43,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     removeKeyListeners() {
-        InputProcessor.off(InputEvents.KeyDown, this.handleKeyPress)
+        InputProcessor.off(InputEvents.KeyDown, this.handleKeyPress.bind(this))
     }
 
     handleKeyPress(ev: KeyboardEvent) {

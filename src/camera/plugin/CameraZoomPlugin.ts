@@ -27,14 +27,25 @@ export class CameraZoomPlugin implements ICameraZoomPlugin {
         const baseZoom = (value === this.camera.baseZoom ? this.camera.zoom : this.camera.baseZoom)
         let interpolation = { zoom: baseZoom }
 
-        Tween.to(interpolation, {
+        this.interruptAnimation()
+        
+        this.currentZoomAnimation = Tween.to(interpolation, {
             zoom: value,
             duration: duration ?? 1,
             easing: Easing.EaseOutCirc,
             onUpdate: () => {
                 this.camera.setZoom(interpolation.zoom)
             }
-        }).play()
+        })
+
+        this.currentZoomAnimation.play()
     }
     
+    private interruptAnimation() {
+        if (this.currentZoomAnimation) {
+            this.currentZoomAnimation.pause()
+            this.currentZoomAnimation.kill()
+            this.currentZoomAnimation = undefined
+        }
+    }
 }

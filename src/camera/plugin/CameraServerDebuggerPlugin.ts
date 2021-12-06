@@ -2,7 +2,7 @@ import { IClientEntity } from '../../cliententity/ClientEntity'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { IVector2 } from '../../engine/math/Vector2'
-import { Constants, DebugConstants } from '../../utils/Constants'
+import { DebugConstants } from '../../utils/Constants'
 import { ICamera } from '../Camera'
 
 export interface ICameraServerDebugPlugin {
