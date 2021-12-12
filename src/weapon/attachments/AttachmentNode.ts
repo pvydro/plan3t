@@ -6,6 +6,7 @@ import { Tween } from '../../engine/display/tween/Tween'
 import { Rect } from '../../engine/math/Rect'
 import { camera } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
+import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
 import { AttachmentNodeType } from './AttachmentNodes'
 
@@ -16,10 +17,13 @@ export interface AttachmentNodeConfig {
 }
 
 export class AttachmentNode extends Container {
+    isShown: boolean = false
+    baseAlpha: number = 0.4
     type: AttachmentNodeType
     weapon: IWeapon
     graphic: Graphix
     boundingBox: Graphix
+    currentAnimation?: TweenLite
 
     constructor(options: AttachmentNodeConfig, weapon: IWeapon) {
         super()
@@ -46,11 +50,11 @@ export class AttachmentNode extends Container {
             const nodeXOffset = (this.x * Math.cos(this.weapon.rotation))
             const weaponX = this.weapon.x + (this.weapon.handleOffsetX ?? 0)
             const weaponY = this.weapon.y + (this.weapon.handleOffsetY ?? 0)
-
             const nodeProj = {
                 x: playerProj.x + weaponX + nodeXDistance + nodeXOffset - this.boundingBox.halfWidth,
                 y: playerProj.y + weaponY + nodeYDistance + nodeYOffset + this.boundingBox.halfHeight
             }
+
             this.boundingBox.x = nodeProj.x
             this.boundingBox.y = nodeProj.y
         }
@@ -60,15 +64,33 @@ export class AttachmentNode extends Container {
     }
 
     async show() {
+        if (this.isShown) return
+
+        this.isShown = true
         camera.stage.addChildAtLayer(this.boundingBox, CameraLayer.Overlay)
 
-        await Tween.to(this.boundingBox, { alpha: 0.8, duration: 0.5, autoplay: true })
+        await Tween.to(this.boundingBox, { alpha: this.baseAlpha, duration: 0.5, autoplay: true })
     }
 
     async hide() {
+        if (!this.isShown) return
+
+        this.isShown = false
         this.boundingBox.alpha = 0
 
         camera.stage.removeFromLayer(this.boundingBox, CameraLayer.Overlay)
+    }
+
+    hovered() {
+        if (!this.isShown) return
+        if (this.currentAnimation) this.currentAnimation.kill()
+
+        this.boundingBox.alpha = lerp(this.boundingBox.alpha, 1, 0.1)
+
+    }
+
+    unhovered() {
+        this.boundingBox.alpha = lerp(this.boundingBox.alpha, this.baseAlpha, 0.1)
     }
 
     checkMouseInBounds() {
@@ -76,7 +98,10 @@ export class AttachmentNode extends Container {
         const mouseInBounds = Rect.contains(this.boundingBox.getBoundingBox(), Camera.Mouse)
 
         if (mouseInBounds) {
+            this.hovered()
             console.log('inbound')
+        } else {
+            this.unhovered()
         }
     }
 
