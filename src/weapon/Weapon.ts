@@ -297,6 +297,7 @@ export class Weapon extends ClientEntity implements IWeapon {
 
         if (this.state === WeaponState.AttachmentsMode && state !== WeaponState.AttachmentsMode) {
             this.x = 0
+            this.attacher.attachmentNodes.hide()
         }
 
         this.state = state
@@ -309,6 +310,9 @@ export class Weapon extends ClientEntity implements IWeapon {
             case WeaponState.Reloading:
             case WeaponState.Unloaded:
                 this.showUnloadedSprite()
+                break
+            case WeaponState.AttachmentsMode:
+                this.attacher.attachmentNodes.show()
                 break
         }
     }

@@ -1,5 +1,3 @@
-import { Camera } from '../camera/Camera'
-import { IVector2 } from '../engine/math/Vector2'
 import { IUpdatable } from '../interface/IUpdatable'
 import { camera } from '../shared/Dependencies'
 import { GameWindow } from '../utils/Constants'
@@ -45,7 +43,7 @@ export class WeaponConfigurator implements IWeaponConfigurator {
         // const distanceY = camera.viewport.halfHeight - Camera.Mouse.y
 
         const distanceY = camera._mouseY - (window.innerHeight / 2)
-        const distanceDivisor = GameWindow.halfHeight
+        const distanceDivisor = GameWindow.halfHeight / 2
         const rotationMultiplier = distanceY / distanceDivisor
         const targetRotation = this.baseWeaponRotation * rotationMultiplier
 

@@ -1,6 +1,7 @@
 import { Container, IContainer } from '../../engine/display/Container'
 import { Tween } from '../../engine/display/tween/Tween'
 import { IShowHide } from '../../interface/IShowHide'
+import { camera } from '../../shared/Dependencies'
 import { IWeapon } from '../Weapon'
 import { AttachmentNode, AttachmentNodeConfig } from './AttachmentNode'
 
@@ -20,6 +21,7 @@ export class AttachmentsNodes extends Container implements IAttachmentNodes {
         super()
 
         this.weapon = weapon
+        this.alpha = 0
     }
 
     update() {
@@ -32,11 +34,11 @@ export class AttachmentsNodes extends Container implements IAttachmentNodes {
     }
 
     async show() {
-        await Tween.to(this, { alpha: 1, duration: 0.5, autoplay: true })
+        await Tween.to(this, { alpha: 1, duration: 1.5, autoplay: true })
     }
 
     async hide() {
-        await Tween.to(this, { alpha: 0, duration: 0.5, autoplay: true })
+        await Tween.to(this, { alpha: 0, duration: 2, autoplay: true })
     }
 
     configureNodes(attachments: AttachmentNodeConfig[]) {
