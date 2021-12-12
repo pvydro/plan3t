@@ -30,7 +30,7 @@ export class PlayerHandController implements IPlayerHandController {
             return
         }
 
-        if (clientControl) {
+        if (!this.player.frozen && clientControl) {
             this.followMouse()
         
             const projectedPos = Camera.Mouse

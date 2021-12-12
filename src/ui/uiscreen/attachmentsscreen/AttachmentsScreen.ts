@@ -1,6 +1,8 @@
+import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
-import { camera, inGameHUD } from '../../../shared/Dependencies'
-import { InGameHUD } from '../../ingamehud/InGameHUD'
+import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
+import { camera, gameStateMan, inGameHUD } from '../../../shared/Dependencies'
+import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIScreen, UIScreen } from '../UIScreen'
 
@@ -22,11 +24,21 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         camera.zoomer.setZoom(6)
         
         this.addKeyListeners()
+        if (gameStateMan.currentStateID !== GameStateID.AttachmentsMenu) {
+            const player = ClientPlayer.getInstance()
+
+            player.frozen = true
+            player.holster.setWeaponState(WeaponState.AttachmentsMode)
+        }
 
         await super.show()
+
     }
 
     async hide() {
+        const player = ClientPlayer.getInstance()
+
+        player.frozen = false
         camera.zoomer.revertZoom()
 
         this.removeKeyListeners()

@@ -17,6 +17,8 @@ export class EntitySchema extends Schema {
     yVel!: number
     @type('float32')
     weight!: number
+    @type('boolean')
+    frozen: boolean = false
 
     dead: boolean = false
 

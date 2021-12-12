@@ -21,6 +21,7 @@ export interface IClientEntity extends IContainer, IUpdatable {
     targetServerDimension: IDimension
     entityId: string
     sprite: ISprite | IContainer
+    frozen: boolean
     getAllSprites(): (Container | Sprite)[]
 }
 
@@ -51,9 +52,10 @@ export class ClientEntity extends Container implements IClientEntity {
     static CurrentIDIteration: number = 0
     protected _xVel: number = 0
     protected _yVel: number = 0
+    frozen: boolean = false
+    _sprite: Sprite | Container
     name: string = 'ClientEntity'
     entityId: string
-    _sprite: Sprite | Container
     entity?: EntitySchema
     x: number
     y: number

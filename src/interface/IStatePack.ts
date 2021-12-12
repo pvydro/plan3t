@@ -3,4 +3,5 @@ export interface EntityStatePack {
     y?: number
     xVel?: number
     yVel?: number
+    frozen: boolean
 }

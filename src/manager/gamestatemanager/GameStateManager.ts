@@ -33,7 +33,8 @@ export enum GameStateID {
     StyleMenu = 'StyleMenu',
     LoadoutMenu = 'LoadoutMenu',
     WagerMenu = 'WagerMenu',
-    WaveRunnerMenu = 'WaveRunnerMenu'
+    WaveRunnerMenu = 'WaveRunnerMenu',
+    AttachmentsMenu = 'AttachmentsMenu'
 }
 
 export class GameStateManager implements IGameStateManager {

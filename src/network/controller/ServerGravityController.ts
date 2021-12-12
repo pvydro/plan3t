@@ -22,10 +22,18 @@ export class ServerGravityController implements IServerGravityController {
     applyVelocityToEntity(entity: EntitySchema | MapSchema<any> | SetSchema<any>) {
         if (entity instanceof MapSchema || entity instanceof SetSchema) {
             entity.forEach((e: EntitySchema) => {
+                if (e.frozen) {
+                    console.log('frozen, skipping')
+                    return
+                }
                 e.x += e.xVel
                 e.y += e.yVel
             })
         } else {
+            if (entity.frozen) {
+                console.log('frozen, skipping')
+                return
+            }
             entity.x += entity.xVel
             entity.y += entity.yVel
         }

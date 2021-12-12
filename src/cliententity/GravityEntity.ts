@@ -149,13 +149,15 @@ export class GravityEntity extends ClientEntity {
     }
 
     get boundsWithPosition() {
-        if (!this._boundsWithPosition) {
+        if (!this._boundsWithPosition && this.boundingBox) {
             this._boundsWithPosition = new Rect({
                 x: this.x + this.halfWidth - (this.boundingBox.width / 2),
                 y: this.y + this.height - this.boundingBox.height,
                 width: this.boundingBox.width,
                 height: this.boundingBox.height
             })
+        } else {
+            return undefined
         }
         
         if (this._boundsWithPosition.x !== this.x
@@ -257,11 +259,15 @@ export class GravityEntity extends ClientEntity {
         // }
 
         this._xVel = value
-        this._boundsWithVelocity.x = this.boundsWithPosition.x + this._xVel
+        if (this.boundsWithPosition) {
+            this._boundsWithVelocity.x = this.boundsWithPosition.x + this._xVel
+        }
     }
 
     set yVel(value: number) {
         this._yVel = value
-        this._boundsWithVelocity.y = this.boundsWithPosition.y + this._yVel
+        if (this.boundsWithPosition) {
+            this._boundsWithVelocity.y = this.boundsWithPosition.y + this._yVel
+        }
     }
 }

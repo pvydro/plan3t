@@ -34,6 +34,7 @@ export interface IClientPlayerState extends IGravityOrganism {
 }
 
 export class ClientPlayerState extends GravityOrganism {
+    _cachedFrozen: boolean = false
     _clientControl: boolean = false
     _offlineControl: boolean = false
     _direction: Direction = Direction.Right
@@ -54,9 +55,19 @@ export class ClientPlayerState extends GravityOrganism {
         if (options.clientControl) this._clientControl = true
         if (options.offlineControl) this._offlineControl = true
 
-        const player = this
+        this.messenger = new PlayerMessenger({ player: this })
+    }
 
-        this.messenger = new PlayerMessenger({ player })
+    update() {
+        if (this._cachedFrozen !== this.frozen) {
+            this._cachedFrozen = this.frozen
+            this.xVel = 0
+            this.yVel = 0
+            
+            this.messenger.send(RoomMessage.PlayerUpdate)
+        }
+
+        super.update()
     }
 
     set pos(value: IVector2) {

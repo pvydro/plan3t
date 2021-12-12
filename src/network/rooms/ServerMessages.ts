@@ -36,6 +36,7 @@ export interface PlayerPayload extends EntityPayload {
     bodyState: PlayerBodyState
     legsState: PlayerLegsState
     isOnGround: boolean
+    frozen: boolean
 }
 
 export interface EntityPayload {
@@ -43,4 +44,5 @@ export interface EntityPayload {
     y: number
     xVel: number
     yVel: number
+    frozen: boolean
 }

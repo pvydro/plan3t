@@ -77,7 +77,7 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         const player = this.players.get(event.client.sessionId)
 
         if (player.isOnGround !== payload.isOnGround) {
-            console.log(payload.legsState, PlayerLegsState.Jumping, player.legsState)
+            log('Player onGround change', player.isOnGround, payload.isOnGround)
 
             if (payload.legsState == PlayerLegsState.Jumping) {
                 player.jump()
@@ -94,6 +94,10 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         player.direction = payload.direction
         player.x = payload.x
         player.xVel = payload.xVel
+        player.frozen = payload.frozen
+
+        console.log(payload.frozen)
+        if (payload.frozen) log('Freezing player')
     }
 
     handleWeaponEvent(event: IRoomEvent<WeaponStatePack>) {

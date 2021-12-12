@@ -22,6 +22,9 @@ export class PlayerStateFormatter {
         payload.y = player.y
         payload.xVel = player.xVel
         payload.yVel = player.yVel
+        payload.frozen = player.frozen
+
+        console.log('PAYLOADFRO: ' + payload.frozen)
 
         if (rules !== undefined) {
             // if (rules.includePosition) {

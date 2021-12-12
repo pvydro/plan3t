@@ -19,6 +19,7 @@ export interface IWeapon extends WeaponStats {
     currentClipBullets: number
     state: WeaponState
     configureByName(name: WeaponName): void
+    setWeaponState(state: WeaponState)
     requestReload(): Promise<void>
     reset(): void
 }
@@ -49,7 +50,8 @@ export interface WeaponOptions {
 export enum WeaponState {
     Loaded = 'Loaded',
     Unloaded = 'Unloaded',
-    Reloading = 'Reloading'
+    Reloading = 'Reloading',
+    AttachmentsMode = 'AttachmentsScreen'
 }
 
 export class Weapon extends Container implements IWeapon {
@@ -274,6 +276,8 @@ export class Weapon extends Container implements IWeapon {
     }
 
     setWeaponState(state: WeaponState) {
+        log('Weapon', 'setWeaponState', state)
+
         if (state === this.state) {
             return
         }
