@@ -21,8 +21,8 @@ export class AttachmentNode extends Container {
 
         this.type = options.type
         this.weapon = weapon
-        this.graphic = this.createNodeGraphic()
-        this.addChild(this.graphic)
+        // this.graphic = this.createNodeGraphic()
+        // this.addChild(this.graphic)
 
         this.createBoundingBox()
     }
@@ -34,14 +34,13 @@ export class AttachmentNode extends Container {
             const playerProj = player.position
             const nodeXDistance = this.x * this.weapon.scale.x
             const nodeYDistance = this.y * this.weapon.scale.y
-            console.log(this.weapon.rotation, nodeXDistance)
-
-            const nodeXOffset = (this.x * Math.cos(this.weapon.rotation)) * this.weapon.scale.x
             const nodeYOffset = -(this.y * Math.sin(this.weapon.rotation)) * this.weapon.scale.y
+            const weaponX = this.weapon.x + (this.weapon.handleOffsetX ?? 0)
+            const weaponY = this.weapon.y + (this.weapon.handleOffsetY ?? 0)
 
             const nodeProj = {
-                x: playerProj.x + this.weapon.x + nodeXDistance + nodeXOffset,
-                y: playerProj.y + this.weapon.y + nodeYDistance + nodeYOffset
+                x: playerProj.x + weaponX + nodeXDistance - this.boundingBox.halfWidth,
+                y: playerProj.y + weaponY + nodeYDistance + nodeYOffset + this.boundingBox.halfHeight
             }
             this.boundingBox.x = nodeProj.x
             this.boundingBox.y = nodeProj.y
@@ -49,30 +48,32 @@ export class AttachmentNode extends Container {
     }
 
     createBoundingBox() {
+        const nodeSize = 4
+
         this.boundingBox = new Graphix()
         this.boundingBox.beginFill(0xffffff)
-        this.boundingBox.drawRect(0, 0, 6, 6)
+        this.boundingBox.drawRect(0, 0, nodeSize, nodeSize)
         this.boundingBox.endFill()
         this.boundingBox.alpha = 0.5
 
         camera.stage.addChild(this.boundingBox)
     }
 
-    createNodeGraphic(): Graphix {
-        const graphic = new Graphix()
-        const nodeSize = 1
+    // createNodeGraphic(): Graphix {
+    //     const graphic = new Graphix()
+    //     const nodeSize = 1
 
-        graphic.beginFill(0xffffff)
-        graphic.drawRect(0, 0, nodeSize, nodeSize)
-        graphic.endFill()
+    //     graphic.beginFill(0xffffff)
+    //     graphic.drawRect(0, 0, nodeSize, nodeSize)
+    //     graphic.endFill()
 
-        // graphic.interactive = true
-        // graphic.on('mouseenter', () => {
-        //     console.log('%cTest', 'color: #ff0000; font-size: 600%')
-        // })
+    //     // graphic.interactive = true
+    //     // graphic.on('mouseenter', () => {
+    //     //     console.log('%cTest', 'color: #ff0000; font-size: 600%')
+    //     // })
 
-        return graphic
-    }
+    //     return graphic
+    // }
 
     destroy() {
         this.graphic.destroy()
