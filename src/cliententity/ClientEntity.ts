@@ -16,6 +16,7 @@ export interface IClientEntity extends IContainer, IUpdatable {
     xVel: number
     yVel: number
     type: string
+    scale: IVector2
     position: IVector2
     targetServerPosition: IVector2
     targetServerDimension: IDimension

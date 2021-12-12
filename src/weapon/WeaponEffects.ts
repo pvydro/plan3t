@@ -17,8 +17,8 @@ export interface WeaponEffectsOptions {
 export class WeaponEffects implements IWeaponEffects {
     weapon: Weapon
 
-    constructor(options: WeaponEffectsOptions) {
-        this.weapon = options.weapon
+    constructor(weapon: Weapon) {
+        this.weapon = weapon
     }
 
     addMuzzleFlash() {

@@ -32,13 +32,16 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         }
 
         await super.show()
-
     }
 
     async hide() {
         const player = ClientPlayer.getInstance()
-
         player.frozen = false
+        player.holster.setWeaponState(WeaponState.Loaded)
+        if (player.holster.currentWeapon) {
+            player.holster.currentWeapon.scale.x = 1
+            player.holster.currentWeapon.scale.y = 1
+        }
         camera.zoomer.revertZoom()
 
         this.removeKeyListeners()

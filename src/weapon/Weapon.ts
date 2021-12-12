@@ -1,23 +1,24 @@
 import { TweenLite } from 'gsap/all'
 import { Sounds, SoundUrls } from '../asset/Sounds'
+import { ClientEntity, IClientEntity } from '../cliententity/ClientEntity'
 import { PlayerWeaponHolster } from '../cliententity/clientplayer/PlayerWeaponHolster'
-import { Container } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { Tween } from '../engine/display/tween/Tween'
 import { Easing } from '../engine/display/tween/TweenEasing'
 import { IVector2 } from '../engine/math/Vector2'
 import { Flogger, log } from '../service/Flogger'
 import { Crosshair, CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
-import { ProjectileType } from './projectile/Bullet'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
+import { IWeaponAttachments, WeaponAttachments } from './WeaponAttachments'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
 
-export interface IWeapon extends WeaponStats {
+export interface IWeapon extends WeaponStats, IClientEntity {
     triggerDown: boolean
     currentClipBullets: number
     state: WeaponState
+    playerHolster?: PlayerWeaponHolster
     configureByName(name: WeaponName): void
     setWeaponState(state: WeaponState)
     requestReload(): Promise<void>
@@ -54,12 +55,13 @@ export enum WeaponState {
     AttachmentsMode = 'AttachmentsScreen'
 }
 
-export class Weapon extends Container implements IWeapon {
+export class Weapon extends ClientEntity implements IWeapon {
     playerHolster?: PlayerWeaponHolster
 
     name: WeaponName
     state: WeaponState
     ammunition: IWeaponAmmunition
+    attachments: IWeaponAttachments
     effects: IWeaponEffects
     damage: number
     fireRate?: number
@@ -71,7 +73,6 @@ export class Weapon extends Container implements IWeapon {
     reloadTime: number = 0
     bulletVelocity: number = 5
 
-    sprite: Sprite
     unloadedSprite: Sprite
 
     triggerDown: boolean = false
@@ -96,7 +97,8 @@ export class Weapon extends Container implements IWeapon {
         super()
 
         this.ammunition = new WeaponAmmunition(this)
-        this.effects = new WeaponEffects({ weapon: this })
+        this.attachments = new WeaponAttachments(this)
+        this.effects = new WeaponEffects(this)
 
         if (options) {
             if (options.name) {
@@ -114,6 +116,8 @@ export class Weapon extends Container implements IWeapon {
         if (this.triggerDown) {
             this.shoot()
         }
+
+        this.attachments.update()
 
         // Recoil movement
         this._currentRecoilOffset.x += (0 - this._currentRecoilOffset.x) / this.recoilXDamping
@@ -247,7 +251,7 @@ export class Weapon extends Container implements IWeapon {
         const unloadedTexture = WeaponHelper.getWeaponUnloadedTextureByName(name)
         const stats = WeaponHelper.getWeaponStatsByName(name)
 
-        this.sprite = new Sprite({ texture })
+        this._sprite = new Sprite({ texture })
         this.unloadedSprite = new Sprite({ texture: unloadedTexture })
         this.unloadedSprite.alpha = 0
         this.offset.x = stats.handleOffsetX
@@ -287,6 +291,7 @@ export class Weapon extends Container implements IWeapon {
         switch (state) {
             case WeaponState.Loaded:
                 this.showLoadedSprite()
+                this.ammunition.checkAmmunition()
                 break
             case WeaponState.Reloading:
             case WeaponState.Unloaded:
