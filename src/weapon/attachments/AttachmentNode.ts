@@ -1,7 +1,9 @@
+import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { Tween } from '../../engine/display/tween/Tween'
+import { Rect } from '../../engine/math/Rect'
 import { camera } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
 import { IWeapon } from '../Weapon'
@@ -52,6 +54,9 @@ export class AttachmentNode extends Container {
             this.boundingBox.x = nodeProj.x
             this.boundingBox.y = nodeProj.y
         }
+
+        // this.check()
+        this.checkMouseInBounds()
     }
 
     async show() {
@@ -64,6 +69,15 @@ export class AttachmentNode extends Container {
         this.boundingBox.alpha = 0
 
         camera.stage.removeFromLayer(this.boundingBox, CameraLayer.Overlay)
+    }
+
+    checkMouseInBounds() {
+        const mouseX = Camera.Mouse.x
+        const mouseInBounds = Rect.contains(this.boundingBox.getBoundingBox(), Camera.Mouse)
+
+        if (mouseInBounds) {
+            console.log('inbound')
+        }
     }
 
     createBoundingBox() {

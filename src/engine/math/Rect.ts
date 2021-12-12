@@ -54,6 +54,11 @@ export class Rect extends PIXI.Rectangle implements IRect {
         return intersecting
     }
 
+    static contains(rect: Rect, point: IVector2) {
+        return point.x >= rect.left && point.x <= rect.right
+            && point.y >= rect.top && point.y <= rect.bottom
+    }
+
     static get Zero() {
         return new Rect({
             x: 0,

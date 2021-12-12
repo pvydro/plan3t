@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { IDemolishable } from '../../interface/IDemolishable'
 import { exists } from '../../utils/Utils'
-import { IRect } from '../math/Rect'
+import { IRect, Rect } from '../math/Rect'
 
 export interface IGraphix extends IDemolishable {
     halfWidth: number
@@ -14,6 +14,8 @@ export interface GraphixOptions {
 }
 
 export class Graphix extends PIXI.Graphics implements IGraphix {
+    _boundingBox: Rect
+
     constructor(options?: GraphixOptions | Geometry) {
         const op = options as GraphixOptions
         const geometry: Geometry = (options && options instanceof Geometry)
@@ -38,6 +40,20 @@ export class Graphix extends PIXI.Graphics implements IGraphix {
 
         return result
     }
+    
+    getBoundingBox() {
+        if (!this._boundingBox) {
+            this._boundingBox = new Rect({ x: this.x, y: this.y, width: this.width, height: this.height })
+        }
+
+        this._boundingBox.x = this.x
+        this._boundingBox.y = this.y
+        this._boundingBox.width = this.width
+        this._boundingBox.height = this.height
+
+        return this._boundingBox
+    }
+
 
     demolish() {
         this.destroy()
