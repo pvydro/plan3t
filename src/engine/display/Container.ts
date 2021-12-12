@@ -24,6 +24,7 @@ export interface IContainer extends IDemolishable {
 export class Container extends PIXI.Container implements IContainer {
     constructor() {
         super()
+        this.interactiveChildren = true
     }
 
     clearChildren() {

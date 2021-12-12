@@ -82,12 +82,12 @@
         "attachments": [
             {
                 "type": "scope",
-                "x": 1,
-                "y": -8
+                "x": 0,
+                "y": -10
             },
             {
                 "type": "subsight",
-                "x": 7,
+                "x": 8,
                 "y": -9
             }
         ]

@@ -1,8 +1,9 @@
+import * as PIXI from 'pixi.js'
 import { Container, IContainer } from '../../engine/display/Container'
 import { Tween } from '../../engine/display/tween/Tween'
 import { IShowHide } from '../../interface/IShowHide'
 import { camera } from '../../shared/Dependencies'
-import { IWeapon } from '../Weapon'
+import { IWeapon, WeaponState } from '../Weapon'
 import { AttachmentNode, AttachmentNodeConfig } from './AttachmentNode'
 
 export interface IAttachmentNodes extends IContainer, IShowHide {
@@ -25,9 +26,11 @@ export class AttachmentsNodes extends Container implements IAttachmentNodes {
     }
 
     update() {
-        if (this.nodes.length > 1) {
+        if (this.weapon.state === WeaponState.AttachmentsMode
+        && this.nodes.length > 1) {
             for (var i in this.nodes) {
                 const node = this.nodes[i]
+                node.update()
                 node.rotation = -this.weapon.rotation
             }
         }
@@ -46,7 +49,7 @@ export class AttachmentsNodes extends Container implements IAttachmentNodes {
         this.destroyNodes()
 
         attachments.forEach((attachment: AttachmentNodeConfig) => {
-            const node = new AttachmentNode(attachment)
+            const node = new AttachmentNode(attachment, this.weapon)
             node.x = attachment.x
             node.y = attachment.y
 
