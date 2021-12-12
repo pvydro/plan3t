@@ -9,9 +9,9 @@ import { Weapon, WeaponState } from '../../../weapon/Weapon'
 import { WeaponHelper } from '../../../weapon/WeaponHelper'
 import { ClientPlayer } from '../ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
-import { lerp } from '../../../utils/Math'
+import { IShowHide } from '../../../interface/IShowHide'
 
-export interface IPlayerHand extends IUpdatable {
+export interface IPlayerHand extends IUpdatable, IShowHide {
     setWeapon(weapon: Weapon): void
     setTargetRotation(targetRotation: number): void
     empty(): void
@@ -61,40 +61,36 @@ export class PlayerHand extends Container implements IPlayerHand {
     }
 
     update() {
-        if (this.equippedWeapon && this.equippedWeapon.state === WeaponState.Reloading) {
-            this.dropHands()
-        } else {
-            const halfACircleInRadians = 3.14159
-            const handPushAmount = this.equippedWeapon && this.equippedWeapon.handPushAmount ? this.equippedWeapon.handPushAmount : 0
-            const handDropAmount = this.equippedWeapon && this.equippedWeapon.handDropAmount ? this.equippedWeapon.handDropAmount : 0
-            const direction = this._player.direction
-            const bobOffsetY = this._player.head.headBobOffsetInterpoliation.interpolation / 2.5
-            let newOffsetX = direction === Direction.Right
-                ? -this.baseOffsetX + handPushAmount
-                : this.baseOffsetX - handPushAmount
-            let newOffsetY = this.baseOffsetY + handDropAmount + bobOffsetY
-            
-            this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
-            this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
-    
-            const recoilOffsetX = (this.equippedWeapon && this.equippedWeapon._currentRecoilOffset)
-                ? this.equippedWeapon._currentRecoilOffset.x : 0
-            const recoilOffsetY = (this.equippedWeapon && this.equippedWeapon._currentRecoilOffset)
-                ? this.equippedWeapon._currentRecoilOffset.y : 0
-            this.x = this.currentOffsetX + (recoilOffsetX * this.player.direction)
-            this.y = this.currentOffsetY + (recoilOffsetY * this.player.direction)
-    
-            this.handSprite.x = (recoilOffsetX / this.recoilOffsetDivisor) * this.player.direction
-    
-            this.controller.update(this.player.isClientPlayer)
-    
-            this.secondHandSprite.rotation = direction === Direction.Right
-                ? -this.rotation + (this.rotation / 2)
-                : this.rotation - halfACircleInRadians - (this.rotation / 2)
-                
-            if (this.equippedWeapon) this.equippedWeapon.update()
-        }
+        const halfACircleInRadians = 3.14159
+        const handPushAmount = this.equippedWeapon && this.equippedWeapon.handPushAmount ? this.equippedWeapon.handPushAmount : 0
+        const handDropAmount = this.equippedWeapon && this.equippedWeapon.handDropAmount ? this.equippedWeapon.handDropAmount : 0
+        const direction = this._player.direction
+        const bobOffsetY = this._player.head.headBobOffsetInterpoliation.interpolation / 2.5
+        let newOffsetX = direction === Direction.Right
+            ? -this.baseOffsetX + handPushAmount
+            : this.baseOffsetX - handPushAmount
+        let newOffsetY = this.baseOffsetY + handDropAmount + bobOffsetY
+        
+        this.currentOffsetY += (newOffsetY - this.currentOffsetY) / this.handOffsetDamping
+        this.currentOffsetX += (newOffsetX - this.currentOffsetX) / this.handOffsetDamping
 
+        const recoilOffsetX = (this.equippedWeapon && this.equippedWeapon._currentRecoilOffset)
+            ? this.equippedWeapon._currentRecoilOffset.x : 0
+        const recoilOffsetY = (this.equippedWeapon && this.equippedWeapon._currentRecoilOffset)
+            ? this.equippedWeapon._currentRecoilOffset.y : 0
+        this.x = this.currentOffsetX + (recoilOffsetX * this.player.direction)
+        this.y = this.currentOffsetY + (recoilOffsetY * this.player.direction)
+
+        this.handSprite.x = (recoilOffsetX / this.recoilOffsetDivisor) * this.player.direction
+
+        this.controller.update(this.player.isClientPlayer)
+
+        this.secondHandSprite.rotation = direction === Direction.Right
+            ? -this.rotation + (this.rotation / 2)
+            : this.rotation - halfACircleInRadians - (this.rotation / 2)
+            
+
+        if (this.equippedWeapon) this.equippedWeapon.update()
     }
 
     setWeapon(weapon: Weapon) {
@@ -133,12 +129,18 @@ export class PlayerHand extends Container implements IPlayerHand {
         }
     }
 
-    dropHands() {
-        if (this.secondHandShown) this.showSecondHand(false)
-
-        this.y = lerp(this.y, 0, 0.1)
+    async show() {
+        this.handSprite.alpha = 1
+        if (this.equippedWeapon && this.equippedWeapon.stats.secondHandX) {
+            this.showSecondHand(true)
+        }
     }
-    
+
+    async hide() {
+        this.handSprite.alpha = 0
+        this.showSecondHand(false)
+    }
+
     empty() {
         this.rotationContainer.removeChild(this.equippedWeapon)
     }

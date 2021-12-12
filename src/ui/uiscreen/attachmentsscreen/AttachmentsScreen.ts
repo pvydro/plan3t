@@ -28,6 +28,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
             const player = ClientPlayer.getInstance()
 
             player.frozen = true
+            player.hand.hide()
             player.holster.setWeaponState(WeaponState.AttachmentsMode)
         }
 
@@ -37,6 +38,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     async hide() {
         const player = ClientPlayer.getInstance()
         player.frozen = false
+        player.hand.show()
         player.holster.setWeaponState(WeaponState.Loaded)
         if (player.holster.currentWeapon) {
             player.holster.currentWeapon.scale.x = 1

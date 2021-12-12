@@ -18,6 +18,7 @@ export interface IWeapon extends WeaponStats, IClientEntity {
     triggerDown: boolean
     currentClipBullets: number
     state: WeaponState
+    stats: WeaponStats
     playerHolster?: PlayerWeaponHolster
     configureByName(name: WeaponName): void
     setWeaponState(state: WeaponState)
@@ -63,6 +64,7 @@ export class Weapon extends ClientEntity implements IWeapon {
     ammunition: IWeaponAmmunition
     attachments: IWeaponAttachments
     effects: IWeaponEffects
+    stats: WeaponStats
     damage: number
     fireRate?: number
     weightPounds?: number
@@ -228,6 +230,7 @@ export class Weapon extends ClientEntity implements IWeapon {
     }
 
     configureStats(stats: WeaponStats) {
+        this.stats = stats
         this.state = WeaponState.Loaded
         this.damage = stats.damage
         this.fireRate = stats.fireRate
@@ -284,6 +287,10 @@ export class Weapon extends ClientEntity implements IWeapon {
 
         if (state === this.state) {
             return
+        }
+
+        if (this.state === WeaponState.AttachmentsMode && state !== WeaponState.AttachmentsMode) {
+            this.x = 0
         }
 
         this.state = state
