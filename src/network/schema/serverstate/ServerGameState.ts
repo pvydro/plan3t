@@ -6,6 +6,7 @@ import { PlayerSchema } from '../PlayerSchema'
 import { ProjectileSchema } from '../ProjectileSchema'
 import { ServerGravityController } from '../../controller/ServerGravityController'
 import { ServerPlayerController } from '../../controller/ServerPlayerController'
+import { ServerCollisionController } from '../../controller/ServerCollisionController'
 import { exists } from '../../../utils/Utils'
 import { v4 } from 'uuid'
 import { PlanetRoom } from '../../rooms/planetroom/PlanetRoom'
@@ -55,16 +56,19 @@ export abstract class ServerGameState extends Schema implements IServerGameState
 
     gravityController!: ServerGravityController
     playerController!: ServerPlayerController
+    collisionController!: ServerCollisionController
 
     initialize() {
         this.gravityController = new ServerGravityController(this)
         this.playerController = new ServerPlayerController(this)
+        this.collisionController = new ServerCollisionController(this)
     }
 
     update() {
         // TODO: Instead of updating these in the state, update these outside, setting the state. <- tf do you mean
         if (this.playerController) this.playerController.update()
         if (this.gravityController) this.gravityController.update()
+        if (this.collisionController) this.collisionController.update()
 
         this.creatures.forEach((creature: CreatureSchema) => {
             creature.update(PlanetRoom.Delta)

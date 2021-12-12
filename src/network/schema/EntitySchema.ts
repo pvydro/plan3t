@@ -8,9 +8,9 @@ export class EntitySchema extends Schema {
     @type('float64')
     y!: number
     @type('number')
-    width!: number
+    width: number = 16
     @type('number')
-    height!: number
+    height: number = 16
     @type('float64')
     xVel!: number
     @type('float64')

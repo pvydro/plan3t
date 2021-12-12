@@ -25,6 +25,10 @@ export class EntitySynchronizer implements IEntitySynchronizer {
 
         const entity: LocalEntity = this.clientEntities.get(sessionId)
 
+        if (schema.dead) {
+            this.entityManager.removeEntity(sessionId)
+        }
+
         entity.clientEntity.targetServerPosition.x = schema.x
         entity.clientEntity.targetServerPosition.y = schema.y
         entity.clientEntity.targetServerDimension.width = schema.width

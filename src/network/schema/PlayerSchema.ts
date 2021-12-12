@@ -32,8 +32,11 @@ export class PlayerSchema extends EntitySchema {
     hasSpawned: boolean = false
     @type('boolean')
     isOnGround: boolean = false
-
+    @type('number')
+    health: number = 100
+    // @type('number')
     width: number = 16
+    // @type('number')
     height: number = 48
     
 
@@ -42,25 +45,6 @@ export class PlayerSchema extends EntitySchema {
     friction: number = 5
 
     update(deltaTime: number) {
-        // switch (this.bodyState) {
-        //     case PlayerBodyState.Idle:
-        //         if (this.xVel !== 0) {
-        //             this.xVel += ((0 - this.xVel) / this.friction) * deltaTime
-        //         }
-        //         break
-        //     case PlayerBodyState.Walking:
-        //         break
-        // }
-
-        // switch (this.legsState) {
-        //     case PlayerLegsState.Jumping:
-        //         if (this.isOnGround) {
-        //             this.yVel = -this.jumpHeight
-        //             this.isOnGround = false
-        //         }
-        //         break
-        // }
-
         if (this.isOnGround) {
         // && this.yVel !== 0) {  // yVel !== 0 is interim solution to not check every frame
             this.yVel = 0
@@ -75,6 +59,10 @@ export class PlayerSchema extends EntitySchema {
 
     moveRight() {
         this.xVel = 1.5
+    }
+
+    takeDamage(damage: number) {
+        this.health -= damage
     }
 
     jump() {

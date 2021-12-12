@@ -56,7 +56,7 @@ export class DebugConstants {
     static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false
     static ShowCameraProjectionDebug: boolean = false
-    static ShowServerPositions: boolean = true
+    static ShowServerPositions: boolean = false // true
     static ShowCollisionDebug: boolean = false
     static ShowInteractiveContainerDebug: boolean = true
     static ShowUIButtonDebug: boolean = false
