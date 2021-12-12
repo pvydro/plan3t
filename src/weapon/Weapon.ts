@@ -9,10 +9,11 @@ import { IVector2 } from '../engine/math/Vector2'
 import { Flogger, log } from '../service/Flogger'
 import { Crosshair, CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
-import { IWeaponAttachments, WeaponAttachments } from './WeaponAttachments'
+import { WeaponAttachments } from './attachments/WeaponAttachments'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
+import { AttachmentNodeConfig } from './attachments/AttachmentNode'
 
 export interface IWeapon extends WeaponStats, IClientEntity {
     triggerDown: boolean
@@ -42,6 +43,7 @@ export interface WeaponStats {
     recoilX: number
     recoilY: number
     reloadTime: number
+    attachments: AttachmentNodeConfig[]
 }
 
 export interface WeaponOptions {
@@ -62,7 +64,7 @@ export class Weapon extends ClientEntity implements IWeapon {
     name: WeaponName
     state: WeaponState
     ammunition: IWeaponAmmunition
-    attachments: IWeaponAttachments
+    attacher: WeaponAttachments
     effects: IWeaponEffects
     stats: WeaponStats
     damage: number
@@ -99,7 +101,6 @@ export class Weapon extends ClientEntity implements IWeapon {
         super()
 
         this.ammunition = new WeaponAmmunition(this)
-        this.attachments = new WeaponAttachments(this)
         this.effects = new WeaponEffects(this)
 
         if (options) {
@@ -112,6 +113,8 @@ export class Weapon extends ClientEntity implements IWeapon {
                 this.playerHolster = options.holster
             }
         }
+
+        this.attacher = new WeaponAttachments(this)
     }
     
     update() {
@@ -119,7 +122,7 @@ export class Weapon extends ClientEntity implements IWeapon {
             this.shoot()
         }
 
-        this.attachments.update()
+        this.attacher.update()
 
         // Recoil movement
         this._currentRecoilOffset.x += (0 - this._currentRecoilOffset.x) / this.recoilXDamping
@@ -240,6 +243,7 @@ export class Weapon extends ClientEntity implements IWeapon {
         this.recoilX = stats.recoilX ?? 0
         this.recoilY = stats.recoilY ?? 0
         this.reloadTime = stats.reloadTime
+        this.attacher.configure(stats)
         this.ammunition.configure(stats as WeaponAmmunitionOptions)
     }
 
@@ -263,6 +267,7 @@ export class Weapon extends ClientEntity implements IWeapon {
         this.setSpritesPosition(this.offset)
         this.addChild(this.sprite)
         this.addChild(this.unloadedSprite)
+        this.addChild(this.attacher)
         this.configureStats(stats)
     }
 
@@ -278,7 +283,8 @@ export class Weapon extends ClientEntity implements IWeapon {
             handPushAmount: 0,
             recoilX: 0,
             recoilY: 0,
-            reloadTime: 0.5
+            reloadTime: 0.5,
+            attachments: undefined
         })
     }
 
@@ -353,5 +359,9 @@ export class Weapon extends ClientEntity implements IWeapon {
 
     get currentClipBullets() {
         return this.ammunition.currentClipBullets
+    }
+
+    get attachments() {
+        return this.attacher.attachmentConfigs
     }
 }

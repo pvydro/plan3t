@@ -63,7 +63,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     applyFilters() {
         const player = ClientPlayer.getInstance()
         const playerFilters = [
-            new AsciiFilter(),
+            // new AsciiFilter(),
             new ColorOverlayFilter(0x5c5c5c)
         ]
 

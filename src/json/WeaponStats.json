@@ -82,8 +82,13 @@
         "attachments": [
             {
                 "type": "scope",
-                "x": -1,
-                "y": -2
+                "x": 1,
+                "y": -8
+            },
+            {
+                "type": "subsight",
+                "x": 7,
+                "y": -9
             }
         ]
     },
