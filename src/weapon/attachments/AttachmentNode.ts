@@ -1,6 +1,9 @@
+import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
+import { Tween } from '../../engine/display/tween/Tween'
 import { camera } from '../../shared/Dependencies'
+import { DebugConstants } from '../../utils/Constants'
 import { IWeapon } from '../Weapon'
 import { AttachmentNodeType } from './AttachmentNodes'
 
@@ -21,8 +24,11 @@ export class AttachmentNode extends Container {
 
         this.type = options.type
         this.weapon = weapon
-        // this.graphic = this.createNodeGraphic()
-        // this.addChild(this.graphic)
+
+        if (DebugConstants.ShowAttachmentNodePoints) {
+            this.graphic = this.createNodeGraphic()
+            this.addChild(this.graphic)
+        }
 
         this.createBoundingBox()
     }
@@ -35,16 +41,29 @@ export class AttachmentNode extends Container {
             const nodeXDistance = this.x * this.weapon.scale.x
             const nodeYDistance = this.y * this.weapon.scale.y
             const nodeYOffset = -(this.y * Math.sin(this.weapon.rotation)) * this.weapon.scale.y
+            const nodeXOffset = (this.x * Math.cos(this.weapon.rotation))
             const weaponX = this.weapon.x + (this.weapon.handleOffsetX ?? 0)
             const weaponY = this.weapon.y + (this.weapon.handleOffsetY ?? 0)
 
             const nodeProj = {
-                x: playerProj.x + weaponX + nodeXDistance - this.boundingBox.halfWidth,
+                x: playerProj.x + weaponX + nodeXDistance + nodeXOffset - this.boundingBox.halfWidth,
                 y: playerProj.y + weaponY + nodeYDistance + nodeYOffset + this.boundingBox.halfHeight
             }
             this.boundingBox.x = nodeProj.x
             this.boundingBox.y = nodeProj.y
         }
+    }
+
+    async show() {
+        camera.stage.addChildAtLayer(this.boundingBox, CameraLayer.Overlay)
+
+        await Tween.to(this.boundingBox, { alpha: 0.8, duration: 0.5, autoplay: true })
+    }
+
+    async hide() {
+        this.boundingBox.alpha = 0
+
+        camera.stage.removeFromLayer(this.boundingBox, CameraLayer.Overlay)
     }
 
     createBoundingBox() {
@@ -54,26 +73,26 @@ export class AttachmentNode extends Container {
         this.boundingBox.beginFill(0xffffff)
         this.boundingBox.drawRect(0, 0, nodeSize, nodeSize)
         this.boundingBox.endFill()
-        this.boundingBox.alpha = 0.5
+        this.boundingBox.alpha = 0
 
         camera.stage.addChild(this.boundingBox)
     }
 
-    // createNodeGraphic(): Graphix {
-    //     const graphic = new Graphix()
-    //     const nodeSize = 1
+    createNodeGraphic(): Graphix {
+        const graphic = new Graphix()
+        const nodeSize = 1
 
-    //     graphic.beginFill(0xffffff)
-    //     graphic.drawRect(0, 0, nodeSize, nodeSize)
-    //     graphic.endFill()
+        graphic.beginFill(0xffffff)
+        graphic.drawRect(0, 0, nodeSize, nodeSize)
+        graphic.endFill()
 
-    //     // graphic.interactive = true
-    //     // graphic.on('mouseenter', () => {
-    //     //     console.log('%cTest', 'color: #ff0000; font-size: 600%')
-    //     // })
+        // graphic.interactive = true
+        // graphic.on('mouseenter', () => {
+        //     console.log('%cTest', 'color: #ff0000; font-size: 600%')
+        // })
 
-    //     return graphic
-    // }
+        return graphic
+    }
 
     destroy() {
         this.graphic.destroy()

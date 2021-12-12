@@ -62,6 +62,7 @@ export class DebugConstants {
     static ShowUIButtonDebug: boolean = false
     static AlternateChatbox: boolean = false
     static ShowEnemyAttackRadius: boolean = false
+    static ShowAttachmentNodePoints: boolean = false // true
 }
 
 export class AIDebugConstants {

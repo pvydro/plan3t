@@ -83,17 +83,22 @@
             {
                 "type": "scope",
                 "x": 0,
-                "y": -10
+                "y": -8
             },
             {
                 "type": "subsight",
                 "x": 8,
-                "y": -9
+                "y": -8
             },
             {
                 "type": "underbarrel",
                 "x": 9,
                 "y": -1
+            },
+            {
+                "type": "stock",
+                "x": -6,
+                "y": -4
             }
         ]
     },

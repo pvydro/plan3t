@@ -37,10 +37,20 @@ export class AttachmentsNodes extends Container implements IAttachmentNodes {
     }
 
     async show() {
-        await Tween.to(this, { alpha: 1, duration: 1.5, autoplay: true })
+        Tween.to(this, { alpha: 1, duration: 0.5, autoplay: true })
+
+        for (var i in this.nodes) {
+            const node = this.nodes[i]
+            await node.show()
+        }
     }
 
     async hide() {
+        for (var i in this.nodes) {
+            const node = this.nodes[i]
+            node.hide()
+        }
+
         await Tween.to(this, { alpha: 0, duration: 2, autoplay: true })
     }
 
