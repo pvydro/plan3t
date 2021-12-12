@@ -34,12 +34,10 @@ export class AttachmentNode extends Container {
             const playerProj = player.position
             const nodeXDistance = this.x * this.weapon.scale.x
             const nodeYDistance = this.y * this.weapon.scale.y
-            const weaponOriginX = this.weapon.x + this.weapon.handleOffsetX
-            const weaponOriginY = this.weapon.x + this.weapon.handleOffsetY
             console.log(this.weapon.rotation, nodeXDistance)
 
-            const nodeXOffset = nodeXDistance * Math.cos(this.weapon.rotation)
-            const nodeYOffset = -nodeYDistance * Math.sin(this.weapon.rotation)
+            const nodeXOffset = (this.x * Math.cos(this.weapon.rotation)) * this.weapon.scale.x
+            const nodeYOffset = -(this.y * Math.sin(this.weapon.rotation)) * this.weapon.scale.y
 
             const nodeProj = {
                 x: playerProj.x + this.weapon.x + nodeXDistance + nodeXOffset,
