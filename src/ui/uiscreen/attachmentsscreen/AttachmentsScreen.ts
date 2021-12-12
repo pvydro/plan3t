@@ -1,7 +1,8 @@
+import { MotionBlurFilter } from 'pixi-filters'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
-import { camera, gameStateMan, inGameHUD } from '../../../shared/Dependencies'
+import { camera, gameMapMan, gameStateMan, inGameHUD } from '../../../shared/Dependencies'
 import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIScreen, UIScreen } from '../UIScreen'
@@ -30,6 +31,8 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
             player.frozen = true
             player.hand.hide()
             player.holster.setWeaponState(WeaponState.AttachmentsMode)
+
+            this.applyFilters()
         }
 
         await super.show()
@@ -37,6 +40,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
     async hide() {
         const player = ClientPlayer.getInstance()
+
         player.frozen = false
         player.hand.show()
         player.holster.setWeaponState(WeaponState.Loaded)
@@ -47,8 +51,19 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         camera.zoomer.revertZoom()
 
         this.removeKeyListeners()
+        this.resetFilters()
 
         await super.hide()
+    }
+
+    applyFilters() {
+        gameMapMan.gameMap.filters = [
+            new MotionBlurFilter([ 24, 0 ])
+        ]
+    }
+
+    resetFilters() {
+        gameMapMan.gameMap.filters = []
     }
 
     exit() {

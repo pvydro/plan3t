@@ -16,21 +16,22 @@ export enum CameraStageBackgroundType {
 }
 
 let layerIndex = 0
+const layer = () => { return layerIndex++ }
 export const CameraLayer = {
-    GameMapSky: layerIndex++,
-    Background: layerIndex++,
-    GameMapBackground: layerIndex++,
-    GameMap: layerIndex++,
-    Bullet: layerIndex++,
-    Particle: layerIndex++,
-    Players: layerIndex++,
-    Creatures: layerIndex++,
-    Lighting: layerIndex++,
-    GameMapOverlay: layerIndex++,
-    Overlay: layerIndex++,
-    Tooltips: layerIndex++,
-    OverlayParticle: layerIndex++,
-    DebugOverlay: layerIndex++
+    GameMapSky: layer(),
+    Background: layer(),
+    GameMapBackground: layer(),
+    GameMap: layer(),
+    Bullet: layer(),
+    Particle: layer(),
+    Players: layer(),
+    Creatures: layer(),
+    Lighting: layer(),
+    GameMapOverlay: layer(),
+    Overlay: layer(),
+    Tooltips: layer(),
+    OverlayParticle: layer(),
+    DebugOverlay: layer()
 }
 
 export interface ICameraStage extends IContainer, IUpdatable, IReposition {
