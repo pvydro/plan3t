@@ -21,7 +21,11 @@ export class WeaponConfigurator implements IWeaponConfigurator {
 
     positionWeapon() {
         if (this.weapon.state === WeaponState.AttachmentsMode) {
-            const middle = camera.toScreen({ x: GameWindow.halfWidth, y: -GameWindow.height / 3 })
+            // const middle = 
+            const middle = {
+                x: 0,
+                y: camera.toScreen({ x: 0, y: -GameWindow.height / 3 })
+            }
             const targetScale = 3
             const targetRotation = -0.1
 

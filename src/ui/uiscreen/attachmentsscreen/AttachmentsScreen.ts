@@ -1,4 +1,4 @@
-import { MotionBlurFilter } from 'pixi-filters'
+import { AsciiFilter, BloomFilter, ColorOverlayFilter, CrossHatchFilter, MotionBlurFilter } from 'pixi-filters'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
@@ -57,13 +57,28 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     applyFilters() {
+        const player = ClientPlayer.getInstance()
+        const playerFilters = [
+            new AsciiFilter(),
+            new ColorOverlayFilter(0x5c5c5c)
+        ]
+
         gameMapMan.gameMap.filters = [
             new MotionBlurFilter([ 24, 0 ])
         ]
+
+        player.body.filters = playerFilters
+        player.head.filters = playerFilters
+        player.playerBadge.filters = playerFilters
     }
 
     resetFilters() {
+        const player = ClientPlayer.getInstance()
+
         gameMapMan.gameMap.filters = []
+        player.body.filters = []
+        player.head.filters = []
+        player.playerBadge.filters = []
     }
 
     exit() {
