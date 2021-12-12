@@ -74,8 +74,10 @@ export class PlayerHead extends Container {
             this.position.y = -3 + this.headBobOffset + this._crouchedOffset
         }
 
-        this.controller.update()
-        if (this.currentHair) this.currentHair.update()
+        if (!this.player.frozen) {
+            this.controller.update()
+            if (this.currentHair) this.currentHair.update()
+        }
     }
 
     bobHead() {

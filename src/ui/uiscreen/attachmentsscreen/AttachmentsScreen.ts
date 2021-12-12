@@ -3,6 +3,7 @@ import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
 import { camera, gameMapMan, gameStateMan, inGameHUD } from '../../../shared/Dependencies'
+import { GameWindow } from '../../../utils/Constants'
 import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIScreen, UIScreen } from '../UIScreen'
@@ -63,12 +64,11 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     applyFilters() {
         const player = ClientPlayer.getInstance()
         const playerFilters = [
-            // new AsciiFilter(),
+            new AsciiFilter(),
             new ColorOverlayFilter(0x5c5c5c)
         ]
 
         gameMapMan.gameMap.filters = [
-            new PixelateFilter(10),
             new AdjustmentFilter({ brightness: 0.8 }),
             new MotionBlurFilter([ 24, 0 ])
         ]

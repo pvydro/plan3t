@@ -22,7 +22,7 @@ export class AttachmentNode extends Container {
 
     createNodeGraphic(): Graphix {
         const graphic = new Graphix()
-        const nodeSize = 2
+        const nodeSize = 1.5
 
         graphic.beginFill(0xffffff)
         graphic.drawRect(0, 0, nodeSize, nodeSize)
