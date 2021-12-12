@@ -7,7 +7,7 @@ import { IGameStateManager, GameStateManager } from '../manager/gamestatemanager
 import { IParticleManager, ParticleManager } from '../manager/particlemanager/ParticleManager'
 import { IMatchMaker, MatchMaker } from '../matchmaker/MatchMaker'
 import { IGameMapManager, GameMapManager } from '../manager/GameMapManager'
-import { Camera, ICamera } from '../camera/Camera'
+import { Camera } from '../camera/Camera'
 import { IEntityManager, EntityManager } from '../manager/entitymanager/EntityManager'
 import { IInGameHUD, InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
@@ -21,7 +21,7 @@ export const musicPlayer: IMusicPlayer = container.resolve(MusicPlayer)
 export const matchMaker: IMatchMaker = container.resolve(MatchMaker)
 
 // Constant containers
-export const camera: ICamera = container.resolve(Camera)
+export const camera: Camera = container.resolve(Camera)
 export const inGameHUD: IInGameHUD = container.resolve(InGameHUD)
 export const loadingScreen: LoadingScreen = container.resolve(LoadingScreen)
 

@@ -58,6 +58,7 @@ export interface ICamera extends IUpdatable, IReposition {
     extraYOffset: number
     halfWidth: number
     halfHeight: number
+    stiffMode: boolean
 }
 
 export class Camera implements ICamera {
@@ -76,6 +77,7 @@ export class Camera implements ICamera {
     _viewport: Viewport
     _x: number = 0
     _y: number = 0
+    stiffMode: boolean = false
     extraXOffset: number = 0
     extraYOffset: number = 0
     baseYOffset: number = 24//-24
@@ -151,7 +153,7 @@ export class Camera implements ICamera {
             this.targetX = this._target.x + this.offset.x + double(this.instantOffset.x)
                 + this.extraXOffset + this.mouseOffset.x
             this.targetY = this._target.y + this.offset.y + double(this.instantOffset.y)
-                + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
+                + this.extraYOffset + this.mouseOffset.y + this.instantOffset.y - ((GameWindow.topMarginHeight / this._zoom) * 1.5)
         }
 
         this.stage.x += this.instantOffset.x + this.transformOffset.x
@@ -175,14 +177,19 @@ export class Camera implements ICamera {
         && (this.target as ClientPlayer).consciousnessState === PlayerConsciousnessState.Dead) {
             return
         }
-        
+
+        let divisor = 1
         const viewportMiddleX = this.width / 2
         const viewportMiddleY = this.height / 2
         const offsetX = (mouseX - viewportMiddleX) / 20
         const offsetY = ((mouseY - viewportMiddleY) / 15) + this.baseYOffset
         
-        this.targetMouseOffset.x = offsetX
-        this.targetMouseOffset.y = offsetY
+        if (this.stiffMode) {
+            divisor = 10
+        }
+
+        this.targetMouseOffset.x = offsetX / divisor
+        this.targetMouseOffset.y = offsetY / divisor
     }
 
     shake(amount: number) {

@@ -1,4 +1,4 @@
-import { AsciiFilter, BloomFilter, ColorOverlayFilter, CrossHatchFilter, MotionBlurFilter } from 'pixi-filters'
+import { AdjustmentFilter, AsciiFilter, BloomFilter, ColorOverlayFilter, CrossHatchFilter, MotionBlurFilter, PixelateFilter } from 'pixi-filters'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
@@ -34,6 +34,8 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
             this.applyFilters()
         }
+        camera.stiffMode = true
+        camera.extraYOffset = 24
 
         await super.show()
     }
@@ -49,6 +51,8 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
             player.holster.currentWeapon.scale.y = 1
         }
         camera.zoomer.revertZoom()
+        camera.stiffMode = false
+        camera.extraYOffset = 0
 
         this.removeKeyListeners()
         this.resetFilters()
@@ -64,6 +68,8 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         ]
 
         gameMapMan.gameMap.filters = [
+            new PixelateFilter(10),
+            new AdjustmentFilter({ brightness: 0.8 }),
             new MotionBlurFilter([ 24, 0 ])
         ]
 

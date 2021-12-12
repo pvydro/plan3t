@@ -78,7 +78,14 @@
         "recoilX": 0.25,
         "recoilY": 1.25,
         "barrelOffsetY": -3,
-        "reloadTime": 0.5
+        "reloadTime": 0.5,
+        "attachments": [
+            {
+                "type": "scope",
+                "x": -1,
+                "y": -2
+            }
+        ]
     },
     "Kortni": {
         "dir": "assault-rifles",
