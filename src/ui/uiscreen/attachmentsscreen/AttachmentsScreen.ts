@@ -70,7 +70,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
         gameMapMan.gameMap.filters = [
             new AdjustmentFilter({ brightness: 0.8 }),
-            new MotionBlurFilter([ 24, 0 ]),
+            new MotionBlurFilter([ 32, 0 ]), // 24
         ]
 
         player.body.filters = playerFilters

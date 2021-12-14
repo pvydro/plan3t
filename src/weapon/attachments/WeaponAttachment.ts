@@ -25,7 +25,7 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
     basePosition: IVector2 = Vector2.Zero
     type: WeaponAttachmentSlot
     attachments: IWeaponAttachments
-    direction: Direction = Direction.Up
+    slotDirection: Direction = Direction.Up
     animator: IAnimator
 
     constructor(choice: WeaponAttachmentChoice, parent: IWeaponAttachments) {
@@ -43,8 +43,8 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
         const sprite = new Sprite({ texture })
         
         this.type = choice.slot
-        this.direction = WeaponHelper.getDirectionForSlot(choice.slot)
-        const anchor = getAnchorForDirection(this.direction)
+        this.slotDirection = WeaponHelper.getDirectionForSlot(choice.slot)
+        const anchor = getAnchorForDirection(this.slotDirection)
         
         sprite.anchor.set(anchor.x, anchor.y)
 
@@ -61,6 +61,7 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
         this.filters = [ Filters.getColorMatrixFilter({ brightness: 1.25 }) ]
 
         this.animator.currentAnimation = Tween.to(this, {
+            x: this.hoverX,
             y: this.hoverY
         })
 
@@ -72,6 +73,7 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
         this.filters = []
 
         this.animator.currentAnimation = Tween.to(this, {
+            x: this.basePosition.x,
             y: this.basePosition.y
         })
         
@@ -81,12 +83,24 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
     get hoverY() {
         let offsetY = 0
 
-        if (this.direction === Direction.Up) {
+        if (this.slotDirection === Direction.Up) {
             offsetY = -1
-        } else if (this.direction === Direction.Down) {
+        } else if (this.slotDirection === Direction.Down) {
             offsetY = 1
         }
 
         return this.basePosition.y + offsetY
+    }
+
+    get hoverX() {
+        let offsetX = 0
+
+        if (this.slotDirection === Direction.Left) {
+            offsetX = -1
+        } else if (this.slotDirection === Direction.Right) {
+            offsetX = 1
+        }
+
+        return this.basePosition.x + offsetX
     }
 }

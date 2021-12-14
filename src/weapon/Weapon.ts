@@ -263,6 +263,10 @@ export class Weapon extends ClientEntity implements IWeapon {
             {
                 name: WeaponAttachmentName.TargetAcquisitioner,
                 slot: WeaponAttachmentSlot.Underbarrel
+            },
+            {
+                name: WeaponAttachmentName.T1kStock,
+                slot: WeaponAttachmentSlot.Stock
             }
         ])
     }
