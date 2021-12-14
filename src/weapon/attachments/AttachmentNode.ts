@@ -5,10 +5,14 @@ import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { Tween } from '../../engine/display/tween/Tween'
 import { Rect } from '../../engine/math/Rect'
-import { camera } from '../../shared/Dependencies'
+import { camera, inGameHUD } from '../../shared/Dependencies'
+import { InGameScreenID } from '../../ui/ingamemenu/InGameMenu'
+import { AttachmentsScreen } from '../../ui/uiscreen/attachmentsscreen/AttachmentsScreen'
 import { DebugConstants } from '../../utils/Constants'
 import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
+import { IWeaponAttachment } from './WeaponAttachment'
+import { WeaponAttachmentName } from './WeaponAttachmentNames'
 import { WeaponAttachmentConfig, WeaponAttachmentSlot } from './WeaponAttachments'
 
 enum AttachmentNodeState {
@@ -18,9 +22,10 @@ enum AttachmentNodeState {
 }
 
 export class AttachmentNode extends Container {
+    _attachment: IWeaponAttachment
     isShown: boolean = false
     baseAlpha: number = 0.4
-    type: WeaponAttachmentSlot
+    slot: WeaponAttachmentSlot
     weapon: IWeapon
     graphic: Graphix
     boundingBox: Graphix
@@ -30,7 +35,7 @@ export class AttachmentNode extends Container {
     constructor(options: WeaponAttachmentConfig, weapon: IWeapon) {
         super()
 
-        this.type = options.type
+        this.slot = options.type
         this.weapon = weapon
 
         if (DebugConstants.ShowAttachmentNodePoints) {
@@ -61,7 +66,6 @@ export class AttachmentNode extends Container {
             this.boundingBox.y = nodeProj.y
         }
 
-        // this.check()
         this.checkMouseInBounds()
 
         switch (this.currentState) {
@@ -99,10 +103,10 @@ export class AttachmentNode extends Container {
 
         this.currentState = AttachmentNodeState.Hovered
         if (this.currentAnimation) this.currentAnimation.kill()
-
-        const existingAttachment = this.weapon.getAttachmentForType(this.type)
-        if (existingAttachment) {
-            existingAttachment.applyHoverEffects()
+        this.attachmentScreen.setSelectedAttachment(this)
+        
+        if (this.attachment) {
+            this.attachment.applyHoverEffects()
         }
     }
 
@@ -111,9 +115,8 @@ export class AttachmentNode extends Container {
 
         this.currentState = AttachmentNodeState.Idle
 
-        const existingAttachment = this.weapon.getAttachmentForType(this.type)
-        if (existingAttachment) {
-            existingAttachment.revertHoverEffects()
+        if (this.attachment) {
+            this.attachment.revertHoverEffects()
         }
     }
 
@@ -173,5 +176,17 @@ export class AttachmentNode extends Container {
     destroy() {
         this.graphic.destroy()
         super.destroy()
+    }
+
+    get attachment() {
+        if (!this._attachment) {
+            this._attachment = this.weapon.getAttachmentForType(this.slot)
+        }
+
+        return this._attachment || undefined
+    }
+
+    get attachmentScreen() {
+        return inGameHUD.menus.getScreenForID(InGameScreenID.Attachments) as AttachmentsScreen
     }
 }

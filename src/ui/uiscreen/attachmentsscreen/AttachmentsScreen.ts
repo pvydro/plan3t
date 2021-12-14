@@ -1,18 +1,26 @@
 import { AdjustmentFilter, AsciiFilter, BloomFilter, ColorOverlayFilter, CrossHatchFilter, GlitchFilter, MotionBlurFilter, PixelateFilter } from 'pixi-filters'
+import { Fonts } from '../../../asset/Fonts'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
+import { TextSprite } from '../../../engine/display/TextSprite'
+import { TextStyles } from '../../../engine/display/TextStyles'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
+import { log } from '../../../service/Flogger'
 import { camera, gameMapMan, gameStateMan, inGameHUD } from '../../../shared/Dependencies'
-import { GameWindow } from '../../../utils/Constants'
+import { UIDefaults } from '../../../utils/Defaults'
+import { AttachmentNode } from '../../../weapon/attachments/AttachmentNode'
 import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIScreen, UIScreen } from '../UIScreen'
 
 export interface IAttachmentsScreen extends IUIScreen {
-
+    setSelectedAttachment(attachmentNode: AttachmentNode): void
 }
 
 export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
+    selectedAttachment?: AttachmentNode
+    selectedAttachmentText: TextSprite
+
     constructor() {
         super({
             filters: [],
@@ -20,6 +28,10 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
                 text: 'Attachments'
             }
         })
+
+        this.selectedAttachmentText = new TextSprite({ text: 'Test', style: { fontFamily: Fonts.FontDefault.fontFamily }, uppercase: true })
+        this.addChild(this.selectedAttachmentText)
+        this.reposition(true)
     }
 
     async show() {
@@ -87,6 +99,10 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         player.playerBadge.filters = []
     }
 
+    setSelectedAttachment(attachmentNode: AttachmentNode) {
+        log('AttachmentsScreen', 'setSelectedAttachment', attachmentNode.slot)
+    }
+
     exit() {
         inGameHUD.closeMenuScreen(InGameScreenID.Attachments)
     }
@@ -97,6 +113,15 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
     removeKeyListeners() {
         InputProcessor.off(InputEvents.KeyDown, this.handleKeyPress.bind(this))
+    }
+
+    reposition(addListeners: boolean) {
+        super.reposition(addListeners)
+
+        const margin = UIDefaults.UIMargin
+
+        this.selectedAttachmentText.x = this.screenHeader.x
+        this.selectedAttachmentText.y = this.screenHeader.y + this.screenHeader.height + margin
     }
 
     handleKeyPress(ev: KeyboardEvent) {

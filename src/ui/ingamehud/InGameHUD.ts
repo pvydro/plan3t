@@ -21,6 +21,7 @@ import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 export interface IInGameHUD extends IUpdatable, IReposition {
     waveRunnerCounter?: WaveRunnerCounter
     crosshair: Crosshair
+    menus: InGameMenu
     initializeHUD(): Promise<void>
     showHUDComponents(shouldShow?: boolean): Promise<void>
     addComponent(type: UIComponentType): UIComponent
