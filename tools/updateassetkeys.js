@@ -53,8 +53,49 @@ function fetchDecorationKeys() {
             }
         })
     })
+}
 
+function fetchAttachmentKeys() {
+    console.log('Fetching attachment keys')
+
+    const attachmentsDir = 'assets/image/weapons/attachments'
+
+    getDirectories(attachmentsDir, (allAttachments) => {
+        console.log('Collected attachment directories')
+        console.log(allAttachments)
+
+        const attachmentPaths = []
+
+        allAttachments.forEach((dir) => {
+            const attachmentDir = path.join(dir, '/')
+
+            if (attachmentDir) {
+                console.log(`Iterated Attachment directory: ${dir}`)
+                fs.readdir(attachmentDir, (error, files) => {
+
+                    if (error) {
+                        console.log(`No attachments for ${dir}`)
+                    } else if (files) {
+                        for (var i in files) {
+                            
+                            const fileName = files[i]
+
+                            if (fileName.includes('.png')) {
+                                const filePath = `${attachmentDir}${fileName}`.replace('.png', '')
+        
+                                console.log(`Iterated file: ${filePath}`)
+                    
+                                attachmentPaths.push(filePath)
+                            }
+                        }
+                    }
+                    
+                    fs.writeFileSync('src/json/AttachmentKeys.json', JSON.stringify(attachmentPaths))
+                })
+            }
+        })
+    })
 }
 
 fetchDecorationKeys()
-
+fetchAttachmentKeys()

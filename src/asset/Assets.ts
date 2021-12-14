@@ -20,6 +20,7 @@ export class Assets {
         Flogger.log('Assets', 'loadImages')
 
         await Assets.loadAllDecorImages()
+        await Assets.loadAllAttachmentImages()
         await Assets.loadAllTileImages()
         
         return new Promise((resolve, reject) => {
@@ -60,6 +61,18 @@ export class Assets {
 
         return new Promise((resolve) => {
             const decorKeys: string[] = require('../json/BiomeDecorations.json')
+
+            PIXI.Loader.shared.add(decorKeys).load(() => {
+                resolve(true)
+            })
+        })
+    }
+
+    private static async loadAllAttachmentImages() {
+        log('AssetLoader', 'loadAllDecorImages')
+
+        return new Promise((resolve) => {
+            const decorKeys: string[] = require('../json/AttachmentKeys.json')
 
             PIXI.Loader.shared.add(decorKeys).load(() => {
                 resolve(true)
