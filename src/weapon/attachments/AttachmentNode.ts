@@ -9,7 +9,7 @@ import { camera } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
 import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
-import { WeaponAttachmentConfig, WeaponAttachmentType } from './WeaponAttachments'
+import { WeaponAttachmentConfig, WeaponAttachmentSlot } from './WeaponAttachments'
 
 enum AttachmentNodeState {
     Idle,
@@ -20,7 +20,7 @@ enum AttachmentNodeState {
 export class AttachmentNode extends Container {
     isShown: boolean = false
     baseAlpha: number = 0.4
-    type: WeaponAttachmentType
+    type: WeaponAttachmentSlot
     weapon: IWeapon
     graphic: Graphix
     boundingBox: Graphix

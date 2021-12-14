@@ -7,22 +7,22 @@ import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { Filters } from '../../utils/Filters'
 import { WeaponHelper } from '../WeaponHelper'
 import { WeaponAttachmentName } from './WeaponAttachmentNames'
-import { IWeaponAttachments, WeaponAttachmentType } from './WeaponAttachments'
+import { IWeaponAttachments, WeaponAttachmentSlot } from './WeaponAttachments'
 
 export interface WeaponAttachmentChoice {
-    type: WeaponAttachmentType
+    slot: WeaponAttachmentSlot
     name: WeaponAttachmentName
 }
 
 export interface IWeaponAttachment extends IContainer {
-    type: WeaponAttachmentType
+    type: WeaponAttachmentSlot
     applyHoverEffects(): void
     revertHoverEffects(): void
 }
 
 export class WeaponAttachment extends Container implements IWeaponAttachment {
     basePosition: IVector2 = Vector2.Zero
-    type: WeaponAttachmentType
+    type: WeaponAttachmentSlot
     attachments: IWeaponAttachments
     animator: IAnimator
 
@@ -35,13 +35,13 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
     }
 
     private applyChoice(choice: WeaponAttachmentChoice) {
-        const config = this.attachments.getConfigForType(choice.type)
+        const config = this.attachments.getConfigForType(choice.slot)
         const asset = WeaponHelper.getWeaponAttachmentAsset(choice)
         const texture = PIXI.Texture.from(asset)
         const sprite = new Sprite({ texture })
         sprite.anchor.set(0, 1)
 
-        this.type = choice.type
+        this.type = choice.slot
 
         this.basePosition = {
             x: this.x = config.x,

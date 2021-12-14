@@ -4,7 +4,7 @@ import { Assets } from '../asset/Assets'
 import { Flogger } from '../service/Flogger'
 import { WeaponStats } from './Weapon'
 import { WeaponAttachmentChoice } from './attachments/WeaponAttachment'
-import { WeaponAttachmentType } from './attachments/WeaponAttachments'
+import { WeaponAttachmentSlot } from './attachments/WeaponAttachments'
 const weaponStats = require('../json/WeaponStats.json')
 
 export class WeaponHelper {
@@ -46,13 +46,13 @@ export class WeaponHelper {
         return data as WeaponStats
     }
 
-    static getAttachmentTypeUrl(type: WeaponAttachmentType) {
+    static getAttachmentTypeUrl(type: WeaponAttachmentSlot) {
         const url = `${ Assets.BaseImageDir }/weapons/attachments/${ type.toLowerCase() }/`
         return url
     }
 
     static getWeaponAttachmentAsset(choice: WeaponAttachmentChoice) {
-        const assetUrl = `${ this.getAttachmentTypeUrl(choice.type) }${ choice.name.toLowerCase() }`
+        const assetUrl = `${ this.getAttachmentTypeUrl(choice.slot) }${ choice.name.toLowerCase() }`
         const asset = Assets.get(assetUrl)
         return asset
     }

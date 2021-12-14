@@ -9,7 +9,7 @@ import { IVector2 } from '../engine/math/Vector2'
 import { Flogger, log } from '../service/Flogger'
 import { Crosshair, CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
-import { WeaponAttachmentConfig, WeaponAttachments, WeaponAttachmentType } from './attachments/WeaponAttachments'
+import { WeaponAttachmentConfig, WeaponAttachments, WeaponAttachmentSlot } from './attachments/WeaponAttachments'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
@@ -24,7 +24,7 @@ export interface IWeapon extends WeaponStats, IClientEntity {
     playerHolster?: PlayerWeaponHolster
     configureByName(name: WeaponName): void
     setWeaponState(state: WeaponState): void
-    getAttachmentForType(type: WeaponAttachmentType): WeaponAttachment
+    getAttachmentForType(type: WeaponAttachmentSlot): WeaponAttachment
     requestReload(): Promise<void>
     reset(): void
 }
@@ -254,11 +254,11 @@ export class Weapon extends ClientEntity implements IWeapon {
         this.attacher.applyAttachments([
             {
                 name: WeaponAttachmentName.RedDot,
-                type: WeaponAttachmentType.Scope
+                slot: WeaponAttachmentSlot.Scope
             },
             {
                 name: WeaponAttachmentName.MilitaryLaser,
-                type: WeaponAttachmentType.SubSight
+                slot: WeaponAttachmentSlot.SubSight
             }
         ])
     }
@@ -328,7 +328,7 @@ export class Weapon extends ClientEntity implements IWeapon {
         this.unloadedSprite.alpha = 1
     }
 
-    getAttachmentForType(type: WeaponAttachmentType) {
+    getAttachmentForType(type: WeaponAttachmentSlot) {
         return this.attacher.getAttachmentForType(type)
     }
 

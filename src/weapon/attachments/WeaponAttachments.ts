@@ -6,12 +6,12 @@ import { IWeaponConfigurator, WeaponConfigurator } from '../WeaponConfigurator'
 import { WeaponAttachment, WeaponAttachmentChoice } from './WeaponAttachment'
 
 export interface WeaponAttachmentConfig {
-    type: WeaponAttachmentType
+    type: WeaponAttachmentSlot
     x: number
     y: number
 }
 
-export enum WeaponAttachmentType {
+export enum WeaponAttachmentSlot {
     Scope = 'scope',
     SubSight = 'subsight',
     Underbarrel = 'underbarrel',
@@ -24,7 +24,7 @@ export interface IWeaponAttachments extends IContainer, IUpdatable {
     attachmentConfigs: WeaponAttachmentConfig[]
     applyAttachments(choices: WeaponAttachmentChoice[]): void
     configure(stats: WeaponStats): void
-    getConfigForType(type: WeaponAttachmentType): WeaponAttachmentConfig
+    getConfigForType(type: WeaponAttachmentSlot): WeaponAttachmentConfig
 }
 
 export class WeaponAttachments extends Container implements IWeaponAttachments {
@@ -60,7 +60,7 @@ export class WeaponAttachments extends Container implements IWeaponAttachments {
         this.attachments = []
 
         choices.forEach((choice: WeaponAttachmentChoice) => {
-            const config = this.getConfigForType(choice.type)
+            const config = this.getConfigForType(choice.slot)
             console.log('config choice', choice.name)
             if (config) {
                 const attachment = new WeaponAttachment(choice, this)
@@ -80,11 +80,11 @@ export class WeaponAttachments extends Container implements IWeaponAttachments {
         }
     }
 
-    getConfigForType(type: WeaponAttachmentType) {
+    getConfigForType(type: WeaponAttachmentSlot) {
         return this.attachmentConfigs.find(config => config.type === type)
     }
 
-    getAttachmentForType(type: WeaponAttachmentType) {
+    getAttachmentForType(type: WeaponAttachmentSlot) {
         return this.attachments.find(attachment => attachment.type === type)
     }
 }
