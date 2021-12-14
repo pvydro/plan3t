@@ -9,10 +9,11 @@ import { IVector2 } from '../engine/math/Vector2'
 import { Flogger, log } from '../service/Flogger'
 import { Crosshair, CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
-import { WeaponAttachmentConfig, WeaponAttachments } from './attachments/WeaponAttachments'
+import { WeaponAttachmentConfig, WeaponAttachments, WeaponAttachmentType } from './attachments/WeaponAttachments'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
+import { WeaponAttachmentName } from './attachments/WeaponAttachmentNames'
 
 export interface IWeapon extends WeaponStats, IClientEntity {
     triggerDown: boolean
@@ -247,6 +248,13 @@ export class Weapon extends ClientEntity implements IWeapon {
         this.addChild(this.unloadedSprite)
         this.addChild(this.attacher)
         this.configureStats(stats)
+
+        this.attacher.applyAttachments([
+            {
+                name: WeaponAttachmentName.RedDot,
+                type: WeaponAttachmentType.Scope
+            },
+        ])
     }
 
     reset() {

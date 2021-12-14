@@ -19,6 +19,8 @@ export interface IContainer extends IDemolishable {
     height: number
     pos: IVector2 | number
     clearChildren(): void
+    addChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0]
+    removeChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0]
 }
 
 export class Container extends PIXI.Container implements IContainer {

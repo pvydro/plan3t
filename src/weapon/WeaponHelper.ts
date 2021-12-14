@@ -3,6 +3,8 @@ import { WeaponName } from './WeaponName'
 import { Assets } from '../asset/Assets'
 import { Flogger } from '../service/Flogger'
 import { WeaponStats } from './Weapon'
+import { WeaponAttachmentChoice } from './attachments/WeaponAttachment'
+import { WeaponAttachmentType } from './attachments/WeaponAttachments'
 const weaponStats = require('../json/WeaponStats.json')
 
 export class WeaponHelper {
@@ -10,7 +12,7 @@ export class WeaponHelper {
 
     }
 
-    public static getWeaponTextureByName(name: WeaponName, suffix?: string) {
+    static getWeaponTextureByName(name: WeaponName, suffix?: string) {
         Flogger.log('WeaponHelper', 'getWeaponTextureByName', name)
 
         const details: any = WeaponHelper.getWeaponDetailsByName(name)
@@ -22,7 +24,7 @@ export class WeaponHelper {
         return texture
     }
 
-    public static getWeaponUnloadedTextureByName(name: WeaponName) {
+    static getWeaponUnloadedTextureByName(name: WeaponName) {
         Flogger.log('WeaponHelper', 'getWeaponUnloadedTextureByName', name)
 
         const texture = WeaponHelper.getWeaponTextureByName(name, '_un')
@@ -30,7 +32,7 @@ export class WeaponHelper {
         return texture
     }
 
-    public static getWeaponDetailsByName(name: WeaponName): any {
+    static getWeaponDetailsByName(name: WeaponName): any {
         Flogger.log('WeaponHelper', 'getWeaponDetailsByName', name)
 
         const data = weaponStats[name]
@@ -38,9 +40,20 @@ export class WeaponHelper {
         return data
     }
 
-    public static getWeaponStatsByName(name: WeaponName): WeaponStats {
+    static getWeaponStatsByName(name: WeaponName): WeaponStats {
         const data = WeaponHelper.getWeaponDetailsByName(name)
         
         return data as WeaponStats
+    }
+
+    static getAttachmentTypeUrl(type: WeaponAttachmentType) {
+        const url = `${ Assets.BaseImageDir }/weapons/attachments/${ type.toLowerCase() }/`
+        return url
+    }
+
+    static getWeaponAttachmentAsset(choice: WeaponAttachmentChoice) {
+        const assetUrl = `${ this.getAttachmentTypeUrl(choice.type) }${ choice.name.toLowerCase() }`
+        const asset = Assets.get(assetUrl)
+        return asset
     }
 }
