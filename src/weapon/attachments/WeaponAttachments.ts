@@ -82,4 +82,8 @@ export class WeaponAttachments extends Container implements IWeaponAttachments {
     getConfigForType(type: WeaponAttachmentType) {
         return this.attachmentConfigs.find(config => config.type === type)
     }
+
+    getAttachmentForType(type: WeaponAttachmentType) {
+        return this.attachments.find(attachment => attachment.type === type)
+    }
 }

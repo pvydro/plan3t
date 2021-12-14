@@ -14,6 +14,7 @@ import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
 import { WeaponAttachmentName } from './attachments/WeaponAttachmentNames'
+import { WeaponAttachment } from './attachments/WeaponAttachment'
 
 export interface IWeapon extends WeaponStats, IClientEntity {
     triggerDown: boolean
@@ -22,7 +23,8 @@ export interface IWeapon extends WeaponStats, IClientEntity {
     stats: WeaponStats
     playerHolster?: PlayerWeaponHolster
     configureByName(name: WeaponName): void
-    setWeaponState(state: WeaponState)
+    setWeaponState(state: WeaponState): void
+    getAttachmentForType(type: WeaponAttachmentType): WeaponAttachment
     requestReload(): Promise<void>
     reset(): void
 }
@@ -320,6 +322,10 @@ export class Weapon extends ClientEntity implements IWeapon {
     showUnloadedSprite() {
         this.sprite.alpha = 0
         this.unloadedSprite.alpha = 1
+    }
+
+    getAttachmentForType(type: WeaponAttachmentType) {
+        return this.attacher.getAttachmentForType(type)
     }
 
     get sprites() {

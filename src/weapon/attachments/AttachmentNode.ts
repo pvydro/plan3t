@@ -1,3 +1,4 @@
+import { OutlineFilter } from 'pixi-filters'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
@@ -10,6 +11,12 @@ import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
 import { WeaponAttachmentConfig, WeaponAttachmentType } from './WeaponAttachments'
 
+enum AttachmentNodeState {
+    Idle,
+    Hovered,
+    Selected
+}
+
 export class AttachmentNode extends Container {
     isShown: boolean = false
     baseAlpha: number = 0.4
@@ -17,6 +24,7 @@ export class AttachmentNode extends Container {
     weapon: IWeapon
     graphic: Graphix
     boundingBox: Graphix
+    currentState: AttachmentNodeState = AttachmentNodeState.Idle
     currentAnimation?: TweenLite
 
     constructor(options: WeaponAttachmentConfig, weapon: IWeapon) {
@@ -55,6 +63,17 @@ export class AttachmentNode extends Container {
 
         // this.check()
         this.checkMouseInBounds()
+
+        switch (this.currentState) {
+            case AttachmentNodeState.Idle:
+                this.boundingBox.alpha = lerp(this.boundingBox.alpha, this.baseAlpha, 0.1)
+                break
+            case AttachmentNodeState.Hovered:
+                this.boundingBox.alpha = lerp(this.boundingBox.alpha, 1, 0.1)
+                break
+            case AttachmentNodeState.Selected:
+                break
+        }
     }
 
     async show() {
@@ -76,15 +95,26 @@ export class AttachmentNode extends Container {
     }
 
     hovered() {
-        if (!this.isShown) return
+        if (!this.isShown || this.currentState === AttachmentNodeState.Hovered) return
+
+        this.currentState = AttachmentNodeState.Hovered
         if (this.currentAnimation) this.currentAnimation.kill()
 
-        this.boundingBox.alpha = lerp(this.boundingBox.alpha, 1, 0.1)
-
+        const existingAttachment = this.weapon.getAttachmentForType(this.type)
+        if (existingAttachment) {
+            existingAttachment.applyHoverEffects()
+        }
     }
 
     unhovered() {
-        this.boundingBox.alpha = lerp(this.boundingBox.alpha, this.baseAlpha, 0.1)
+        if (!this.isShown || this.currentState === AttachmentNodeState.Idle) return
+
+        this.currentState = AttachmentNodeState.Idle
+
+        const existingAttachment = this.weapon.getAttachmentForType(this.type)
+        if (existingAttachment) {
+            existingAttachment.revertHoverEffects()
+        }
     }
 
     checkMouseInBounds() {
