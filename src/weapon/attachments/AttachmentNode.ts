@@ -142,11 +142,14 @@ export class AttachmentNode extends Container {
     }
 
     getClickHitBox() {
-        const clickboxPaddingMultiplier = 2
+        const clickboxPaddingMultiplier = 3
         const rect: Rect = this.boundingBox.getBoundingBox()
 
         rect.width *= clickboxPaddingMultiplier
         rect.height *= clickboxPaddingMultiplier
+
+        rect.x -= rect.width / clickboxPaddingMultiplier
+        rect.y -= rect.height / clickboxPaddingMultiplier
 
         return rect
     }
