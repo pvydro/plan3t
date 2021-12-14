@@ -256,6 +256,10 @@ export class Weapon extends ClientEntity implements IWeapon {
                 name: WeaponAttachmentName.RedDot,
                 type: WeaponAttachmentType.Scope
             },
+            {
+                name: WeaponAttachmentName.MilitaryLaser,
+                type: WeaponAttachmentType.SubSight
+            }
         ])
     }
 

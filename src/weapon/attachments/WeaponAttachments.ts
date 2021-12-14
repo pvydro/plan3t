@@ -20,6 +20,7 @@ export enum WeaponAttachmentType {
 }
 
 export interface IWeaponAttachments extends IContainer, IUpdatable {
+    weapon: IWeapon
     attachmentConfigs: WeaponAttachmentConfig[]
     applyAttachments(choices: WeaponAttachmentChoice[]): void
     configure(stats: WeaponStats): void

@@ -18,6 +18,7 @@ export interface IContainer extends IDemolishable {
     width: number
     height: number
     pos: IVector2 | number
+    filters: any[]
     clearChildren(): void
     addChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0]
     removeChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0]

@@ -9,6 +9,7 @@ export interface ISprite extends IDemolishable, IRect {
     overlayGraphic?: Graphix
     tint: number
     alpha: number
+    filters: PIXI.Filter[]
     flipX(): void
     flipY(): void
 }
