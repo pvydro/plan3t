@@ -11,15 +11,17 @@ import { UIDefaults } from '../../../utils/Defaults'
 import { AttachmentNode } from '../../../weapon/attachments/AttachmentNode'
 import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
+import { UIText } from '../../UIText'
 import { IUIScreen, UIScreen } from '../UIScreen'
 
 export interface IAttachmentsScreen extends IUIScreen {
     setSelectedAttachment(attachmentNode: AttachmentNode): void
+    resetSelectedAttachment(): void
 }
 
 export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     selectedAttachment?: AttachmentNode
-    selectedAttachmentText: TextSprite
+    selectedAttachmentText: UIText
 
     constructor() {
         super({
@@ -28,8 +30,13 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
                 text: 'Attachments'
             }
         })
-
-        this.selectedAttachmentText = new TextSprite({ text: 'Test', style: { fontFamily: Fonts.FontDefault.fontFamily }, uppercase: true })
+        this.selectedAttachmentText = new UIText({
+            text: 'te',
+            uppercase: true,
+            style: {
+                fontFamily: Fonts.FontDefault.fontFamily
+            }
+        })
         this.addChild(this.selectedAttachmentText)
         this.reposition(true)
     }
@@ -100,7 +107,22 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     }
 
     setSelectedAttachment(attachmentNode: AttachmentNode) {
-        log('AttachmentsScreen', 'setSelectedAttachment', attachmentNode.slot)
+        log('AttachmentsScreen', 'setSelectedAttachment', attachmentNode.slot, attachmentNode.attachment.name)
+
+        this.selectedAttachmentText = new UIText({
+            text: 'fuck you mother fucker',
+            uppercase: true,
+            style: {
+                fontFamily: Fonts.FontDefault.fontFamily
+            }
+        })
+            //attachmentNode.slot
+        // this.screenHeader.text = 'what the fuck'//attachmentNode.slot
+        // .setText(attachmentNode.slot)
+    }
+
+    resetSelectedAttachment() {
+        this.selectedAttachmentText.setText('')
     }
 
     exit() {

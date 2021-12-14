@@ -24,7 +24,7 @@ export interface IWeapon extends WeaponStats, IClientEntity {
     playerHolster?: PlayerWeaponHolster
     configureByName(name: WeaponName): void
     setWeaponState(state: WeaponState): void
-    getAttachmentForType(type: WeaponAttachmentSlot): WeaponAttachment
+    getAttachmentForSlot(slot: WeaponAttachmentSlot): WeaponAttachment
     requestReload(): Promise<void>
     reset(): void
 }
@@ -336,7 +336,7 @@ export class Weapon extends ClientEntity implements IWeapon {
         this.unloadedSprite.alpha = 1
     }
 
-    getAttachmentForType(type: WeaponAttachmentSlot) {
+    getAttachmentForSlot(type: WeaponAttachmentSlot) {
         return this.attacher.getAttachmentForType(type)
     }
 

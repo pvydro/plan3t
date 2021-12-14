@@ -11,7 +11,7 @@ import { AttachmentsScreen } from '../../ui/uiscreen/attachmentsscreen/Attachmen
 import { DebugConstants } from '../../utils/Constants'
 import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
-import { IWeaponAttachment } from './WeaponAttachment'
+import { IWeaponAttachment, WeaponAttachment } from './WeaponAttachment'
 import { WeaponAttachmentName } from './WeaponAttachmentNames'
 import { WeaponAttachmentConfig, WeaponAttachmentSlot } from './WeaponAttachments'
 
@@ -22,7 +22,7 @@ enum AttachmentNodeState {
 }
 
 export class AttachmentNode extends Container {
-    _attachment: IWeaponAttachment
+    _attachment?: IWeaponAttachment
     isShown: boolean = false
     baseAlpha: number = 0.4
     slot: WeaponAttachmentSlot
@@ -180,7 +180,7 @@ export class AttachmentNode extends Container {
 
     get attachment() {
         if (!this._attachment) {
-            this._attachment = this.weapon.getAttachmentForType(this.slot)
+            this._attachment = this.weapon.getAttachmentForSlot(this.slot)
         }
 
         return this._attachment || undefined

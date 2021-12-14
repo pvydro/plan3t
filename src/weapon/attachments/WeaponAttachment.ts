@@ -42,6 +42,7 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
         const texture = PIXI.Texture.from(asset)
         const sprite = new Sprite({ texture })
         
+        this.name = choice.name
         this.type = choice.slot
         this.slotDirection = WeaponHelper.getDirectionForSlot(choice.slot)
         const anchor = getAnchorForDirection(this.slotDirection)

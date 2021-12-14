@@ -19,7 +19,7 @@ export interface TextSpriteOptions {
     uppercase?: boolean
     style?: TextSpriteStyle
     anchor?: IVector2 | number
-    text: string
+    text?: string
     align?: TextSpriteAlign | string
 }
 
@@ -40,7 +40,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
 
     constructor(options: TextSpriteOptions) {
         const uppercase = (options.uppercase ?? options.style.uppercase) ?? false
-        const text = uppercase ? options.text.toUpperCase() : options.text
+        const text = options.text ? (uppercase ? options.text.toUpperCase() : options.text) : ''
         const fontFamily = (options.style && options.style.fontFamily) ?? TextDefaults.fontFamily
         const fontSize = (options.style && options.style.fontSize) ?? scaleFontSize(TextDefaults.fontSize)
         const fill = (options.style && options.style.color) ?? TextDefaults.color
@@ -66,9 +66,9 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     }
 
     setText(newText: string) {
-        const text = this.uppercase ? newText.toUpperCase() : newText
+        const text = this.uppercase ? newText?.toUpperCase() : newText
         
-        this.text = text
+        this.text = text || ''
     }
     
     get textWidth() {
