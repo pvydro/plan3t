@@ -1,17 +1,12 @@
-import * as PIXI from 'pixi.js'
 import { Container, IContainer } from '../../engine/display/Container'
 import { Tween } from '../../engine/display/tween/Tween'
 import { IShowHide } from '../../interface/IShowHide'
-import { camera } from '../../shared/Dependencies'
 import { IWeapon, WeaponState } from '../Weapon'
-import { AttachmentNode, AttachmentNodeConfig } from './AttachmentNode'
+import { AttachmentNode } from './AttachmentNode'
+import { WeaponAttachmentConfig } from './WeaponAttachments'
 
 export interface IAttachmentNodes extends IContainer, IShowHide {
-    configureNodes(attachments: AttachmentNodeConfig[]): void
-}
-
-export enum AttachmentNodeType {
-    Scope = 'scope'
+    configureNodes(attachments: WeaponAttachmentConfig[]): void
 }
 
 export class AttachmentsNodes extends Container implements IAttachmentNodes {
@@ -54,11 +49,11 @@ export class AttachmentsNodes extends Container implements IAttachmentNodes {
         await Tween.to(this, { alpha: 0, duration: 2, autoplay: true })
     }
 
-    configureNodes(attachments: AttachmentNodeConfig[]) {
+    configureNodes(attachments: WeaponAttachmentConfig[]) {
         this.clearChildren()
         this.destroyNodes()
 
-        attachments.forEach((attachment: AttachmentNodeConfig) => {
+        attachments.forEach((attachment: WeaponAttachmentConfig) => {
             const node = new AttachmentNode(attachment, this.weapon)
             node.x = attachment.x
             node.y = attachment.y

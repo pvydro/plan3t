@@ -1,4 +1,3 @@
-import { OutlineFilter } from 'pixi-filters'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
@@ -9,24 +8,18 @@ import { camera } from '../../shared/Dependencies'
 import { DebugConstants } from '../../utils/Constants'
 import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
-import { AttachmentNodeType } from './AttachmentNodes'
-
-export interface AttachmentNodeConfig {
-    type: AttachmentNodeType
-    x: number
-    y: number
-}
+import { WeaponAttachmentConfig, WeaponAttachmentType } from './WeaponAttachments'
 
 export class AttachmentNode extends Container {
     isShown: boolean = false
     baseAlpha: number = 0.4
-    type: AttachmentNodeType
+    type: WeaponAttachmentType
     weapon: IWeapon
     graphic: Graphix
     boundingBox: Graphix
     currentAnimation?: TweenLite
 
-    constructor(options: AttachmentNodeConfig, weapon: IWeapon) {
+    constructor(options: WeaponAttachmentConfig, weapon: IWeapon) {
         super()
 
         this.type = options.type

@@ -9,11 +9,10 @@ import { IVector2 } from '../engine/math/Vector2'
 import { Flogger, log } from '../service/Flogger'
 import { Crosshair, CrosshairState } from '../ui/ingamehud/crosshair/Crosshair'
 import { IWeaponAmmunition, WeaponAmmunition, WeaponAmmunitionOptions } from './WeaponAmmunition'
-import { WeaponAttachments } from './attachments/WeaponAttachments'
+import { WeaponAttachmentConfig, WeaponAttachments } from './attachments/WeaponAttachments'
 import { IWeaponEffects, WeaponEffects } from './WeaponEffects'
 import { WeaponHelper } from './WeaponHelper'
 import { WeaponName } from './WeaponName'
-import { AttachmentNodeConfig } from './attachments/AttachmentNode'
 
 export interface IWeapon extends WeaponStats, IClientEntity {
     triggerDown: boolean
@@ -43,7 +42,7 @@ export interface WeaponStats {
     recoilX: number
     recoilY: number
     reloadTime: number
-    attachments: AttachmentNodeConfig[]
+    attachments: WeaponAttachmentConfig[]
 }
 
 export interface WeaponOptions {
