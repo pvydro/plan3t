@@ -171,27 +171,6 @@ export class Weapon extends ClientEntity implements IWeapon {
         Sounds.play(SoundUrls.GunshotA, { volume: 0.125 })
     }
 
-    // fireBullet() {
-    //     Flogger.log('Weapon', 'fireBullet')
-
-    //     if (this.state !== WeaponState.Loaded) return
-        
-    //     const playerHand = this.playerHolster ? this.playerHolster.player.hand : undefined
-
-    //     if (this.sprite !== undefined
-    //     && playerHand !== undefined) {
-    //         const direction = playerHand.player.direction
-    //         const entityManager = playerHand.player.entityManager
-    //         const bulletX = this._currentRotatedBarrelPoint.x
-    //         const bulletY = this._currentRotatedBarrelPoint.y
-
-    //         if (entityManager !== undefined) {
-    //             // entityManager.createProjectile(ProjectileType.Bullet,
-    //             //     bulletX, bulletY, playerHand.rotation, this.bulletVelocity * direction)
-    //         }
-    //     }
-    // }
-
     requestReload() {
         Flogger.log('Weapon', 'requestReload')
 

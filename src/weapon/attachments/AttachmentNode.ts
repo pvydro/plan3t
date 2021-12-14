@@ -1,3 +1,4 @@
+import { OutlineFilter } from 'pixi-filters'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
@@ -99,7 +100,6 @@ export class AttachmentNode extends Container {
 
         if (mouseInBounds) {
             this.hovered()
-            console.log('inbound')
         } else {
             this.unhovered()
         }
@@ -113,6 +113,7 @@ export class AttachmentNode extends Container {
         this.boundingBox.drawRect(0, 0, nodeSize, nodeSize)
         this.boundingBox.endFill()
         this.boundingBox.alpha = 0
+        // this.boundingBox.filters = [ new OutlineFilter(10, 0xffffff) ]
 
         camera.stage.addChild(this.boundingBox)
     }
