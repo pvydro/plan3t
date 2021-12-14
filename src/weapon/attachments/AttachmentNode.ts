@@ -119,7 +119,7 @@ export class AttachmentNode extends Container {
 
     checkMouseInBounds() {
         const mouseX = Camera.Mouse.x
-        const mouseInBounds = Rect.contains(this.boundingBox.getBoundingBox(), Camera.Mouse)
+        const mouseInBounds = Rect.contains(this.getClickHitBox(), Camera.Mouse)
 
         if (mouseInBounds) {
             this.hovered()
@@ -139,6 +139,16 @@ export class AttachmentNode extends Container {
         // this.boundingBox.filters = [ new OutlineFilter(10, 0xffffff) ]
 
         camera.stage.addChild(this.boundingBox)
+    }
+
+    getClickHitBox() {
+        const clickboxPaddingMultiplier = 2
+        const rect: Rect = this.boundingBox.getBoundingBox()
+
+        rect.width *= clickboxPaddingMultiplier
+        rect.height *= clickboxPaddingMultiplier
+
+        return rect
     }
 
     createNodeGraphic(): Graphix {
