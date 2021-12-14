@@ -5,9 +5,18 @@ import { Flogger } from '../service/Flogger'
 import { WeaponStats } from './Weapon'
 import { WeaponAttachmentChoice } from './attachments/WeaponAttachment'
 import { WeaponAttachmentSlot } from './attachments/WeaponAttachments'
+import { FourWayDirection as Direction } from '../engine/math/Direction'
 const weaponStats = require('../json/WeaponStats.json')
 
 export class WeaponHelper {
+    private static SlotDirectionMap: Map<WeaponAttachmentSlot, Direction> = new Map([
+        [WeaponAttachmentSlot.Scope, Direction.Up],
+        [WeaponAttachmentSlot.SubSight, Direction.Up],
+        [WeaponAttachmentSlot.Underbarrel, Direction.Down],
+        [WeaponAttachmentSlot.Grip, Direction.Down],
+        [WeaponAttachmentSlot.Stock, Direction.Left]
+    ])
+    
     private constructor() {
 
     }
@@ -55,5 +64,11 @@ export class WeaponHelper {
         const assetUrl = `${ this.getAttachmentTypeUrl(choice.slot) }${ choice.name.toLowerCase() }`
         const asset = Assets.get(assetUrl)
         return asset
+    }
+
+    static getDirectionForSlot(slot: WeaponAttachmentSlot) {
+        const direction = WeaponHelper.SlotDirectionMap.get(slot)
+
+        return direction
     }
 }

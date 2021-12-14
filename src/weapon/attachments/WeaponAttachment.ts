@@ -1,10 +1,11 @@
-import { AsciiFilter, MotionBlurFilter, PixelateFilter } from 'pixi-filters'
 import { Animator, IAnimator } from '../../engine/display/Animator'
 import { Container, IContainer } from '../../engine/display/Container'
 import { Sprite } from '../../engine/display/Sprite'
 import { Tween } from '../../engine/display/tween/Tween'
+import { FourWayDirection as Direction } from '../../engine/math/Direction'
 import { IVector2, Vector2 } from '../../engine/math/Vector2'
 import { Filters } from '../../utils/Filters'
+import { getAnchorForDirection } from '../../utils/Math'
 import { WeaponHelper } from '../WeaponHelper'
 import { WeaponAttachmentName } from './WeaponAttachmentNames'
 import { IWeaponAttachments, WeaponAttachmentSlot } from './WeaponAttachments'
@@ -24,6 +25,7 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
     basePosition: IVector2 = Vector2.Zero
     type: WeaponAttachmentSlot
     attachments: IWeaponAttachments
+    direction: Direction = Direction.Up
     animator: IAnimator
 
     constructor(choice: WeaponAttachmentChoice, parent: IWeaponAttachments) {
@@ -39,9 +41,12 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
         const asset = WeaponHelper.getWeaponAttachmentAsset(choice)
         const texture = PIXI.Texture.from(asset)
         const sprite = new Sprite({ texture })
-        sprite.anchor.set(0, 1)
-
+        
         this.type = choice.slot
+        this.direction = WeaponHelper.getDirectionForSlot(choice.slot)
+        const anchor = getAnchorForDirection(this.direction)
+        
+        sprite.anchor.set(anchor.x, anchor.y)
 
         this.basePosition = {
             x: this.x = config.x,
@@ -52,14 +57,8 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
     }
 
     applyHoverEffects() {
-        this.attachments.weapon.sprite.filters = [ 
-            // new MotionBlurFilter([ 12, 0 ])
-            // new PixelateFilter()
-            Filters.getColorMatrixFilter({ brightness: 0.98 })
-        ]
-        this.filters = [
-            Filters.getColorMatrixFilter({ brightness: 1.25 })
-        ]
+        this.attachments.weapon.sprite.filters = [ Filters.getColorMatrixFilter({ brightness: 0.98 }) ]
+        this.filters = [ Filters.getColorMatrixFilter({ brightness: 1.25 }) ]
 
         this.animator.currentAnimation = Tween.to(this, {
             y: this.hoverY
@@ -80,6 +79,14 @@ export class WeaponAttachment extends Container implements IWeaponAttachment {
     }
 
     get hoverY() {
-        return this.basePosition.y - 1
+        let offsetY = 0
+
+        if (this.direction === Direction.Up) {
+            offsetY = -1
+        } else if (this.direction === Direction.Down) {
+            offsetY = 1
+        }
+
+        return this.basePosition.y + offsetY
     }
 }

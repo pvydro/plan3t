@@ -259,6 +259,10 @@ export class Weapon extends ClientEntity implements IWeapon {
             {
                 name: WeaponAttachmentName.MilitaryLaser,
                 slot: WeaponAttachmentSlot.SubSight
+            },
+            {
+                name: WeaponAttachmentName.TargetAcquisitioner,
+                slot: WeaponAttachmentSlot.Underbarrel
             }
         ])
     }
