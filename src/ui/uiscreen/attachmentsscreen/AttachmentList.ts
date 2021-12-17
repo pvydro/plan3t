@@ -1,3 +1,4 @@
+import { UIDefaults } from '../../../utils/Defaults'
 import { IUIComponent, UIComponent } from '../../UIComponent'
 import { UIText } from '../../UIText'
 import { IAttachmentsScreen } from './AttachmentsScreen'
@@ -30,8 +31,11 @@ export class AttachmentList extends UIComponent implements IAttachmentList {
 
     reposition() {
         super.reposition()
+
+        const padding = UIDefaults.UIMargin
         
         this.x = this.screen.selectedAttachmentText.x
         this.y = this.screen.selectedAttachmentText.y
+            + this.screen.selectedAttachmentText.height + padding
     }
 }

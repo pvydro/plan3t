@@ -124,10 +124,14 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
     setSelectedAttachment(attachmentNode: AttachmentNode) {
         log('AttachmentScreen', 'setSelectedAttachment', attachmentNode.slot)
+
+        this.selectedAttachmentList.show()
     }
 
     resetSelectedAttachment() {
         this.selectedAttachmentText.setText('')
+
+        this.selectedAttachmentList.hide()
     }
 
     exit() {
