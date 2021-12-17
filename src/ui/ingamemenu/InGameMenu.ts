@@ -41,7 +41,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
     async showScreen(id: InGameScreenID) {
         if (id === this.currentScreenID) return
 
-        const screen = this.getScreenForID(id)
+        const screen = this.getNewScreenForID(id)
 
         this.currentScreenID = id
         this.currentScreen = screen
@@ -70,7 +70,7 @@ export class InGameMenu extends UIScreen implements IInGameMenu {
         this.currentScreen = undefined
     }
 
-    getScreenForID(id: InGameScreenID) {
+    getNewScreenForID(id: InGameScreenID) {
         let screen: UIScreen
 
         switch (id) {

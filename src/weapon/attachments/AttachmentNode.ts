@@ -1,3 +1,4 @@
+import e from 'express'
 import { OutlineFilter } from 'pixi-filters'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
@@ -11,8 +12,7 @@ import { AttachmentsScreen } from '../../ui/uiscreen/attachmentsscreen/Attachmen
 import { DebugConstants } from '../../utils/Constants'
 import { lerp } from '../../utils/Math'
 import { IWeapon } from '../Weapon'
-import { IWeaponAttachment, WeaponAttachment } from './WeaponAttachment'
-import { WeaponAttachmentName } from './WeaponAttachmentNames'
+import { IWeaponAttachment } from './WeaponAttachment'
 import { WeaponAttachmentConfig, WeaponAttachmentSlot } from './WeaponAttachments'
 
 enum AttachmentNodeState {
@@ -103,7 +103,7 @@ export class AttachmentNode extends Container {
 
         this.currentState = AttachmentNodeState.Hovered
         if (this.currentAnimation) this.currentAnimation.kill()
-        this.attachmentScreen.setSelectedAttachment(this)
+        this.attachmentScreen?.setSelectedAttachment(this)
         
         if (this.attachment) {
             this.attachment.applyHoverEffects()
@@ -114,6 +114,7 @@ export class AttachmentNode extends Container {
         if (!this.isShown || this.currentState === AttachmentNodeState.Idle) return
 
         this.currentState = AttachmentNodeState.Idle
+        this.attachmentScreen.resetSelectedAttachment()
 
         if (this.attachment) {
             this.attachment.revertHoverEffects()
@@ -187,6 +188,11 @@ export class AttachmentNode extends Container {
     }
 
     get attachmentScreen() {
-        return inGameHUD.menus.getScreenForID(InGameScreenID.Attachments) as AttachmentsScreen
+        if (inGameHUD.menus.currentScreenID === InGameScreenID.Attachments) {
+            return inGameHUD.menus.currentScreen as AttachmentsScreen
+        } else {
+            return undefined
+        }
+        // return //inGameHUD.menus.getNewScreenForID(InGameScreenID.Attachments) as AttachmentsScreen
     }
 }

@@ -3,7 +3,9 @@ import { IDemolishable } from '../../interface/IDemolishable'
 import { TextDefaults } from '../../utils/Defaults'
 import { IDimension } from '../math/Dimension'
 import { IVector2, Vector2 } from '../math/Vector2'
+import { Animator, IAnimator } from './Animator'
 import { scaleFontSize, scaleRescale, TextStyles } from './TextStyles'
+import { Tween } from './tween/Tween'
 
 export enum TextSpriteAlign {
     Left = 'Left',
@@ -12,7 +14,7 @@ export enum TextSpriteAlign {
 }
 
 export interface ITextSprite extends IDemolishable {
-    setText(newText: string): void
+    setText(newText: string, animate?: boolean, animationDuration?: number): Promise<void>
 }
 
 export interface TextSpriteOptions {
@@ -37,6 +39,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     uppercase: boolean
     style: PIXI.TextStyle
     rescale: number
+    animator: IAnimator
 
     constructor(options: TextSpriteOptions) {
         const uppercase = (options.uppercase ?? options.style.uppercase) ?? false
@@ -56,6 +59,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         this.uppercase = uppercase
         this._textDimensions = PIXI.TextMetrics.measureText(text, style)
         this.scale.set(rescale, rescale)
+        this.animator = new Animator()
 
         if (options.anchor !== undefined) {
             const anc = typeof options.anchor === 'number'
@@ -65,10 +69,34 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         }
     }
 
-    setText(newText: string) {
+    async setText(newText: string, animate: boolean = false, animationDuration?: number) {
+        if (animate) {
+            this.animator.currentAnimation = this.getHideAnimation(animationDuration)
+            await this.animator.play()
+        }
+
         const text = this.uppercase ? newText?.toUpperCase() : newText
-        
         this.text = text || ''
+
+        if (animate) {
+            this.animator.currentAnimation = this.getShowAnimation(animationDuration)
+            await this.animator.play()
+        }
+        
+    }
+    
+    getShowAnimation(animationDuration?: number) {
+        return Tween.to(this, {
+            alpha: 1,
+            duration: animationDuration || 0.25
+        })
+    }
+
+    getHideAnimation(animationDuration?: number) {
+        return Tween.to(this, {
+            alpha: 0,
+            duration: animationDuration || 0.25
+        })
     }
     
     get textWidth() {

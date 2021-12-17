@@ -109,16 +109,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     setSelectedAttachment(attachmentNode: AttachmentNode) {
         log('AttachmentsScreen', 'setSelectedAttachment', attachmentNode.slot, attachmentNode.attachment.name)
 
-        this.selectedAttachmentText = new UIText({
-            text: 'fuck you mother fucker',
-            uppercase: true,
-            style: {
-                fontFamily: Fonts.FontDefault.fontFamily
-            }
-        })
-            //attachmentNode.slot
-        // this.screenHeader.text = 'what the fuck'//attachmentNode.slot
-        // .setText(attachmentNode.slot)
+        this.selectedAttachmentText.setText(attachmentNode.slot, true)
     }
 
     resetSelectedAttachment() {
