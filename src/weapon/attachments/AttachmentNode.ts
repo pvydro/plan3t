@@ -1,11 +1,10 @@
-import e from 'express'
-import { OutlineFilter } from 'pixi-filters'
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { Container } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { Tween } from '../../engine/display/tween/Tween'
 import { Rect } from '../../engine/math/Rect'
+import { InputProcessor } from '../../input/InputProcessor'
 import { camera, inGameHUD } from '../../shared/Dependencies'
 import { InGameScreenID } from '../../ui/ingamemenu/InGameMenu'
 import { AttachmentsScreen } from '../../ui/uiscreen/attachmentsscreen/AttachmentsScreen'
@@ -27,7 +26,7 @@ export class AttachmentNode extends Container {
     baseAlpha: number = 0.4
     slot: WeaponAttachmentSlot
     weapon: IWeapon
-    graphic: Graphix
+    graphic?: Graphix
     boundingBox: Graphix
     currentState: AttachmentNodeState = AttachmentNodeState.Idle
     currentAnimation?: TweenLite
@@ -76,7 +75,13 @@ export class AttachmentNode extends Container {
                 this.boundingBox.alpha = lerp(this.boundingBox.alpha, 1, 0.1)
                 break
             case AttachmentNodeState.Selected:
+                this.boundingBox.scale.x = lerp(this.boundingBox.scale.x, 1.5, 0.1)
                 break
+        }
+
+        if (this.currentState !== AttachmentNodeState.Selected
+        && this.boundingBox.scale.x !== 1) {
+            this.boundingBox.scale.x = lerp(this.boundingBox.scale.x, 1, 0.1)
         }
     }
 
@@ -103,7 +108,7 @@ export class AttachmentNode extends Container {
 
         this.currentState = AttachmentNodeState.Hovered
         if (this.currentAnimation) this.currentAnimation.kill()
-        this.attachmentScreen?.setSelectedAttachment(this)
+        this.attachmentScreen?.setHoveredAttachment(this)
         
         if (this.attachment) {
             this.attachment.applyHoverEffects()
@@ -112,6 +117,7 @@ export class AttachmentNode extends Container {
 
     unhovered() {
         if (!this.isShown || this.currentState === AttachmentNodeState.Idle) return
+        if (this.currentState === AttachmentNodeState.Selected) return
 
         this.currentState = AttachmentNodeState.Idle
         this.attachmentScreen.resetSelectedAttachment()
@@ -121,12 +127,32 @@ export class AttachmentNode extends Container {
         }
     }
 
+    triggered() {
+        if (this.currentState === AttachmentNodeState.Selected) return
+        this.currentState = AttachmentNodeState.Selected
+
+        this.weapon.attacher.attachmentNodes.nodes.forEach((node: AttachmentNode) => {
+            if (node === this) return
+            node.deselect()
+        })
+        if (this.attachmentScreen) {
+            this.attachmentScreen.setSelectedAttachment(this)
+        }
+    }
+
+    deselect() {
+        this.currentState = AttachmentNodeState.Idle
+    }
+
     checkMouseInBounds() {
-        const mouseX = Camera.Mouse.x
         const mouseInBounds = Rect.contains(this.getClickHitBox(), Camera.Mouse)
 
         if (mouseInBounds) {
-            this.hovered()
+            if (InputProcessor.MouseDown) {
+                this.triggered()
+            } else if (this.currentState !== AttachmentNodeState.Selected) {
+                this.hovered()
+            }
         } else {
             this.unhovered()
         }

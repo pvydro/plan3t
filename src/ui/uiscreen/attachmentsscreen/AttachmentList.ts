@@ -28,7 +28,7 @@ export class AttachmentList extends UIComponent implements IAttachmentList {
         this.forceHide()
     }
 
-    reposition(): void {
+    reposition() {
         super.reposition()
         
         this.x = this.screen.selectedAttachmentText.x

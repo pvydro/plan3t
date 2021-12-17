@@ -13,7 +13,7 @@ export class Flogger {
   static log(message: string, ...object: any) {
     if (!Flogger.isLoggingEnabled) return
 
-    if (object) {
+    if (object.length) {
       console.log(`%c${message}: ${JSON.stringify(object)}`, this.style)
     } else {
       console.log(`%c${message}`, this.style)
@@ -26,7 +26,7 @@ export class Flogger {
   }
 
   static importantLog(message: string, ...object: any) {
-    if (object) {
+    if (object.length) {
       console.log(`%c${message}: ${JSON.stringify(object)}`, this.importantStyle)
     } else {
       console.log(`%c${message}`, this.importantStyle)
@@ -34,7 +34,7 @@ export class Flogger {
   }
 
   static warn(message: string, ...object: any) {
-    if (object) {
+    if (object.length) {
       console.warn(`${message}: ${JSON.stringify(object)}`)
     } else {
       console.warn(`${message}`)
@@ -42,7 +42,7 @@ export class Flogger {
   }
 
   static error(message: string, ...object: any) {
-    if (object) {
+    if (object.length) {
       console.error(`${message}: ${JSON.stringify(object)}`)
     } else {
       console.error(`${message}`)

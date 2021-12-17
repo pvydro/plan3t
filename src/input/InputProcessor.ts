@@ -17,6 +17,7 @@ export enum InputEvents {
 export class InputProcessor {
     private static Instance = new InputProcessor()
     private static Emitter = new Emitter()
+    static MouseDown: boolean = false
 
     private constructor() {
         const clonedEvents = Object.values(InputEvents)
@@ -25,6 +26,13 @@ export class InputProcessor {
             window.addEventListener(eventString, (event: any) => {
                 InputProcessor.Emitter.emit(eventString, event)
             })
+        })
+
+        window.addEventListener('mousedown', (ev: MouseEvent) => {
+            InputProcessor.MouseDown = true
+        })
+        window.addEventListener('mouseup', (ev: MouseEvent) => {
+            InputProcessor.MouseDown = false
         })
     }
 

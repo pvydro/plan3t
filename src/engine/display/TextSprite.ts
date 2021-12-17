@@ -77,7 +77,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         }
 
         const text = this.uppercase ? newText?.toUpperCase() : newText
-        this.text = text || ''
+        this.text = text
 
         if (animate) {
             this.animator.currentAnimation = this.getShowAnimation(animationDuration)

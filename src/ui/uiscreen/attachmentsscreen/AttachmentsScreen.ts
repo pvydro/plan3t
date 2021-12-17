@@ -16,6 +16,7 @@ import { AttachmentList } from './AttachmentList'
 export interface IAttachmentsScreen extends IUIScreen {
     selectedAttachmentText: IUIText
     setSelectedAttachment(attachmentNode: AttachmentNode): void
+    setHoveredAttachment(attachmentNode: AttachmentNode): void
     resetSelectedAttachment(): void
 }
 
@@ -34,7 +35,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
         this.selectedAttachmentList = new AttachmentList({ screen: this })
         this.selectedAttachmentText = new UIText({
-            text: '',
+            text: 'te',
             uppercase: true,
             style: {
                 fontFamily: Fonts.FontDefault.fontFamily
@@ -111,10 +112,18 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         player.playerBadge.filters = []
     }
 
-    setSelectedAttachment(attachmentNode: AttachmentNode) {
-        log('AttachmentsScreen', 'setSelectedAttachment', attachmentNode.slot, attachmentNode.attachment.name)
+    setHoveredAttachment(attachmentNode: AttachmentNode) {
+        log('AttachmentScreen', 'setHoveredAttachment')
 
         this.selectedAttachmentText.setText(attachmentNode.slot, true)
+    }
+
+    resetHoveredAttachment() {
+        log('AttachmentScreen', 'resetHoveredAttachment')
+    }
+
+    setSelectedAttachment(attachmentNode: AttachmentNode) {
+        log('AttachmentScreen', 'setSelectedAttachment', attachmentNode.slot)
     }
 
     resetSelectedAttachment() {

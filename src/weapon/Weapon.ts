@@ -22,6 +22,7 @@ export interface IWeapon extends WeaponStats, IClientEntity {
     state: WeaponState
     stats: WeaponStats
     playerHolster?: PlayerWeaponHolster
+    attacher: WeaponAttachments
     configureByName(name: WeaponName): void
     setWeaponState(state: WeaponState): void
     getAttachmentForSlot(slot: WeaponAttachmentSlot): WeaponAttachment
