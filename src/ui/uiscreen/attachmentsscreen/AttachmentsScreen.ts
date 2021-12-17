@@ -1,8 +1,6 @@
 import { AdjustmentFilter, AsciiFilter, BloomFilter, ColorOverlayFilter, CrossHatchFilter, GlitchFilter, MotionBlurFilter, PixelateFilter } from 'pixi-filters'
 import { Fonts } from '../../../asset/Fonts'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
-import { TextSprite } from '../../../engine/display/TextSprite'
-import { TextStyles } from '../../../engine/display/TextStyles'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
 import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
 import { log } from '../../../service/Flogger'
@@ -11,10 +9,12 @@ import { UIDefaults } from '../../../utils/Defaults'
 import { AttachmentNode } from '../../../weapon/attachments/AttachmentNode'
 import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
-import { UIText } from '../../UIText'
+import { IUIText, UIText } from '../../UIText'
 import { IUIScreen, UIScreen } from '../UIScreen'
+import { AttachmentList } from './AttachmentList'
 
 export interface IAttachmentsScreen extends IUIScreen {
+    selectedAttachmentText: IUIText
     setSelectedAttachment(attachmentNode: AttachmentNode): void
     resetSelectedAttachment(): void
 }
@@ -22,6 +22,7 @@ export interface IAttachmentsScreen extends IUIScreen {
 export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     selectedAttachment?: AttachmentNode
     selectedAttachmentText: UIText
+    selectedAttachmentList: AttachmentList
 
     constructor() {
         super({
@@ -30,13 +31,17 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
                 text: 'Attachments'
             }
         })
+
+        this.selectedAttachmentList = new AttachmentList({ screen: this })
         this.selectedAttachmentText = new UIText({
-            text: 'te',
+            text: '',
             uppercase: true,
             style: {
                 fontFamily: Fonts.FontDefault.fontFamily
             }
         })
+
+        this.addChild(this.selectedAttachmentList)
         this.addChild(this.selectedAttachmentText)
         this.reposition(true)
     }
@@ -135,6 +140,8 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
 
         this.selectedAttachmentText.x = this.screenHeader.x
         this.selectedAttachmentText.y = this.screenHeader.y + this.screenHeader.height + margin
+
+        this.selectedAttachmentList.reposition()
     }
 
     handleKeyPress(ev: KeyboardEvent) {

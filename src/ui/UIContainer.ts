@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js'
-import { Container } from '../engine/display/Container'
+import { Container, IContainer } from '../engine/display/Container'
 import { Sprite } from '../engine/display/Sprite'
 import { IUpdatable } from '../interface/IUpdatable'
 import { GameWindow } from '../utils/Constants'
 
-export interface IUIContainer extends IUpdatable {
+export interface IUIContainer extends IContainer, IUpdatable {
 
 }
 

@@ -12,13 +12,13 @@ import { IUIComponent, UIComponent } from '../UIComponent'
 import { IUIComponentCreator, UIComponentCreator } from '../UIComponentCreator'
 import { UIComponentType } from '../UIComponentFactory'
 import { UIContainer } from '../UIContainer'
-import { UIScreen } from '../uiscreen/UIScreen'
+import { IUIScreen, UIScreen } from '../uiscreen/UIScreen'
 import { Crosshair, CrosshairState } from './crosshair/Crosshair'
 import { OverheadHealthBar } from './healthbar/OverheadHealthBar'
 import { WaveRunnerCounter } from './waverunnercounter/WaveRunnerCounter'
 import { InGameMenu, InGameScreenID } from '../ingamemenu/InGameMenu'
 
-export interface IInGameHUD extends IUpdatable, IReposition {
+export interface IInGameHUD extends IUIScreen, IUpdatable {
     waveRunnerCounter?: WaveRunnerCounter
     crosshair: Crosshair
     menus: InGameMenu

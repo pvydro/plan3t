@@ -6,6 +6,7 @@ import { IVector2, Vector2 } from '../math/Vector2'
 import { Animator, IAnimator } from './Animator'
 import { scaleFontSize, scaleRescale, TextStyles } from './TextStyles'
 import { Tween } from './tween/Tween'
+import { IContainer } from '../display/Container'
 
 export enum TextSpriteAlign {
     Left = 'Left',
@@ -13,7 +14,7 @@ export enum TextSpriteAlign {
     Right = 'Right'
 }
 
-export interface ITextSprite extends IDemolishable {
+export interface ITextSprite extends IDemolishable, IContainer {
     setText(newText: string, animate?: boolean, animationDuration?: number): Promise<void>
 }
 
@@ -42,13 +43,13 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
     animator: IAnimator
 
     constructor(options: TextSpriteOptions) {
-        const uppercase = (options.uppercase ?? options.style.uppercase) ?? false
+        const uppercase = (options.uppercase ?? options.style?.uppercase) ?? false
         const text = options.text ? (uppercase ? options.text.toUpperCase() : options.text) : ''
-        const fontFamily = (options.style && options.style.fontFamily) ?? TextDefaults.fontFamily
-        const fontSize = (options.style && options.style.fontSize) ?? scaleFontSize(TextDefaults.fontSize)
-        const fill = (options.style && options.style.color) ?? TextDefaults.color
-        const rescale = (options.style && options.style.rescale) ?? scaleRescale(TextDefaults.rescale)
-        const align = options.style.align ? options.style.align : (options.align) ?? 'center'
+        const fontFamily = (options.style && options.style?.fontFamily) ?? TextDefaults.fontFamily
+        const fontSize = (options.style && options.style?.fontSize) ?? scaleFontSize(TextDefaults.fontSize)
+        const fill = (options.style && options.style?.color) ?? TextDefaults.color
+        const rescale = (options.style && options.style?.rescale) ?? scaleRescale(TextDefaults.rescale)
+        const align = options.style?.align ? options.style?.align : (options.align) ?? 'center'
         const wordWrap = false
         const style = new PIXI.TextStyle({ fontFamily, fontSize, fill, align, wordWrap })
         
@@ -127,7 +128,29 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         return this.textHeight / 2
     }
 
+    get pos() {
+        return this.position
+    }
+
+    set pos(value: IVector2) {
+        this.position.set(value.x, value.y)
+    }
+
     demolish(): void {
         this.destroy()
+    }
+
+    clearChildren(): void {
+        this.demolish()
+    }
+
+    addChild<TChildren extends PIXI.DisplayObject[] | IContainer[]>(...children: TChildren): TChildren[0] {
+        super.addChild(...children as PIXI.DisplayObject[])
+        return children[0]
+    }
+
+    removeChild<TChildren extends PIXI.DisplayObject[] | IContainer[]>(...children: TChildren): TChildren[0] {
+        super.removeChild(...children as PIXI.DisplayObject[])
+        return children[0]
     }
 }

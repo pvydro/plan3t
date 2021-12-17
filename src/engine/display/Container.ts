@@ -20,8 +20,8 @@ export interface IContainer extends IDemolishable {
     pos: IVector2 | number
     filters: any[]
     clearChildren(): void
-    addChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0]
-    removeChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0]
+    addChild<TChildren extends PIXI.DisplayObject[] | IContainer[]>(...children: TChildren): TChildren[0]
+    removeChild<TChildren extends PIXI.DisplayObject[] | IContainer[]>(...children: TChildren): TChildren[0]
 }
 
 export class Container extends PIXI.Container implements IContainer {
@@ -38,12 +38,12 @@ export class Container extends PIXI.Container implements IContainer {
         }
     }
 
-    addChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0] {
+    addChild<TChildren extends PIXI.DisplayObject[] | IContainer[]>(...children: TChildren): TChildren[0] {
         super.addChild(...children as PIXI.DisplayObject[])
         return children[0]
     }
 
-    removeChild<TChildren extends PIXI.DisplayObject[] | IUIContainer[]>(...children: TChildren): TChildren[0] {
+    removeChild<TChildren extends PIXI.DisplayObject[] | IContainer[]>(...children: TChildren): TChildren[0] {
         super.removeChild(...children as PIXI.DisplayObject[])
         return children[0]
     }
