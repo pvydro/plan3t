@@ -264,6 +264,7 @@ export class AssetUrls {
     static ButtonWood = 'assets/image/ui/generic/buttons/woodbutton'
     static ButtonWoodClicked = 'assets/image/ui/generic/buttons/woodbuttonclicked'
     static ButtonSquare = 'assets/image/ui/generic/buttons/squarebutton'
+    static ButtonSlot = 'assets/image/ui/generic/buttons/slotbutton'
     // ButtonDecor
     static ButtonDecorWoodSeed = 'assets/image/ui/generic/buttons/buttondecor/woodbuttonseed'
 

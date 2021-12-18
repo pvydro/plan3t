@@ -24,6 +24,7 @@ export interface TextSpriteOptions {
     anchor?: IVector2 | number
     text?: string
     align?: TextSpriteAlign | string
+    color?: number
 }
 
 export interface TextSpriteStyle {
@@ -47,7 +48,7 @@ export class TextSprite extends PIXI.Text implements ITextSprite {
         const text = options.text ? (uppercase ? options.text.toUpperCase() : options.text) : ''
         const fontFamily = (options.style && options.style?.fontFamily) ?? TextDefaults.fontFamily
         const fontSize = (options.style && options.style?.fontSize) ?? scaleFontSize(TextDefaults.fontSize)
-        const fill = (options.style && options.style?.color) ?? TextDefaults.color
+        const fill = (options.color ?? options.style?.color) ?? TextDefaults.color
         const rescale = (options.style && options.style?.rescale) ?? scaleRescale(TextDefaults.rescale)
         const align = options.style?.align ? options.style?.align : (options.align) ?? 'center'
         const wordWrap = false

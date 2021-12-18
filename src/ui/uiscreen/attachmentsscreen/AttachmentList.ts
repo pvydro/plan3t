@@ -48,19 +48,20 @@ export class AttachmentList extends UIComponent implements IAttachmentList {
         this.x = this.screen.selectedAttachmentText.x
         this.y = this.screen.selectedAttachmentText.y
             + this.screen.selectedAttachmentText.height + padding
+
+        this.cellContainer.y = this.header.height + padding
     }
 
     async show() {
         if (this.isShown) await this.hide()
-
-        if (this.cells.length > 0) this.clearCells()
-
+        
         this.createCells()
 
         return super.show()
     }
 
     createCells() {
+        this.clearCells()
         const slot: WeaponAttachmentSlot = this.screen.selectedAttachmentNode?.slot
         const attachmentsOfSameSlot = Object.values(attachmentStats).filter((stats: any) => stats.slot === slot)
         const margin = UIDefaults.UIMargin
@@ -78,8 +79,8 @@ export class AttachmentList extends UIComponent implements IAttachmentList {
     }
 
     clearCells() {
+        this.cellContainer.clearChildren()
         this.cells.forEach(cell => {
-            this.removeChild(cell)
             cell.demolish()
         })
         this.cells = []

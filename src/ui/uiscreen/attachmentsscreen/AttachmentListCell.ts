@@ -20,14 +20,15 @@ export class AttachmentListCell extends UIButton {
                 text: options.name,
                 align: TextSpriteAlign.Left,
                 uppercase: true,
-                offsetY: -3,
-                alpha: 0.5,
-                style: TextStyles.MetalButton.Medium,
+                style: TextStyles.DefaultButton.Small,
+                color: 0xffffff
             },
             background: {
-                idle: AssetUrls.ButtonMetalMd,
-                hovered: AssetUrls.ButtonRectDefaultHovered
+                idle: AssetUrls.ButtonSlot
             },
+            darkenerOptions: {
+                shouldDarken: true
+            }
         })
     }
 }

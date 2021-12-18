@@ -48,6 +48,7 @@ export interface UIButtonBackgroundOptions {
 export interface UIButtonTextOptions extends TextSpriteOptions {
     alpha?: number
     offsetY?: number
+    color?: number
 }
 
 export interface UIButtonOptions extends UIComponentOptions {
