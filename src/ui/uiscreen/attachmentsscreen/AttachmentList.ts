@@ -72,15 +72,15 @@ export class AttachmentList extends UIComponent implements IAttachmentList {
             cell.y = (cell.height + margin) * i
 
             this.cellContainer.addChild(cell)
+            this.cells.push(cell)
 
             console.log(attachmentDetails)
         })
-        // const allOfSameSlot = //this.screen.selectedAttachmentNode?.weapon.attachments.filter(attachment => attachment.slot === slot)
     }
 
     clearCells() {
-        this.cellContainer.clearChildren()
         this.cells.forEach(cell => {
+            this.cellContainer.removeChild(cell)
             cell.demolish()
         })
         this.cells = []
