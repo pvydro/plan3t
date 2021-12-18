@@ -10,6 +10,17 @@ import { WeaponHelper } from '../WeaponHelper'
 import { WeaponAttachmentName } from './WeaponAttachmentNames'
 import { IWeaponAttachments, WeaponAttachmentSlot } from './WeaponAttachments'
 
+export interface WeaponAttachmentStats {
+    name: WeaponAttachmentName
+    slot: WeaponAttachmentSlot
+    description?: string
+    attributes?: {
+        damage?: number
+        accuracy?: number
+        recoil?: number
+    }
+}
+
 export interface WeaponAttachmentChoice {
     slot: WeaponAttachmentSlot
     name: WeaponAttachmentName

@@ -6,7 +6,7 @@ import { GameStateID } from '../../../manager/gamestatemanager/GameStateManager'
 import { log } from '../../../service/Flogger'
 import { camera, gameMapMan, gameStateMan, inGameHUD } from '../../../shared/Dependencies'
 import { UIDefaults } from '../../../utils/Defaults'
-import { AttachmentNode } from '../../../weapon/attachments/AttachmentNode'
+import { AttachmentNode, IAttachmentNode } from '../../../weapon/attachments/AttachmentNode'
 import { WeaponState } from '../../../weapon/Weapon'
 import { InGameScreenID } from '../../ingamemenu/InGameMenu'
 import { IUIText, UIText } from '../../UIText'
@@ -15,6 +15,7 @@ import { AttachmentList } from './AttachmentList'
 
 export interface IAttachmentsScreen extends IUIScreen {
     selectedAttachmentText: IUIText
+    selectedAttachmentNode?: IAttachmentNode
     setSelectedAttachment(attachmentNode: AttachmentNode): void
     setHoveredAttachment(attachmentNode: AttachmentNode): void
     resetSelectedAttachment(): void
@@ -24,6 +25,7 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     selectedAttachment?: AttachmentNode
     selectedAttachmentText: UIText
     selectedAttachmentList: AttachmentList
+    selectedAttachmentNode?: IAttachmentNode
 
     constructor() {
         super({
@@ -103,6 +105,12 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
         player.playerBadge.filters = playerFilters
     }
 
+    applyScale(): void {
+        const toScale = [ this.selectedAttachmentList ]
+        
+        super.applyScale(toScale)
+    }
+
     resetFilters() {
         const player = ClientPlayer.getInstance()
 
@@ -125,12 +133,14 @@ export class AttachmentsScreen extends UIScreen implements IAttachmentsScreen {
     setSelectedAttachment(attachmentNode: AttachmentNode) {
         log('AttachmentScreen', 'setSelectedAttachment', attachmentNode.slot)
 
+        this.selectedAttachmentNode = attachmentNode
         this.selectedAttachmentList.show()
     }
 
     resetSelectedAttachment() {
         this.selectedAttachmentText.setText('')
 
+        this.selectedAttachmentNode = undefined
         this.selectedAttachmentList.hide()
     }
 

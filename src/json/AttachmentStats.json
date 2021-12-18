@@ -1,0 +1,104 @@
+{
+    "reddot": {
+        "name": "Red Dot",
+        "slot": "scope",
+        "description": "A reliable sight giving the best of all worlds.",
+        "attributes": {
+            "accuracy": 1.1
+        }
+    },
+    "yellowdot": {
+        "name": "Yellow Dot",
+        "slot": "scope",
+        "description": "Quick target acquisition with advanced color.",
+        "attributes": {
+            "accuracy": 1.15
+        }
+    },
+    "beamtis": {
+        "name": "Beam TIS",
+        "slot": "scope",
+        "description": "Advanced laser technology from MK Ulcher",
+        "attributes": {
+            "accuracy": 1.2
+        }
+    },
+    "fourtimes": {
+        "name": "4x Scope",
+        "slot": "scope",
+        "description": "4x magnification scope giving optimized visuals in the field.",
+        "attributes": {
+            "accuracy": 1.25,
+            "zoom": 1.25
+        }
+    },
+    "hov3r": {
+        "name": "Hov3r",
+        "slot": "scope",
+        "description": "Hovernet technology supporting advanced vision.",
+        "attributes": {
+            "accuracy": 1.3,
+            "zoom": 1.3
+        }
+    },
+    "monarchy": {
+        "name": "Monarchy",
+        "slot": "scope",
+        "description": "Powered by a GeTorque 2040, the Monarchy uses raycasting to predict user movement.",
+        "attributes": {
+            "accuracy": 1.0,
+            "zoom": 1.0
+        }
+    },
+
+    "militarypad": {
+        "name": "Military Pad",
+        "slot": "stock",
+        "description": "A military-grade pad for ultimate comfort.",
+        "attributes": {
+            "accuracy": 1.1
+        }
+    },
+    "t1kstock": {
+        "name": "T1K Stock",
+        "slot": "stock",
+        "description": "A dependable hard-built stock.",
+        "attributes": {
+            "accuracy": 1.1
+        }
+    },
+
+    "militarylaser": {
+        "name": "Military Laser",
+        "slot": "laser",
+        "description": "40W laser manufactured by Mach Nein.",
+        "attributes": {
+            "accuracy": 1.1
+        }
+    },
+
+    "skinni": {
+        "name": "Skinni",
+        "slot": "underbarrel",
+        "description": "Skinny titanium grip for agile operations.",
+        "attributes": {
+            "recoil": 1.1
+        }
+    },
+    "woodgrip": {
+        "name": "Wood Grip",
+        "slot": "underbarrel",
+        "description": "Unrefined grip made of wood for increased stability.",
+        "attributes": {
+            "recoil": 1.15
+        }
+    },
+    "targetacquisitioner": {
+        "name": "Target Acquisitioner",
+        "slot": "underbarrel",
+        "description": "An underbarrel slot device with advanced targeting technology.",
+        "attributes": {
+            "accuracy": 1.1
+        }
+    }
+}

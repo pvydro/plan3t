@@ -1,6 +1,6 @@
 import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
-import { Container } from '../../engine/display/Container'
+import { Container, IContainer } from '../../engine/display/Container'
 import { Graphix } from '../../engine/display/Graphix'
 import { Tween } from '../../engine/display/tween/Tween'
 import { Rect } from '../../engine/math/Rect'
@@ -20,7 +20,13 @@ enum AttachmentNodeState {
     Selected
 }
 
-export class AttachmentNode extends Container {
+export interface IAttachmentNode extends IContainer {
+    weapon: IWeapon
+    slot: WeaponAttachmentSlot
+    currentState: AttachmentNodeState
+}
+
+export class AttachmentNode extends Container implements IAttachmentNode {
     _attachment?: IWeaponAttachment
     isShown: boolean = false
     baseAlpha: number = 0.4
@@ -219,6 +225,5 @@ export class AttachmentNode extends Container {
         } else {
             return undefined
         }
-        // return //inGameHUD.menus.getNewScreenForID(InGameScreenID.Attachments) as AttachmentsScreen
     }
 }
