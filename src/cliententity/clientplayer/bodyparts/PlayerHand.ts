@@ -10,6 +10,7 @@ import { WeaponHelper } from '../../../weapon/WeaponHelper'
 import { ClientPlayer } from '../ClientPlayer'
 import { IPlayerHandController, PlayerHandController } from './PlayerHandController'
 import { IShowHide } from '../../../interface/IShowHide'
+import { inGameHUD } from '../../../shared/Dependencies'
 
 export interface IPlayerHand extends IUpdatable, IShowHide {
     setWeapon(weapon: Weapon): void
@@ -88,7 +89,10 @@ export class PlayerHand extends Container implements IPlayerHand {
         this.secondHandSprite.rotation = direction === Direction.Right
             ? -this.rotation + (this.rotation / 2)
             : this.rotation - halfACircleInRadians - (this.rotation / 2)
-            
+        
+        if (this.player.isClientPlayer) {
+            inGameHUD.crosshair.setTargetRotation(this.rotation)
+        }
 
         if (this.equippedWeapon) this.equippedWeapon.update()
     }

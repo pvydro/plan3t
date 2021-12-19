@@ -104,7 +104,7 @@ export abstract class ServerGameState extends Schema implements IServerGameState
         }
 
         this.players.set(options.sessionId, new PlayerSchema().assign({
-            x: options.x || 0,
+            x: options.x || 150,
             y: options.y || 0,
             isOnGround: options.isOnGround || false,
             frozen: options.frozen || false,

@@ -1,6 +1,5 @@
 import { Camera } from '../../../camera/Camera'
 import { ClientPlayer } from '../../../cliententity/clientplayer/ClientPlayer'
-import { Container } from '../../../engine/display/Container'
 import { Graphix } from '../../../engine/display/Graphix'
 import { IVector2, Vector2 } from '../../../engine/math/Vector2'
 import { InputEvents, InputProcessor } from '../../../input/InputProcessor'
@@ -16,7 +15,10 @@ export interface ICrosshair extends IUIComponent {
     nodeThree: Graphix
     nodes: Graphix[]
     state: CrosshairState
+    targetRotation: number
     setStateWithDelay(value: CrosshairState, delay: number): void
+    setTargetRotation(value: number): void
+    resetTargetRotation(value: number): void
 }
 
 export enum CrosshairState {
@@ -25,8 +27,9 @@ export enum CrosshairState {
 
 export class Crosshair extends UIComponent implements ICrosshair {
     private static Instance: Crosshair
-    
     _state: CrosshairState = CrosshairState.Gameplay
+    _targetRotation: number = 0
+    
     stateSetTimer: number
     pointerCursor: ICrosshairCursor
     animator: ICrosshairAnimator
@@ -35,7 +38,7 @@ export class Crosshair extends UIComponent implements ICrosshair {
     mouseDistance: IVector2 = Vector2.Zero
     positionOffset: IVector2 = Vector2.Zero
     growthOffset: number = 0
-    targetGrowthOffset: number = 0
+    targetGrowthOffset: number 
     mouseDistanceGrowthDivisor: number = 25
     growthDamping: number = 2
 
@@ -190,6 +193,18 @@ export class Crosshair extends UIComponent implements ICrosshair {
             window.clearTimeout(this.stateSetTimer)
             this.stateSetTimer = undefined
         }
+    }
+
+    setTargetRotation(value: number) {
+        this._targetRotation = value
+    }
+
+    resetTargetRotation(): void {
+        this._targetRotation = 0
+    }
+
+    get targetRotation() {
+        return this._targetRotation
     }
 
     set state(value: CrosshairState) {

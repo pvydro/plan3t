@@ -1,5 +1,5 @@
 import { IUpdatable } from '../../../interface/IUpdatable'
-import { toRadians } from '../../../utils/Math'
+import { lerp, toRadians } from '../../../utils/Math'
 import { ICrosshair } from './Crosshair'
 
 export interface ICrosshairCursor extends IUpdatable {
@@ -70,7 +70,9 @@ export class CrosshairCursor implements ICrosshairCursor {
             this.nodeThree.rotation += (0 - this.nodeThree.rotation) / magnetizeDivisor
             this.nodeThree.skew.x += (0 - this.nodeThree.skew.x) / magnetizeDivisor
 
-            this.crosshair.rotation += (this.idleRotation - this.crosshair.rotation) / rotationDivisor
+            const rotation = this.crosshair.targetRotation + this.idleRotation
+
+            this.crosshair.rotation = lerp(this.crosshair.rotation, rotation, 0.8)
         }
     }
 
