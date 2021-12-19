@@ -35,7 +35,7 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
             //     sound.play()
             // })
 
-            gameMapMan.initializeBuilding(MapBuildingType.CloningFacility)
+            // gameMapMan.initializeBuilding(MapBuildingType.CloningFacility)
 
             ChatService.fetchChatHistoryFromRoom()
         })
@@ -55,8 +55,6 @@ export class WaveGameState extends GameplayState implements IWaveGameState {
     }
 
     gameOver() {
-        super.gameOver()
-
         inGameHUD.requestMenuScreen(InGameScreenID.WaveRunnerOver)
     }
 }

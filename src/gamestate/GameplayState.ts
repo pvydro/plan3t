@@ -11,6 +11,9 @@ import { camera, gameMapMan, inGameHUD, matchMaker, particleMan } from '../share
 import { RoomMessenger } from '../manager/roommanager/RoomMessenger'
 import { RoomMessage } from '../network/rooms/ServerMessages'
 import { getURLParameter } from '../utils/URLUtils'
+import { InGameScreenID } from '../ui/ingamemenu/InGameMenu'
+import { MapBuildingType } from '../network/utils/Enum'
+import { log } from '../service/Flogger'
 
 export interface IGameplayState extends IGameState {
 }
@@ -47,7 +50,8 @@ export class GameplayState extends GameState implements IGameplayState {
         await asyncTimeout(1000)
         await RoomMessenger.send(RoomMessage.RequestPlayer, {})
 
-        // REF: Do this based on server
+        // TODO: Do this based on server
+        gameMapMan.initializeBuilding(MapBuildingType.CloningFacility)
         // this.player = entityMan.createOfflinePlayer()
         // camera.stage.addChildAtLayer(this.player, CameraLayer.Players)
         // camera.follow(this.player)
@@ -56,7 +60,7 @@ export class GameplayState extends GameState implements IGameplayState {
     async createOrJoin() {
         const roomIdFromUrl = getURLParameter('room')
 
-        console.log('%cRoomID: ' + roomIdFromUrl, 'color: #ff0000;font-size:300%;')
+        log('createOrJoin', 'roomIdFromUrl', roomIdFromUrl)
 
         if (roomIdFromUrl) {
             await matchMaker.joinMatch(roomIdFromUrl)
@@ -73,5 +77,11 @@ export class GameplayState extends GameState implements IGameplayState {
 
     demolish() {
 
+    }
+
+    gameOver() {
+        super.gameOver()
+
+        inGameHUD.requestMenuScreen(InGameScreenID.RespawnScreen)
     }
 }

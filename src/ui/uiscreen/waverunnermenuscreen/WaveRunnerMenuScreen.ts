@@ -44,7 +44,7 @@ export class WaveRunnerMenuScreen extends UIScreen implements IWaveRunnerMenuScr
             new UIWoodButton({
                 text: { text: 'create' },
                 onTrigger: () => {
-                    gameStateMan.enterState(GameStateID.WaveRunnerGame)
+                    gameStateMan.enterState(GameStateID.Gameplay)//GameStateID.WaveRunnerGame)
                 }
             }),
         ]

@@ -51,7 +51,7 @@ export const GlobalScale: number = 1
 
 export class DebugConstants {
     static SuperSprint: boolean = false
-    static SuperMan: boolean = true
+    static SuperMan: boolean = false
     static DisableFoliage: boolean = false
     static DisableDepthShadows: boolean = false
     static ShowPlayerMessengerLogs: boolean = false
