@@ -48,6 +48,8 @@ export class PlayerSchema extends EntitySchema {
             this.yVel = 0
         } else {
             this.yVel += ((this.weight / 3) * 1) * deltaTime
+
+            if (this.yVel > 1) this.yVel = 1
         }
     }
 
@@ -63,9 +65,6 @@ export class PlayerSchema extends EntitySchema {
         log('Player', this.id, 'takeDamage', damage)
 
         this.health -= damage
-
-        console.log(this.health)
-        console.log()
     }
 
     jump() {

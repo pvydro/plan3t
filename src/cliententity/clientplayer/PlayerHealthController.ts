@@ -62,7 +62,9 @@ export class PlayerHealthController extends HealthController implements IPlayerH
         this.player.consciousnessState = PlayerConsciousnessState.Dead
         this.displayDeathEffects()
 
-        gameStateMan.gameOver()
+        if (this.player.isClientPlayer) {
+            gameStateMan.gameOver()
+        }
     }
 
     private displayDamageEffects(damageAmount: number) {

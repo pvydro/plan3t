@@ -33,9 +33,12 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         entity.clientEntity.targetServerPosition.y = schema.y
         entity.clientEntity.targetServerDimension.width = schema.width
         entity.clientEntity.targetServerDimension.height = schema.height
+        entity.clientEntity.frozen = schema.frozen
         entity.serverEntity = schema
 
-        console.log(schema.health)
+        if (entity.clientEntity.frozen) {
+            entity.clientEntity.y = schema.y
+        }
 
         if (entity.clientEntity.currentHealth > schema.health) {
             const totalDamage = entity.clientEntity.currentHealth - schema.health

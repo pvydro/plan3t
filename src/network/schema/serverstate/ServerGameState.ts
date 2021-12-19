@@ -27,6 +27,8 @@ export interface CreateProjectileOptions extends CreateEntityOptions {
 
 export interface CreatePlayerOptions extends CreateEntityOptions {
     name?: string
+    isOnGround?: boolean
+    frozen?: boolean
 }
 
 export interface IServerGameState {
@@ -62,6 +64,16 @@ export abstract class ServerGameState extends Schema implements IServerGameState
         this.gravityController = new ServerGravityController(this)
         this.playerController = new ServerPlayerController(this)
         this.collisionController = new ServerCollisionController(this)
+
+        setTimeout(() => {
+            this.createPlayer({
+                sessionId: '1234',
+                x: 100,
+                y: 128,
+                frozen: true,
+                isOnGround: true
+            })
+        }, 3000)
     }
 
     update() {
@@ -88,11 +100,13 @@ export abstract class ServerGameState extends Schema implements IServerGameState
         }
 
         this.players.set(options.sessionId, new PlayerSchema().assign({
-            x: options.x ?? 0,
-            y: options.y ?? 0,
+            x: options.x || 0,
+            y: options.y || 0,
+            isOnGround: options.isOnGround || false,
+            frozen: options.frozen || false,
             xVel: 0,
             yVel: 0,
-            health: 100
+            health: 100,
         }))
     }
 
