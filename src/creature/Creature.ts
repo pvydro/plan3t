@@ -91,15 +91,15 @@ export abstract class Creature extends GravityOrganism implements ICreature {
         super.hitWall(wallRect)
     }
 
-    takeDamage(damage: number | Bullet) {
+    takeDamage(damage: number) {
         this.flash()
         
-        if (damage instanceof Bullet) {
-            const bullet = damage as Bullet
-            const direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
+        // if (damage instanceof Bullet) {
+        //     const bullet = damage as Bullet
+            // const direction = (bullet.xVel > 0) ? Direction.Right : Direction.Left
 
-            this.knockback({ direction })
-        }
+            // this.knockback({ direction })
+        // }
 
         if (this.isDead) return
 

@@ -35,6 +35,13 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         entity.clientEntity.targetServerDimension.height = schema.height
         entity.serverEntity = schema
 
+        console.log(schema.health)
+
+        if (entity.clientEntity.currentHealth > schema.health) {
+            const totalDamage = entity.clientEntity.currentHealth - schema.health
+            entity.clientEntity.takeDamage(totalDamage)
+        }
+
         // // TODO: Deprecate synchronizables system
         // // this.assertionService.applyChangesToSynchronizable(sessionId, entity)
 

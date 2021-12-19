@@ -38,9 +38,10 @@ export class GravityManager implements IGravityManager {
         if (exists(entity) && checkCollision) {
             if (entity.frozen) return
 
-            if (entity.type === EntityType.Bullet) {
-                entity = this.collisionManager.checkBulletCollision(entity as Bullet)
-            } else if (entity instanceof GravityEntity) {
+            // if (entity.type === EntityType.Bullet) {
+                // entity = this.collisionManager.checkBulletCollision(entity as Bullet)
+            // } else if (entity instanceof GravityEntity) {
+            if (entity instanceof GravityEntity) {
                 entity = this.collisionManager.checkEntityCollision(entity as GravityEntity)
             }
             

@@ -91,7 +91,8 @@ export abstract class ServerGameState extends Schema implements IServerGameState
             x: options.x ?? 0,
             y: options.y ?? 0,
             xVel: 0,
-            yVel: 0
+            yVel: 0,
+            health: 100
         }))
     }
 

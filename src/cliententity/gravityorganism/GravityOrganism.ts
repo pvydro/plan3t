@@ -10,17 +10,11 @@ export enum GravityOrganismEvents {
 }
 
 export interface IGravityOrganism extends IGravityEntity {
-    currentHealth: number
-    totalHealth: number
-    healthPercentage: number
     organismState: GravityOrganismState
-    isDead: boolean
     jump(): void
-    takeDamage(damage: number | Bullet): void
 }
 
 export interface GravityOrganismOptions extends GravityEntityOptions {
-    totalHealth?: number
     jumpHeight?: number
 }
 
@@ -30,18 +24,13 @@ export enum GravityOrganismState {
 }
 
 export class GravityOrganism extends GravityEntity implements IGravityOrganism {
-    healthController: IHealthController
     jumpHeight: number
     _organismState: GravityOrganismState = GravityOrganismState.Alive
-    _isDead: boolean = false
 
     constructor(options?: GravityOrganismOptions) {
         super(options)
 
-        const totalHealth = options.totalHealth ?? 50
-
         this.jumpHeight = options.jumpHeight ?? 3.5
-        this.healthController = new HealthController({ totalHealth })
         this.healthController.on(Events.Death, () => {
             this.die()
         })
@@ -55,22 +44,6 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         this.yVel = -jh
     }
 
-    takeDamage(damage: number | Bullet) {
-        log('GravityOrganism', 'takeDamage', 'damageAmount')
-
-        if (this.isDead) return
-        
-        let dmg = damage as number
-        
-        if (damage instanceof Bullet) {
-            const bullet = damage as Bullet
-            
-            dmg = bullet.damage
-        }
-        
-        this.healthController.takeDamage(dmg)
-    }
-
     async die() {
         log('GravityOrganism', 'die')
 
@@ -78,23 +51,7 @@ export class GravityOrganism extends GravityEntity implements IGravityOrganism {
         this.organismState = GravityOrganismState.Dead
         this.emit(GravityOrganismEvents.Dead)
     }
-
-    get isDead() {
-        return this._isDead
-    }
     
-    get currentHealth() {
-        return this.healthController.currentHealth
-    }
-
-    get totalHealth() {
-        return this.healthController.totalHealth
-    }
-
-    get healthPercentage() {
-        return this.currentHealth / this.totalHealth
-    }
-
     set organismState(value: GravityOrganismState) {
         this._organismState = value
     }

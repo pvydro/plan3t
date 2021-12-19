@@ -126,7 +126,7 @@ export class AttachmentNode extends Container implements IAttachmentNode {
         if (this.currentState === AttachmentNodeState.Selected) return
 
         this.currentState = AttachmentNodeState.Idle
-        this.attachmentScreen.resetSelectedAttachment()
+        this.attachmentScreen.resetHoveredAttachment()
 
         if (this.attachment) {
             this.attachment.revertHoverEffects()

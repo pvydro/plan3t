@@ -1,5 +1,5 @@
 import { Schema, type } from '@colyseus/schema'
-import { Flogger } from '../../service/Flogger'
+import { log } from '../../service/Flogger'
 import { Direction, PlayerBodyState, PlayerLegsState } from '../utils/Enum'
 import { EntitySchema } from './EntitySchema'
 
@@ -32,8 +32,6 @@ export class PlayerSchema extends EntitySchema {
     hasSpawned: boolean = false
     @type('boolean')
     isOnGround: boolean = false
-    @type('number')
-    health: number = 100
     // @type('number')
     width: number = 16
     // @type('number')
@@ -62,11 +60,16 @@ export class PlayerSchema extends EntitySchema {
     }
 
     takeDamage(damage: number) {
+        log('Player', this.id, 'takeDamage', damage)
+
         this.health -= damage
+
+        console.log(this.health)
+        console.log()
     }
 
     jump() {
-        Flogger.log('Player', 'jump')
+        log('Player', 'jump')
 
         if (!this.isOnGround) return
         

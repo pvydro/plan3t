@@ -14,19 +14,21 @@ export class ServerCollisionController implements IServerCollisionController {
 
     update(): void {
         this.state.projectiles.forEach((projectile) => {
-            this.state.players.forEach((player) => {
-                if (player.id !== projectile.playerId) {
-                    if (this.isColliding(player, projectile)) {
-                        console.log('DIDHIT')
-                        projectile.dead = true
-                        // this.state.removeProjectile(projectile)
-                        // this.state.removePlayer(player)
+            if (!projectile.dead) {
+                this.state.players.forEach((player) => {
+                    if (player.id !== projectile.playerId) {
+                        if (this.isColliding(player, projectile)) {
+                            projectile.dead = true
+                            player.takeDamage(projectile.damage)
+                            // this.state.removeProjectile(projectile)
+                            // this.state.removePlayer(player)
+                        }
+                    // && player.position.distanceTo(projectile.position) < player.radius) {
+                    //     player.health -= projectile.damage
+                    //     this.state.projectiles.delete(projectile.id)
                     }
-                // && player.position.distanceTo(projectile.position) < player.radius) {
-                //     player.health -= projectile.damage
-                //     this.state.projectiles.delete(projectile.id)
-                }
-            })
+                })
+            }
         })
     }
 

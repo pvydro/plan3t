@@ -7,6 +7,9 @@ import { IVector2 } from '../engine/math/Vector2'
 import { EntityFlashOptions, EntityFlashPlugin, IEntityFlashPlugin } from './plugins/EntityFlashPlugin'
 import { EntityKnockbackOptions, EntityKnockbackPlugin, IEntityKnockbackPlugin } from './plugins/EntityKnockbackPlugin'
 import { lerp } from '../utils/Math'
+import { HealthController, IHealthController } from './gravityorganism/HealthController'
+import { log } from '../service/Flogger'
+// import { Bullet } from '../weapon/projectile/Bullet'
 
 export interface IClientEntity extends IContainer, IUpdatable {
     x: number
@@ -23,7 +26,12 @@ export interface IClientEntity extends IContainer, IUpdatable {
     entityId: string
     sprite: ISprite | IContainer
     frozen: boolean
+    currentHealth: number
+    totalHealth: number
+    healthPercentage: number
+    isDead: boolean
     getAllSprites(): (Container | Sprite)[]
+    takeDamage(damage: number): void// | Bullet): void
 }
 
 export enum EntityType {
@@ -47,9 +55,11 @@ export interface ClientEntityOptions {
     entity?: EntitySchema
     sprite?: Sprite | Container
     plugins?: IClientEntityPluginOptions
+    totalHealth?: number
 }
 
 export class ClientEntity extends Container implements IClientEntity {
+    healthController: IHealthController
     static CurrentIDIteration: number = 0
     protected _xVel: number = 0
     protected _yVel: number = 0
@@ -65,6 +75,7 @@ export class ClientEntity extends Container implements IClientEntity {
     targetServerLerpRate: number = 0.2
     type: EntityType
     plugins: IClientEntityPlugins = {}
+    _isDead: boolean = false
 
     constructor(options?: ClientEntityOptions) {
         super()
@@ -85,6 +96,9 @@ export class ClientEntity extends Container implements IClientEntity {
                 }
             }
         }
+
+        const totalHealth = options?.totalHealth ?? 100
+        this.healthController = new HealthController({ totalHealth })
 
         if (this.entity !== undefined) {
             this.position.set(this.entity.x, this.entity.y)
@@ -118,6 +132,38 @@ export class ClientEntity extends Container implements IClientEntity {
         if (this.plugins.knockbackPlugin) {
             this.plugins.knockbackPlugin.knockback(options)
         }
+    }
+
+    takeDamage(damage: number) {// | Bullet) {
+        log('ClientEntity', 'takeDamage', 'damageAmount')
+
+        if (this.isDead) return
+        
+        let dmg = damage as number
+        
+        // if (damage instanceof Bullet) {
+        //     const bullet = damage as Bullet
+            
+        //     dmg = bullet.damage
+        // }
+        
+        this.healthController.takeDamage(dmg)
+    }
+
+    get isDead() {
+        return this._isDead
+    }
+
+    get currentHealth() {
+        return this.healthController.currentHealth
+    }
+
+    get totalHealth() {
+        return this.healthController.totalHealth
+    }
+
+    get healthPercentage() {
+        return this.currentHealth / this.totalHealth
     }
 
     getAllSprites(): (Container | Sprite)[] {

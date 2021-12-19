@@ -19,6 +19,8 @@ export class EntitySchema extends Schema {
     weight!: number
     @type('boolean')
     frozen: boolean = false
+    @type('number')
+    health: number = 100
 
     dead: boolean = false
 

@@ -10,4 +10,6 @@ export class ProjectileSchema extends EntitySchema {
     xVel!: number
     @type('number')
     yVel!: number
+    @type('number')
+    damage: number = 20
 }

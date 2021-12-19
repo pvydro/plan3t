@@ -39,13 +39,12 @@ export abstract class Enemy extends TravelkinCreature implements IEnemy {
         this.dimension = properties.dimension
     }
 
-    takeDamage(damage: number | Bullet) {
+    takeDamage(damage: number) {
         if (this.isDead) return
 
         super.takeDamage(damage)
 
-        const dmg = (damage instanceof Bullet) ? damage.damage : damage
-        const damageString = '-' + dmg
+        const damageString = '-' + damage
         
         camera.shakeAndFlash(2.5)
 

@@ -73,7 +73,7 @@ export class TravelkinCreature extends Creature implements ITravelkinCreature {
         this.spriteStore.flipAllSprites()
     }
 
-    takeDamage(damage: number | Bullet) {
+    takeDamage(damage: number) {
         this.ai.decideIfContinueOrStop()
 
         super.takeDamage(damage)
