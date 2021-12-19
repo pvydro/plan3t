@@ -29,6 +29,7 @@ export interface CreatePlayerOptions extends CreateEntityOptions {
     name?: string
     isOnGround?: boolean
     frozen?: boolean
+    isAI?: boolean
 }
 
 export interface IServerGameState {
@@ -45,6 +46,8 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     players = new MapSchema<PlayerSchema>()
     @type({ map: CreatureSchema })
     creatures = new MapSchema<CreatureSchema>()
+    @type({ map: EntitySchema })
+    aiPlayers = new MapSchema<EntitySchema>()
     @type({ map: EntitySchema })
     gravityEntities = new MapSchema<EntitySchema>()
     @type({ map: ProjectileSchema })
@@ -71,9 +74,10 @@ export abstract class ServerGameState extends Schema implements IServerGameState
                 x: 100,
                 y: 128,
                 frozen: true,
-                isOnGround: true
+                isOnGround: true,
+                isAI: true
             })
-        }, 3000)
+        }, 6000)
     }
 
     update() {
@@ -106,7 +110,7 @@ export abstract class ServerGameState extends Schema implements IServerGameState
             frozen: options.frozen || false,
             xVel: 0,
             yVel: 0,
-            health: 100,
+            health: 100
         }))
     }
 

@@ -36,9 +36,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
         gameMapMan.initializeHomeship().then(async () => {
             log(this.name, 'Homeship initialized')
 
-            // const player = entityMan.createOfflinePlayer()
             const player = ClientPlayer.getInstance({
-                schema: new PlayerSchema(),
                 clientControl: true
             })
 

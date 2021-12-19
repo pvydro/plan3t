@@ -32,6 +32,8 @@ export class PlayerSchema extends EntitySchema {
     hasSpawned: boolean = false
     @type('boolean')
     isOnGround: boolean = false
+    @type('boolean')
+    isAI: boolean = false
     // @type('number')
     width: number = 16
     // @type('number')
@@ -49,7 +51,7 @@ export class PlayerSchema extends EntitySchema {
         } else {
             this.yVel += ((this.weight / 3) * 1) * deltaTime
 
-            if (this.yVel > 1) this.yVel = 1
+            if (this.yVel > 3) this.yVel = 3
         }
     }
 

@@ -1,4 +1,3 @@
-import { EntitySchema } from '../../network/schema/EntitySchema'
 import { Direction } from '../../engine/math/Direction'
 import { IPlayerHead, PlayerHead } from './bodyparts/PlayerHead'
 import { PlayerBody } from './bodyparts/PlayerBody'
@@ -36,7 +35,6 @@ export interface IClientPlayer extends IClientPlayerState {
 }
 
 export interface ClientPlayerOptions {
-    schema: EntitySchema
     clientControl?: boolean
     offlineControl?: boolean
     sessionId?: string

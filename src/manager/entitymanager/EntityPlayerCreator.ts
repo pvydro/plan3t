@@ -1,11 +1,8 @@
-import * as PIXI from 'pixi.js'
-import { Camera } from '../../camera/Camera'
 import { CameraLayer } from '../../camera/CameraStage'
 import { ClientPlayer } from '../../cliententity/clientplayer/ClientPlayer'
-import { Environment } from '../../main/Environment'
 import { PlayerSchema } from '../../network/schema/PlayerSchema'
 import { Flogger } from '../../service/Flogger'
-import { camera, matchMaker, userProfile } from '../../shared/Dependencies'
+import { camera, entityMan, matchMaker, userProfile } from '../../shared/Dependencies'
 import { EntityCreatorOptions, IEntityManager } from './EntityManager'
 
 export interface IEntityPlayerCreator {
@@ -18,17 +15,10 @@ export interface PlayerCreationOptions extends EntityCreatorOptions {
     isOfflinePlayer?: boolean
 }
 
-export interface EntityPlayerCreatorOptions {
-    entityManager: IEntityManager
-}
-
 export class EntityPlayerCreator implements IEntityPlayerCreator {
     _currentClientPlayer?: ClientPlayer
-    entityManager: IEntityManager
 
-    constructor(options: EntityPlayerCreatorOptions) {
-        this.entityManager = options.entityManager
-    }
+    constructor() {}
 
     createPlayer(schema: PlayerSchema): ClientPlayer {
         Flogger.log('EntityPlayerCreator', 'createPlayer', 'sessionId', schema.id)
@@ -44,7 +34,7 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
         player.x = schema?.x ?? 0
         player.y = schema?.y ?? 0
 
-        this.entityManager.registerEntity(schema.id, {
+        entityMan.registerEntity(schema.id, {
             clientEntity: player,
             serverEntity: schema
         })
@@ -64,19 +54,18 @@ export class EntityPlayerCreator implements IEntityPlayerCreator {
 
         if (isClientPlayer) {
             player = ClientPlayer.getInstance({
-                schema,
                 sessionId: schema.id,
                 clientControl: true,
                 playerName: userProfile.username
             })
-                
+            player.serverEntity = schema
             this._currentClientPlayer = player
         } else {
             player = new ClientPlayer({
-                schema,
                 sessionId: schema.id,
                 playerName: schema.id
             })
+            player.serverEntity = schema
         }
 
         camera.stage.addChildAtLayer(player, CameraLayer.Players)

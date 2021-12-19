@@ -13,6 +13,7 @@ import { IInGameHUD, InGameHUD } from '../ui/ingamehud/InGameHUD'
 import { LoadingScreen } from '../ui/uiscreen/loadingscreen/LoadingScreen'
 import { ITooltipManager, TooltipManager } from '../manager/TooltipManager'
 import { IRoomStateManager, RoomStateManager } from '../manager/roommanager/RoomStateManager'
+import { AIManager, IAIManager } from '../manager/AIManager'
 
 // Services
 export const userProfile: IUserProfile = container.resolve(UserProfile)
@@ -32,3 +33,4 @@ export const gameMapMan: IGameMapManager = container.resolve(GameMapManager)
 export const particleMan: IParticleManager = container.resolve(ParticleManager)
 export const entityMan: IEntityManager = container.resolve(EntityManager)
 export const toolTipMan: ITooltipManager = container.resolve(TooltipManager)
+export const aiMan: IAIManager = container.resolve(AIManager)

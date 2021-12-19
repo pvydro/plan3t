@@ -4,7 +4,7 @@ import { EntityType } from '../../cliententity/ClientEntity'
 import { GravityEntity, IGravityEntity } from '../../cliententity/GravityEntity'
 import { Sprite } from '../../engine/display/Sprite'
 import { IEntityManager } from '../../manager/entitymanager/EntityManager'
-import { particleMan } from '../../shared/Dependencies'
+import { entityMan, particleMan } from '../../shared/Dependencies'
 import { GlobalScale } from '../../utils/Constants'
 import { PhysDefaults } from '../../utils/Defaults'
 
@@ -27,8 +27,6 @@ export interface BulletOptions {
 
 export class Bullet extends GravityEntity implements IBullet {
     _id: string
-    entityManager?: IEntityManager
-    // velocity: number
     damage: number
 
     constructor(options?: BulletOptions) {
@@ -45,7 +43,6 @@ export class Bullet extends GravityEntity implements IBullet {
         this.entityId = 'Bullet' + this._id
         this.rotation = options.rotation ?? 0
         this.damage = options.damaage ?? 10
-        this.entityManager = options.entityManager
         this.targetServerLerpRate = 0.75
         this.type = EntityType.Bullet
         this.scale.set(GlobalScale, GlobalScale)
@@ -62,9 +59,7 @@ export class Bullet extends GravityEntity implements IBullet {
     }
 
     demolish() {
-        if (this.entityManager !== undefined) {
-            this.entityManager.removeEntity(this.entityId, CameraLayer.Bullet)
-        }
+        entityMan.removeEntity(this.entityId, CameraLayer.Bullet)
     }
 
     demolishWithStyle() {
