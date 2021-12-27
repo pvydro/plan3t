@@ -3,6 +3,8 @@ import { Schema, type } from '@colyseus/schema'
 export class EntitySchema extends Schema {
     @type('string')
     id!: string
+    @type('string')
+    type!: string
     @type('float64')
     x!: number 
     @type('float64')
@@ -21,7 +23,7 @@ export class EntitySchema extends Schema {
     frozen: boolean = false
     @type('number')
     health: number = 100
-
+    @type('boolean')
     dead: boolean = false
 
     static distance(a: EntitySchema, b: EntitySchema) {

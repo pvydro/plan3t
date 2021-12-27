@@ -2,22 +2,18 @@ import { IUpdatable } from '../interface/IUpdatable'
 import { EntitySchema } from '../network/schema/EntitySchema'
 import { log, VerboseLogging } from '../service/Flogger'
 import { IEntityManager, LocalEntity } from '../manager/entitymanager/EntityManager'
+import { ProjectileSchema } from '../network/schema/ProjectileSchema'
+import { entityMan } from '../shared/Dependencies'
+import { CameraLayer } from '../camera/CameraStage'
 
 export interface IEntitySynchronizer {
     updateEntity(entity: EntitySchema, sessionId: string, changes?: any)
 }
 
-export interface EntitySynchronizerOptions {
-    entityManager: IEntityManager
-}
-
 export class EntitySynchronizer implements IEntitySynchronizer {
-    entityManager: IEntityManager
 
-    constructor(options: EntitySynchronizerOptions) {
+    constructor() {
         const synchronizer = this
-
-        this.entityManager = options.entityManager
     }
 
     updateEntity(schema: EntitySchema, sessionId: string, changes?: any) {
@@ -26,24 +22,28 @@ export class EntitySynchronizer implements IEntitySynchronizer {
         const entity: LocalEntity = this.clientEntities.get(sessionId)
 
         if (schema.dead) {
-            this.entityManager.removeEntity(sessionId)
+            entityMan.removeEntity(sessionId)
         }
 
-        entity.clientEntity.targetServerPosition.x = schema.x
-        entity.clientEntity.targetServerPosition.y = schema.y
-        entity.clientEntity.targetServerDimension.width = schema.width
-        entity.clientEntity.targetServerDimension.height = schema.height
-        entity.clientEntity.frozen = schema.frozen
-        entity.serverEntity = schema
-
-        if (entity.clientEntity.frozen) {
-            entity.clientEntity.y = schema.y
+        if (entity.clientEntity) {
+            entity.clientEntity.targetServerPosition.x = schema.x
+            entity.clientEntity.targetServerPosition.y = schema.y
+            entity.clientEntity.targetServerDimension.width = schema.width
+            entity.clientEntity.targetServerDimension.height = schema.height
+            entity.clientEntity.frozen = schema.frozen
+            entity.serverEntity = schema
+    
+            if (entity.clientEntity.frozen) {
+                entity.clientEntity.y = schema.y
+            }
+    
+            if (entity.clientEntity.currentHealth > schema.health) {
+                const totalDamage = entity.clientEntity.currentHealth - schema.health
+                entity.clientEntity.takeDamage(totalDamage)
+            }
         }
 
-        if (entity.clientEntity.currentHealth > schema.health) {
-            const totalDamage = entity.clientEntity.currentHealth - schema.health
-            entity.clientEntity.takeDamage(totalDamage)
-        }
+
 
         // // TODO: Deprecate synchronizables system
         // // this.assertionService.applyChangesToSynchronizable(sessionId, entity)
@@ -97,7 +97,7 @@ export class EntitySynchronizer implements IEntitySynchronizer {
     // }
 
     get clientEntities() {
-        return this.entityManager.clientEntities
+        return entityMan.clientEntities
     }
 
     // get roomState() {

@@ -1,12 +1,13 @@
 import { MapSchema, SetSchema } from '@colyseus/schema'
 import { ServerGameState } from '../schema/serverstate/ServerGameState'
 import { EntitySchema } from '../schema/EntitySchema'
+import { ProjectileSchema } from '../schema/ProjectileSchema'
 
-export interface IServerGravityController {
+export interface IServerEntityController {
     update(): void
 }
 
-export class ServerGravityController implements IServerGravityController {
+export class ServerEntityController implements IServerEntityController {
     state: ServerGameState
 
     constructor(state: ServerGameState) {
@@ -25,6 +26,13 @@ export class ServerGravityController implements IServerGravityController {
                 if (e.frozen) return
                 e.x += e.xVel
                 e.y += e.yVel
+
+                // Projectile-specific
+                if (e instanceof ProjectileSchema) {
+                    if (e.dead) {
+                        this.state.projectiles.delete(e.id)
+                    }
+                }
             })
         } else {
             if (entity.frozen) return

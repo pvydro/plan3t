@@ -96,7 +96,6 @@ export class GameRoom extends Room<ServerGameState> implements IGameRoom {
         player.xVel = payload.xVel
         player.frozen = payload.frozen
 
-        console.log(payload.frozen)
         if (payload.frozen) log('Freezing player')
     }
 

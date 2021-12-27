@@ -9,13 +9,9 @@ export interface IEntityProjectileCreator {
     createProjectile(schema: ProjectileSchema): Bullet
 }
 
-export interface EntityProjectileCreatorOptions {
-    entityManager: IEntityManager
-}
-
 export class EntityProjectileCreator implements IEntityProjectileCreator {
 
-    constructor(options: EntityProjectileCreatorOptions) {
+    constructor() {
     }
 
     createProjectile(schema: ProjectileSchema): Bullet {

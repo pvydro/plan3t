@@ -56,6 +56,8 @@ export class GameMap extends Container implements IGameMap {
     }
 
     async initializeBuilding(type: MapBuildingType, stories?: number) {
+        log('GameMap', 'initializeBuilding', 'type', type, 'stories', stories)
+
         this.currentMapBuildingType = type
         
         const building = MapBuildingHelper.getMapBuildingForType(type, stories)

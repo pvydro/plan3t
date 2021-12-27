@@ -204,7 +204,6 @@ export class UIButton extends UIComponent implements IUIButton {
     
             if (addClickListeners) {
                 this.interactiveSprite.on('pointerdown', () => {
-                    console.log('doWN!')
                     this.pressDown()
                 })
                 this.interactiveSprite.on('pointerup', () => {

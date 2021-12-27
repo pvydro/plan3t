@@ -7,12 +7,15 @@ import { IServerGameState, ServerGameState } from '../serverstate/ServerGameStat
 export interface IPVPGameRoomState extends IServerGameState {
     currentMap: MapBuildingType
     pvpGameHasStarted: boolean
+    mapFloors: number
 }
 
 export class PVPGameRoomState extends ServerGameState implements IPVPGameRoomState {
     type: string = 'pvp'
     @type('string')
     currentMap: MapBuildingType = MapBuildingType.Dojo
+    @type('number')
+    mapFloors: number = 3
     @type('boolean')
     pvpGameHasStarted: boolean = false
 

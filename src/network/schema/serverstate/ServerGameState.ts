@@ -4,7 +4,7 @@ import { ChatMessageSchema } from '../ChatMessageSchema'
 import { CreatureSchema } from '../CreatureSchema'
 import { PlayerSchema } from '../PlayerSchema'
 import { ProjectileSchema } from '../ProjectileSchema'
-import { ServerGravityController } from '../../controller/ServerGravityController'
+import { ServerEntityController } from '../../controller/ServerEntityController'
 import { ServerPlayerController } from '../../controller/ServerPlayerController'
 import { ServerCollisionController } from '../../controller/ServerCollisionController'
 import { exists } from '../../../utils/Utils'
@@ -59,12 +59,12 @@ export abstract class ServerGameState extends Schema implements IServerGameState
     @type('string')
     type: string = 'server'
 
-    gravityController!: ServerGravityController
+    gravityController!: ServerEntityController
     playerController!: ServerPlayerController
     collisionController!: ServerCollisionController
 
     initialize() {
-        this.gravityController = new ServerGravityController(this)
+        this.gravityController = new ServerEntityController(this)
         this.playerController = new ServerPlayerController(this)
         this.collisionController = new ServerCollisionController(this)
 
@@ -131,6 +131,8 @@ export abstract class ServerGameState extends Schema implements IServerGameState
         const bulletVelocity = 5
         const xVel = bulletVelocity * Math.cos(options.rotation) * player.direction
         const yVel = bulletVelocity * Math.sin(options.rotation) * player.direction
+
+        console.log('projectile id: ' + options.sessionId)
 
         this.projectiles.set(options.sessionId, new ProjectileSchema().assign({
             x: options.x,

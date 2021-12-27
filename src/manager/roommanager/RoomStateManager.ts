@@ -67,7 +67,7 @@ export class RoomStateManager implements IRoomStateManager {
     handlePVPRoomState(newState: IPVPGameRoomState) {
         if (newState.pvpGameHasStarted) {
             if (newState.currentMap !== gameMapMan.gameMap.currentMapBuildingType) {
-                gameMapMan.initializeBuilding(newState.currentMap)
+                gameMapMan.initializeBuilding(newState.currentMap, newState.mapFloors || undefined)
             }
         }
         // if (newState.players) {
@@ -104,8 +104,6 @@ export class RoomStateManager implements IRoomStateManager {
     }
 
     stateChanged(newState: IServerGameState) {
-        if (VerboseLogging) log('RoomStateManager', 'newState', newState)
-
         this.currentState = newState
 
         const messages = newState.messages
@@ -114,7 +112,7 @@ export class RoomStateManager implements IRoomStateManager {
             ChatService._serverMessages = messages
             ChatService.fetchChatHistoryFromRoom()
         }
-
+        
         if (newState.type === ServerStateType.WaveRunner) {
             this.handleWaveRunnerRoomState(newState as IWaveRunnerGameState)
         } else if (newState.type === ServerStateType.Pvp) {

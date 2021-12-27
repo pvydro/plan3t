@@ -51,8 +51,8 @@ export class EntityManager implements IEntityManager {
         this.gravityManager = new GravityManager({ enemyManager: entityManager.enemyManager })
         this.playerCreator = new EntityPlayerCreator()
         this.creatureCreator = new EntityCreatureCreator()
-        this.projectileCreator = new EntityProjectileCreator({ entityManager })
-        this.synchronizer = new EntitySynchronizer({ entityManager })
+        this.projectileCreator = new EntityProjectileCreator()
+        this.synchronizer = new EntitySynchronizer()
         this.enemyManager = new EnemyManager()
     }
 
@@ -60,7 +60,9 @@ export class EntityManager implements IEntityManager {
         const removedLocalEntity = this.clientEntities.get(sessionId)
         
         if (removedLocalEntity) {
+            const clientEntity = removedLocalEntity.clientEntity
             camera.stage.removeFromLayer(removedLocalEntity.clientEntity, layer)
+
             this.clientEntities.delete(sessionId)
     
             delete removedLocalEntity.clientEntity
@@ -101,6 +103,7 @@ export class EntityManager implements IEntityManager {
 
         if (serverEntity) {
             serverEntity.onChange = (changes: any) => this.updateEntity(serverEntity, id, changes)
+            serverEntity.onRemove = () => this.removeEntity(id)
         }
 
         this.clientEntities.set(id, localEntity)

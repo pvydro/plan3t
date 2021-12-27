@@ -51,7 +51,7 @@ export class GameplayState extends GameState implements IGameplayState {
         await RoomMessenger.send(RoomMessage.RequestPlayer, {})
 
         // TODO: Do this based on server
-        gameMapMan.initializeBuilding(MapBuildingType.CloningFacility)
+        gameMapMan.initializeBuilding(MapBuildingType.CloningFacility, 3)
         // this.player = entityMan.createOfflinePlayer()
         // camera.stage.addChildAtLayer(this.player, CameraLayer.Players)
         // camera.follow(this.player)
