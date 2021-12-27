@@ -39,6 +39,7 @@ export class HomeshipState extends GameState implements ISpaceshipState {
             const player = ClientPlayer.getInstance({
                 clientControl: true
             })
+            entityMan.registerEntity('localplayer', player)
 
             player.light.disableHardLights()
             player.holster.holsterWeapon()

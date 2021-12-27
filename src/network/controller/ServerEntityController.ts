@@ -24,6 +24,7 @@ export class ServerEntityController implements IServerEntityController {
         if (entity instanceof MapSchema || entity instanceof SetSchema) {
             entity.forEach((e: EntitySchema) => {
                 if (e.frozen) return
+                
                 e.x += e.xVel
                 e.y += e.yVel
 

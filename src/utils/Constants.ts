@@ -58,7 +58,7 @@ export class DebugConstants {
     static ShowCameraProjectionDebug: boolean = false
     static ShowServerPositions: boolean = false // true
     static ShowCollisionDebug: boolean = false
-    static ShowInteractiveContainerDebug: boolean = true
+    static ShowInteractiveContainerDebug: boolean = false
     static ShowUIButtonDebug: boolean = false
     static AlternateChatbox: boolean = false
     static ShowEnemyAttackRadius: boolean = false

@@ -39,7 +39,7 @@ export class PlayerController implements IPlayerController {
     }
 
     update() {
-        if (this.player.frozen) return
+        // if (this.player.frozen) return
 
         if (this.player.consciousnessState === PlayerConsciousnessState.Controlled) {
             this.player.xVel = 0

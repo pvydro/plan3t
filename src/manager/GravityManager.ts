@@ -36,7 +36,7 @@ export class GravityManager implements IGravityManager {
 
     applyVelocityToEntity(entity: ClientEntity | GravityEntity, checkCollision: boolean = true) {
         if (exists(entity) && checkCollision) {
-            if (entity.frozen) return
+            // if (entity.frozen) return
 
             // if (entity.type === EntityType.Bullet) {
                 // entity = this.collisionManager.checkBulletCollision(entity as Bullet)

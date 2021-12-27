@@ -59,13 +59,13 @@ export class ClientPlayerState extends GravityOrganism {
     }
 
     update() {
-        if (this._cachedFrozen !== this.frozen) {
-            this._cachedFrozen = this.frozen
-            this.xVel = 0
-            this.yVel = 0
+        // if (this._cachedFrozen !== this.frozen) {
+        //     this._cachedFrozen = this.frozen
+        //     this.xVel = 0
+        //     this.yVel = 0
             
-            this.messenger.send(RoomMessage.PlayerUpdate)
-        }
+        //     this.messenger.send(RoomMessage.PlayerUpdate)
+        // }
 
         super.update()
     }

@@ -40,10 +40,10 @@ export class MultiStoryMapBuilding extends GameMapContainer implements IMultiSto
                 const lastFloorY = this.stories.get(i - 1).y
 
                 floor.x = 0
-                floor.y = lastFloorY - (floor.height / 2)
+                floor.y = lastFloorY - (floor.height)
             }
 
-            this.addChild(floor)
+            this.addChildAt(floor, 0)
 
             this.stories.set(i, floor)
         }

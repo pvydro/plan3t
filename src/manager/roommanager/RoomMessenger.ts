@@ -15,7 +15,7 @@ export class RoomMessenger implements IRoomMessenger {
         if (DebugConstants.ShowPlayerMessengerLogs) log('RoomMessenger', 'send', 'endpoint', endpoint, 'message', message, 'isOnline', isOnline)
 
         if (!isOnline) {
-            logError('Tried to send message but Room not initialized', 'endpoint', endpoint, 'message', message)
+            // logError('Tried to send message but Room not initialized', 'endpoint', endpoint, 'message', message)
 
             return
         }

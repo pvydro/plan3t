@@ -26,7 +26,10 @@ export class PlayerHandController implements IPlayerHandController {
     }
 
     update(clientControl: boolean) {
-        if (this.player.frozen || this.player.consciousnessState !== PlayerConsciousnessState.Alive) {
+        // if (this.player.frozen || this.player.consciousnessState !== PlayerConsciousnessState.Alive) {
+        //     return
+        // }
+        if (this.player.consciousnessState !== PlayerConsciousnessState.Alive) {
             return
         }
 
